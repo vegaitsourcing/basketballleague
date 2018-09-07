@@ -49,6 +49,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="Context\BasketballDbContext.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AbstractModel.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\League.cs" />

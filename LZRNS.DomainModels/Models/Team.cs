@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LZRNS.DomainModel.Models
@@ -8,16 +10,21 @@ namespace LZRNS.DomainModel.Models
     {
         public string TeamName { get; set; }
 
-        public Season Season { get; set; }
+        [ForeignKey("Season")]
+        public Guid SeasonId { get; set; }
 
-        public Team PreviousTeamRef { get; set; }
+        [Required]
+        public virtual Season Season { get; set; }
 
+        public virtual Team PreviousTeamRef { get; set; }
+
+        [ForeignKey("PreviousTeamRef")]
         public Guid PreviousTeamGuid { get; set; }
 
-        public List<Player> Players { get; set; }
+        public virtual List<Player> Players { get; set; }
 
         public string Coach { get; set; }
 
-        public List<Game> Games {get;set;}
+        public virtual List<Game> Games {get;set;}
     }
 }
