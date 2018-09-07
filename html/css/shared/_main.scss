@@ -38,3 +38,61 @@
 		}
 	}
 }
+
+.banner-home  {
+    position: relative;
+    background: url('../../images/content/header-1920.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 860px;
+
+    @media only screen and (max-width: 1366px) {
+        background: url('../../images/content/header-1366.jpg') no-repeat center center fixed;
+        height: 768px;
+    }
+
+    .wrap {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 100%;
+    }
+
+    .banner-title {
+        display: block;
+        margin-top: 150px;
+
+        @media only screen and (max-width: 1366px) {
+            margin-left: 30px;
+        }
+
+        @media only screen and (max-width: 768px) {
+            margin-left: 20px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            margin-left: 10px;
+        }
+    }
+
+    h1 {
+        text-transform: uppercase;
+        color: $white;
+        font-weight: 700;
+        font-size: 78px;
+
+        max-width: 400px;
+
+        @media only screen and (max-width: 768px) {
+            font-size: 60px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 40px;
+            max-width: 320px;
+        }
+    }
+
+    span {
+        color: $orange;
+    }
+}
