@@ -17,7 +17,11 @@ namespace LZRNS.DomainModel.Context
         public DbSet<Referee> Referees { get; set; }
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Team> Teams { get; set; }
-    }
 
-    //protected override void OnModelCreating()
+        protected override void OnModelCreating(DbModelBuilder builder)
+        {
+           
+
+        }
+    }
 }
