@@ -1,0 +1,13 @@
+﻿@using LZRNS.Models.DocumentTypes.Compositions
+@inherits UmbracoViewPage<PageModel>
+
+<title>@Model.MetaTitle</title>
+<meta name="description" content="@Model.SeoDescription">
+<meta name="keywords" content="@Model.SeoKeywords" />
+<meta name="author" content="@Model.SeoAuthor" />
+
+@if (Model.HideFromExternalSearch || Model.RobotsNoindexNofollow)
+{
+	<meta name="robots" content="noindex,nofollow">
+	<meta name="googlebot" content="noindex,nofollow">
+}

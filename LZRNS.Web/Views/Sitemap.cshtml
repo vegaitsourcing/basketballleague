@@ -1,0 +1,14 @@
+﻿@using LZRNS.Models.DocumentTypes.Compositions;
+@inherits UmbracoViewPage<SitemapModel>
+
+@helper RenderSitemapItems(PageModel page)
+{
+	if (Model.ShouldIncludeChildrenInSitemap(page))
+	{
+		@foreach (PageModel child in page.SitemapItems)
+		{
+			// Render appropriate HTML for child node here
+			@RenderSitemapItems(child)
+		}
+	}
+}
