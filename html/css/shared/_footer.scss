@@ -1,0 +1,57 @@
+//----------  footer
+//------------------------------------------------------------------------------
+.footer {
+	position: relative;
+	background-color: $grey-dark;
+	padding: 50px 0;
+}
+.footer-nav {
+	ul {
+		text-align: center;
+		margin-bottom: 25px;
+	}
+	li {
+		display: inline-block;
+		padding: 0 10px;
+		margin-bottom: 5px;
+	}
+	a {
+		color: $grey-light;
+		text-transform: uppercase;
+		&.active {
+			color: $white;
+		}
+		@include hover {
+			color: $white;
+		}
+	}
+	@include media-breakpoint-only(md) {
+		li {
+			padding: 0 5px;
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		li {
+			display: block;
+		}
+	}
+}
+.social-links {
+	text-align: center;
+	margin-bottom: 15px;
+	li {
+		display: inline-block;
+		margin: 0 10px;
+	}
+	span {
+		color: $grey-light;
+		font-size: 26px;
+		@include hover {
+			color: $white;
+		}
+	}
+}
+.copyright {
+	text-align: center;
+	color: $grey-light;
+}
