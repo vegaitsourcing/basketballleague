@@ -18,4 +18,6 @@ namespace LZRNS.DomainModel.Context
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Team> Teams { get; set; }
     }
+
+    //protected override void OnModelCreating()
 }
