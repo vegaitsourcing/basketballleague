@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LZRNS.Models.DocumentTypes.Pages
 {
-    public class TeamManagmentModel : PageModel
+    public class ScheduleModel : PageModel
     {
     }
 }
