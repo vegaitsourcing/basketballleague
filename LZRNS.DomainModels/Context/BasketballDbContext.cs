@@ -11,7 +11,7 @@ namespace LZRNS.DomainModel.Context
     {
         public BasketballDbContext()
         {
-            Database.SetInitializer<BasketballDbContext>(new MigrateDatabaseToLatestVersion<BasketballDbContext, Configuration>());
+            Database.SetInitializer<BasketballDbContext>(new DropCreateDatabaseAlways<BasketballDbContext>());
             Database.Initialize(false);
         }
         public DbSet<Game> Games { get; set; }

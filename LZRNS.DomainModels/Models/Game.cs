@@ -14,9 +14,10 @@ namespace LZRNS.DomainModel.Models
         public Guid SeasonId { get; set; }
 
         [Required]
+        [ForeignKey("RoundId")]
         public virtual Round Round { get; set; }
 
-        [ForeignKey("Round")]
+
         public Guid RoundId { get; set; }
 
         public DateTime DateTime { get; set; }
