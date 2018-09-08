@@ -92,7 +92,7 @@ namespace LZRNS.DomainModels.Models
             }
         }
 
-        public double FgPrec
+        public double FgPerc
         {
             get
             {

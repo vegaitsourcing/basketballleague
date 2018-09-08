@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LZRNS.DomainModel.Models
 {
-    public class Referee: AbstractModel
+    public class Referee : AbstractModel
     {
         [Required]
         public string Name { get; set; }

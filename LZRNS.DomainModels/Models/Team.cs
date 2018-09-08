@@ -25,6 +25,6 @@ namespace LZRNS.DomainModel.Models
 
         public string Coach { get; set; }
 
-        public virtual List<Game> Games {get;set;}
+        public virtual List<Game> Games { get; set; }
     }
 }
