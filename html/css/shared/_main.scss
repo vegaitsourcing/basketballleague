@@ -106,8 +106,49 @@
 }
 
 .banner {
-    background: $grey-dark;
-    padding: 100px 0;
+	background: url('../../images/content/header-mini.jpg') no-repeat center top;
+	background-size: cover;
+	height: 400px;
+
+	.banner-title {
+		margin-left: 150px;
+		margin-top: 125px;
+
+		@media only screen and (max-width: 1000px) {
+			margin-left: 50px;
+
+		}
+
+		@media only screen and (max-width: 768px) {
+			margin-left: 30px;
+		}
+
+		@media only screen and (max-width: 576px) {
+			margin-left: 25px;
+		}
+	}
+
+    h2 {
+        text-transform: uppercase;
+        color: $white;
+        font-weight: 800;
+		font-size: 60px;
+		line-height: 70px;
+
+        max-width: 400px;
+
+        @media only screen and (max-width: 768px) {
+            font-size: 60px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 40px;
+            max-width: 320px;
+        }
+    }
+    span {
+        color: $orange;
+    }
 }
 .schedule {
 	position: relative;
@@ -172,6 +213,11 @@
 		position: absolute;
 		bottom: 0;
 		right: 30px;
+
+		@media only screen and (max-width: 992px) {
+			bottom: 4px;
+		}
+
 		.number {
 			font-size: 60px;
 			line-height: 1.1;
@@ -247,7 +293,7 @@
 			}
 		}
 		.round {
-			bottom: 15px;
+			bottom: 30px;
 		}
 		.items {
 			.time {
@@ -299,6 +345,15 @@
 		position: absolute;
 		bottom: 0;
 		right: 30px;
+
+		@media only screen and (max-width: 992px) {
+			bottom: 9px;
+		}
+
+		@media only screen and (max-width: 768px) {
+			bottom: 30px;
+		}
+
 		.number {
 			font-size: 60px;
 			line-height: 1.1;
@@ -340,6 +395,74 @@
 			opacity: 0.6;
 		}
     }
+
+    .table {
+        table {
+            width: 100%;
+            line-height: 32px;
+            font-size: 12px;
+            text-align: center;
+            border-bottom: 14px solid #231f20;
+
+            thead {
+                background-color: #231f20;
+                color: $white;
+                line-height: 48px;
+                height: 48px;
+
+                th {
+                    width: 40px;
+
+                    &.pos {
+                        width: 30px;
+                    }
+
+                    &.name {
+                        width: 200px;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    &:nth-child(odd) {
+                        background-color: #f0efef;
+                    }
+                    &:nth-child(even) {
+                        background-color: #fff;
+                    }
+
+                    td {
+                        padding: 5px;
+                        font-size: 12px;
+                        text-align: center;
+                        font-weight: 600;
+                        min-width: 40px;
+
+                        &.pos {
+                            font-weight: 500;
+                            opacity: 0.5;
+                            min-width: 30px;
+                        }
+
+                        &.name {
+                            text-align: left;
+                            max-width: initial;
+                            padding: 5px 10px;
+                            min-width: 200px;
+                        }
+
+                        > span {
+                            line-height: 1.4;
+                            display: block;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.title {
 			h2 {
@@ -373,9 +496,124 @@
 	overflow: auto;
 	margin-bottom: 20px;
 }
+.news {
+	position: relative;
+	width: 100%;
+	background-color: $orange;
+	padding: 150px 0;
+	.wrap {
+		position: relative;
+	}
+	.title {
+		position: absolute;
+		left: -80px;
+		top: -125px;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: #f7bc6d;
+			margin-bottom: 0;
+			line-height: 1;
+			font-weight: 800;
+		}
+	}
+
+	@media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.title {
+			left: 20px;
+			h2 {
+				font-size: 150px;
+			}
+		}
+	}
+
+	@include media-breakpoint-down(md) {
+		.title {
+			left: 45px;
+			h2 {
+				font-size: 100px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		padding: 100px 0;
+		.title {
+			left: 20px;
+			top: -70px;
+			h2 {
+				font-size: 46px;
+			}
+		}
+	}
+}
+.news-slider {
+	position: relative;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	.news-box {
+		position: relative;
+		display: flex !important;
+		align-items: center;
+		flex-direction: column;
+		justify-content: center;
+		text-align: center;
+		width: 98% !important;
+		min-height: 250px;
+		padding: 20px 30px;
+		background-color: rgba($white, 0.7);
+		border-top: 12px solid $grey-dark;
+		border-bottom: 3px solid $grey-dark;
+		&::before {
+			content: '';
+			display: block;
+			position: absolute;
+			width: 100%;
+			height: 6px;
+			background-color: $grey-light;
+			left: 0;
+			top: 0;
+		}
+		p {
+			font-size: 18px;
+			text-align: left;
+			font-weight: 600;
+		}
+	}
+	.slick-dots {
+		cursor: pointer;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		bottom: -60px;
+		margin-bottom: 14px;
+		li {
+			display: inline-block;
+			width: 20px;
+			height: 20px;
+			border-radius: 50%;
+			border: 1px solid $white;
+			background-color: #f7bc6d;
+			font-size: 0;
+			margin-right: 10px;
+			&:last-child {
+				margin-right: 0;
+			}
+			&.slick-active {
+				background-color: #9b9b9b;
+				border-color: #9b9b9b;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		.news-box {
+			width: 100% !important;
+		}
+	}
+}
 
 .top-stats {
-    padding: 150px 0;
+    padding: 180px 0 150px;
     background-color: $orange;
     position: relative;
 
@@ -385,12 +623,12 @@
 
     .title {
         position: absolute;
-		left: 20px;
+		left: -80px;
 		top: -120px;
 		h2 {
 			font-size: 178px;
 			text-transform: uppercase;
-			color: #fcd79f;
+			color: #f7bc6d;
 			margin-bottom: 0;
 			line-height: 1;
             font-weight: 800;
@@ -399,6 +637,7 @@
 
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.title {
+			left: 20px;
 			h2 {
 				font-size: 150px;
 			}
@@ -425,27 +664,39 @@
 
     .stats-cards {
         .card {
-            padding: 30px 40px;
-            max-width: 250px;
+			position: relative;
+            padding: 30px 20px;
+            min-width: 225px;
+            max-width: 300px;
             margin-top: 25px;
             margin-left: auto;
             margin-right: auto;
-            background-color: $white;
+            background-color: rgba($white, 0.7);
             border-top: 12px solid #303030;
             border-bottom: 6px solid #303030;
             z-index: 2;
-
+			&::before {
+				content: '';
+				display: block;
+				position: absolute;
+				width: 100%;
+				height: 6px;
+				background-color: $grey-light;
+				left: 0;
+				top: 0;
+			}
             .card-title {
                 h4 {
                     text-transform: uppercase;
                     font-size: 20px;
                     color: $orange;
+					margin-bottom: 20px;
                 }
             }
 
             ol {
                 li {
-                    font-size: 16px;
+                    font-size: 14px;
                     font-weight: 500;
                     list-style-type: inherit;
                     list-style-position: inside;
@@ -458,4 +709,122 @@
             }
         }
     }
+}
+
+.statistics {
+	padding: 180px 0;
+	.wrap {
+        position: relative;
+    }
+
+    .title {
+        position: absolute;
+		left: -80px;
+		top: -120px;
+		z-index: -1;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: rgba(188, 190, 192, 0.4);
+			margin-bottom: 0;
+			line-height: 1;
+            font-weight: 800;
+		}
+    }
+
+    @media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.title {
+			left: 20px;
+			h2 {
+				font-size: 150px;
+			}
+		}
+	}
+
+    @include media-breakpoint-down(md) {
+		.title {
+			left: 20px;
+			h2 {
+				font-size: 100px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+        padding: 100px 0;
+		.title {
+            left: 20px;
+            top: -80px;
+			h2 {
+				font-size: 46px;
+			}
+		}
+	}
+	.table-responsive {
+		z-index: 3;
+	}
+	table {
+		width: 100%;
+		line-height: 32px;
+		font-size: 12px;
+		text-align: center;
+		border-bottom: 14px solid #231f20;
+
+		thead {
+			background-color: #231f20;
+			color: $white;
+			line-height: 48px;
+			height: 48px;
+
+			th {
+				width: 40px;
+
+				&.pos {
+					width: 30px;
+				}
+
+				&.name {
+					width: 200px;
+					text-align: left;
+				}
+			}
+		}
+
+		tbody {
+			tr {
+				&:nth-child(odd) {
+					background-color: #f0efef;
+				}
+				&:nth-child(even) {
+					background-color: #fff;
+				}
+
+				td {
+					padding: 5px;
+					font-size: 12px;
+					text-align: center;
+					font-weight: 600;
+					min-width: 40px;
+
+					&.pos {
+						font-weight: 500;
+						opacity: 0.5;
+						min-width: 30px;
+					}
+
+					&.name {
+						text-align: left;
+						max-width: initial;
+						padding: 5px 10px;
+						min-width: 200px;
+					}
+
+					> span {
+						line-height: 1.4;
+						display: block;
+					}
+				}
+			}
+
+		}
+	}
 }

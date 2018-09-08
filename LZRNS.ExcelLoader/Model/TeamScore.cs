@@ -14,12 +14,12 @@ namespace LZRNS.ExcelLoader
         {
             this.playerScores = new List<PlayerScore>();
         }
-
         
 
         #region Properties
         public string AgainstTeam { get; set; }
         public DateTime MatchDate { get; set; }
+        public string RoundName { get; set; }
         public List<PlayerScore> PlayerScores { get { return playerScores; } }
         #endregion Properties
 
@@ -29,7 +29,6 @@ namespace LZRNS.ExcelLoader
             playerScores.Add(pl);
         }
         #endregion Public Methods
-
-
+        
     }
 }

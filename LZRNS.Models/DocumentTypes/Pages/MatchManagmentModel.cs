@@ -4,5 +4,6 @@ namespace LZRNS.Models.DocumentTypes.Pages
 {
     public class MatchManagmentModel : PageModel
     {
+        
     }
 }

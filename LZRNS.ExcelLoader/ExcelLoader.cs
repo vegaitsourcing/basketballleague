@@ -23,9 +23,6 @@ namespace LZRNS.ExcelLoader
         private MapperModel mapper;
         private int maxPlayerPerMatch = 12;
 
-        private String defaultConfigPath = "TableMapper.config";
-
-        
         #endregion Private Fields
 
         #region Constructors
@@ -43,10 +40,11 @@ namespace LZRNS.ExcelLoader
             try
             {
                 int currentSheetNo = 0;
+                exApp = new Excel.Application();
                 xlWorkbook = exApp.Workbooks.Open(filePath);
+                
                 sheets = xlWorkbook.Sheets;
-
-
+                
                 //Only for first sheet we want to check validation for mapping fields configuration
                 foreach (Excel.Worksheet sheet in sheets)
                 {
@@ -84,13 +82,13 @@ namespace LZRNS.ExcelLoader
             }
           
         }
+        
         #endregion Public Methods
 
         #region Private Methods
 
         private void CheckMappingValidation (MapperModel mapper, Excel.Worksheet sheet)
         {
-            Console.WriteLine("CheckMappingValidation - STARTED");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -101,19 +99,22 @@ namespace LZRNS.ExcelLoader
               
                 object value =  exlRange.Cells[item.RowIndex, item.ColumnIndex].Value;
                 
-
                 if (value == null || !value.Equals(item.CellName))
                 {
+
+                    Loger.log.Error("Mapping is invalid for sheet: " + sheet.Name);
                     throw new Exception();
                 }
             }
-            Console.WriteLine("CheckMappingValidation - ENDED, timeElapsed: {0}", stopwatch.Elapsed);
             stopwatch.Stop();
+            Loger.log.Debug("CheckMappingValidation Successfully completed for time: " + stopwatch.Elapsed);
+
         }
 
         private void ProcessSheet(Excel.Worksheet sheet, ref TeamStatistic teamStatistic)
         {
-            Console.WriteLine("ProcessSheet: {0} - STARTED", sheet.Name);
+            Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
+
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -122,6 +123,7 @@ namespace LZRNS.ExcelLoader
 
 
             TeamScore teamScore = new TeamScore();
+            teamScore.RoundName = sheet.Name;
 
             IEnumerable<FieldItem> globalFields = mapper.Fields.FindAll(i => i.GlobalField == true);
             
@@ -144,7 +146,8 @@ namespace LZRNS.ExcelLoader
 
             }
 
-            Console.WriteLine("ProcessSheet: {0} - ENDED, timeElapsed: {1}", sheet.Name, stopwatch.Elapsed);
+            Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
+
             stopwatch.Stop();
 
         }
@@ -163,6 +166,7 @@ namespace LZRNS.ExcelLoader
             //get the value of the property
             if (objProperty == null)
             {
+                Loger.log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
                 // We should log error (currently I will just throw exception to be aware that model and mapping are not matched)
                 throw new Exception();
             }
@@ -176,7 +180,7 @@ namespace LZRNS.ExcelLoader
             Object value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
             if(value == null)
             {
-                Console.WriteLine("PopulateModelValue - PropertyName: {0}, Value: {1}", fieldItem.PropertyName, value);
+                Loger.log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
                 return;
             }
 
