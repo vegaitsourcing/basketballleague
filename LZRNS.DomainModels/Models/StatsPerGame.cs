@@ -1,34 +1,21 @@
-﻿using LZRNS.DomainModels.Models;
+﻿using LZRNS.DomainModel.Models;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace LZRNS.DomainModel.Models
+namespace LZRNS.DomainModels.Models
 {
-    public class Team : AbstractModel
+    public class StatsPerGame
     {
-        public string TeamName { get; set; }
+        public virtual Game Game { get; }
 
-        public virtual Team PreviousTeamRef { get; set; }
+        public Guid GameId { get; }
 
-        public Guid PreviousTeamGuid { get; set; }
+        public virtual Team Team { get; }
 
-        public virtual ICollection<Player> Players { get; set; }
-
-        public string Coach { get; set; }
-
-        public virtual ICollection<StatsPerGame> StatsPerGame { get; set; }
-
-        public virtual ICollection<PlayerPerSeason> PlayersPerSeason { get; set; }
-
-        public virtual ICollection<Game> Games { get; set; }
-
-        public virtual LeagueSeason LeagueSeason { get; set; }
-
-        public Guid LeagueSeasonId { get; set; }
+        public Guid TeamId { get; }
 
         #region Points
 
@@ -38,7 +25,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Points);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Pts);
             }
         }
 
@@ -50,7 +37,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.TwoPtA);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).TwoPtA);
             }
         }
 
@@ -58,12 +45,11 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.TwoPtM);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).TwoPtMade);
             }
-            set { }
         }
 
-        public double TwoPtPerc
+        public double TwoPtPercA
         {
             get
             {
@@ -79,7 +65,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.ThreePtA);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).ThreePtA);
             }
         }
 
@@ -87,7 +73,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.ThreePtM);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).ThreePtMade);
             }
         }
 
@@ -107,7 +93,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.FtA);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).FtA);
             }
         }
 
@@ -115,7 +101,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.FtM);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).FtMade);
             }
         }
 
@@ -165,7 +151,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Reb);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Reb);
             }
         }
 
@@ -173,7 +159,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.OReb);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).OReb);
             }
         }
 
@@ -181,10 +167,10 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.DReb);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).DReb);
             }
         }
-
+        
         #endregion
 
         #region Assists
@@ -193,7 +179,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Ast);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Ast);
             }
         }
 
@@ -205,7 +191,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.To);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).To);
             }
         }
 
@@ -217,7 +203,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Stl);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Stl);
             }
         }
 
@@ -229,7 +215,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Blk);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Blk);
             }
         }
 
@@ -241,7 +227,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Min);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).MinutesPlayed);
             }
         }
 
@@ -253,7 +239,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Eff);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Eff);
             }
         }
 
