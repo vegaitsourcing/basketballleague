@@ -281,8 +281,17 @@
     <Compile Include="DocumentTypes\Pages\Error404Model.cs" />
     <Compile Include="DocumentTypes\Pages\HomeModel.cs" />
     <Compile Include="DocumentTypes\Pages\LeagueManagmentModel.cs" />
+    <Compile Include="DocumentTypes\Pages\MatchManagmentModel.cs" />
+    <Compile Include="DocumentTypes\Pages\PlayerManagmentModel.cs" />
+    <Compile Include="DocumentTypes\Pages\PlayersModel.cs" />
+    <Compile Include="DocumentTypes\Pages\ResultsModel.cs" />
+    <Compile Include="DocumentTypes\Pages\ScheduleModel.cs" />
+    <Compile Include="DocumentTypes\Pages\SeasonManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\SitemapModel.cs" />
+    <Compile Include="DocumentTypes\Pages\StatsModel.cs" />
     <Compile Include="DocumentTypes\Pages\TableModel.cs" />
+    <Compile Include="DocumentTypes\Pages\TeamManagmentModel.cs" />
+    <Compile Include="DocumentTypes\Pages\TeamsModel.cs" />
     <Compile Include="Extensions\MultiUrlsPickerExtensions.cs" />
     <Compile Include="Extensions\PublishedContentExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
