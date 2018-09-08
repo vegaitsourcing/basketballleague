@@ -16,6 +16,8 @@ namespace LZRNS.DomainModel.Models
         [Required]
         public string LastName { get; set; }
 
+        public string Image { get; set; }
+
         [Required]
         [Range(0, 250)]
         public int Height { get; set; }
