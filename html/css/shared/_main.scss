@@ -860,7 +860,19 @@
 
 
 .results-page {
-	.row {
-		margin-bottom: 100px;
+	.arrows {
+		width: 100%;
+
+		.right-arrow {
+			float: right;
+		}
+
+		span {
+			color: $grey-dark;
+			font-size: 50px;
+			@include hover {
+				color: $white;
+			}
+		}
 	}
 }
