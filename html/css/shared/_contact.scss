@@ -1,0 +1,75 @@
+//----------  contact
+//------------------------------------------------------------------------------
+::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+#contact-form {
+    background: $orange;
+    position: relative;
+    padding: 150px 0 100px;
+
+    .wrap {
+        position: relative;
+    }
+
+    form {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .contact-title {
+        position: absolute;
+        left: 20px;
+        top: -120px;
+
+        h1 {
+            font-size: 178px;
+            text-transform: uppercase;
+            color: #fcd79f;
+            line-height: 1;
+            font-weight: 800;
+        }
+    }
+    
+    @media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.contact-title {
+            h1 {
+                font-size: 150px;
+                left: 5%;
+            }
+		}
+    }
+
+    @include media-breakpoint-down(md) {
+        .contact-title {
+            h1 {
+                font-size: 100px;
+                left: 3%;
+            }
+		}
+    }
+
+    @include media-breakpoint-down(sm) {
+        .contact-title {
+            h1 {
+                font-size: 46px;
+                left: 12%;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 576px) {
+        .contact-title {
+            h1 {
+                left: 15px;
+            }
+        }
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+}
