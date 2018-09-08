@@ -1,14 +1,63 @@
 //----------  forms
 //------------------------------------------------------------------------------
-input,
-textarea {
-	background: $white;
-	border-radius: 0;
-	box-shadow: none;
-	color: $black;
-	height: 25px;
-	padding: 0 10px;
+// input,
+// textarea {
+// 	background: $white;
+// 	border-radius: 0;
+// 	box-shadow: none;
+// 	color: $black;
+// 	height: 25px;
+// 	padding: 0 10px;
+// 	&::placeholder {
+// 		color: $black;
+// 	}
+// }
+
+input, textarea {
+	box-sizing: border-box;
+	outline: none;
+	background-color: $orange;
+	background-image: none;
+	background-clip: padding-box;
+	border: 2px solid $white;
+	border-radius: 3px;
+	display: block;
+	font-size: 1rem;
+	line-height: 1.5;
+	
+	padding: .375rem, .75rem;
+	
 	&::placeholder {
-		color: $black;
+		color: white;
 	}
+}
+
+input, textarea {
+	display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #fff;
+    background-color: $orange;
+    background-image: none;
+    background-clip: padding-box;
+    border: 2px solid #fff;
+    border-radius: .25rem;
+}
+
+input {        
+	overflow: visible;
+	height: 40px;
+
+	&[type='submit'] {
+		border: 2px solid #fff;
+		width: 70%;
+	}
+}
+
+textarea {
+	overflow: auto;
+	resize: vertical;
+	height: 100px;
 }

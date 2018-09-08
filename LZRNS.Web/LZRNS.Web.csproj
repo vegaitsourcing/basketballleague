@@ -459,6 +459,10 @@
       <Project>{44ea5768-a92d-4380-848e-a4b2c07158d6}</Project>
       <Name>LZRNS.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LZRNS.DomainModels\LZRNS.DomainModels.csproj">
+      <Project>{584350e5-f1db-4334-b57a-7e1fa59a6a25}</Project>
+      <Name>LZRNS.DomainModels</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LZRNS.Models\LZRNS.Models.csproj">
       <Project>{3be753d9-f1a1-427f-ba6e-84c9c55a18d5}</Project>
       <Name>LZRNS.Models</Name>

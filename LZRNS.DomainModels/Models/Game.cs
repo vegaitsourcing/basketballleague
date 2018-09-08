@@ -14,23 +14,25 @@ namespace LZRNS.DomainModel.Models
         public Guid SeasonId { get; set; }
 
         [Required]
+        [ForeignKey("RoundId")]
         public virtual Round Round { get; set; }
 
-        [ForeignKey("Round")]
+
         public Guid RoundId { get; set; }
 
         public DateTime DateTime { get; set; }
 
         [Required]
+        [ForeignKey("TeamAId")]
         public virtual Team TeamA { get; set; }
-
-        [ForeignKey("TeamA")]
+        
         public Guid TeamAId { get; set; }
 
         [Required]
+        [ForeignKey("TeamBId")]
         public virtual Team TeamB { get; set; }
 
-        [ForeignKey("TeamB")]
+        
         public Guid TeamBId { get; set; }
 
         public virtual List<Referee> Referees { get; set; }
