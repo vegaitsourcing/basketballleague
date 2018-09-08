@@ -462,6 +462,16 @@
 			font-weight: 800;
 		}
 	}
+	
+	@media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.title {
+			left: 20px;
+			h2 {
+				font-size: 150px;
+			}
+		}
+	}
+
 	@include media-breakpoint-down(md) {
 		.title {
 			left: 45px;
@@ -572,6 +582,7 @@
 
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.title {
+			left: 20px;
 			h2 {
 				font-size: 150px;
 			}
@@ -643,4 +654,122 @@
             }
         }
     }
+}
+
+.statistics {
+	padding: 180px 0;
+	.wrap {
+        position: relative;
+    }
+
+    .title {
+        position: absolute;
+		left: -80px;
+		top: -120px;
+		z-index: -1;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: rgba(188, 190, 192, 0.4);
+			margin-bottom: 0;
+			line-height: 1;
+            font-weight: 800;
+		}
+    }
+
+    @media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.title {
+			left: 20px;
+			h2 {
+				font-size: 150px;
+			}
+		}
+	}
+
+    @include media-breakpoint-down(md) {
+		.title {
+			left: 20px;
+			h2 {
+				font-size: 100px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+        padding: 100px 0;
+		.title {
+            left: 20px;
+            top: -80px;
+			h2 {
+				font-size: 46px;
+			}
+		}
+	}
+	.table-responsive {
+		z-index: 3;
+	}
+	table {
+		width: 100%;
+		line-height: 32px;
+		font-size: 12px;
+		text-align: center;
+		border-bottom: 14px solid #231f20;
+
+		thead {
+			background-color: #231f20;
+			color: $white;
+			line-height: 48px;
+			height: 48px;
+
+			th {
+				width: 40px;
+
+				&.pos {
+					width: 30px;
+				}
+
+				&.name {
+					width: 200px;
+					text-align: left;
+				}
+			}
+		}
+
+		tbody {
+			tr {
+				&:nth-child(odd) {
+					background-color: #f0efef;
+				}
+				&:nth-child(even) {
+					background-color: #fff;
+				}
+
+				td {
+					padding: 5px;
+					font-size: 12px;
+					text-align: center;
+					font-weight: 600;
+					min-width: 40px;
+
+					&.pos {
+						font-weight: 500;
+						opacity: 0.5;
+						min-width: 30px;
+					}
+
+					&.name {
+						text-align: left;
+						max-width: initial;
+						padding: 5px 10px;
+						min-width: 200px;
+					}
+
+					> span {
+						line-height: 1.4;
+						display: block;
+					}
+				}
+			}
+
+		}
+	}
 }
