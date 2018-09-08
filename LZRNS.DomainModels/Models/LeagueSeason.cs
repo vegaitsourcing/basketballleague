@@ -12,11 +12,8 @@ namespace LZRNS.DomainModels.Models
         public virtual League League { get; set; }
 
         public Guid LeagueId { get; set; }
-
-        public virtual Season Season { get; set; }
-
         public Guid SeasonId { get; set; }
-
+        public virtual Season Season { get; set; }
         public virtual ICollection<Team> Teams { get; set; }
 
         public virtual ICollection<Round> Rounds { get; set; }
