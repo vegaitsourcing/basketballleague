@@ -9,8 +9,11 @@ namespace LZRNS.DomainModel.Models
         [Required]
         public string Name { get; set; }
 
-        public virtual List<Team> Teams { get; set; }
+        [Required]
+        public int SeasonStartYear { get; set; }
 
-        public virtual List<Game> Games { get; set; }
+        public virtual ICollection<Team> Teams { get; set; }
+
+        public virtual ICollection<Game> Games { get; set; }
     }
 }

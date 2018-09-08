@@ -50,14 +50,18 @@
     <Compile Include="Class1.cs" />
     <Compile Include="Context\BasketballDbContext.cs" />
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="Models\League.cs" />
+    <Compile Include="Models\LeagueSeason.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\PlayerPerSeason.cs" />
     <Compile Include="Models\Referee.cs" />
-	<Compile Include="Models\Round.cs" />
+    <Compile Include="Models\Round.cs" />
     <Compile Include="Models\Season.cs" />
     <Compile Include="Models\Stats.cs" />
+    <Compile Include="Models\StatsPerGame.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -10,6 +10,8 @@ namespace LZRNS.DomainModel.Models
         [Required]
         public string Name { get; set; }
 
-        public List<Season> Seasons { get; set; }
+        public ICollection<Season> Seasons { get; set; }
+
+        public ICollection<Team> Teams { get; set; }
     }
 }
