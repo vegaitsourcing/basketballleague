@@ -23,9 +23,6 @@ namespace LZRNS.ExcelLoader
         private MapperModel mapper;
         private int maxPlayerPerMatch = 12;
 
-        private String defaultConfigPath = "TableMapper.config";
-
-        
         #endregion Private Fields
 
         #region Constructors
@@ -45,9 +42,9 @@ namespace LZRNS.ExcelLoader
                 int currentSheetNo = 0;
                 exApp = new Excel.Application();
                 xlWorkbook = exApp.Workbooks.Open(filePath);
+                
                 sheets = xlWorkbook.Sheets;
-
-
+                
                 //Only for first sheet we want to check validation for mapping fields configuration
                 foreach (Excel.Worksheet sheet in sheets)
                 {
@@ -85,6 +82,7 @@ namespace LZRNS.ExcelLoader
             }
           
         }
+        
         #endregion Public Methods
 
         #region Private Methods
@@ -125,6 +123,7 @@ namespace LZRNS.ExcelLoader
 
 
             TeamScore teamScore = new TeamScore();
+            teamScore.RoundName = sheet.Name;
 
             IEnumerable<FieldItem> globalFields = mapper.Fields.FindAll(i => i.GlobalField == true);
             

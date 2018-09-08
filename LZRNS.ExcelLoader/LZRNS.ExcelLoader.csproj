@@ -54,11 +54,11 @@
     <Compile Include="Loger.cs" />
     <Compile Include="MapperModel.cs" />
     <Compile Include="MatchScore.cs" />
-    <Compile Include="PlayerScore.cs" />
+    <Compile Include="Model\PlayerScore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TeamStatistic.cs" />
-    <Compile Include="TeamScore.cs" />
+    <Compile Include="Model\TeamStatistic.cs" />
+    <Compile Include="Model\TeamScore.cs" />
     <Compile Include="TmpModel.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -68,8 +68,6 @@
     <None Include="packages.config" />
     <None Include="TableMapper.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
