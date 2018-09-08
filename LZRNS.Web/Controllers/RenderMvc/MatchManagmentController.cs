@@ -14,5 +14,10 @@ namespace LZRNS.Web.Controllers.RenderMvc
         {
             return CurrentTemplate(model);
         }
+        [HttpPost]
+        public string Index()
+        {
+            return "you hit me";
+        }
     }
 }

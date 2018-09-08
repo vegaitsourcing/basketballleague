@@ -423,6 +423,7 @@
     <Content Include="Views\Stats.cshtml" />
     <Content Include="Views\TeamManagment.cshtml" />
     <Content Include="Views\Teams.cshtml" />
+    <Content Include="Views\Import.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -443,6 +444,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\RenderMvc\Error404Controller.cs" />
     <Compile Include="Controllers\RenderMvc\HomeController.cs" />
+    <Compile Include="Controllers\RenderMvc\ImportController.cs" />
     <Compile Include="Controllers\RenderMvc\LeagueManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\MatchManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\PlayerManagmentController.cs" />
@@ -457,6 +459,7 @@
     <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
     <Compile Include="Controllers\RenderMvc\XMLSitemapController.cs" />
     <Compile Include="Controllers\Surface\BaseSurfaceController.cs" />
+    <Compile Include="Controllers\Surface\FormsController.cs" />
     <Compile Include="Controllers\Surface\SharedController.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\HttpResponseExtensions.cs" />
