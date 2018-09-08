@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LZRNS.DomainModels.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
@@ -28,5 +29,7 @@ namespace LZRNS.DomainModel.Models
         public int YearOfBirth { get; set; }
 
         public virtual List<Guid> TeamGuids { get; set; }
+
+        public virtual List<Stats> Stats { get; set; }
     }
 }
