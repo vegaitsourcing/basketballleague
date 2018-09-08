@@ -55,9 +55,9 @@
         height: 461px;
     }
 
-    @media only screen and (max-width: 520px) {
-        background: url('../../images/content/header-320.jpg') no-repeat center top;
-        height: 237px;
+    @media only screen and (max-width: 576px) {
+        background: url('../../images/content/header-576.jpg') no-repeat center top;
+        height: 331px;
     }
 
     .wrap {
