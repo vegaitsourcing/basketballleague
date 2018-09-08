@@ -1,0 +1,14 @@
+//----------  icons
+//------------------------------------------------------------------------------
+.ico {
+	display: inline-block;
+}
+.ico-chevron-down {
+	@include sprite(ico-chevron-down);
+}
+.ico-download {
+	@include sprite(ico-download);
+}
+.ico-share {
+	@include sprite(ico-share);
+}

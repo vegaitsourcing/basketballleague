@@ -17,6 +17,15 @@ module.exports = {
 		}
 	},
 
+	mobileNav: function() {
+		$('.header .open-menu').on('click', function() {
+			var $this = $(this);
+			$this.toggleClass('active');
+			$('.header .main-nav').slideToggle('normal', function () {
+			});
+		});
+	},
+	
 	// equal heights
 	equalHeights: function(arrayItems, count) {
 		if (arrayItems !== undefined && arrayItems.length > 0) {

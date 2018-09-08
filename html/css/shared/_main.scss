@@ -1,14 +1,52 @@
 //----------  main styles
 //------------------------------------------------------------------------------
+.friends-league {
+	padding-top: 40px;
+	h2 {
+		display: inline-block;
+		font-size: 21px;
+		line-height: 1.3;
+		font-weight: 700;
+		text-transform: uppercase;
+		position: relative;
+		color: $grey-dark;
+		border-bottom: 2px solid $orange;
+	}
+	.friends-title {
+		text-align: center;
+	}
+}
+.friends-logo {
+	display: flex;
+	justify-content: space-between;
+	padding: 70px 0;
+	img {
+		width: 100%;
+	}
+	@include media-breakpoint-down(sm) {
+		padding: 30px 0;
+		display: block;
+		img {
+			max-width: 150px;
+		}
+		.image-holder {
+			text-align: center;
+			margin-bottom: 25px;
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+}
 
-.header  {
+.banner-home  {
     position: relative;
-    background: url('../../images/content/header-1920.jpg') no-repeat center center fixed;
+    background: url('../../images/content/header-1920.jpg') no-repeat center top fixed;
     background-size: cover;
     height: 860px;
 
-    @media only screen and (max-width: 1366px) {
-        background: url('../../images/content/header-1366.jpg') no-repeat center center fixed;
+    @media only screen and (max-width: 1200px) {
+        background: url('../../images/content/header-1366.jpg') no-repeat center top fixed;
         height: 768px;
     }
 
@@ -19,9 +57,8 @@
         height: 100%;
     }
 
-    .header-title {
-        display: block;
-        margin-top: 150px;
+    .banner-title {
+        margin-top: 20%;
 
         @media only screen and (max-width: 1366px) {
             margin-left: 30px;
