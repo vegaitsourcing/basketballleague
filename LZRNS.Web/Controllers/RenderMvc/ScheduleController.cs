@@ -10,7 +10,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
 {
     public class ScheduleController : RenderMvcController
     {
-        public ActionResult Index(TeamManagmentModel model)
+        public ActionResult Index(ScheduleModel model)
         {
             return CurrentTemplate(model);
         }

@@ -52,12 +52,12 @@ input {
 
 	&[type='submit'] {
 		border: 2px solid #fff;
-		width: 70%;
+		width: 100px;
 	}
 }
 
 textarea {
 	overflow: auto;
 	resize: vertical;
-	height: 100px;
+	height: 150px;
 }
