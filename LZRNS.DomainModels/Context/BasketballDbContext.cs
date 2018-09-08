@@ -11,14 +11,14 @@ namespace LZRNS.DomainModel.Context
     {
         public BasketballDbContext(string connString) : base(connString)
         {
-            Database.SetInitializer<BasketballDbContext>(new DropCreateDatabaseAlways<BasketballDbContext>());
-            Database.Initialize(false);
+            Database.SetInitializer<BasketballDbContext>(new DbInitializer());
+            Database.Initialize(true);
         }
 
         public BasketballDbContext()
         {
-            Database.SetInitializer<BasketballDbContext>(new DropCreateDatabaseAlways<BasketballDbContext>());
-            Database.Initialize(false);
+            Database.SetInitializer<BasketballDbContext>(new DbInitializer());
+            Database.Initialize(true);
         }
 
         public DbSet<Game> Games { get; set; }
