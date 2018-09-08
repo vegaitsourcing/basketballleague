@@ -340,6 +340,74 @@
 			opacity: 0.6;
 		}
     }
+
+    .table {
+        table {
+            width: 100%;
+            line-height: 32px;
+            font-size: 12px;
+            text-align: center;
+            border-bottom: 14px solid #231f20;
+
+            thead {
+                background-color: #231f20;
+                color: $white;
+                line-height: 48px;
+                height: 48px;
+
+                th {
+                    width: 40px;
+
+                    &.pos {
+                        width: 30px;
+                    }
+
+                    &.name {
+                        width: 200px;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    &:nth-child(odd) {
+                        background-color: #f0efef;
+                    }
+                    &:nth-child(even) {
+                        background-color: #fff;
+                    }
+
+                    td {
+                        padding: 5px;
+                        font-size: 12px;
+                        text-align: center;
+                        font-weight: 600;
+                        min-width: 40px;
+
+                        &.pos {
+                            font-weight: 500;
+                            opacity: 0.5;
+                            min-width: 30px;
+                        }
+
+                        &.name {
+                            text-align: left;
+                            max-width: initial;
+                            padding: 5px 10px;
+                            min-width: 200px;
+                        }
+
+                        > span {
+                            line-height: 1.4;
+                            display: block;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.title {
 			h2 {
