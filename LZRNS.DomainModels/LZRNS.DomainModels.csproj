@@ -47,8 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Context\BasketballDbContext.cs" />
+	<Compile Include="Helper\StatsList.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
@@ -56,7 +56,7 @@
     <Compile Include="Models\League.cs" />
     <Compile Include="Models\LeagueSeason.cs" />
     <Compile Include="Models\Player.cs" />
-    <Compile Include="Models\PlayerPerSeason.cs" />
+    <Compile Include="Models\PlayerPerTeam.cs" />
     <Compile Include="Models\Referee.cs" />
     <Compile Include="Models\Round.cs" />
     <Compile Include="Models\Season.cs" />
@@ -64,6 +64,18 @@
     <Compile Include="Models\StatsPerGame.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\Implementations\GameRepository.cs" />
+    <Compile Include="Repository\Implementations\LeagueRepository.cs" />
+    <Compile Include="Repository\Implementations\PlayerRepository.cs" />
+    <Compile Include="Repository\Implementations\RepositoryBase.cs" />
+    <Compile Include="Repository\Implementations\SeasonRepository.cs" />
+    <Compile Include="Repository\Implementations\TeamRepository.cs" />
+    <Compile Include="Repository\Interfaces\IGameRepository.cs" />
+    <Compile Include="Repository\Interfaces\ILeagueRepository.cs" />
+    <Compile Include="Repository\Interfaces\IPlayerRepository.cs" />
+    <Compile Include="Repository\Interfaces\IRepositoryBase.cs" />
+    <Compile Include="Repository\Interfaces\ISeasonRepository.cs" />
+    <Compile Include="Repository\Interfaces\ITeamRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

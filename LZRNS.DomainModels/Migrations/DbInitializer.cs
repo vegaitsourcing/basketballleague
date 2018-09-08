@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LZRNS.DomainModels.Migrations
 {
-    public class DbInitializer: DropCreateDatabaseAlways<BasketballDbContext>
+    public class DbInitializer: DropCreateDatabaseIfModelChanges<BasketballDbContext>
     {
         protected override void Seed(BasketballDbContext context)
         {

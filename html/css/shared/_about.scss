@@ -1,5 +1,63 @@
-//----------  contact
+//----------  about
 //------------------------------------------------------------------------------
+.about {
+    background: $grey;
+    position: relative;
+    padding: 150px 0 70px;
+
+    .wrap {
+        position: relative;
+    }
+
+    .title {
+        position: absolute;
+        right: -20px;
+        top: -120px;
+
+        h2 {
+            font-size: 178px;
+            text-transform: uppercase;
+            color: rgba(188, 190, 192, 0.4);
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        @media only screen and (max-width: 1200px) {
+            right: 5%;
+        }
+
+        @media only screen and (min-width: 992px) and (max-width: 1080px) {
+            right: 5%;
+            h2 {
+                font-size: 150px;
+            }
+
+        }
+
+        @include media-breakpoint-down(md) {
+            h2 {
+                font-size: 100px;
+            }
+            right: 3%;
+        }
+
+        @include media-breakpoint-down(sm) {
+            h2 {
+                font-size: 46px;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            right: 15px;
+        }
+    }
+
+    .about-text {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+}
+
 .contact-form {
     background: $orange;
     position: relative;
@@ -19,7 +77,7 @@
         left: 20px;
         top: -120px;
 
-        h1 {
+        h2 {
             font-size: 178px;
             text-transform: uppercase;
             color: #fcd79f;
@@ -29,7 +87,7 @@
     }
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.contact-title {
-            h1 {
+            h2 {
                 font-size: 150px;
                 left: 5%;
             }
@@ -38,7 +96,7 @@
 
     @include media-breakpoint-down(md) {
         .contact-title {
-            h1 {
+            h2 {
                 font-size: 100px;
                 left: 3%;
             }
@@ -47,7 +105,7 @@
 
     @include media-breakpoint-down(sm) {
         .contact-title {
-            h1 {
+            h2 {
                 font-size: 46px;
                 left: 12%;
             }
@@ -56,7 +114,7 @@
 
     @media only screen and (max-width: 576px) {
         .contact-title {
-            h1 {
+            h2 {
                 left: 15px;
             }
         }

@@ -1,4 +1,5 @@
-﻿using LZRNS.DomainModels.Models;
+﻿using LZRNS.DomainModels.Helper;
+using LZRNS.DomainModels.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,6 +13,8 @@ namespace LZRNS.DomainModel.Models
     {
         public string TeamName { get; set; }
 
+        public string Image { get; set; }
+
         public virtual Team PreviousTeamRef { get; set; }
 
         public Guid PreviousTeamGuid { get; set; }
@@ -20,9 +23,10 @@ namespace LZRNS.DomainModel.Models
 
         public string Coach { get; set; }
 
+        [NotMapped]
         public virtual ICollection<StatsPerGame> StatsPerGame { get; set; }
 
-        public virtual ICollection<PlayerPerSeason> PlayersPerSeason { get; set; }
+        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 
         public virtual ICollection<Game> Games { get; set; }
 
@@ -30,15 +34,17 @@ namespace LZRNS.DomainModel.Models
 
         public Guid LeagueSeasonId { get; set; }
 
+        public Guid TeamScoreId { get; set; }
+
         #region Points
 
         #region Pts
 
-        public int Points
+        public int Pts
         {
             get
             {
-                return StatsPerGame.Sum(spg => spg.Points);
+                return StatsPerGame.Sum(spg => spg.Pts);
             }
         }
 
@@ -60,7 +66,6 @@ namespace LZRNS.DomainModel.Models
             {
                 return StatsPerGame.Sum(spg => spg.TwoPtM);
             }
-            set { }
         }
 
         public double TwoPtPerc
@@ -254,6 +259,66 @@ namespace LZRNS.DomainModel.Models
             get
             {
                 return StatsPerGame.Sum(spg => spg.Eff);
+            }
+        }
+
+        #endregion
+
+        #region Stats per season
+
+        public int Points
+        {
+            get
+            {
+                return 2 * StatsList.TotalStats(this)[0] + StatsList.TotalStats(this)[1];
+            }
+        }
+
+        public int Wins
+        {
+            get
+            {
+                return StatsList.TotalStats(this)[0];
+            }
+        }
+
+        public int Losts
+        {
+            get
+            {
+                return StatsList.TotalStats(this)[1];
+            }
+        }
+
+        public double WLPerc
+        {
+            get
+            {
+                return Wins / (Wins + Losts) * 100;
+            }
+        }
+
+        public int TotalPtsScored
+        {
+            get
+            {
+                return StatsList.TotalStats(this)[2];
+            }
+        }
+
+        public int TotalPtsReceived
+        {
+            get
+            {
+                return StatsList.TotalStats(this)[3];
+            }
+        }
+
+        public int TotalPtsDifference
+        {
+            get
+            {
+                return TotalPtsScored - TotalPtsReceived;
             }
         }
 
