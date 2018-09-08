@@ -41,13 +41,23 @@
 
 .banner-home  {
     position: relative;
-    background: url('../../images/content/header-1920.jpg') no-repeat center top fixed;
+    background: url('../../images/content/header-1920.jpg') no-repeat center top;
     background-size: cover;
     height: 860px;
 
     @media only screen and (max-width: 1200px) {
-        background: url('../../images/content/header-1366.jpg') no-repeat center top fixed;
+        background: url('../../images/content/header-1366.jpg') no-repeat center top;
         height: 768px;
+    }
+
+    @media only screen and (max-width: 768px) {
+        background: url('../../images/content/header-768.jpg') no-repeat center top;
+        height: 461px;
+    }
+
+    @media only screen and (max-width: 520px) {
+        background: url('../../images/content/header-320.jpg') no-repeat center top;
+        height: 237px;
     }
 
     .wrap {
