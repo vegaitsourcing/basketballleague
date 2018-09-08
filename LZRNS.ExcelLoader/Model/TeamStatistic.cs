@@ -17,6 +17,7 @@ namespace LZRNS.ExcelLoader
             teamScores = new List<TeamScore>();
         }
 
+        #region Properies
         public String TeamName
         {
             get { return teamName; }
@@ -26,5 +27,15 @@ namespace LZRNS.ExcelLoader
         {
             get { return teamScores; }
         }
+        #endregion Properies
+
+        #region Public Methods
+        public void AddTeamScore (TeamScore ts)
+        {
+            teamScores.Add(ts);
+        }
+        #endregion Public Methods
+
+
     }
 }
