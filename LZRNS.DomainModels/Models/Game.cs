@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LZRNS.DomainModels.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,7 +13,11 @@ namespace LZRNS.DomainModel.Models
         [ForeignKey("Season")]
         public Guid SeasonId { get; set; }
 
-        public Guid Round { get; set; }
+        [Required]
+        public virtual Round Round { get; set; }
+
+        [ForeignKey("Round")]
+        public Guid RoundId { get; set; }
 
         public DateTime DateTime { get; set; }
 
