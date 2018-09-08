@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LZRNS.DomainModel.Models
 {
-    public class League: AbstractModel
+    public class League : AbstractModel
     {
         [Required]
         public string Name { get; set; }
