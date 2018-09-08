@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -12,50 +15,74 @@ namespace LZRNS.ExcelLoader
         #region Private Fields
         private Excel.Application exApp;
         private Excel.Workbook xlWorkbook;
+        private Excel.Sheets sheets;
+
+        // key represent team name (I will change that later)
+        private Dictionary<string, TeamStatistic> teams;
 
         private MapperModel mapper;
-        private int currentRow;
-        private int maxPlayerCount = 12;
+        private int maxPlayerPerMatch = 12;
 
         private String defaultConfigPath = "TableMapper.config";
 
-        private bool indexerInitialized;
-        private bool checkMappingValidation = true;
-
+        
         #endregion Private Fields
 
         #region Constructors
         public ExcelLoader() {
-            this.indexerInitialized = false;
             this.exApp = new Excel.Application();
+            this.teams = new Dictionary<string, TeamStatistic>();
+            this.mapper = new MapperModel("../../TableMapper.config");
 
         }
         #endregion Constructors
 
         #region Public Methods
-        public void LoadFile (String filePath)
+        public void ProcessFile (String filePath, String teamName)
         {
             try
             {
-                xlWorkbook = exApp.Workbooks.Open(@"filePath");
+                int currentSheetNo = 0;
+                xlWorkbook = exApp.Workbooks.Open(filePath);
+                sheets = xlWorkbook.Sheets;
 
-                foreach(Excel.Worksheet sheet in xlWorkbook.Sheets)
+
+                //Only for first sheet we want to check validation for mapping fields configuration
+                foreach (Excel.Worksheet sheet in sheets)
                 {
-                    if (checkMappingValidation)
-                    {
-                        CheckMappingValidation(mapper, sheet);
-                        checkMappingValidation = false;
-                    }
-
-                    ProcessSheet(sheet);
+                    CheckMappingValidation(mapper, sheet);
+                    break;
                 }
-                
+
+                TeamStatistic teamStatistic = new TeamStatistic(teamName);
+            
+                foreach (Excel.Worksheet sheet in sheets)
+                {
+                    // for odd sheet we want to skip loading
+                    if (currentSheetNo % 2 == 0)
+                    {
+                        ProcessSheet(sheet, ref teamStatistic);
+                    }
+                    currentSheetNo++;
+                }
 
             }
-            catch (Exception)
+            finally
             {
+                xlWorkbook.Close();
+                Marshal.ReleaseComObject(sheets);
+                Marshal.ReleaseComObject(xlWorkbook);
+                
+                Marshal.ReleaseComObject(exApp);
+                sheets = null;
+                xlWorkbook = null;
+                exApp = null;
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
 
             }
+          
         }
         #endregion Public Methods
 
@@ -63,28 +90,125 @@ namespace LZRNS.ExcelLoader
 
         private void CheckMappingValidation (MapperModel mapper, Excel.Worksheet sheet)
         {
+            Console.WriteLine("CheckMappingValidation - STARTED");
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             Excel.Range exlRange = sheet.UsedRange;
             foreach (FieldItem item in mapper.Fields)
             {
-                string value = exlRange.Cells[item.ColumnIndex, item.RowIndex];
+                if (item.CellName.Equals("")) continue;
+              
+                object value =  exlRange.Cells[item.RowIndex, item.ColumnIndex].Value;
+                
 
-                if(value == null || !value.Equals(item.CellName))
+                if (value == null || !value.Equals(item.CellName))
                 {
                     throw new Exception();
                 }
             }
+            Console.WriteLine("CheckMappingValidation - ENDED, timeElapsed: {0}", stopwatch.Elapsed);
+            stopwatch.Stop();
         }
 
-        private void ProcessSheet(Excel.Worksheet sheet)
+        private void ProcessSheet(Excel.Worksheet sheet, ref TeamStatistic teamStatistic)
         {
+            Console.WriteLine("ProcessSheet: {0} - STARTED", sheet.Name);
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-           
+            //worksheet.Name;
+            Excel.Range exlRange = sheet.UsedRange;
 
 
+            TeamScore teamScore = new TeamScore();
+
+            IEnumerable<FieldItem> globalFields = mapper.Fields.FindAll(i => i.GlobalField == true);
+            
+            int currentRowNo = mapper.Fields.First().RowIndex;
+
+            PopulateModelField(teamScore, exlRange, globalFields, ++currentRowNo);
+
+
+            // When we start to load data for each player, we must take row number of headers and then increase it for 1
+            //currentRowNo = mapper.Fields.First().RowIndex;
+            IEnumerable<FieldItem> otherFields = mapper.Fields.FindAll(i => i.GlobalField == false);
+            int playerCount = CalculatePlayerCount(exlRange, currentRowNo, otherFields.First().ColumnIndex, maxPlayerPerMatch);
+
+            for (int i = 0; i < playerCount; i++)
+            {
+                PlayerScore pl = new PlayerScore();
+                PopulateModelField(pl, exlRange, otherFields, currentRowNo);
+                teamScore.AddPlayerScore(pl);
+                currentRowNo++;
+
+            }
+
+            Console.WriteLine("ProcessSheet: {0} - ENDED, timeElapsed: {1}", sheet.Name, stopwatch.Elapsed);
+            stopwatch.Stop();
 
         }
 
-       
+        public void PopulateModelField(Object modelObj, Excel.Range exlRange, IEnumerable<FieldItem> fields, int rowIndex = -1)
+        {
+            foreach(FieldItem fieldItem in fields)
+            {
+                PopulateModelValue(modelObj, exlRange, fieldItem, rowIndex);
+            }
+        }
+
+        public void PopulateModelValue(Object obj, Excel.Range exlRange, FieldItem fieldItem, int rowIndex = -1)
+        {
+            var objProperty = obj.GetType().GetProperty(fieldItem.PropertyName, BindingFlags.Public | BindingFlags.Instance);
+            //get the value of the property
+            if (objProperty == null)
+            {
+                // We should log error (currently I will just throw exception to be aware that model and mapping are not matched)
+                throw new Exception();
+            }
+            
+            // If we do not explcitly send row index or data should be directly read from cell, then it should be used directly from configuration
+            // Examlple: matchDate doesn not contain header
+            if (fieldItem.DirectCellData == true || rowIndex == -1) {
+                rowIndex = fieldItem.RowIndex;
+            }
+
+            Object value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
+            if(value == null)
+            {
+                Console.WriteLine("PopulateModelValue - PropertyName: {0}, Value: {1}", fieldItem.PropertyName, value);
+                return;
+            }
+
+            objProperty.SetValue(obj, fieldItem.GetValueConverted(value));
+
+        }
+
+        public Object GetCellValue(Excel.Range exlRange, int rowIndex, int columnIndex)
+        {
+            Object obj = exlRange.Cells[columnIndex][rowIndex].Value;
+            
+            return obj;
+        }
+
+        /* This method used to calculate number of rows that are populated for players statistic */
+        public int CalculatePlayerCount(Excel.Range exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
+        {
+            int playersCount = 0;
+            for (int i = 0; i < maxPlayerCount; i++)
+            {
+                if (GetCellValue(exlRange, currentRowNo + i, columnIndex) == null)
+                {
+                    break;
+                }
+
+                playersCount++;
+            }
+
+            return playersCount;
+            
+        }
+
 
         #endregion Private Methods
 

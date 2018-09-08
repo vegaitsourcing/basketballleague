@@ -11,8 +11,8 @@ namespace LZRNS.ExcelLoader
     class MapperModel
     {
         #region Private fields
+        // key represent PropertyName
         private List<FieldItem> fields;
-        private string configPath;
         #endregion Private fields
 
         public MapperModel()
@@ -23,7 +23,7 @@ namespace LZRNS.ExcelLoader
         public MapperModel(String path)
         {
             this.fields = new List<FieldItem>();
-            this.configPath = path;
+            InitializeFields(path);
         }
 
         #region Private Methods
@@ -47,16 +47,22 @@ namespace LZRNS.ExcelLoader
             }
         }
 
-        // this can be also dynamic !!!
+        // this can be done dynamic !!!
         private FieldItem PopulateField(XElement item)
         {
-            FieldItem fieldItem = new FieldItem();
+            
+            String cellName = item.Attribute("CellName").Value;
+            Type propertyType = Type.GetType(item.Attribute("Type").Value);
+            String propertyName = item.Attribute("PropertyName").Value;
+            int columnIndex =  int.Parse(item.Attribute("ColumnId").Value);
+            int rowIndex = int.Parse(item.Attribute("RowId").Value);
+            String format = (item.Attribute("Format") != null) ? item.Attribute("Format").Value: String.Empty;
+            bool global = (item.Attribute("GlobalField") != null) ? bool.Parse(item.Attribute("GlobalField").Value) : false;
+            bool directCellData = (item.Attribute("DirectCellData") != null) ? bool.Parse(item.Attribute("DirectCellData").Value) : false;
 
-            fieldItem.CellName = item.Attribute("CellName").Value;
-            fieldItem.PropertyType = Type.GetType(item.Attribute("Type").Value);
-            fieldItem.ColumnIndex =  int.Parse(item.Attribute("ColumnId").Value);
-            fieldItem.RowIndex = int.Parse(item.Attribute("RowId").Value);
-            fieldItem.Format = item.Attribute("Format").Value;
+            
+
+            FieldItem fieldItem = new FieldItem(cellName, propertyType, propertyName, columnIndex, rowIndex, format, global, directCellData);
 
             return fieldItem;
         }

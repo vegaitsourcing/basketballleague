@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,14 +10,65 @@ namespace LZRNS.ExcelLoader
 {
     class FieldItem
     {
-        public String CellName { get; set; }
-        public Type PropertyType { get; set; }
-        public String PropertyName { get; set; }
-        public int ColumnIndex { get; set; }
-        public int RowIndex { get; set; }
-        public String Format { get; set; }
-        
-        public FieldItem() { }
+        private String cellName;
+        private Type propertyType;
+        private String propertyName;
+        private int columnIndex;
+        private int rowIndex;
+        private String format;
+        private bool globalField;
+        private bool directCellData;
 
+        public FieldItem(String cellName, Type propType, String propName, int colIndex, int rowIndex, String format = "", bool globalField = false, bool directCellData = false)
+        {
+            this.cellName = cellName;
+            this.propertyType = propType;
+            this.propertyName = propName;
+            this.columnIndex = colIndex;
+            this.rowIndex = rowIndex;
+            this.format = format;
+            this.globalField = globalField;
+            this.directCellData = directCellData;
+    }
+
+
+        public String CellName { get { return this.cellName; } }
+        public Type PropertyType { get { return this.propertyType; } }
+        public String PropertyName { get { return this.propertyName; } }
+        public int ColumnIndex { get { return this.columnIndex; } }
+        public int RowIndex { get { return this.rowIndex; } }
+        public String Format { get { return this.format; } }
+        public bool GlobalField { get { return this.globalField; } }
+        public bool DirectCellData { get { return this.directCellData; } }
+
+        public dynamic GetValueConverted(Object rawValue)
+        {
+            try
+            {
+                //I am realy sorry for this hack.
+                if (propertyType == typeof(DateTime))
+                {
+                    if (rawValue is DateTime)
+                    {
+                        Console.WriteLine("GetValueConverted - PropertyName: {0}, Value: {1}", propertyName, rawValue);
+                        return (DateTime)rawValue;
+                    }
+
+                    long lv;
+                    if (long.TryParse(rawValue.ToString(), out lv)) {
+                        return new DateTime(lv);
+                    }
+                
+                    return DateTime.MinValue;
+                }
+                    Console.WriteLine("GetValueConverted - PropertyName: {0}, Value: {1}", propertyName, rawValue);
+                    return Convert.ChangeType(rawValue, propertyType);
+                }
+            catch (Exception ex)
+            {
+                Console.WriteLine("GetValueConverted - PropertyName: {0}, Value: {1}", propertyName, rawValue);
+            }
+            return null;
+        }
     }
 }
