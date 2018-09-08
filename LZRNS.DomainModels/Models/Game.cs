@@ -26,17 +26,19 @@ namespace LZRNS.DomainModel.Models
         [Required]
         [ForeignKey("TeamAId")]
         public virtual Team TeamA { get; set; }
-        
+
         public Guid TeamAId { get; set; }
 
         [Required]
         [ForeignKey("TeamBId")]
         public virtual Team TeamB { get; set; }
 
-        
+
         public Guid TeamBId { get; set; }
 
         public virtual List<Referee> Referees { get; set; }
+
+        public virtual List<StatsPerGame> StatsPerGame { get; set; }
 
         #region Points
 
@@ -475,5 +477,21 @@ namespace LZRNS.DomainModel.Models
         }
 
         #endregion
+
+        public Team ReturnTeam(Guid id)
+        {
+            if (TeamAId == id)
+            {
+                return TeamA;
+            }
+            else if (TeamBId == id)
+            {
+                return TeamB;
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 }
