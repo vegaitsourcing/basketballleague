@@ -598,8 +598,9 @@
 
     .stats-cards {
         .card {
-            padding: 30px 40px;
-            max-width: 250px;
+            padding: 30px 20px;
+            min-width: 225px;
+            max-width: 300px;
             margin-top: 25px;
             margin-left: auto;
             margin-right: auto;
@@ -618,7 +619,7 @@
 
             ol {
                 li {
-                    font-size: 16px;
+                    font-size: 14px;
                     font-weight: 500;
                     list-style-type: inherit;
                     list-style-position: inside;
