@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LZRNS.DomainModels.Models
 {
-    public class PlayerPerSeason
+    public class PlayerPerSeason : AbstractModel
     {
         public virtual Player Player { get; set; }
 

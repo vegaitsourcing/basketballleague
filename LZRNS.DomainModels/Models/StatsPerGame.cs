@@ -9,14 +9,18 @@ namespace LZRNS.DomainModels.Models
 {
     public class StatsPerGame
     {
-        Game Game { get; }
+        public virtual Game Game { get; }
 
-        Team Team { get; }
+        public Guid GameId { get; }
+
+        public virtual Team Team { get; }
+
+        public Guid TeamId { get; }
 
         #region Points
 
         #region Pts
-        
+
         public int Points
         {
             get
@@ -35,7 +39,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).TwoPtA);
             }
-            set { }
         }
 
         public int TwoPtM
@@ -44,7 +47,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).TwoPtMade);
             }
-            set { }
         }
 
         public double TwoPtPercA
@@ -65,7 +67,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).ThreePtA);
             }
-            set { }
         }
 
         public int ThreePtM
@@ -74,7 +75,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).ThreePtMade);
             }
-            set { }
         }
 
         public double ThreePtPerc
@@ -95,7 +95,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).FtA);
             }
-            set { }
         }
 
         public int FtM
@@ -104,7 +103,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).FtMade);
             }
-            set { }
         }
 
         public double FtPerc
@@ -155,7 +153,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Reb);
             }
-            set { }
         }
 
         public int OReb
@@ -164,7 +161,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).OReb);
             }
-            set { }
         }
 
         public int DReb
@@ -173,7 +169,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).DReb);
             }
-            set { }
         }
         
         #endregion
@@ -186,7 +181,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Ast);
             }
-            set { }
         }
 
         #endregion
@@ -199,7 +193,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).To);
             }
-            set { }
         }
 
         #endregion
@@ -212,7 +205,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Stl);
             }
-            set { }
         }
 
         #endregion
@@ -225,7 +217,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Blk);
             }
-            set { }
         }
 
         #endregion
@@ -238,7 +229,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).MinutesPlayed);
             }
-            set { }
         }
 
         #endregion
@@ -251,7 +241,6 @@ namespace LZRNS.DomainModels.Models
             {
                 return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Eff);
             }
-            set { }
         }
 
         #endregion

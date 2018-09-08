@@ -14,6 +14,10 @@ namespace LZRNS.DomainModels.Models
         [Required]
         public string RoundName { get; set; }
 
-        public virtual List<Game> Games { get; set; }
+        public virtual ICollection<Game> Games { get; set; }
+
+        public virtual LeagueSeason LeagueSeason { get; set; }
+
+        public Guid LeagueSeasonId { get; set; }
     }
 }

@@ -64,23 +64,23 @@ namespace LZRNS.DomainModels.Migrations
             var player2 = new Player { Name = "Player2Name", LastName = "Player2LastName", Height = 200, Weight = 96, YearOfBirth = 1991 };
             var player3 = new Player { Name = "Player3Name", MiddleName = "Mn", LastName = "Player3LastName", Height = 186, Weight = 88, YearOfBirth = 1989 };
             var team1 = SeedHelper.GenerateTeam();
-            team1.Players.AddRange(new List<Player> { player1, player2, player3 });
-            team1.Season = season1718;
+            team1.Players.ToList().AddRange(new List<Player> { player1, player2, player3 });
+            team1.LeagueSeason.Season = season1718;
             var t2p1 = SeedHelper.GeneratePlayer();
             var t2p2 = SeedHelper.GeneratePlayer();
             var t2p3 = SeedHelper.GeneratePlayer();
             var t2p4 = SeedHelper.GeneratePlayer();
             var t2 = SeedHelper.GenerateTeam();
-            t2.Players.AddRange(new List<Player> { t2p1, t2p2, t2p3, t2p4 });
-            t2.Season = season1718;
+            t2.Players.ToList().AddRange(new List<Player> { t2p1, t2p2, t2p3, t2p4 });
+            t2.LeagueSeason.Season = season1718;
             var t3p1 = SeedHelper.GeneratePlayer();
             var t3p2 = SeedHelper.GeneratePlayer();
             var t3p3 = SeedHelper.GeneratePlayer();
             var t3 = SeedHelper.GenerateTeam();
-            t3.Players.AddRange(new List<Player> { t3p1, t3p2, t3p3 });
-            t3.Season = season1718;
+            t3.Players.ToList().AddRange(new List<Player> { t3p1, t3p2, t3p3 });
+            t3.LeagueSeason.Season = season1718;
 
-            season1718.Teams.AddRange(new List<Team> { team1, t2, t3 });
+            season1718.Teams.ToList().AddRange(new List<Team> { team1, t2, t3 });
 
             context.Seasons.Add(season1718);
             context.Teams.AddRange(new List<Team> { team1, t2, t3 });
