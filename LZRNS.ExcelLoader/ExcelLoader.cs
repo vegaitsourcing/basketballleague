@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,16 +7,14 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace LZRNS.ExcelLoader
 {
     class ExcelLoader
     {
         #region Private Fields
-        private Excel.Application exApp;
-        private Excel.Workbook xlWorkbook;
-        private Excel.Sheets sheets;
+        private XLWorkbook exApp;
+        private IXLWorksheets sheets;
 
         // key represent team name (I will change that later)
         private Dictionary<string, TeamStatistic> teams;
@@ -27,7 +26,6 @@ namespace LZRNS.ExcelLoader
 
         #region Constructors
         public ExcelLoader() {
-            this.exApp = new Excel.Application();
             this.teams = new Dictionary<string, TeamStatistic>();
             this.mapper = new MapperModel("../../TableMapper.config");
 
@@ -40,13 +38,14 @@ namespace LZRNS.ExcelLoader
             try
             {
                 int currentSheetNo = 0;
-                exApp = new Excel.Application();
-                xlWorkbook = exApp.Workbooks.Open(filePath);
-                
-                sheets = xlWorkbook.Sheets;
-                
+                filePath = @"F:\2.Documents\stats-teams-airdjevrek.xlsx";
+                exApp = new XLWorkbook(filePath);
+
+
+                sheets = exApp.Worksheets;
+
                 //Only for first sheet we want to check validation for mapping fields configuration
-                foreach (Excel.Worksheet sheet in sheets)
+                foreach (IXLWorksheet sheet in sheets)
                 {
                     CheckMappingValidation(mapper, sheet);
                     break;
@@ -54,7 +53,7 @@ namespace LZRNS.ExcelLoader
 
                 TeamStatistic teamStatistic = new TeamStatistic(teamName);
             
-                foreach (Excel.Worksheet sheet in sheets)
+                foreach (IXLWorksheet sheet in sheets)
                 {
                     // for odd sheet we want to skip loading
                     if (currentSheetNo % 2 == 0)
@@ -67,13 +66,9 @@ namespace LZRNS.ExcelLoader
             }
             finally
             {
-                xlWorkbook.Close();
                 Marshal.ReleaseComObject(sheets);
-                Marshal.ReleaseComObject(xlWorkbook);
-                
                 Marshal.ReleaseComObject(exApp);
                 sheets = null;
-                xlWorkbook = null;
                 exApp = null;
 
                 GC.Collect();
@@ -87,18 +82,27 @@ namespace LZRNS.ExcelLoader
 
         #region Private Methods
 
-        private void CheckMappingValidation (MapperModel mapper, Excel.Worksheet sheet)
+        private void CheckMappingValidation (MapperModel mapper, IXLWorksheet sheet)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            Excel.Range exlRange = sheet.UsedRange;
+            IXLRows rows = sheet.RowsUsed();
+            int currentRowIndex = -1;
+            IXLRow row = null;
+
             foreach (FieldItem item in mapper.Fields)
             {
                 if (item.CellName.Equals("")) continue;
-              
-                object value =  exlRange.Cells[item.RowIndex, item.ColumnIndex].Value;
-                
+
+                if (currentRowIndex != item.RowIndex )
+                {
+                    row = rows.ElementAt(item.RowIndex);
+                    currentRowIndex = item.RowIndex;
+                }
+               
+                object value = row.Cell(item.ColumnIndex).Value;
+
                 if (value == null || !value.Equals(item.CellName))
                 {
 
@@ -111,16 +115,14 @@ namespace LZRNS.ExcelLoader
 
         }
 
-        private void ProcessSheet(Excel.Worksheet sheet, ref TeamStatistic teamStatistic)
+        private void ProcessSheet(IXLWorksheet sheet, ref TeamStatistic teamStatistic)
         {
             Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-
-            //worksheet.Name;
-            Excel.Range exlRange = sheet.UsedRange;
-
+            
+            IXLRows rows = sheet.RowsUsed();
 
             TeamScore teamScore = new TeamScore();
             teamScore.RoundName = sheet.Name;
@@ -129,20 +131,21 @@ namespace LZRNS.ExcelLoader
             
             int currentRowNo = mapper.Fields.First().RowIndex;
 
-            PopulateModelField(teamScore, exlRange, globalFields, ++currentRowNo);
+            PopulateModelField(teamScore, rows, globalFields, ++currentRowNo);
 
 
             // When we start to load data for each player, we must take row number of headers and then increase it for 1
-            //currentRowNo = mapper.Fields.First().RowIndex;
+            currentRowNo = mapper.Fields.First().RowIndex;
             IEnumerable<FieldItem> otherFields = mapper.Fields.FindAll(i => i.GlobalField == false);
-            int playerCount = CalculatePlayerCount(exlRange, currentRowNo, otherFields.First().ColumnIndex, maxPlayerPerMatch);
-
+            int playerCount = CalculatePlayerCount(rows, currentRowNo, otherFields.First().ColumnIndex, maxPlayerPerMatch);
+           
             for (int i = 0; i < playerCount; i++)
             {
-                PlayerScore pl = new PlayerScore();
-                PopulateModelField(pl, exlRange, otherFields, currentRowNo);
-                teamScore.AddPlayerScore(pl);
                 currentRowNo++;
+                PlayerScore pl = new PlayerScore();
+                PopulateModelField(pl, rows, otherFields, currentRowNo);
+                teamScore.AddPlayerScore(pl);
+                
 
             }
 
@@ -152,7 +155,7 @@ namespace LZRNS.ExcelLoader
 
         }
 
-        public void PopulateModelField(Object modelObj, Excel.Range exlRange, IEnumerable<FieldItem> fields, int rowIndex = -1)
+        public void PopulateModelField(Object modelObj, IXLRows exlRange, IEnumerable<FieldItem> fields, int rowIndex = -1)
         {
             foreach(FieldItem fieldItem in fields)
             {
@@ -160,7 +163,7 @@ namespace LZRNS.ExcelLoader
             }
         }
 
-        public void PopulateModelValue(Object obj, Excel.Range exlRange, FieldItem fieldItem, int rowIndex = -1)
+        public void PopulateModelValue(Object obj, IXLRows exlRange, FieldItem fieldItem, int rowIndex = -1)
         {
             var objProperty = obj.GetType().GetProperty(fieldItem.PropertyName, BindingFlags.Public | BindingFlags.Instance);
             //get the value of the property
@@ -188,15 +191,16 @@ namespace LZRNS.ExcelLoader
 
         }
 
-        public Object GetCellValue(Excel.Range exlRange, int rowIndex, int columnIndex)
+        public Object GetCellValue(IXLRows rows, int rowIndex, int columnIndex)
         {
-            Object obj = exlRange.Cells[columnIndex][rowIndex].Value;
-            
+            IXLRow row = rows.ElementAt(rowIndex);
+            Object obj = row.Cell(columnIndex).Value;
+
             return obj;
         }
 
         /* This method used to calculate number of rows that are populated for players statistic */
-        public int CalculatePlayerCount(Excel.Range exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
+        public int CalculatePlayerCount(IXLRows exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
         {
             int playersCount = 0;
             for (int i = 0; i < maxPlayerCount; i++)
