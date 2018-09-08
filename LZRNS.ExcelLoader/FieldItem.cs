@@ -50,23 +50,24 @@ namespace LZRNS.ExcelLoader
                 {
                     if (rawValue is DateTime)
                     {
-                        Console.WriteLine("GetValueConverted - PropertyName: {0}, Value: {1}", propertyName, rawValue);
                         return (DateTime)rawValue;
                     }
 
                     long lv;
                     if (long.TryParse(rawValue.ToString(), out lv)) {
+                        Loger.log.Warn("FieldItem - GetValueConverted: datetime rawValue:" + rawValue.ToString());
                         return new DateTime(lv);
                     }
-                
-                    return DateTime.MinValue;
+
+                    Loger.log.Error("FieldItem - GetValueConverted: datetime in not formated rawValue:" + rawValue.ToString());
+                   return DateTime.MinValue;
                 }
-                    Console.WriteLine("GetValueConverted - PropertyName: {0}, Value: {1}", propertyName, rawValue);
                     return Convert.ChangeType(rawValue, propertyType);
                 }
             catch (Exception ex)
             {
-                Console.WriteLine("GetValueConverted - PropertyName: {0}, Value: {1}", propertyName, rawValue);
+                Loger.log.Error("FieldItem - GetValueConverted: exceptionMessage: " + ex.Message + "\n for rawValue: " + rawValue);
+                
             }
             return null;
         }
