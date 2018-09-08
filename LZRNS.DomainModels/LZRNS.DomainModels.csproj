@@ -55,7 +55,9 @@
     <Compile Include="Models\League.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Referee.cs" />
+	<Compile Include="Models\Round.cs" />
     <Compile Include="Models\Season.cs" />
+    <Compile Include="Models\Stats.cs" />
     <Compile Include="Models\Team.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
