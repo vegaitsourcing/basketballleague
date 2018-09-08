@@ -36,12 +36,6 @@
 			line-height: 1.5;
 		}
 	}
-	@include media-breakpoint-only(md) {
-		.nav-open & {
-			left: auto;
-			right: -608px;
-		}
-	}
 	@include media-breakpoint-down(sm) {
 		padding: 30px;
 		max-height: calc(100vh - 180px);
