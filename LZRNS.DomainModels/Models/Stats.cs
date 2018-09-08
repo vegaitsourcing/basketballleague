@@ -11,16 +11,18 @@ namespace LZRNS.DomainModels.Models
 {
     public class Stats : AbstractModel
     {
-        [ForeignKey("Game")]
+        
         public Guid GameId { get; set; }
 
         [Required]
+        [ForeignKey("GameId")]
         public virtual Game Game { get; set; }
 
-        [ForeignKey("Player")]
+
         public Guid PlayerId { get; set; }
 
         [Required]
+        [ForeignKey("PlayerId")]
         public virtual Player Player { get; set; }
 
         [Required]

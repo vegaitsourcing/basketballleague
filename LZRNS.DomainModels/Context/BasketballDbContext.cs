@@ -1,4 +1,5 @@
 ﻿using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Migrations;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,9 +9,18 @@ namespace LZRNS.DomainModel.Context
 {
     public class BasketballDbContext : DbContext
     {
+        public BasketballDbContext(string connString) : base(connString)
+        {
+            Database.SetInitializer<BasketballDbContext>(new DropCreateDatabaseAlways<BasketballDbContext>());
+            Database.Initialize(false);
+        }
+
         public BasketballDbContext()
         {
+            Database.SetInitializer<BasketballDbContext>(new DropCreateDatabaseAlways<BasketballDbContext>());
+            Database.Initialize(false);
         }
+
         public DbSet<Game> Games { get; set; }
         public DbSet<League> Leagues { get; set; }
         public DbSet<Player> Players { get; set; }
@@ -18,10 +28,14 @@ namespace LZRNS.DomainModel.Context
         public DbSet<Season> Seasons { get; set; }
         public DbSet<Team> Teams { get; set; }
 
-        protected override void OnModelCreating(DbModelBuilder builder)
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-           
+            modelBuilder.Entity<Game>().HasRequired(x => x.TeamA).WithMany()
+                 .HasForeignKey(c => c.TeamAId).WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Game>().HasRequired(x => x.TeamB).WithMany()
+                .HasForeignKey(c => c.TeamBId).WillCascadeOnDelete(false);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
