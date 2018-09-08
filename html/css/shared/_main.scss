@@ -106,8 +106,49 @@
 }
 
 .banner {
-    background: $grey-dark;
-    padding: 100px 0;
+	background: url('../../images/content/header-mini.jpg') no-repeat center top;
+	background-size: cover;
+	height: 400px;
+
+	.banner-title {
+		margin-left: 150px;
+		margin-top: 125px;
+
+		@media only screen and (max-width: 1000px) {
+			margin-left: 50px;
+
+		}
+
+		@media only screen and (max-width: 768px) {
+			margin-left: 30px;
+		}
+
+		@media only screen and (max-width: 576px) {
+			margin-left: 25px;
+		}
+	}
+
+    h2 {
+        text-transform: uppercase;
+        color: $white;
+        font-weight: 800;
+		font-size: 60px;
+		line-height: 70px;
+
+        max-width: 400px;
+
+        @media only screen and (max-width: 768px) {
+            font-size: 60px;
+        }
+
+        @media only screen and (max-width: 576px) {
+            font-size: 40px;
+            max-width: 320px;
+        }
+    }
+    span {
+        color: $orange;
+    }
 }
 .schedule {
 	position: relative;
@@ -172,6 +213,11 @@
 		position: absolute;
 		bottom: 0;
 		right: 30px;
+
+		@media only screen and (max-width: 992px) {
+			bottom: 4px;
+		}
+
 		.number {
 			font-size: 60px;
 			line-height: 1.1;
@@ -247,7 +293,7 @@
 			}
 		}
 		.round {
-			bottom: 15px;
+			bottom: 30px;
 		}
 		.items {
 			.time {
@@ -299,6 +345,15 @@
 		position: absolute;
 		bottom: 0;
 		right: 30px;
+
+		@media only screen and (max-width: 992px) {
+			bottom: 9px;
+		}
+
+		@media only screen and (max-width: 768px) {
+			bottom: 30px;
+		}
+
 		.number {
 			font-size: 60px;
 			line-height: 1.1;
@@ -462,7 +517,7 @@
 			font-weight: 800;
 		}
 	}
-	
+
 	@media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.title {
 			left: 20px;
