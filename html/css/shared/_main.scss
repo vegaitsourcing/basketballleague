@@ -41,12 +41,12 @@
 
 .banner-home  {
     position: relative;
-    background: url('../../images/content/header-1920.jpg') no-repeat center center fixed;
+    background: url('../../images/content/header-1920.jpg') no-repeat center top fixed;
     background-size: cover;
     height: 860px;
 
-    @media only screen and (max-width: 1366px) {
-        background: url('../../images/content/header-1366.jpg') no-repeat center center fixed;
+    @media only screen and (max-width: 1200px) {
+        background: url('../../images/content/header-1366.jpg') no-repeat center top fixed;
         height: 768px;
     }
 
@@ -58,8 +58,7 @@
     }
 
     .banner-title {
-        display: block;
-        margin-top: 150px;
+        margin-top: 20%;
 
         @media only screen and (max-width: 1366px) {
             margin-left: 30px;
