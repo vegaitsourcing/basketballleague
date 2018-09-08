@@ -28,8 +28,8 @@ namespace LZRNS.DomainModel.Models
         [Range(1900, 2100)]
         public int YearOfBirth { get; set; }
 
-        public virtual List<Guid> TeamGuids { get; set; }
+        public virtual ICollection<Stats> Stats { get; set; }
 
-        public virtual List<Stats> Stats { get; set; }
+        public virtual ICollection<PlayerPerSeason> PlayersPerSeason { get; set; }
     }
 }

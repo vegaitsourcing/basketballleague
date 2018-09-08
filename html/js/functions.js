@@ -106,6 +106,26 @@ module.exports = {
 		});
 	},
 
+	initCarousel: function() {
+		$('.news-slider').slick({
+			infinite: true,
+			dots: true,
+			arrows: false,
+			slidesToShow: 2,
+			slidesToScroll: 1,
+			speed: 1200,
+			responsive: [
+				{
+					breakpoint: 767,
+					settings: {
+						slidesToShow: 1,
+						slidesToScroll: 1
+					}
+				}
+			]
+		});
+	},
+
 	// equal heights
 	equalHeights: function(arrayItems, count) {
 		if (arrayItems !== undefined && arrayItems.length > 0) {
