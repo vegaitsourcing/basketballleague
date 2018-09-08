@@ -32,6 +32,6 @@ namespace LZRNS.DomainModel.Models
 
         public virtual ICollection<Stats> Stats { get; set; }
 
-        public virtual ICollection<PlayerPerSeason> PlayersPerSeason { get; set; }
+        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
     }
 }
