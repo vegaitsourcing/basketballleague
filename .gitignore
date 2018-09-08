@@ -75,3 +75,4 @@ dist
 
 #html
 html/*.html
+/LZRNS.Web/Web.config

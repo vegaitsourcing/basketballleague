@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LZRNS.DomainModels.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LZRNS.DomainModel.Models
@@ -10,6 +11,6 @@ namespace LZRNS.DomainModel.Models
 
         public virtual List<Team> Teams { get; set; }
 
-        public virtual List<Game> Games {get;set;}
+        public virtual List<Game> Games { get; set; }
     }
 }
