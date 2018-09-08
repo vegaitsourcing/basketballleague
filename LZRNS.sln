@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27703.2047
+VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZRNS.Web", "LZRNS.Web\LZRNS.Web.csproj", "{DC8482B6-CAE1-4CDE-9E59-965A4ABC7F54}"
 EndProject
@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ReadMe.txt = ReadMe.txt
 		Versions.txt = Versions.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZRNS.ExcelLoader", "LZRNS.ExcelLoader\LZRNS.ExcelLoader.csproj", "{938E612A-D564-4251-B456-AD5CCBF63420}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZRNS.DomainModels", "LZRNS.DomainModels\LZRNS.DomainModels.csproj", "{584350E5-F1DB-4334-B57A-7E1FA59A6A25}"
 EndProject
@@ -43,6 +45,10 @@ Global
 		{3BE753D9-F1A1-427F-BA6E-84C9C55A18D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BE753D9-F1A1-427F-BA6E-84C9C55A18D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BE753D9-F1A1-427F-BA6E-84C9C55A18D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{938E612A-D564-4251-B456-AD5CCBF63420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{938E612A-D564-4251-B456-AD5CCBF63420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{938E612A-D564-4251-B456-AD5CCBF63420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{938E612A-D564-4251-B456-AD5CCBF63420}.Release|Any CPU.Build.0 = Release|Any CPU
 		{584350E5-F1DB-4334-B57A-7E1FA59A6A25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{584350E5-F1DB-4334-B57A-7E1FA59A6A25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{584350E5-F1DB-4334-B57A-7E1FA59A6A25}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -56,6 +62,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {BA2977E3-B13B-41F3-BA6E-D5275F542237}
+		SolutionGuid = {4AC09401-D54A-40B1-A167-478577CFC69A}
 	EndGlobalSection
 EndGlobal

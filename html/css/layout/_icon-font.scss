@@ -45,6 +45,9 @@
 	@if $filename == ico-tw {
 		$char: '\E007';
 	}
+	@if $filename == ico-x {
+		$char: '\E008';
+	}
 
 	@return $char;
 }
@@ -80,5 +83,8 @@
 }
 .font-ico-tw {
 	@include font(ico-tw);
+}
+.font-ico-x {
+	@include font(ico-x);
 }
 
