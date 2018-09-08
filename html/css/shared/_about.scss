@@ -1,4 +1,4 @@
-//----------  contact
+//----------  about
 //------------------------------------------------------------------------------
 .contact-form {
     background: $orange;
@@ -19,7 +19,7 @@
         left: 20px;
         top: -120px;
 
-        h1 {
+        h2 {
             font-size: 178px;
             text-transform: uppercase;
             color: #fcd79f;
@@ -29,7 +29,7 @@
     }
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.contact-title {
-            h1 {
+            h2 {
                 font-size: 150px;
                 left: 5%;
             }
@@ -38,7 +38,7 @@
 
     @include media-breakpoint-down(md) {
         .contact-title {
-            h1 {
+            h2 {
                 font-size: 100px;
                 left: 3%;
             }
@@ -47,7 +47,7 @@
 
     @include media-breakpoint-down(sm) {
         .contact-title {
-            h1 {
+            h2 {
                 font-size: 46px;
                 left: 12%;
             }
@@ -56,7 +56,7 @@
 
     @media only screen and (max-width: 576px) {
         .contact-title {
-            h1 {
+            h2 {
                 left: 15px;
             }
         }

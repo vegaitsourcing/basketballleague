@@ -1,0 +1,46 @@
+{> "partials/shared/head" /}
+
+<main class="main" data-template-name="@page.Name">
+    <div class="banner">
+        <div class="wrap">
+            <div class="banner-title">
+                <h2>Liga za <span>rekreativce</span> Novi Sad</h2>
+        </div>
+        </div>
+    </div>
+	<section class="contact-form">
+        <div class="wrap">
+            <div class="contact-title">
+                <h2>Kontakt</h2>
+            </div>
+            <form action="#">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="form_name" name="name" placeholder="Ime">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="email" class="form-control" id="form_email" name="email" placeholder="E-mail">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <textarea id="form_message" class="form-control" name="message" placeholder="Poruka" rows="6"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <input type="submit" class="form-control" value="Pošalji">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+{> "partials/shared/footer" /}
