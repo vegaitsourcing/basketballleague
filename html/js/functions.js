@@ -92,6 +92,20 @@ module.exports = {
 		}
 	},
 
+	//table responsive
+	tableResponsive: function () {
+		$('.table').each(function() {
+			var $table = $(this);
+			if ($table.length) {
+				$table.wrap('<div class="table-responsive"></div>');
+				if($table[0].scrollWidth > $table.parent().innerWidth()) {
+					$table.parent().append('<div class="swipe-text">Swipe table for more</div>');
+				}
+			$('.rte-content').parents('.module-canvas').addClass('no-padding');
+		   }
+		});
+	},
+
 	// equal heights
 	equalHeights: function(arrayItems, count) {
 		if (arrayItems !== undefined && arrayItems.length > 0) {

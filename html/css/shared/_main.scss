@@ -340,6 +340,30 @@
 			opacity: 0.6;
 		}
 	}
+	@include media-breakpoint-down(md) {
+		.title {
+			h2 {
+				font-size: 100px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		.title {
+			left: 20px;
+			h2 {
+				font-size: 46px;
+			}
+		}
+	}
+}
+.table {
+	@include media-breakpoint-down(md) {
+		overflow-x: scroll;
+	}
+}
+.table-responsive {
+	overflow: auto;
+	margin-bottom: 20px;
 }
 
 .top-stats {
