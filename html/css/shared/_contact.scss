@@ -7,7 +7,7 @@
 
 #contact-form {
     background: $orange;
-    padding: 150px 0;
+    padding: 200px 0 120px;
 
     form {
         max-width: 960px;
@@ -15,12 +15,42 @@
     }
 
     .contact-title {
-        font-size: 100px;
+        font-size: 178px;
         text-transform: uppercase;
         color: #fcd79f;
+        margin-bottom: 30px;
+        line-height: 1;
+        font-weight: 800;
         position: absolute;
         left: 10%;
         top: 30%;
+    }
+    
+    @media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.contact-title {
+            font-size: 150px;
+            left: 5%;
+		}
+    }
+
+    @include media-breakpoint-down(md) {
+        .contact-title {
+            font-size: 100px;
+            left: 3%;
+		}
+    }
+
+    @include media-breakpoint-down(sm) {
+        .contact-title {
+            font-size: 46px;
+            left: 12%;
+        }
+    }
+
+    @media only screen and (max-width: 576px) {
+        .contact-title {
+            left: 15px;
+        }
     }
 
     .form-group {
