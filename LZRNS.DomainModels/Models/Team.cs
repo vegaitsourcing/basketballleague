@@ -20,9 +20,10 @@ namespace LZRNS.DomainModel.Models
 
         public string Coach { get; set; }
 
+        [NotMapped]
         public virtual ICollection<StatsPerGame> StatsPerGame { get; set; }
 
-        public virtual ICollection<PlayerPerSeason> PlayersPerSeason { get; set; }
+        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 
         public virtual ICollection<Game> Games { get; set; }
 
@@ -60,7 +61,6 @@ namespace LZRNS.DomainModel.Models
             {
                 return StatsPerGame.Sum(spg => spg.TwoPtM);
             }
-            set { }
         }
 
         public double TwoPtPerc
