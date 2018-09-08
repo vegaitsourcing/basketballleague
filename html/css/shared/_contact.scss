@@ -1,0 +1,30 @@
+//----------  contact
+//------------------------------------------------------------------------------
+::placeholder {
+    color: white;
+    opacity: 1;
+}
+
+#contact-form {
+    background: $orange;
+    padding: 150px 0;
+
+    form {
+        max-width: 960px;
+        margin: 0 auto;
+    }
+
+    .contact-title {
+        font-size: 100px;
+        text-transform: uppercase;
+        color: #fcd79f;
+        position: absolute;
+        left: 10%;
+        top: 30%;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+}
