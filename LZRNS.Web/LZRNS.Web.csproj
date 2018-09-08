@@ -401,6 +401,16 @@
     <Content Include="config\404handlers.config" />
     <Content Include="Views\Home.cshtml" />
     <Content Include="Views\Table.cshtml" />
+    <Content Include="Views\LeagueManagment.cshtml" />
+    <Content Include="Views\MatchManagment.cshtml" />
+    <Content Include="Views\PlayerManagment.cshtml" />
+    <Content Include="Views\Players.cshtml" />
+    <Content Include="Views\Results.cshtml" />
+    <Content Include="Views\Schedule.cshtml" />
+    <Content Include="Views\SeasonManagment.cshtml" />
+    <Content Include="Views\Stats.cshtml" />
+    <Content Include="Views\TeamManagment.cshtml" />
+    <Content Include="Views\Teams.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
