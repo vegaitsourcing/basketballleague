@@ -280,6 +280,7 @@
     <Compile Include="DocumentTypes\Nodes\SettingsModel.cs" />
     <Compile Include="DocumentTypes\Pages\Error404Model.cs" />
     <Compile Include="DocumentTypes\Pages\HomeModel.cs" />
+    <Compile Include="DocumentTypes\Pages\LeagueManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\SitemapModel.cs" />
     <Compile Include="DocumentTypes\Pages\TableModel.cs" />
     <Compile Include="Extensions\MultiUrlsPickerExtensions.cs" />

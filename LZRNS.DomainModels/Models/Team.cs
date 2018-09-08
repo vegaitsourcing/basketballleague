@@ -10,15 +10,15 @@ namespace LZRNS.DomainModel.Models
     {
         public string TeamName { get; set; }
 
-        [ForeignKey("Season")]
         public Guid SeasonId { get; set; }
 
         [Required]
+        [ForeignKey("SeasonId")]
         public virtual Season Season { get; set; }
+
 
         public virtual Team PreviousTeamRef { get; set; }
 
-        [ForeignKey("PreviousTeamRef")]
         public Guid PreviousTeamGuid { get; set; }
 
         public virtual List<Player> Players { get; set; }

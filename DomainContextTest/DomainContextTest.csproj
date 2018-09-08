@@ -4,15 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{584350E5-F1DB-4334-B57A-7E1FA59A6A25}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LZRNS.DomainModels</RootNamespace>
-    <AssemblyName>LZRNS.DomainModels</AssemblyName>
+    <ProjectGuid>{59B0F766-C6BE-4AEF-9817-295222C4D871}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DomainContextTest</RootNamespace>
+    <AssemblyName>DomainContextTest</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +23,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -47,23 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
-    <Compile Include="Context\BasketballDbContext.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AbstractModel.cs" />
-    <Compile Include="Models\Game.cs" />
-    <Compile Include="Models\League.cs" />
-    <Compile Include="Models\Player.cs" />
-    <Compile Include="Models\Referee.cs" />
-	<Compile Include="Models\Round.cs" />
-    <Compile Include="Models\Season.cs" />
-    <Compile Include="Models\Stats.cs" />
-    <Compile Include="Models\Team.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LZRNS.DomainModels\LZRNS.DomainModels.csproj">
+      <Project>{584350e5-f1db-4334-b57a-7e1fa59a6a25}</Project>
+      <Name>LZRNS.DomainModels</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

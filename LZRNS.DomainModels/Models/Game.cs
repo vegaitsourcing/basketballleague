@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LZRNS.DomainModels.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -12,20 +13,26 @@ namespace LZRNS.DomainModel.Models
         [ForeignKey("Season")]
         public Guid SeasonId { get; set; }
 
-        public Guid Round { get; set; }
+        [Required]
+        [ForeignKey("RoundId")]
+        public virtual Round Round { get; set; }
+
+
+        public Guid RoundId { get; set; }
 
         public DateTime DateTime { get; set; }
 
         [Required]
+        [ForeignKey("TeamAId")]
         public virtual Team TeamA { get; set; }
-
-        [ForeignKey("TeamA")]
+        
         public Guid TeamAId { get; set; }
 
         [Required]
+        [ForeignKey("TeamBId")]
         public virtual Team TeamB { get; set; }
 
-        [ForeignKey("TeamB")]
+        
         public Guid TeamBId { get; set; }
 
         public virtual List<Referee> Referees { get; set; }
