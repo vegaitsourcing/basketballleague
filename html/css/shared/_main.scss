@@ -548,7 +548,7 @@
 }
 
 .top-stats {
-    padding: 150px 0;
+    padding: 180px 0 150px;
     background-color: $orange;
     position: relative;
 
@@ -558,12 +558,12 @@
 
     .title {
         position: absolute;
-		left: 20px;
+		left: -80px;
 		top: -120px;
 		h2 {
 			font-size: 178px;
 			text-transform: uppercase;
-			color: #fcd79f;
+			color: #f7bc6d;
 			margin-bottom: 0;
 			line-height: 1;
             font-weight: 800;
@@ -598,27 +598,39 @@
 
     .stats-cards {
         .card {
-            padding: 30px 40px;
-            max-width: 250px;
+			position: relative;
+            padding: 30px 20px;
+            min-width: 225px;
+            max-width: 300px;
             margin-top: 25px;
             margin-left: auto;
             margin-right: auto;
-            background-color: $white;
+            background-color: rgba($white, 0.7);
             border-top: 12px solid #303030;
             border-bottom: 6px solid #303030;
             z-index: 2;
-
+			&::before {
+				content: '';
+				display: block;
+				position: absolute;
+				width: 100%;
+				height: 6px;
+				background-color: $grey-light;
+				left: 0;
+				top: 0;
+			}
             .card-title {
                 h4 {
                     text-transform: uppercase;
                     font-size: 20px;
                     color: $orange;
+					margin-bottom: 20px;
                 }
             }
 
             ol {
                 li {
-                    font-size: 16px;
+                    font-size: 14px;
                     font-weight: 500;
                     list-style-type: inherit;
                     list-style-position: inside;
