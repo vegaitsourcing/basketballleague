@@ -17,15 +17,16 @@ namespace LZRNS.DomainModel.Models
         public DateTime DateTime { get; set; }
 
         [Required]
+        [ForeignKey("TeamAId")]
         public virtual Team TeamA { get; set; }
-
-        [ForeignKey("TeamA")]
+        
         public Guid TeamAId { get; set; }
 
         [Required]
+        [ForeignKey("TeamBId")]
         public virtual Team TeamB { get; set; }
 
-        [ForeignKey("TeamB")]
+        
         public Guid TeamBId { get; set; }
 
         public virtual List<Referee> Referees { get; set; }
