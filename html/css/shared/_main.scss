@@ -41,22 +41,22 @@
 
 .banner-home  {
     position: relative;
-    background: url('../../images/content/header-1920.jpg') no-repeat center top;
+    background: url('../../images/content/baner1920.jpg') no-repeat center top;
     background-size: cover;
     height: 860px;
 
     @media only screen and (max-width: 1200px) {
-        background: url('../../images/content/header-1366.jpg') no-repeat center top;
+        background: url('../../images/content/baner1366.jpg') no-repeat center top;
         height: 768px;
     }
 
     @media only screen and (max-width: 768px) {
-        background: url('../../images/content/header-768.jpg') no-repeat center top;
+        background: url('../../images/content/baner768.jpg') no-repeat center top;
         height: 461px;
     }
 
     @media only screen and (max-width: 576px) {
-        background: url('../../images/content/header-576.jpg') no-repeat center top;
+        background: url('../../images/content/baner576.jpg') no-repeat center top;
         height: 331px;
     }
 
@@ -615,19 +615,19 @@
 		margin-bottom: 14px;
 		li {
 			display: inline-block;
-			width: 20px;
-			height: 20px;
+			width: 15px;
+			height: 15px;
 			border-radius: 50%;
 			border: 1px solid $white;
-			background-color: #f7bc6d;
+			background-color: none;
 			font-size: 0;
 			margin-right: 10px;
 			&:last-child {
 				margin-right: 0;
 			}
 			&.slick-active {
-				background-color: #9b9b9b;
-				border-color: #9b9b9b;
+				background-color: #231f20;
+				border-color: #231f20;
 			}
 		}
 	}
@@ -860,7 +860,19 @@
 
 
 .results-page {
-	.row {
-		margin-bottom: 100px;
+	.arrows {
+		width: 100%;
+
+		.right-arrow {
+			float: right;
+		}
+
+		span {
+			color: $grey-dark;
+			font-size: 50px;
+			@include hover {
+				color: $white;
+			}
+		}
 	}
 }
