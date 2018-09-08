@@ -25,8 +25,8 @@ namespace LZRNS.ExcelLoader
             stopwatch.Start();
             IEnumerable<string> filesPaths = PathList();
             string basePath = @"F:\2.Documents\LZRNS\PrevoiusSesions\2018\";
-
-            foreach(string s in filesPaths)
+            Loger.log.Debug("Starting process for loading data for: " + filesPaths.Count() + " teams");
+            foreach (string s in filesPaths)
             {
                 
                 string fileName  = s.Split(new string[] { "stats -teams-" }, StringSplitOptions.None).Last();
@@ -38,6 +38,11 @@ namespace LZRNS.ExcelLoader
                 
             }
             stopwatch.Stop();
+
+            Loger.log.Debug("Compleated loading data for: " + filesPaths.Count() + " teams");
+
+            loader.
+
             Loger.log.Debug("End main proces. Time elapsed: " + stopwatch.Elapsed);
 
             // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
