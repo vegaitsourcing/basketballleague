@@ -33,14 +33,17 @@
 	@if $filename == ico-fb {
 		$char: '\E003';
 	}
-	@if $filename == ico-in {
+	@if $filename == ico-hamburger {
 		$char: '\E004';
 	}
-	@if $filename == ico-share {
+	@if $filename == ico-in {
 		$char: '\E005';
 	}
-	@if $filename == ico-tw {
+	@if $filename == ico-share {
 		$char: '\E006';
+	}
+	@if $filename == ico-tw {
+		$char: '\E007';
 	}
 
 	@return $char;
@@ -65,6 +68,9 @@
 }
 .font-ico-fb {
 	@include font(ico-fb);
+}
+.font-ico-hamburger {
+	@include font(ico-hamburger);
 }
 .font-ico-in {
 	@include font(ico-in);
