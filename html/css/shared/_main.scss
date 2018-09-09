@@ -1296,10 +1296,24 @@
 					margin-top: 15px;
 				}
 			}
+		}
+
+		@media only screen and (max-width: 768px) {
 			.left {
 				.btn {
 					top: -30px;
 				}
+			}
+		}
+
+		@media only screen and (max-width: 532px) {
+			.left {
+				.btn {
+					top: -15px;
+				}
+			}
+			.right {
+				margin-top: -20px;
 			}
 		}
 
