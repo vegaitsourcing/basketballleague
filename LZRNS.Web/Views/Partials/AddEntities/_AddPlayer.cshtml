@@ -1,0 +1,64 @@
+﻿<div class="modal" tabindex="-1" role="dialog" id="addModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @*<form action="/umbraco/surface/Players/AddPlayer" method="POST">*@
+            @using (Html.BeginUmbracoForm("AddPlayer", "Players"))
+            {
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Dodavanje igrača</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-horizontal">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.Hidden("Id", null, new { id = "playerId" })
+                        <div class="form-group">
+                            <label for="name" class="control-label col-md-8">Ime</label>
+                            <div class="col-md-10">
+                                @Html.TextBox("Name", null, new { @class = "form-control", id = "name" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastname" class="control-label col-md-8">Prezime</label>
+                            <div class="col-md-10">
+                                @Html.TextBox("LastName", null, new { @class = "form-control", id = "lastname" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="middlename" class="control-label col-md-8">Srednje ime</label>
+                            <div class="col-md-10">
+                                @Html.TextBox("MiddleName", null, new { @class = "form-control", id = "middlename" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="height" class="control-label col-md-8">Visina</label>
+                            <div class="col-md-10">
+                                @Html.TextBox("Height", null, new { @class = "form-control", id = "height", @type = "number" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="weight" class="control-label col-md-8">Težina</label>
+                            <div class="col-md-10">
+                                @Html.TextBox("Weight", null, new { @class = "form-control", id = "weight", @type = "number" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="year" class="control-label col-md-8">Godište</label>
+                            <div class="col-md-10">
+                                @Html.TextBox("YearOfBirth", null, new { @class = "form-control", id = "year", @type = "number" })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary green-save-button"><i class="fa fa-fw fa-save"></i>Dodaj</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-fw fa-close"></i> Zatvori</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

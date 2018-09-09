@@ -12,12 +12,13 @@ namespace LZRNS.DomainModels.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
+            ContextKey = "LZRNS.DomainModel.Context.BasketballDbContext";
         }
 
         protected override void Seed(LZRNS.DomainModel.Context.BasketballDbContext context)
         {
-            SeedHelper.Databuild(context);
+            //SeedHelper.Databuild(context);
         }
     }
 

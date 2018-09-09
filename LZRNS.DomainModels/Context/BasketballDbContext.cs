@@ -13,8 +13,8 @@ namespace LZRNS.DomainModel.Context
     {
         public BasketballDbContext() : base("domainDb")
         {
-            Database.SetInitializer<BasketballDbContext>(new DbInitializer());
-            Database.Initialize(true);
+            //Database.SetInitializer<BasketballDbContext>(new DbInitializer());
+            //Database.Initialize(true);
         }
 
         //public BasketballDbContext()

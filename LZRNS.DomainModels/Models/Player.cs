@@ -20,15 +20,12 @@ namespace LZRNS.DomainModel.Models
 
         public string Image { get; set; }
 
-        [Required]
         [Range(0, 250)]
         public int Height { get; set; }
 
-        [Required]
         [Range(0, 250)]
         public int Weight { get; set; }
 
-        [Required]
         [Range(1900, 2100)]
         public int YearOfBirth { get; set; }
 
@@ -38,36 +35,36 @@ namespace LZRNS.DomainModel.Models
 
         #region Career high
 
-        public CareerHigh Pts
-        {
-            get
-            {
-                Stats stats = Stats.OrderByDescending(s => s.Pts).First();
-                Guid gameId = Stats.OrderByDescending(s => s.Pts).First().GameId;
-                string TeamName;
-                if (stats.Game.TeamA.Id == gameId)
-                {
-                    TeamName = stats.Game.TeamA.TeamName;
-                }
-                else
-                {
-                    TeamName = stats.Game.TeamB.TeamName;
-                }
-                CareerHigh careerHigh = new CareerHigh()
-                {
-                    Quantity = stats.Pts,
-                    DateTime = stats.Game.DateTime,
-                    OpsiteTeamName = TeamName
-                };
-                return careerHigh;
-            }
-        }
+        //public CareerHigh Pts
+        //{
+        //    get
+        //    {
+        //        Stats stats = Stats.OrderByDescending(s => s.Pts).First();
+        //        Guid gameId = Stats.OrderByDescending(s => s.Pts).First().GameId;
+        //        string TeamName;
+        //        if (stats.Game.TeamA.Id == gameId)
+        //        {
+        //            TeamName = stats.Game.TeamA.TeamName;
+        //        }
+        //        else
+        //        {
+        //            TeamName = stats.Game.TeamB.TeamName;
+        //        }
+        //        CareerHigh careerHigh = new CareerHigh()
+        //        {
+        //            Quantity = stats.Pts,
+        //            DateTime = stats.Game.DateTime,
+        //            OpsiteTeamName = TeamName
+        //        };
+        //        return careerHigh;
+        //    }
+        //}
 
         public int Reb
         {
             get
             {
-                return Stats.OrderByDescending(s => s.Reb).First().Reb;
+                return Stats!=null && Stats.Any() ? Stats.OrderByDescending(s => s.Reb).FirstOrDefault().Reb : 0;
             }
         }
 
@@ -75,7 +72,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return Stats.OrderByDescending(s => s.Ast).First().Ast;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Ast).First().Ast : 0;
             }
         }
 
@@ -83,7 +80,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return Stats.OrderByDescending(s => s.Stl).First().Stl;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Stl).First().Stl : 0;
             }
         }
 
@@ -91,7 +88,7 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return Stats.OrderByDescending(s => s.Blk).First().Blk;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Blk).First().Blk : 0;
             }
         }
 
@@ -99,7 +96,15 @@ namespace LZRNS.DomainModel.Models
         {
             get
             {
-                return Stats.OrderByDescending(s => s.Eff).First().Eff;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Eff).First().Eff : 0;
+            }
+        }
+
+        public string GetFullName
+        {
+            get
+            {
+                return Name + " " + LastName;
             }
         }
 
