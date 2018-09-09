@@ -18,7 +18,7 @@ namespace LZRNS.DomainModel.Context
             //Database.Initialize(true);
         }*/
 
-        public BasketballDbContext()
+        public BasketballDbContext():base("second")
         {
             Database.SetInitializer<BasketballDbContext>(new DbInitializer());
             Database.Initialize(true);
