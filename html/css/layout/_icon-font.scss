@@ -27,32 +27,38 @@
 	@if $filename == ico-arrow-down {
 		$char: '\E001';
 	}
-	@if $filename == ico-chevron-down {
+	@if $filename == ico-arrow-left {
 		$char: '\E002';
 	}
-	@if $filename == ico-download {
+	@if $filename == ico-arrow-right {
 		$char: '\E003';
 	}
-	@if $filename == ico-fb {
+	@if $filename == ico-chevron-down {
 		$char: '\E004';
 	}
-	@if $filename == ico-hamburger {
+	@if $filename == ico-download {
 		$char: '\E005';
 	}
-	@if $filename == ico-in {
+	@if $filename == ico-fb {
 		$char: '\E006';
 	}
-	@if $filename == ico-search {
+	@if $filename == ico-hamburger {
 		$char: '\E007';
 	}
-	@if $filename == ico-share {
+	@if $filename == ico-in {
 		$char: '\E008';
 	}
-	@if $filename == ico-tw {
+	@if $filename == ico-search {
 		$char: '\E009';
 	}
-	@if $filename == ico-x {
+	@if $filename == ico-share {
 		$char: '\E00A';
+	}
+	@if $filename == ico-tw {
+		$char: '\E00B';
+	}
+	@if $filename == ico-x {
+		$char: '\E00C';
 	}
 
 	@return $char;
@@ -71,6 +77,12 @@
 
 .font-ico-arrow-down {
 	@include font(ico-arrow-down);
+}
+.font-ico-arrow-left {
+	@include font(ico-arrow-left);
+}
+.font-ico-arrow-right {
+	@include font(ico-arrow-right);
 }
 .font-ico-chevron-down {
 	@include font(ico-chevron-down);

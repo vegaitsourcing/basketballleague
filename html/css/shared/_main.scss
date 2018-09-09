@@ -742,7 +742,19 @@
 	background-color: #d5d5d5;
 	.wrap {
         position: relative;
-    }
+	}
+	.arrows {
+		float: right;
+
+		span {
+			color: $grey-dark;
+			font-size: 50px;
+			@include hover {
+				color: $white;
+			}
+		}
+	}
+
 	.table {
 		z-index: 2;
 		position: relative;
@@ -860,12 +872,9 @@
 
 
 .results-page {
+	position: relative;
 	.arrows {
-		width: 100%;
-
-		.right-arrow {
-			float: right;
-		}
+		float: right;
 
 		span {
 			color: $grey-dark;

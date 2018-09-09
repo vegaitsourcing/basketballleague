@@ -1,4 +1,5 @@
 ﻿using LZRNS.DomainModel.Context;
+using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LZRNS.DomainModels.Repository.Implementations
 {
-    public class RepositoryBase<T> : IRepositoryBase<T> where T : class
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : AbstractModel
     {
         public BasketballDbContext _context;
         public RepositoryBase(BasketballDbContext context)
@@ -19,6 +20,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
         public T Add(T item)
         {
+            item.Id = Guid.NewGuid();
             var entity = _context.Set<T>().Add(item);
             _context.SaveChanges();
             return entity;
@@ -43,7 +45,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
             return _context.Set<T>();
         }
 
-        public T GetById(int id)
+        public T GetById(Guid id)
         {
             return _context.Set<T>().Find(id);
         }
