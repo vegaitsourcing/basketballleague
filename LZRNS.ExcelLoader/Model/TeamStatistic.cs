@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LZRNS.ExcelLoader
 {
-    class TeamStatistic
+    public class TeamStatistic
     {
-        private String teamName;
+        private String teamName = "-";
         private List<TeamScore> teamScores;
 
         public TeamStatistic(String tName)

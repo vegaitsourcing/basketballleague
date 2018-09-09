@@ -20,11 +20,14 @@ namespace LZRNS.DomainModel.Models
 
         public string Image { get; set; }
 
+        //[Required] when we are importing data from history (round statistic, we do not have this information)
         [Range(0, 250)]
         public int Height { get; set; }
 
+        //[Required] when we are importing data from history (round statistic, we do not have this information)
         [Range(0, 250)]
         public int Weight { get; set; }
+
 
         [Range(1900, 2100)]
         public int YearOfBirth { get; set; }
@@ -35,31 +38,32 @@ namespace LZRNS.DomainModel.Models
 
         #region Career high
 
-        //public CareerHigh Pts
-        //{
-        //    get
-        //    {
-        //        Stats stats = Stats.OrderByDescending(s => s.Pts).First();
-        //        Guid gameId = Stats.OrderByDescending(s => s.Pts).First().GameId;
-        //        string TeamName;
-        //        if (stats.Game.TeamA.Id == gameId)
-        //        {
-        //            TeamName = stats.Game.TeamA.TeamName;
-        //        }
-        //        else
-        //        {
-        //            TeamName = stats.Game.TeamB.TeamName;
-        //        }
-        //        CareerHigh careerHigh = new CareerHigh()
-        //        {
-        //            Quantity = stats.Pts,
-        //            DateTime = stats.Game.DateTime,
-        //            OpsiteTeamName = TeamName
-        //        };
-        //        return careerHigh;
-        //    }
-        //}
 
+       public CareerHigh Pts
+        {
+            get
+            {
+                Stats stats = Stats.OrderByDescending(s => s.Pts).First();
+                Guid gameId = Stats.OrderByDescending(s => s.Pts).First().GameId;
+                string TeamName;
+                if (stats.Game.TeamA.Id == gameId)
+                {
+                    TeamName = stats.Game.TeamA.TeamName;
+                }
+                else
+                {
+                    TeamName = stats.Game.TeamB.TeamName;
+                }
+                CareerHigh careerHigh = new CareerHigh()
+                {
+                    Quantity = stats.Pts,
+                    DateTime = stats.Game.DateTime,
+                    OpsiteTeamName = TeamName
+                };
+                return careerHigh;
+            }
+        }
+        
         public int Reb
         {
             get
