@@ -35,30 +35,30 @@ namespace LZRNS.DomainModel.Models
 
         #region Career high
 
-        //public CareerHigh Pts
-        //{
-        //    get
-        //    {
-        //        Stats stats = Stats.OrderByDescending(s => s.Pts).First();
-        //        Guid gameId = Stats.OrderByDescending(s => s.Pts).First().GameId;
-        //        string TeamName;
-        //        if (stats.Game.TeamA.Id == gameId)
-        //        {
-        //            TeamName = stats.Game.TeamA.TeamName;
-        //        }
-        //        else
-        //        {
-        //            TeamName = stats.Game.TeamB.TeamName;
-        //        }
-        //        CareerHigh careerHigh = new CareerHigh()
-        //        {
-        //            Quantity = stats.Pts,
-        //            DateTime = stats.Game.DateTime,
-        //            OpsiteTeamName = TeamName
-        //        };
-        //        return careerHigh;
-        //    }
-        //}
+       /* public CareerHigh Pts
+        {
+            get
+            {
+                Stats stats = Stats.OrderByDescending(s => s.Pts).First();
+                Guid gameId = Stats.OrderByDescending(s => s.Pts).First().GameId;
+                string TeamName;
+                if (stats.Game.TeamA.Id == gameId)
+                {
+                    TeamName = stats.Game.TeamA.TeamName;
+                }
+                else
+                {
+                    TeamName = stats.Game.TeamB.TeamName;
+                }
+                CareerHigh careerHigh = new CareerHigh()
+                {
+                    Quantity = stats.Pts,
+                    DateTime = stats.Game.DateTime,
+                    OpsiteTeamName = TeamName
+                };
+                return careerHigh;
+            }
+        }*/
 
         public int Reb
         {
