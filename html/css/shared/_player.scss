@@ -36,6 +36,17 @@
                     color: $white;
                     float: right;
                 }
+
+                @include media-breakpoint-down(xs) {
+                    width: 100%;
+                    &.team {
+                        float: none;
+                    }
+                }
+            }
+
+            @include media-breakpoint-down(xs) {
+                text-align: center;
             }
         }
 
@@ -54,6 +65,19 @@
                     font-weight: 700;
                 }
             }
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 60%;
+            margin: 0 auto;
+            min-width: 500px;
+            position: relative;
+            left: 0;
+        }
+
+        @include media-breakpoint-down(xs) {
+            min-width: 0;
+            width: 100%;
         }
     }
 
@@ -81,6 +105,7 @@
             text-transform: uppercase;
         }
         table {
+            width: 100%;
             tr {
                 :first-child {
                     width: 10%;
@@ -88,14 +113,14 @@
                 }
                 :nth-child(2) {
                     width: 10%;
-                    text-align: right;
+                    text-align: left;
                 }
                 :nth-child(3) {
                     width: 15%;
                     text-align: right;
                 }
                 :nth-child(4) {
-                    width: 35%;
+                    width: 45%;
                     text-align: center;
                 }
                 :last-child {
@@ -103,6 +128,17 @@
                     text-align: right;
                 }
             }
+        }
+
+        @include media-breakpoint-down(md) {
+            width: 60%;
+            margin: 0 auto;
+            min-width: 500px;
+        }
+
+        @include media-breakpoint-down(xs) {
+            min-width: 0;
+            width: 100%;
         }
     }
 
@@ -174,6 +210,9 @@
                 }
 
             }
+        }
+        @media only screen and (min-width: 768px) and (max-width: 991px){    
+            padding: 0px 50px;
         }
     }
 }
