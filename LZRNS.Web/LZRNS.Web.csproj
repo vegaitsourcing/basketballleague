@@ -539,6 +539,12 @@
     <Content Include="vendor\font-awesome\scss\_variables.scss" />
     <Content Include="vendor\jquery\jquery.min.map" />
     <Content Include="vendor\jquery\jquery.slim.min.map" />
+    <Content Include="Views\Partials\AddEntities\_AddLeague.cshtml" />
+    <Content Include="Views\Partials\DeleteEntities\_DeleteLeague.cshtml" />
+    <Content Include="Views\Partials\EditEntities\_EditLeague.cshtml" />
+    <Content Include="Views\Partials\AddEntities\_AddSeason.cshtml" />
+    <Content Include="Views\Partials\DeleteEntities\_DeleteSeason.cshtml" />
+    <Content Include="Views\Partials\EditEntities\_LeagueChoose.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -567,18 +573,22 @@
     <Compile Include="Controllers\RenderMvc\MatchManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\PlayerManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\PlayersController.cs" />
+    <Compile Include="Controllers\RenderMvc\RefereeManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\ResultsController.cs" />
     <Compile Include="Controllers\RenderMvc\ScheduleController.cs" />
     <Compile Include="Controllers\RenderMvc\SeasonManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\SitemapController.cs" />
     <Compile Include="Controllers\RenderMvc\StatsController.cs" />
+    <Compile Include="Controllers\RenderMvc\StatsManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\TableController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
     <Compile Include="Controllers\RenderMvc\XMLSitemapController.cs" />
     <Compile Include="Controllers\Surface\BaseSurfaceController.cs" />
     <Compile Include="Controllers\Surface\FormsController.cs" />
+    <Compile Include="Controllers\Surface\LeaguesController.cs" />
     <Compile Include="Controllers\Surface\PlayersController.cs" />
+    <Compile Include="Controllers\Surface\SeasonsController.cs" />
     <Compile Include="Controllers\Surface\SharedController.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\HttpResponseExtensions.cs" />
