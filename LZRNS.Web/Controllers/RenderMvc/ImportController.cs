@@ -6,6 +6,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
+using ExL = LZRNS.ExcelLoader;
+
 
 namespace LZRNS.Web.Controllers.RenderMvc
 {
@@ -29,14 +31,22 @@ namespace LZRNS.Web.Controllers.RenderMvc
                 return CurrentTemplate(content);
             }
 
-            foreach(var file in files)
+            ExL.ExcelLoader loader = new ExL.ExcelLoader();
+
+            foreach (var file in files)
             {
                 if(file != null)
                 {
                     var memStr = GetFileAsMemoryStream(file);
+                    
+                    //file.FileName
+                    loader.ProcessFile(memStr, file.FileName);
+                   
+
                 }
             }
 
+            
             return CurrentTemplate(content);
         }
 

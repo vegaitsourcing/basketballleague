@@ -30,12 +30,10 @@ namespace LZRNS.ExcelLoader
         private void InitializeFields(string path)
         {
             XElement root;
-
             root = XElement.Load(new XmlTextReader(path));
 
             var items = root.Descendants("Item").ToList();
-
-            //if any
+            
             if (items.Any())
             {
                 //iterate through all children of root
@@ -59,7 +57,6 @@ namespace LZRNS.ExcelLoader
             String format = (item.Attribute("Format") != null) ? item.Attribute("Format").Value: String.Empty;
             bool global = (item.Attribute("GlobalField") != null) ? bool.Parse(item.Attribute("GlobalField").Value) : false;
             bool directCellData = (item.Attribute("DirectCellData") != null) ? bool.Parse(item.Attribute("DirectCellData").Value) : false;
-
             
 
             FieldItem fieldItem = new FieldItem(cellName, propertyType, propertyName, columnIndex, rowIndex, format, global, directCellData);
