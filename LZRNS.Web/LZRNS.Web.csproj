@@ -489,6 +489,10 @@
       <Project>{3be753d9-f1a1-427f-ba6e-84c9c55a18d5}</Project>
       <Name>LZRNS.Models</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TimeTableLoader\TimeTableLoader.csproj">
+      <Project>{391252f3-25d2-407e-86e7-af6476e04966}</Project>
+      <Name>TimeTableLoader</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />

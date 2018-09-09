@@ -38,7 +38,7 @@ namespace LZRNS.DomainModel.Models
 
         #region Career high
 
-        public CareerHigh Pts
+       /* public CareerHigh Pts
         {
             get
             {
@@ -61,7 +61,7 @@ namespace LZRNS.DomainModel.Models
                 };
                 return careerHigh;
             }
-        }
+        }*/
 
         public int Reb
         {

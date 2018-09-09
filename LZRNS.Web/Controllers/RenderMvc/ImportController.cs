@@ -31,18 +31,25 @@ namespace LZRNS.Web.Controllers.RenderMvc
                 return CurrentTemplate(content);
             }
 
-            ExL.ExcelLoader loader = new ExL.ExcelLoader();
+            //ExL.ExcelLoader loader = new ExL.ExcelLoader();
+            TimeTableLoader.Converter.Converter converter = new TimeTableLoader.Converter.Converter();
 
             foreach (var file in files)
             {
                 if(file != null)
                 {
                     var memStr = GetFileAsMemoryStream(file);
-                    
-                    //file.FileName
-                    loader.ProcessFile(memStr, file.FileName);
-                   
 
+                    if (file.FileName.Contains("txt"))
+                    {
+                        converter.Convert(memStr);
+                        converter.SaveToDb();
+                    }
+                    else
+                    {
+                        //file.FileName
+                       // loader.ProcessFile(memStr, file.FileName);
+                    }
                 }
             }
 
