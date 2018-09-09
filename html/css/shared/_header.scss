@@ -67,12 +67,18 @@
 			width: 60px;
 		}
 	}
+
+	@include media-breakpoint-down(sm) {
+		img {
+			width: 42px;
+		}
+	}
 }
 .open-menu {
 	display: none;
 	position: absolute;
 	right: 20px;
-	top: 20px;
+	top: 13px;
 	span {
 		font-size: 24px;
 		color: $orange;

@@ -37,13 +37,13 @@ namespace LZRNS.DomainModel.Models
         public virtual ICollection<Referee> Referees { get; set; }
 
         [NotMapped]
-        public virtual ICollection<StatsPerGame> StatsPerGame { get; set; }
+        public virtual ICollection<StatsPerGame> StatsPerGame { get; }
 
         [NotMapped]
         public StatsPerGame StatsPerGameA { get; }
 
         [NotMapped]
-        public StatsPerGame StatsPerGameB { get; set; }
+        public StatsPerGame StatsPerGameB { get; }
 
         public Team ReturnTeam(Guid id)
         {

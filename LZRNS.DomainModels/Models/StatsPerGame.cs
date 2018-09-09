@@ -21,11 +21,11 @@ namespace LZRNS.DomainModels.Models
 
         #region Pts
 
-        public int Points
+        public int Pts
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Pts);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Pts);
             }
         }
 
@@ -37,7 +37,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).TwoPtA);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).TwoPtA);
             }
         }
 
@@ -45,7 +45,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).TwoPtMade);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).TwoPtMade);
             }
         }
 
@@ -65,7 +65,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).ThreePtA);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).ThreePtA);
             }
         }
 
@@ -73,7 +73,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).ThreePtMade);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).ThreePtMade);
             }
         }
 
@@ -93,7 +93,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).FtA);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).FtA);
             }
         }
 
@@ -101,7 +101,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).FtMade);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).FtMade);
             }
         }
 
@@ -151,7 +151,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Reb);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Reb);
             }
         }
 
@@ -159,7 +159,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).OReb);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).OReb);
             }
         }
 
@@ -167,7 +167,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).DReb);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).DReb);
             }
         }
         
@@ -179,7 +179,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Ast);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Ast);
             }
         }
 
@@ -191,7 +191,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).To);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).To);
             }
         }
 
@@ -203,7 +203,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Stl);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Stl);
             }
         }
 
@@ -215,7 +215,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Blk);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Blk);
             }
         }
 
@@ -227,7 +227,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).MinutesPlayed);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).MinutesPlayed);
             }
         }
 
@@ -239,7 +239,7 @@ namespace LZRNS.DomainModels.Models
         {
             get
             {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id).Eff);
+                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Eff);
             }
         }
 

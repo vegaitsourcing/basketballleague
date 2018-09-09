@@ -99,7 +99,7 @@ module.exports = {
 			if ($table.length) {
 				$table.wrap('<div class="table-responsive"></div>');
 				if($table[0].scrollWidth > $table.parent().innerWidth()) {
-					$table.parent().append('<div class="swipe-text">Swipe table for more</div>');
+					$table.parent().append('');
 				}
 			$('.rte-content').parents('.module-canvas').addClass('no-padding');
 		   }

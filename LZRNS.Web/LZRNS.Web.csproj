@@ -433,7 +433,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="robots.txt" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\ApplicationEventsHandler.cs" />
@@ -478,6 +480,10 @@
     <ProjectReference Include="..\LZRNS.DomainModels\LZRNS.DomainModels.csproj">
       <Project>{584350e5-f1db-4334-b57a-7e1fa59a6a25}</Project>
       <Name>LZRNS.DomainModels</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LZRNS.ExcelLoader\LZRNS.ExcelLoader.csproj">
+      <Project>{938e612a-d564-4251-b456-ad5ccbf63420}</Project>
+      <Name>LZRNS.ExcelLoader</Name>
     </ProjectReference>
     <ProjectReference Include="..\LZRNS.Models\LZRNS.Models.csproj">
       <Project>{3be753d9-f1a1-427f-ba6e-84c9c55a18d5}</Project>
