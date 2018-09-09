@@ -745,6 +745,9 @@
 	}
 	.arrows {
 		float: right;
+		.left-arrow {
+			margin-right: 20px;
+		}
 
 		span {
 			color: $grey-dark;
@@ -875,6 +878,9 @@
 	position: relative;
 	.arrows {
 		float: right;
+		.left-arrow {
+			margin-right: 20px;
+		}
 
 		span {
 			color: $grey-dark;
@@ -882,6 +888,10 @@
 			@include hover {
 				color: $white;
 			}
+		}
+
+		@media only screen and (max-width: 992px) {
+			float: left;
 		}
 	}
 }
