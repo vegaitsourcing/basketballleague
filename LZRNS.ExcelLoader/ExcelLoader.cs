@@ -91,13 +91,18 @@ namespace LZRNS.ExcelLoader
             }
 
             TeamStatistic teamStatistic = new TeamStatistic(teamName);
+            bool isPageEmpty;
 
             foreach (IXLWorksheet sheet in sheets)
             {
                 // for odd sheet we want to skip loading
                 if (currentSheetNo % 2 == 0)
                 {
-                    ProcessSheet(sheet, ref teamStatistic);
+                    ProcessSheet(sheet, ref teamStatistic, out isPageEmpty);
+                    if (isPageEmpty)
+                    {
+                        break;
+                    }
                 }
                 currentSheetNo++;
             }
@@ -139,28 +144,44 @@ namespace LZRNS.ExcelLoader
                 }
             }
             stopwatch.Stop();
-            Loger.log.Debug("CheckMappingValidation Successfully completed for time: " + stopwatch.Elapsed);
+            //Loger.log.Debug("CheckMappingValidation Successfully completed for time: " + stopwatch.Elapsed);
 
         }
 
-        private void ProcessSheet(IXLWorksheet sheet, ref TeamStatistic teamStatistic)
+        private void ProcessSheet(IXLWorksheet sheet, ref TeamStatistic teamStatistic, out bool isEmptyPage)
         {
-            Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
+            //Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
 
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            
+            isEmptyPage = false;
+
             IXLRows rows = sheet.RowsUsed();
 
             TeamScore teamScore = new TeamScore();
             teamScore.RoundName = sheet.Name;
+            int currentRowNo;
+            
+            IEnumerable<FieldItem> globalFields = mapper.Fields.FindAll(i => i.GlobalField == true);
+            currentRowNo = mapper.Fields.First().RowIndex;
+
+            // we are incrasing rowNo because currentRow reprenset row where is header placed!
+            if (CheckIfPageIsEmty(rows, currentRowNo + 1, mapper.Fields.First().ColumnIndex))
+            {
+                Loger.log.Debug("ProcessSheet: Sheet: " + sheet.Name + ", is empty for Team: " + teamStatistic.TeamName);
+                isEmptyPage = true;
+                return;
+            }
+
+            // we are incrasing rowNo because currentRow reprenset row where is header placed!
+            PopulateModelField(teamScore, rows, globalFields, currentRowNo + 1);
 
             // When we start to load data for each player, we must take row number of headers and then increase it for 1
-            int currentRowNo = mapper.Fields.First().RowIndex;
+            currentRowNo = mapper.Fields.First().RowIndex;
             IEnumerable<FieldItem> otherFields = mapper.Fields.FindAll(i => i.GlobalField == false);
             int playerCount = CalculatePlayerCount(rows, currentRowNo, otherFields.First().ColumnIndex, maxPlayerPerMatch);
 
-            for (int i = 0; i < playerCount; i++)
+            for (int i = 1; i < playerCount; i++)
             {
                 currentRowNo++;
                 PlayerScore pl = new PlayerScore();
@@ -168,11 +189,6 @@ namespace LZRNS.ExcelLoader
                 teamScore.AddPlayerScore(pl);
             }
 
-
-            IEnumerable<FieldItem> globalFields = mapper.Fields.FindAll(i => i.GlobalField == true);
-            currentRowNo = mapper.Fields.First().RowIndex;
-            PopulateModelField(teamScore, rows, globalFields, ++currentRowNo);
-            
             Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
 
             stopwatch.Stop();
@@ -216,7 +232,7 @@ namespace LZRNS.ExcelLoader
 
         }
 
-        public Object GetCellValue(IXLRows rows, int rowIndex, int columnIndex)
+        private Object GetCellValue(IXLRows rows, int rowIndex, int columnIndex)
         {
             if (rows.Count() <= rowIndex)
             {
@@ -229,11 +245,12 @@ namespace LZRNS.ExcelLoader
         }
 
         /* This method used to calculate number of rows that are populated for players statistic */
-        public int CalculatePlayerCount(IXLRows exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
+        private int CalculatePlayerCount(IXLRows exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
         {
             int playersCount = 0;
             for (int i = 0; i < maxPlayerCount; i++)
             {
+
                 if (GetCellValue(exlRange, currentRowNo + i, columnIndex) == null)
                 {
                     break;
@@ -244,6 +261,18 @@ namespace LZRNS.ExcelLoader
 
             return playersCount;
             
+        }
+
+        private bool CheckIfPageIsEmty (IXLRows rows, int rowIndex, int colunmIndex)
+        {
+            bool isEmpty = false;
+
+            if (GetCellValue(rows, rowIndex, colunmIndex) == null)
+            {
+                isEmpty = true;
+            }
+
+            return isEmpty;
         }
 
 
