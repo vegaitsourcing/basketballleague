@@ -662,7 +662,13 @@
     .wrap {
         position: relative;
     }
-
+	.image-holder {
+		display: block;
+	    width: 130px;
+	    position: absolute;
+	    top: -184px;
+	    left: -1px;
+	}
     .title {
         position: absolute;
 		left: -80px;
