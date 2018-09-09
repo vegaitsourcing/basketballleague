@@ -1,0 +1,20 @@
+﻿<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Potvrda brisanja
+            </div>
+            <div class="modal-body">
+                Da li ste sigurni da želite da obrišete ligu '<span id="itemName"></span>'?
+            </div>
+            <div class="modal-footer">
+                @using (Html.BeginUmbracoForm("DeleteLeague", "Leagues"))
+                {
+                    <input type="hidden" name="id" id="deleteFormId" />
+                    <button type="submit" class="btn btn-danger">Obriši</button>
+                }
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Odustani</button>
+            </div>
+        </div>
+    </div>
+</div>
