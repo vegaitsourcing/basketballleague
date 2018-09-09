@@ -1255,6 +1255,26 @@
 	.statistic-top {
 		display: flex;
 		justify-content: space-between;
+
+		.newListSelected {
+			margin-top: 15px;
+		}
+		
+		@media only screen and (max-width: 768px) {
+			flex-direction: column;
+
+			.newListSelected {
+				width: 200px;
+			}
+
+			.right {
+				:last-child {
+					margin-top: 15px;
+				}
+			}
+		}
+
+
 	}
 	.title {
 		position: absolute;
