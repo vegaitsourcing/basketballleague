@@ -1257,20 +1257,47 @@
 		justify-content: space-between;
 		.left {
 			z-index: 3;
+			.btn {
+				position: relative;
+				top: -15px;
+			}
 		}
 		.right {
 			z-index: 3;
+			.btn {
+				position: relative;
+				top: 15px;
+			}
 		}
+
+		
 
 		.newListSelected {
 			margin-top: 15px;
 			width: 200px;
+			display: inline-block;
 		}
 
 		@media only screen and (max-width: 768px) {
 			flex-direction: column;
 			.right {
-				margin-top: 15px;
+				margin-top: -15px;
+				:last-child {
+					margin-top: 15px;
+				}
+			}
+			.left {
+				.btn {
+					top: -30px;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 427px) {
+			.left {
+				.btn {
+					top: -15px;
+				}
 			}
 		}
 
