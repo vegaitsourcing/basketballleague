@@ -76,16 +76,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
-<<<<<<< HEAD
     <Compile Include="Helper\StatsList.cs" />
-=======
     <Compile Include="Helper\CareerHigh.cs" />
-    <Compile Include="Helper\StatsList.cs" />
     <Compile Include="Migrations\201809090806115_AddedSeasonSummary.cs" />
     <Compile Include="Migrations\201809090806115_AddedSeasonSummary.Designer.cs">
       <DependentUpon>201809090806115_AddedSeasonSummary.cs</DependentUpon>
     </Compile>
->>>>>>> 2f72fa49b3d3381c5bf7f55a503521c10c662187
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />

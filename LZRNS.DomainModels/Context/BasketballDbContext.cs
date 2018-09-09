@@ -1,6 +1,7 @@
 ﻿using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Migrations;
 using LZRNS.DomainModels.Models;
+using LZRNS.DomainModels.TimetableModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
