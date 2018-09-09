@@ -34,7 +34,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
                 return CurrentTemplate(content);
             }
 
-            //ExL.ExcelLoader loader = new ExL.ExcelLoader();
+            ExL.ExcelLoader loader = new ExL.ExcelLoader();
             TimeTableLoader.Converter.Converter converter = new TimeTableLoader.Converter.Converter();
             string season = "2016";
             string league = "A";
@@ -54,7 +54,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
                     else
                     {
                         //file.FileName
-                       // loader.ProcessFile(memStr, file.FileName);
+                        loader.ProcessFile(memStr, file.FileName);
                     }
                 }
             }
