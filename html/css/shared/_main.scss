@@ -1268,6 +1268,35 @@
 			line-height: 1;
 			font-weight: 800;
 		}
+
+		@media only screen and (max-width: 1200px) {
+            right: 5%;
+        }
+
+        @media only screen and (min-width: 992px) and (max-width: 1080px) {
+            right: 5%;
+            h2 {
+                font-size: 150px;
+            }
+
+        }
+
+        @include media-breakpoint-down(md) {
+            right: 3%;
+            h2 {
+                font-size: 100px;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            h2 {
+                font-size: 46px;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            right: 15px;
+        }
 	}
 	.bg-grey,
 	.bg-orange {
@@ -1346,6 +1375,12 @@
 		}
 		.result-details {
 			display: none;
+		}
+
+		@include media-breakpoint-down(xs) {
+			max-width: 350px;
+			margin-left: auto;
+			margin-right: auto;
 		}
 	}
 	.table {
