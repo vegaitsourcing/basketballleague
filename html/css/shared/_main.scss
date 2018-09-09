@@ -1200,13 +1200,34 @@
 	}
 }
 .statistic-page {
+	position: relative;
 	overflow-x: hidden;
-	.cards {
-		padding: 50px 0;
+	padding-top: 180px;
+	background-color: #e2e2e2;
+	.wrap {
+		position: relative;
+	}
+	.statistic-top {
+		display: flex;
+		justify-content: space-between;
+	}
+	.title {
+		position: absolute;
+		right: -80px;
+		top: -100px;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: rgba($grey-light, 0.4);
+			margin-bottom: 0;
+			line-height: 1;
+			font-weight: 800;
+		}
 	}
 	.bg-grey,
 	.bg-orange {
 		position: relative;
+		padding: 35px 0 60px;
 		&::before,
 		&::after {
 			content: '';
@@ -1343,7 +1364,6 @@
 						}
 					}
 				}
-
 			}
 		}
 	}
