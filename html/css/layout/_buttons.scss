@@ -22,7 +22,7 @@ input[type='submit'] {
 }
 
 .btn {
-	background-color: $black;
+	background-color: $orange;
 	color: $white;
 	display: inline-block;
 	font-size: 14px;
@@ -31,8 +31,9 @@ input[type='submit'] {
 	line-height: 40px;
 	padding: 0 20px;
 	transition: 0.4s ease-out;
-	&:hover {
-		background-color: lighten($black, 30%);
-		border-radius: 20px;
+	border-radius: 10px;
+	min-width: 90px;
+	@include hover {
+		opacity: 0.7;
 	}
 }
