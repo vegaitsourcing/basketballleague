@@ -145,6 +145,60 @@ module.exports = {
 		});
 	},
 
+
+		//tab for mobile
+		tabsMobile: function () {
+			$('.tabs-container .tab-heading').click(function () {
+				if (!$(this).hasClass('selected')) {
+					$(this).parent().find('.tab-heading').removeClass('selected');
+					$(this).addClass('selected');
+					$(this).parent().find('.tab-content').stop().slideUp('fast');
+					var activeTab = $(this).parent().find('.' + $(this).data('tab'));
+					activeTab.stop().slideDown(500);
+					$(this).parent().find('ul.tabs li').removeClass('selected');
+					$(this).parent().find('ul.tabs li[data-tab="' + $(this).data('tab') + '"]').addClass('selected');
+				} else {
+					$(this).removeClass('selected');
+					var activeTab = $(this).parent().find('.' + $(this).data('tab'));
+					activeTab.stop().slideUp(500);
+					$(this).parent().find('ul.tabs li').removeClass('selected');
+				}
+			});
+		},
+
+		//Tabs On Click
+		tabsClick: function () {
+			$('ul.tabs li').click(function (e) {
+				e.preventDefault ? e.preventDefault() : e.returnValue = false;
+				$('ul.tabs li').removeClass('selected');
+				$(this).addClass('selected');
+				$('.tab-content').hide();
+				var activeTab = $('.' + $(this).find('span').data('tab'));
+				activeTab.show();
+			});
+		},
+
+		//tabs content
+		tabsContent: function () {
+			$('ul.tabs li').click(function() {
+				var $grandpa = $(this).parent().parent();
+				$grandpa.find('ul.tabs li').removeClass('selected');
+				$(this).addClass('selected');
+				$grandpa.find('.tab-content').hide();
+				var activeTab = $grandpa.find('.' + $(this).data('tab'));
+				activeTab.show();
+				$grandpa.find('.tab-heading').removeClass('selected');
+				$grandpa.find('.tab-heading[data-tab="' + $(this).data('tab') + '"]').addClass('selected');
+			});
+
+			//tabs
+			$('.tab-content').hide();
+			if($(window).width() < 768) {
+				$('.tabs-container .tab-heading:first').addClass('selected').show();
+			}
+			$('.tab-content:first').show();
+		},
+
 	// equal heights
 	equalHeights: function(arrayItems, count) {
 		if (arrayItems !== undefined && arrayItems.length > 0) {
