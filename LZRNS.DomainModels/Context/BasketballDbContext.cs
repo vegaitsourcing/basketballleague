@@ -1,7 +1,6 @@
 ﻿using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Migrations;
 using LZRNS.DomainModels.Models;
-using LZRNS.DomainModels.TimetableModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -14,8 +13,8 @@ namespace LZRNS.DomainModel.Context
     {
         /*public BasketballDbContext() : base("domainDb")
         {
-            Database.SetInitializer<BasketballDbContext>(new DbInitializer());
-            Database.Initialize(true);
+            //Database.SetInitializer<BasketballDbContext>(new DbInitializer());
+            //Database.Initialize(true);
         }*/
 
         public BasketballDbContext()

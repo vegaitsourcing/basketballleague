@@ -23,6 +23,10 @@ let app = {
 		functions.popup();
 		functions.tableResponsive();
 		functions.initCarousel();
+		functions.stationFinder();
+		functions.tabsMobile();
+		functions.tabsClick();
+		functions.tabsContent();
 		// functions.objectFit();
 		if(('ontouchstart' in window || navigator.msMaxTouchPoints > 0) && window.matchMedia('screen and (max-width: 1024px)').matches) {
 			$('html').addClass('touch');

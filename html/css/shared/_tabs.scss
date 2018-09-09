@@ -1,0 +1,61 @@
+//----------  tabs
+//------------------------------------------------------------------------------
+.tabs-container {
+	position: relative;
+	padding-top: 20px;
+}
+.tabs {
+	@include base-float;
+	li {
+		display: inline-block;
+		color: $white;
+		margin-left: 15px;
+		&:first-of-type {
+			margin-left: 0;
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		display: none;
+		border-bottom-style: none;
+	}
+}
+
+.tabs li, .tab-heading {
+	&.selected {
+		position: relative;
+		color: $orange;
+
+	}
+	@include media-breakpoint-down(sm) {
+		@include base-float;
+		background-color: $orange;
+		padding: 5px 15px;
+		margin-bottom: 5px;
+		color: $white;
+		&.selected {
+			color: $white;
+		}
+	}
+}
+.tabs span, .tab-heading {
+	position: relative;
+	font-size: 16px;
+	line-height: 24px;
+	text-align: left;
+	cursor: pointer;
+}
+.tab-content {
+	display: none;
+	padding-top: 20px;
+	@include base-float;
+	@include media-breakpoint-down(sm) {
+		padding-top: 20px;
+	}
+}
+.tab-heading {
+	display: none;
+	@include media-breakpoint-down(sm) {
+		display: block;
+		clear: both;
+	}
+}
