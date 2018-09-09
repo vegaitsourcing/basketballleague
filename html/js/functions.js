@@ -126,6 +126,25 @@ module.exports = {
 		});
 	},
 
+	stationFinder: function() {
+		$('.letters-button').on('click', function() {
+			var wrap = $(this).closest('.letters-nav');
+			wrap.toggleClass('open');
+		});
+
+		$('.letters-nav li').on('click', function() {
+			var $this = $(this);
+			var val = $this.text();
+			var button = $this.closest('ul').prev('.letters-button');
+			var wrap = $this.closest('.letters-nav');
+			var items = $this.siblings('li');
+			items.removeClass('active');
+			$this.addClass('active');
+			button.attr('data-placeholder', val);
+			wrap.removeClass('open');
+		});
+	},
+
 	// equal heights
 	equalHeights: function(arrayItems, count) {
 		if (arrayItems !== undefined && arrayItems.length > 0) {

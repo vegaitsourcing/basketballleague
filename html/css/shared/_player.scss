@@ -1,0 +1,179 @@
+.player-info {
+    background-color: #231f20;
+    padding-top: 200px;
+    padding-bottom: 200px;
+    .main-info {
+        width: 95%;
+        position: absolute;
+        bottom: 0;
+        left: 15px;
+        background-color: $white;
+        border-bottom: 2px solid #bcbcbc;
+        padding-top: 40px;
+
+        .picture {
+            width: 200px;
+            height: 200px;
+            position: absolute;
+            top: -160px;
+            left: 20px;
+            background: $white;
+        }
+
+        .name-and-team {
+            width: 100%;
+            background-color:  rgb(40, 40, 40);
+            padding: 2px 30px;
+
+            h4 {
+                display: inline-block;
+                color: $orange;
+                text-transform: uppercase;
+                font-size: 16px;
+                margin: 0;
+
+                &.team {
+                    color: $white;
+                    float: right;
+                }
+            }
+        }
+
+        .vitals {
+            display: flex;
+            padding: 10px 40px;
+            justify-content: space-around;
+            color: #666;
+
+            li {
+                border-right: 1px solid #bcbcbc;
+                padding: 0 15px;
+                text-align: center;
+
+                span {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    .career-highs {
+        background-color: $white;
+        padding: 10px 40px;
+        border-bottom: 2px solid #bcbcbc;
+        font-weight: 600;
+        border-top: 12px solid #303030;
+        position: relative;
+
+        &::before {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 6px;
+            background-color: #bcbec0;
+            left: 0;
+            top: 0;
+        }
+
+        h3 {
+            color: $orange;
+            text-transform: uppercase;
+        }
+        table {
+            tr {
+                :first-child {
+                    width: 10%;
+                    text-align: left;
+                }
+                :nth-child(2) {
+                    width: 10%;
+                    text-align: right;
+                }
+                :nth-child(3) {
+                    width: 15%;
+                    text-align: right;
+                }
+                :nth-child(4) {
+                    width: 35%;
+                    text-align: center;
+                }
+                :last-child {
+                    width: 20%;
+                    text-align: right;
+                }
+            }
+        }
+    }
+
+    .stats {
+        table {
+            width: 100%;
+            margin: 0 auto;
+            line-height: 32px;
+            font-size: 12px;
+            text-align: center;
+            border-bottom: 14px solid #231f20;
+
+            thead {
+                background-color: #231f20;
+                color: $white;
+                line-height: 48px;
+                height: 48px;
+
+                th {
+                    width: 40px;
+
+                    &.kolo {
+                        width: 60px;
+                    }
+
+                    &.name {
+                        width: 170px;
+                        text-align: left;
+                        padding: 0 10px;
+                    }
+                }
+            }
+
+            tbody {
+                tr {
+                    &:nth-child(odd) {
+                        background-color: #f0efef;
+                    }
+                    &:nth-child(even) {
+                        background-color: #fff;
+                    }
+
+                    td {
+                        padding: 5px;
+                        font-size: 12px;
+                        text-align: center;
+                        font-weight: 600;
+                        min-width: 40px;
+
+                        &.kolo {
+                            font-weight: 500;
+                            opacity: 0.5;
+                            min-width: 60px;
+                        }
+
+                        &.name {
+                            text-align: left;
+                            max-width: initial;
+                            padding: 5px 10px;
+                            min-width: 170px;
+                            text-transform: uppercase;
+                        }
+
+                        > span {
+                            line-height: 1.4;
+                            display: block;
+                        }
+                    }
+                }
+
+            }
+        }
+    }
+}
