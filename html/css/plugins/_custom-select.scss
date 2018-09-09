@@ -1,0 +1,72 @@
+/*----------  custom select
+------------------------------------------------------------------------------*/
+
+.newListSelected {
+	height: 40px;
+	cursor: pointer;
+	text-align: left;
+	background-color: $orange;
+	border-radius: 10px;
+	.selectedTxt {
+		width: 100%;
+		float: left;
+		height: 40px;
+		line-height: 40px;
+		padding: 0 25px 0 10px;
+		color: $white;
+		font-size: 18px;
+		position: relative;
+		&::after {
+			content: font-char(ico-arrow-down);
+			position: absolute;
+			right: 10px;
+			font-size: 40px;
+			color: $white;
+			display: inline-block;
+		}
+
+	}
+	.newList {
+		width: 100%;
+		position: absolute;
+		overflow: auto;
+		z-index: 9999;
+		float: none;
+		background-color: $white;
+		border-radius: 10px 10px 0 0;
+		li {
+			width: 100%;
+			display: block;
+			float: left;
+			margin-bottom: 0;
+			font-size: 18px;
+			&:first-of-type {
+				position: relative;
+				border-left: 0;
+				border-right: 0;
+			}
+			a {
+				width: 100%;
+				float: left;
+				color: $grey-dark;
+				font-weight: normal;
+				padding: 10px;
+				display: block;
+				line-height: 14px;
+				text-align: left;
+				height: auto;
+				&.newListHover  {
+					background: $grey-light;
+					color: $white;
+				}
+			}
+		}
+	}
+	&.newListSelFocus {
+		outline: none !important;
+	}
+	@include media-breakpoint-down(sm) {
+		width: 100%;
+		margin: 0 0 15px 0;
+	}
+}

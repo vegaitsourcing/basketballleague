@@ -33,6 +33,7 @@
 //----------  plugins
 //------------------------------------------------------------------------------
 @import 'plugins/slick';
+@import 'plugins/custom-select';
 
 //----------  partials
 //------------------------------------------------------------------------------
@@ -40,9 +41,12 @@
 @import 'shared/footer';
 @import 'shared/main';
 @import 'partials/popup';
-@import 'shared/about';
+@import 'shared/contact';
+@import 'shared/tabs';
 @import 'shared/player';
 @import 'shared/team';
+@import 'shared/about';
+
 
 //----------  print styles
 //------------------------------------------------------------------------------

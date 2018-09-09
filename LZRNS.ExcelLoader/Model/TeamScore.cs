@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace LZRNS.ExcelLoader
 {
-    class TeamScore
+    public class TeamScore
     {
         private List<PlayerScore> playerScores;
+        private string againstTeam = "-";
 
         public TeamScore()
         {
@@ -17,7 +18,7 @@ namespace LZRNS.ExcelLoader
         
 
         #region Properties
-        public string AgainstTeam { get; set; }
+        public string AgainstTeam { get { return againstTeam; } set { againstTeam = value; } }
         public DateTime MatchDate { get; set; }
         public string RoundName { get; set; }
         public List<PlayerScore> PlayerScores { get { return playerScores; } }

@@ -35,10 +35,10 @@
         }
 
         @include media-breakpoint-down(md) {
+            right: 3%;
             h2 {
                 font-size: 100px;
             }
-            right: 3%;
         }
 
         @include media-breakpoint-down(sm) {
