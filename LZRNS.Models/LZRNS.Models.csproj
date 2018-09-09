@@ -282,6 +282,7 @@
     <Compile Include="DocumentTypes\Pages\HomeModel.cs" />
     <Compile Include="DocumentTypes\Pages\ImportModel.cs" />
     <Compile Include="DocumentTypes\Pages\LeagueManagmentModel.cs" />
+    <Compile Include="DocumentTypes\Pages\ManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\MatchManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\PlayerManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\PlayersModel.cs" />

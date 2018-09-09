@@ -126,6 +126,84 @@ module.exports = {
 		});
 	},
 
+	stationFinder: function() {
+		$('.letters-button').on('click', function() {
+			var wrap = $(this).closest('.letters-nav');
+			wrap.toggleClass('open');
+		});
+
+		$('.letters-nav li').on('click', function() {
+			var $this = $(this);
+			var val = $this.text();
+			var button = $this.closest('ul').prev('.letters-button');
+			var wrap = $this.closest('.letters-nav');
+			var items = $this.siblings('li');
+			items.removeClass('active');
+			$this.addClass('active');
+			button.attr('data-placeholder', val);
+			wrap.removeClass('open');
+		});
+	},
+
+
+		//tab for mobile
+		tabsMobile: function () {
+			$('.tabs-container .tab-heading').click(function () {
+				if (!$(this).hasClass('selected')) {
+					$(this).parent().find('.tab-heading').removeClass('selected');
+					$(this).addClass('selected');
+					$(this).parent().find('.tab-content').stop().slideUp('fast');
+					var activeTab = $(this).parent().find('.' + $(this).data('tab'));
+					activeTab.stop().slideDown(500);
+					$(this).parent().find('ul.tabs li').removeClass('selected');
+					$(this).parent().find('ul.tabs li[data-tab="' + $(this).data('tab') + '"]').addClass('selected');
+				} else {
+					$(this).removeClass('selected');
+					var activeTab = $(this).parent().find('.' + $(this).data('tab'));
+					activeTab.stop().slideUp(500);
+					$(this).parent().find('ul.tabs li').removeClass('selected');
+				}
+			});
+		},
+
+		//Tabs On Click
+		tabsClick: function () {
+			$('ul.tabs li').click(function (e) {
+				e.preventDefault ? e.preventDefault() : e.returnValue = false;
+				$('ul.tabs li').removeClass('selected');
+
+				var  $this = $(this);
+				var row = $this.parents('.js-tabs-container');
+				row.find('.tab-content').hide();
+				$this.addClass('selected');
+				var activeTab = row.find('.'+ $this.data('tab'));
+				activeTab.show();
+			});
+		},
+
+		//tabs content
+		tabsContent: function () {
+			// $('ul.tabs li').click(function() {
+			// 	var $grandpa = $(this).parent().parent();
+			// 	$grandpa.find('ul.tabs li').removeClass('selected');
+			// 	$(this).addClass('selected');
+			// 	$grandpa.find('.tab-content').hide();
+			// 	var activeTab = $grandpa.find('.' + $(this).data('tab'));
+			// 	activeTab.show();
+			// 	$grandpa.find('.tab-heading').removeClass('selected');
+			// 	$grandpa.find('.tab-heading[data-tab="' + $(this).data('tab') + '"]').addClass('selected');
+			// });
+
+			//tabs
+			$('.tab-content').hide();
+			if($(window).width() < 768) {
+				$('.tabs-container .tab-heading:first').addClass('selected').show();
+			}
+			$('.js-tabs-container').each(function(e){
+				$(this).find('.tab-content:first').show();
+			});
+		},
+
 	// equal heights
 	equalHeights: function(arrayItems, count) {
 		if (arrayItems !== undefined && arrayItems.length > 0) {
