@@ -66,7 +66,7 @@ namespace LZRNS.ExcelLoader
                 }
             catch (Exception ex)
             {
-                Loger.log.Error("FieldItem - GetValueConverted: exceptionMessage: " + ex.Message + "\n for rawValue: " + rawValue);
+                Loger.log.Error("FieldItem - GetValueConverted: Field: " + propertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);
                 
             }
             return null;

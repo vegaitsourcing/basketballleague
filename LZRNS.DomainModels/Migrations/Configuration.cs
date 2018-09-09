@@ -62,9 +62,9 @@ namespace LZRNS.DomainModels.Migrations
             var season1718 = new Season { Name = "2017-2018", SeasonStartYear=2017 };
             var leagueSeason1 = new LeagueSeason() { League = leagueA, Season = season1718 };
 
-            var player1 = new Player { Id= new Guid(), Name = "Player1Name", LastName = "Player1LastName", Height = 189, Weight = 95, YearOfBirth = 1990 };
-            var player2 = new Player { Id = new Guid(), Name = "Player2Name", LastName = "Player2LastName", Height = 200, Weight = 96, YearOfBirth = 1991 };
-            var player3 = new Player { Id = new Guid(), Name = "Player3Name", MiddleName = "Mn", LastName = "Player3LastName", Height = 186, Weight = 88, YearOfBirth = 1989 };
+            var player1 = new Player { Id= Guid.NewGuid(), Name = "Player1Name", LastName = "Player1LastName", Height = 189, Weight = 95, YearOfBirth = 1990 };
+            var player2 = new Player { Id = Guid.NewGuid(), Name = "Player2Name", LastName = "Player2LastName", Height = 200, Weight = 96, YearOfBirth = 1991 };
+            var player3 = new Player { Id = Guid.NewGuid(), Name = "Player3Name", MiddleName = "Mn", LastName = "Player3LastName", Height = 186, Weight = 88, YearOfBirth = 1989 };
             var team1 = SeedHelper.GenerateTeam();
             team1.Players.ToList().AddRange(new List<Player> { player1, player2, player3 });
             team1.LeagueSeason = leagueSeason1;

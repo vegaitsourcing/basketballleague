@@ -70,6 +70,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntiryModel\Player.cs" />
     <Compile Include="ExcelLoader.cs" />
     <Compile Include="Model\FieldItem.cs" />
     <Compile Include="Loger.cs" />

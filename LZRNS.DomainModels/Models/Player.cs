@@ -20,15 +20,15 @@ namespace LZRNS.DomainModel.Models
 
         public string Image { get; set; }
 
-        [Required]
+        //[Required] when we are importing data from history (round statistic, we do not have this information)
         [Range(0, 250)]
         public int Height { get; set; }
 
-        [Required]
+        //[Required] when we are importing data from history (round statistic, we do not have this information)
         [Range(0, 250)]
         public int Weight { get; set; }
 
-        [Required]
+        //[Required] when we are importing data from history (round statistic, we do not have this information)
         [Range(1900, 2100)]
         public int YearOfBirth { get; set; }
 
@@ -38,7 +38,7 @@ namespace LZRNS.DomainModel.Models
 
         #region Career high
 
-        public CareerHigh Pts
+        /*public CareerHigh Pts
         {
             get
             {
@@ -62,7 +62,7 @@ namespace LZRNS.DomainModel.Models
                 return careerHigh;
             }
         }
-
+        */
         public int Reb
         {
             get
