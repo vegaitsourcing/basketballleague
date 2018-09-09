@@ -1255,22 +1255,22 @@
 	.statistic-top {
 		display: flex;
 		justify-content: space-between;
+		.left {
+			z-index: 3;
+		}
+		.right {
+			z-index: 3;
+		}
 
 		.newListSelected {
 			margin-top: 15px;
+			width: 200px;
 		}
-		
+
 		@media only screen and (max-width: 768px) {
 			flex-direction: column;
-
-			.newListSelected {
-				width: 200px;
-			}
-
 			.right {
-				:last-child {
-					margin-top: 15px;
-				}
+				margin-top: 15px;
 			}
 		}
 
