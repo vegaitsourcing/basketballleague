@@ -662,7 +662,13 @@
     .wrap {
         position: relative;
     }
-
+	.image-holder {
+		display: block;
+	    width: 130px;
+	    position: absolute;
+	    top: -184px;
+	    left: -1px;
+	}
     .title {
         position: absolute;
 		left: -80px;
@@ -1255,30 +1261,34 @@
 	.statistic-top {
 		display: flex;
 		justify-content: space-between;
+		.btn {
+			position: relative;
+			width: 120px;
+			text-align: center;
+		}
+
 		.left {
 			z-index: 3;
 			.btn {
-				position: relative;
 				top: -15px;
 			}
 		}
 		.right {
 			z-index: 3;
 			.btn {
-				position: relative;
 				top: 15px;
+				width: 120px;
+				text-align: center;
 			}
 		}
 
-		
-
 		.newListSelected {
 			margin-top: 15px;
-			width: 200px;
+			width: 245px;
 			display: inline-block;
 		}
 
-		@media only screen and (max-width: 768px) {
+		@media only screen and (max-width: 992px) {
 			flex-direction: column;
 			.right {
 				margin-top: -15px;
@@ -1286,6 +1296,9 @@
 					margin-top: 15px;
 				}
 			}
+		}
+
+		@media only screen and (max-width: 768px) {
 			.left {
 				.btn {
 					top: -30px;
@@ -1293,10 +1306,21 @@
 			}
 		}
 
-		@media only screen and (max-width: 427px) {
+		@media only screen and (max-width: 532px) {
 			.left {
 				.btn {
 					top: -15px;
+				}
+			}
+			.right {
+				margin-top: -20px;
+			}
+		}
+
+		@media only screen and (max-width: 427px) {
+			.left {
+				.btn {
+					top: -5px;
 				}
 			}
 		}
