@@ -23,5 +23,12 @@ namespace LZRNS.DomainModels.Repository.Implementations
             _context.SaveChanges();
             return entity;
         }
+
+        public Team FindTeam(string teamName, string seasonName)
+        {
+            Team team = GetAll().Where(t => t.TeamName.Equals(teamName) && t.LeagueSeason.Season.Name.Equals(seasonName)).FirstOrDefault();
+
+            return team;
+        }
     }
 }

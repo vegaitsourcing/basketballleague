@@ -11,11 +11,21 @@ using ExL = LZRNS.ExcelLoader;
 using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModel.Context;
+using LZRNS.DomainModels.Repository.Interfaces;
 
 namespace LZRNS.Web.Controllers.RenderMvc
 {
     public class ImportController : RenderMvcController
     {
+
+        private ITeamRepository _teamRepo;
+
+        public ImportController(ITeamRepository teamRepo)
+        {
+            _teamRepo = teamRepo;
+
+        }
+
         public ActionResult Index(ImportModel model)
         {
             return CurrentTemplate(model);
@@ -34,7 +44,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
                 return CurrentTemplate(content);
             }
 
-            ExL.ExcelLoader loader = new ExL.ExcelLoader();
+            ExL.ExcelLoader loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
             TimeTableLoader.Converter.Converter converter = new TimeTableLoader.Converter.Converter();
             string season = "2016";
             string league = "A";
@@ -84,7 +94,13 @@ namespace LZRNS.Web.Controllers.RenderMvc
 
             BasketballDbContext db = new BasketballDbContext();
 
+            //var player = db.Players.FirstOrDefault(x => x.Name.Equals("something"));
+            //player.LastName = "new lastname";
+            //db.SaveChanges()
+
+
             db.Seasons.Add(season);
+            
 
             db.SaveChanges();
 
@@ -136,11 +152,36 @@ namespace LZRNS.Web.Controllers.RenderMvc
             foreach (ExL.PlayerScore playerScore in playerScores)
             {
                 //TO DO (set Stats)
+                Stats stats = new Stats();
+
             }
 
             return player;
         }
 
+        //private Game PopulateGame()
+        //{
+        //    Game game = new Game() {
+
+        //    };
+
+        //}
+
+        private Stats PopulateStats(ExL.PlayerScore ps)
+        {
+            Stats stats = new Stats()
+            {
+                Ast = ps.Assistance,
+                Blk = ps.Block,
+                DReb = ps.DefensiveReb,
+                FtMade = ps.FreeThrowsMade,
+                FtMissed = ps.FreeThrowsAttempt
+                //Gam
+            };
+
+
+            return stats;
+        }
 
 
         private MemoryStream GetFileAsMemoryStream(HttpPostedFileBase uploadedFile)

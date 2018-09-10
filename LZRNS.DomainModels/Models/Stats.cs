@@ -11,6 +11,7 @@ namespace LZRNS.DomainModels.Models
 {
     public class Stats : AbstractModel
     {
+        public Stats() { }
         
         public Guid GameId { get; set; }
 

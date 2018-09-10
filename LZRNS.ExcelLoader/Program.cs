@@ -70,7 +70,7 @@ namespace LZRNS.ExcelLoader
 
         public static void LoadDocuments(string basePath)
         {
-            ExcelLoader loader = new ExcelLoader();
+            ExcelLoader loader = new ExcelLoader("./TableMapper.config");
 
             IEnumerable<string> filesPaths = PathList(basePath, ".xlsx");
            

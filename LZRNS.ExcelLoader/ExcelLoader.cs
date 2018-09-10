@@ -51,15 +51,14 @@ namespace LZRNS.ExcelLoader
 
 
         #region Constructors
-        public ExcelLoader() {
+        public ExcelLoader(string configPath) {
             Loger.log.Debug("Start main proces");
             this.teams = new Dictionary<string, TeamStatistic>();
             this.playerStores = new Dictionary<string, List<PlayerScore>>();
             this.teamAndPlayers = new Dictionary<string, HashSet<string>>();
 
-
-            string hardCodedPath = @"F:\1.Code\6.Hackaton\1.Code\basketballleague\LZRNS.ExcelLoader\TableMapper.config";
-            this.mapper = new MapperModel(hardCodedPath);
+            
+            this.mapper = new MapperModel(configPath);
 
         }
         #endregion Constructors
