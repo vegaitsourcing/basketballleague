@@ -39,68 +39,51 @@ namespace LZRNS.DomainModel.Models
         #region Career high
 
 
-       public CareerHigh Pts
+        public Stats CareerHighPts
         {
             get
             {
-                Stats stats = Stats.OrderByDescending(s => s.Pts).First();
-                Guid gameId = Stats.OrderByDescending(s => s.Pts).First().GameId;
-                string TeamName;
-                if (stats.Game.TeamA.Id == gameId)
-                {
-                    TeamName = stats.Game.TeamA.TeamName;
-                }
-                else
-                {
-                    TeamName = stats.Game.TeamB.TeamName;
-                }
-                CareerHigh careerHigh = new CareerHigh()
-                {
-                    Quantity = stats.Pts,
-                    DateTime = stats.Game.DateTime,
-                    OpsiteTeamName = TeamName
-                };
-                return careerHigh;
-            }
-        }
-        
-        public int Reb
-        {
-            get
-            {
-                return Stats!=null && Stats.Any() ? Stats.OrderByDescending(s => s.Reb).FirstOrDefault().Reb : 0;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Pts).First() : null;
             }
         }
 
-        public int Ast
+        public Stats CareerHighReb
         {
             get
             {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Ast).First().Ast : 0;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Reb).First() : null;
             }
         }
 
-        public int Stl
+        public Stats CareerHighAst
         {
             get
             {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Stl).First().Stl : 0;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Ast).First() : null;
             }
         }
 
-        public int Blk
+        public Stats CareerHighStl
         {
             get
             {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Blk).First().Blk : 0;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Stl).First() : null;
             }
         }
 
-        public int Eff
+        public Stats CareerHighBlk
         {
             get
             {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Eff).First().Eff : 0;
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Blk).First() : null;
+            }
+        }
+
+        public Stats CareerHighEff
+        {
+            get
+            {
+                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Eff).First() : null;
             }
         }
 

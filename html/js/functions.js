@@ -170,11 +170,12 @@ module.exports = {
 		tabsClick: function () {
 			$('ul.tabs li').click(function (e) {
 				e.preventDefault ? e.preventDefault() : e.returnValue = false;
-				$('ul.tabs li').removeClass('selected');
+
 
 				var  $this = $(this);
 				var row = $this.parents('.js-tabs-container');
 				row.find('.tab-content').hide();
+				row.find('li.selected').removeClass('selected');
 				$this.addClass('selected');
 				var activeTab = row.find('.'+ $this.data('tab'));
 				activeTab.show();
@@ -203,6 +204,42 @@ module.exports = {
 				$(this).find('.tab-content:first').show();
 			});
 		},
+
+		//select dropdown
+		selectDropdown: function () {
+			$('.select-dropdown .selected-item').on('click', function () {
+				if (!$(this).hasClass('open')) {
+					$('.select-dropdown .selected-item').removeClass('open');
+					$('.select-dropdown ul').slideUp().attr('aria-hidden', 'true');
+					$('.select-dropdown .select-overlay').hide().attr('aria-hidden', 'true');
+					$(this).addClass('open');
+					$(this).siblings('ul').slideDown().removeAttr('aria-hidden');
+					$(this).siblings('.select-overlay').show().removeAttr('aria-hidden');
+				} else {
+					$(this).removeClass('open');
+					$(this).siblings('ul').slideUp().attr('aria-hidden', 'true');
+					$(this).siblings('.select-overlay').hide().attr('aria-hidden', 'true');
+				}
+			});
+
+			$('.select-dropdown .select-overlay').on('click', function () {
+				$(this).hide().attr('aria-hidden', 'true');
+				$(this).siblings('.selected-item').removeClass('open');
+				$(this).siblings('ul').slideUp().attr('aria-hidden', 'true');
+			});
+
+			$('.select-dropdown ul li').on('click', function () {
+				$(this).parent().siblings('.selected-item').text($(this).text()).removeClass('open');
+				$(this).parent().slideUp().attr('aria-hidden', 'true');
+				$(this).parent().siblings('.select-overlay').hide().attr('aria-hidden', 'true');
+			});
+		},
+
+		//custom select
+		customSelect: function() {
+			$('select').sSelect();
+		},
+
 
 	// equal heights
 	equalHeights: function(arrayItems, count) {

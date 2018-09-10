@@ -662,7 +662,13 @@
     .wrap {
         position: relative;
     }
-
+	.image-holder {
+		display: block;
+	    width: 130px;
+	    position: absolute;
+	    top: -184px;
+	    left: -1px;
+	}
     .title {
         position: absolute;
 		left: -80px;
@@ -1245,14 +1251,129 @@
 	}
 }
 .statistic-page {
+	position: relative;
 	overflow-x: hidden;
-	.cards {
-		padding: 50px 0;
+	padding-top: 180px;
+	background-color: #e2e2e2;
+	.wrap {
+		position: relative;
+	}
+	.statistic-top {
+		display: flex;
+		justify-content: space-between;
+		.btn {
+			position: relative;
+			width: 120px;
+			text-align: center;
+		}
+
+		.left {
+			z-index: 3;
+			.btn {
+				top: -15px;
+			}
+		}
+		.right {
+			z-index: 3;
+			.btn {
+				top: 15px;
+				width: 120px;
+				text-align: center;
+			}
+		}
+
+		.newListSelected {
+			margin-top: 15px;
+			width: 245px;
+			display: inline-block;
+		}
+
+		@media only screen and (max-width: 992px) {
+			flex-direction: column;
+			.right {
+				margin-top: -15px;
+				:last-child {
+					margin-top: 15px;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 768px) {
+			.left {
+				.btn {
+					top: -30px;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 532px) {
+			.left {
+				.btn {
+					top: -15px;
+				}
+			}
+			.right {
+				margin-top: -20px;
+			}
+		}
+
+		@media only screen and (max-width: 427px) {
+			.left {
+				.btn {
+					top: -5px;
+				}
+			}
+		}
+
+
+	}
+	.title {
+		position: absolute;
+		right: -80px;
+		top: -100px;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: rgba($grey-light, 0.4);
+			margin-bottom: 0;
+			line-height: 1;
+			font-weight: 800;
+		}
+
+		@media only screen and (max-width: 1200px) {
+            right: 5%;
+        }
+
+        @media only screen and (min-width: 992px) and (max-width: 1080px) {
+            right: 5%;
+            h2 {
+                font-size: 150px;
+            }
+
+        }
+
+        @include media-breakpoint-down(md) {
+            right: 3%;
+            h2 {
+                font-size: 100px;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            h2 {
+                font-size: 46px;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            right: 15px;
+        }
 	}
 	.bg-grey,
 	.bg-orange {
 		padding-bottom: 50px;
 		position: relative;
+		padding: 35px 0 60px;
 		&::before,
 		&::after {
 			content: '';
@@ -1326,6 +1447,12 @@
 		.result-details {
 			display: none;
 		}
+
+		@include media-breakpoint-down(xs) {
+			max-width: 350px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 	}
 	.table {
 		table {
@@ -1389,7 +1516,6 @@
 						}
 					}
 				}
-
 			}
 		}
 	}

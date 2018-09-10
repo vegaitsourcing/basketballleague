@@ -1,4 +1,86 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
+﻿@using System.Web.Script.Serialization;
+@model IEnumerable<LZRNS.DomainModel.Models.Season>
 @{
-	Layout = null;
+    Layout = "Partials/Shared/_ManagmentLayout.cshtml";
+    ViewBag.Title = "Sezone";
+
+    var serializer = new JavaScriptSerializer();
+}
+<p>
+    <button class="open-add-modal btn btn-primary">Dodaj novu sezonu</button>
+</p>
+<div class="card mb-3">
+    <div class="card-header">
+        <i class="fa fa-table"></i> Sezone
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Naziv Sezone
+                        </th>
+                        <th>
+                            Godina startovanja sezone
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr class="open-edit-modal" data-id="@item.Id" data-name="@item.Name">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SeasonStartYear)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer small text-muted">LZRNS - administracija sezona</div>
+</div>
+
+@*TODO: find a way to pass choosen season*@
+@{Html.RenderPartial("/Views/Partials/EditEntities/_LeagueChoose.cshtml", new LZRNS.DomainModel.Models.Season());}
+@{Html.RenderPartial("/Views/Partials/AddEntities/_AddSeason.cshtml");}
+@{Html.RenderPartial("/Views/Partials/DeleteEntities/_DeleteSeason.cshtml");}
+
+
+
+
+@section styles {
+    <link href="~/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+}
+@section scripts {
+    <script>
+        $('.open-edit-modal').dblclick(function () {
+            var _self = $(this);
+
+            $('#seasonId').val(_self.data("id"));
+            $('#name').val(_self.data("name"));
+
+            $('#editModal').modal('toggle');
+        });
+
+        $('.open-add-modal').click(function () {
+            var _self = $(this);
+
+            $('#addModal').modal('toggle');
+        });
+
+        $('.delete-item').click(function () {
+            var _self = $(this);
+
+            var seasonId = $('#seasonId').val();
+            $('#deleteFormId').val(seasonId);
+            $('#itemName').text($('#name').val());
+            $('#confirm-delete').modal('toggle');
+        });
+    </script>
+
 }

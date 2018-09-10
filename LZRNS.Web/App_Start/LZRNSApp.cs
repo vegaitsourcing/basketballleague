@@ -33,6 +33,10 @@ namespace LZRNS.Web
 
             //register repositories
             builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
+            builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
+            builder.RegisterType<SeasonRepository>().As<ISeasonRepository>();
+            builder.RegisterType<TeamRepository>().As<ITeamRepository>();
+            builder.RegisterType<RefereeRepository>().As<IRefereeRepository>();
 
             var container = builder.Build();
 
