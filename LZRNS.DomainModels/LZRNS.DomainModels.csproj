@@ -78,7 +78,6 @@
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
     <Compile Include="Helper\StatsList.cs" />
-    <Compile Include="Helper\CareerHigh.cs" />
     <Compile Include="Migrations\201809090806115_AddedSeasonSummary.cs" />
     <Compile Include="Migrations\201809090806115_AddedSeasonSummary.Designer.cs">
       <DependentUpon>201809090806115_AddedSeasonSummary.cs</DependentUpon>
