@@ -78,9 +78,9 @@
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
     <Compile Include="Helper\StatsList.cs" />
-    <Compile Include="Migrations\201809090806115_AddedSeasonSummary.cs" />
-    <Compile Include="Migrations\201809090806115_AddedSeasonSummary.Designer.cs">
-      <DependentUpon>201809090806115_AddedSeasonSummary.cs</DependentUpon>
+    <Compile Include="Migrations\201809261425121_modelchange.cs" />
+    <Compile Include="Migrations\201809261425121_modelchange.Designer.cs">
+      <DependentUpon>201809261425121_modelchange.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
@@ -118,12 +118,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201809090806115_AddedSeasonSummary.resx">
-      <DependentUpon>201809090806115_AddedSeasonSummary.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <EmbeddedResource Include="Migrations\201809261425121_modelchange.resx">
+      <DependentUpon>201809261425121_modelchange.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -7,13 +7,13 @@ namespace LZRNS.DomainModels.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddedSeasonSummary : IMigrationMetadata
+    public sealed partial class modelchange : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedSeasonSummary));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(modelchange));
         
         string IMigrationMetadata.Id
         {
-            get { return "201809090806115_AddedSeasonSummary"; }
+            get { return "201809261425121_modelchange"; }
         }
         
         string IMigrationMetadata.Source

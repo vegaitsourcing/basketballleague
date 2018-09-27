@@ -12,18 +12,18 @@ namespace LZRNS.DomainModel.Context
 {
     public class BasketballDbContext : DbContext
     {
-        //public BasketballDbContext() : base("domainDb")
+        public BasketballDbContext() : base("domainDb")
+        {
+            //Database.SetInitializer<BasketballDbContext>(new DbInitializer());
+            //Database.Initialize(true);
+        }
+
+
+        //public BasketballDbContext()
         //{
         //    Database.SetInitializer<BasketballDbContext>(new DbInitializer());
         //    Database.Initialize(true);
         //}
-
-        
-        public BasketballDbContext()
-        {
-            Database.SetInitializer<BasketballDbContext>(new DbInitializer());
-            Database.Initialize(true);
-        }
 
         public DbSet<Game> Games { get; set; }
         public DbSet<League> Leagues { get; set; }

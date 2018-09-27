@@ -5,7 +5,7 @@
 {
 	if (Model.ShouldIncludeChildrenInSitemap(page))
 	{
-		@foreach (PageModel child in page.SitemapItems)
+		foreach (PageModel child in page.SitemapItems)
 		{
 			// Render appropriate HTML for child node here
 			@RenderSitemapItems(child)
