@@ -75,7 +75,11 @@ namespace LZRNS.Models.DocumentTypes.Compositions
 		protected readonly UmbracoHelper UmbracoHelper = new UmbracoHelper(UmbracoContext.Current);
 		protected string Name => Content.Name;
 
-		private bool UmbracoNaviHide => this.GetPropertyValue<bool>();
+        public HeaderModel Header => this.GetCachedValue(() => UmbracoHelper.TypedContentSingleAtXPath("//" + nameof(HeaderModel).RemoveModelSuffix()).AsType<HeaderModel>());
+        public FooterModel Footer => this.GetCachedValue(() => UmbracoHelper.TypedContentSingleAtXPath("//" + nameof(FooterModel).RemoveModelSuffix()).AsType<FooterModel>());
+
+
+        private bool UmbracoNaviHide => this.GetPropertyValue<bool>();
 
 		private HomeModel GetHomeModel()
 		{

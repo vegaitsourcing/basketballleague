@@ -5,6 +5,12 @@
 	background-color: $grey-dark;
 	padding: 50px 0;
 }
+.footer-top {
+	text-align: center;
+	li {
+		display: inline-block;
+	}
+}
 .footer-nav {
 	ul {
 		text-align: center;

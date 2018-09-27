@@ -277,6 +277,12 @@
     <Compile Include="AdditionalModels\Pagination\ReadOnlyPagedCollection.cs" />
     <Compile Include="CachedContentModel.cs" />
     <Compile Include="DocumentTypes\Compositions\PageModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\FooterModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\HeaderModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\NestedContentBaseModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\NewsSliderModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\SponsorshipModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\TableWidgetModel.cs" />
     <Compile Include="DocumentTypes\Nodes\SettingsModel.cs" />
     <Compile Include="DocumentTypes\Pages\Error404Model.cs" />
     <Compile Include="DocumentTypes\Pages\HomeModel.cs" />
