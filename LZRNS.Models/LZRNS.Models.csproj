@@ -292,10 +292,13 @@
     <Compile Include="DocumentTypes\Pages\MatchManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\PlayerManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\PlayersModel.cs" />
+    <Compile Include="DocumentTypes\Pages\RefereeManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\ResultsModel.cs" />
+    <Compile Include="DocumentTypes\Pages\ScheduleManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\ScheduleModel.cs" />
     <Compile Include="DocumentTypes\Pages\SeasonManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\SitemapModel.cs" />
+    <Compile Include="DocumentTypes\Pages\StatsManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\StatsModel.cs" />
     <Compile Include="DocumentTypes\Pages\TableModel.cs" />
     <Compile Include="DocumentTypes\Pages\TeamManagmentModel.cs" />

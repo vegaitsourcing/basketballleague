@@ -58,9 +58,18 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LZRNS.DomainModels\LZRNS.DomainModels.csproj">
-      <Project>{584350e5-f1db-4334-b57a-7e1fa59a6a25}</Project>
+      <Project>{584350E5-F1DB-4334-B57A-7E1FA59A6A25}</Project>
       <Name>LZRNS.DomainModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TimeTableLoader\TimeTableLoader.csproj">
+      <Project>{391252f3-25d2-407e-86e7-af6476e04966}</Project>
+      <Name>TimeTableLoader</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

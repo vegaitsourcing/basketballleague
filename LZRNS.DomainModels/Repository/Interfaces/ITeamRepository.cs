@@ -12,5 +12,7 @@ namespace LZRNS.DomainModels.Repository.Interfaces
     {
         PlayerPerTeam AddPlayerToTeam(Player player, Team team);
 
+        Team FindTeam(string teamName, string seasonName);
+
     }
 }

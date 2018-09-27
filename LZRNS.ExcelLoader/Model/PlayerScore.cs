@@ -6,10 +6,25 @@ using System.Threading.Tasks;
 
 namespace LZRNS.ExcelLoader
 {
-    class PlayerScore
+    public class PlayerScore
     {
+        # region Private Fields
+        private string nameAndLastName = "-";
+        #endregion Private Fields
+
         public int Number { get; set; }
-        public String NameAndLastName { get; set; }
+        public String NameAndLastName
+        {
+            get
+            {
+                return nameAndLastName;
+            }
+            set
+            {
+                nameAndLastName = value;
+            }
+        }
+
         public int Minutes { get; set; }
         public int PointAttempt2 { get; set; }
         public int PointMade2 { get; set; }
@@ -23,6 +38,46 @@ namespace LZRNS.ExcelLoader
         public int TurnOver { get; set; }
         public int Steal { get; set; }
         public int Block { get; set; }
+        public string FirstName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(NameAndLastName))
+                {
+                    return String.Empty;
+                }
+                return NameAndLastName.Split(' ').First();
+            }
+        }
+        public string LastName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(NameAndLastName))
+                {
+                    return String.Empty;
+                }
+                return NameAndLastName.Split(' ').Last();
+            }
+        }
+        public string MiddleName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(NameAndLastName))
+                {
+                    return String.Empty;
+                }
+
+                string[] names = NameAndLastName.Split(' ');
+                if (names.Count() == 3)
+                {
+                    return names[1];
+                }
+
+                return string.Empty;
+            }
+        }
 
         public PlayerScore() { }
     }

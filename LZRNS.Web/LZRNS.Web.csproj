@@ -94,6 +94,12 @@
       <HintPath>..\packages\xmlrpcnet.2.5.0\lib\net20\CookComputing.XmlRpcV2.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Examine, Version=0.1.89.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Examine.0.1.89\lib\net45\Examine.dll</HintPath>
       <Private>True</Private>
@@ -384,6 +390,10 @@
     <Content Include="packages.config" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="App_Data\TableMapper.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -542,6 +552,12 @@
     <Content Include="Views\Partials\NestedContent\_Sponsorship.cshtml" />
     <Content Include="Views\Partials\NestedContent\_NewsSlider.cshtml" />
     <Content Include="Views\Partials\NestedContent\_TableWidget.cshtml" />
+    <Content Include="Views\Partials\AddEntities\_AddLeague.cshtml" />
+    <Content Include="Views\Partials\DeleteEntities\_DeleteLeague.cshtml" />
+    <Content Include="Views\Partials\EditEntities\_EditLeague.cshtml" />
+    <Content Include="Views\Partials\AddEntities\_AddSeason.cshtml" />
+    <Content Include="Views\Partials\DeleteEntities\_DeleteSeason.cshtml" />
+    <Content Include="Views\Partials\EditEntities\_LeagueChoose.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -570,11 +586,13 @@
     <Compile Include="Controllers\RenderMvc\MatchManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\PlayerManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\PlayersController.cs" />
+    <Compile Include="Controllers\RenderMvc\RefereeManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\ResultsController.cs" />
     <Compile Include="Controllers\RenderMvc\ScheduleController.cs" />
     <Compile Include="Controllers\RenderMvc\SeasonManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\SitemapController.cs" />
     <Compile Include="Controllers\RenderMvc\StatsController.cs" />
+    <Compile Include="Controllers\RenderMvc\StatsManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\TableController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
@@ -582,7 +600,9 @@
     <Compile Include="Controllers\Surface\BaseSurfaceController.cs" />
     <Compile Include="Controllers\Surface\FormsController.cs" />
     <Compile Include="Controllers\Surface\NestedContentController.cs" />
+    <Compile Include="Controllers\Surface\LeaguesController.cs" />
     <Compile Include="Controllers\Surface\PlayersController.cs" />
+    <Compile Include="Controllers\Surface\SeasonsController.cs" />
     <Compile Include="Controllers\Surface\SharedController.cs" />
     <Compile Include="Dictionary\UmbracoDictionary.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
@@ -593,7 +613,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorViewEngines\PartialViewEngine.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ExcelModelConfig\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LZRNS.Common\LZRNS.Common.csproj">
       <Project>{44ea5768-a92d-4380-848e-a4b2c07158d6}</Project>
@@ -610,6 +632,10 @@
     <ProjectReference Include="..\LZRNS.Models\LZRNS.Models.csproj">
       <Project>{3be753d9-f1a1-427f-ba6e-84c9c55a18d5}</Project>
       <Name>LZRNS.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TimeTableLoader\TimeTableLoader.csproj">
+      <Project>{391252f3-25d2-407e-86e7-af6476e04966}</Project>
+      <Name>TimeTableLoader</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

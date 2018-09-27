@@ -20,18 +20,45 @@ namespace LZRNS.ExcelLoader
         // key represent team name (I will change that later)
         private Dictionary<string, TeamStatistic> teams;
 
+        // key represent team name, list of player names
+        private Dictionary<string, HashSet<string>> teamAndPlayers;
+
+        // key represent player full name
+        private Dictionary<string, List<PlayerScore>> playerStores;
+        
         private MapperModel mapper;
         private int maxPlayerPerMatch = 12;
 
         #endregion Private Fields
 
+        #region Properies 
+
+        public Dictionary<string, TeamStatistic> Teams
+        {
+            get { return teams; }
+        }
+
+        public Dictionary<string, List<PlayerScore>> PlayerStores
+        {
+            get { return playerStores; }
+        }
+        public Dictionary<string, HashSet<string>> TeamAndPlayers
+        {
+            get { return teamAndPlayers; }
+        }
+
+        #endregion Properies
+
+
         #region Constructors
-        public ExcelLoader() {
+        public ExcelLoader(string configPath) {
             Loger.log.Debug("Start main proces");
             this.teams = new Dictionary<string, TeamStatistic>();
+            this.playerStores = new Dictionary<string, List<PlayerScore>>();
+            this.teamAndPlayers = new Dictionary<string, HashSet<string>>();
 
-            string hardCodedPath = @"F:\1.Code\6.Hackaton\1.Code\basketballleague\LZRNS.ExcelLoader\TableMapper.config";
-            this.mapper = new MapperModel(hardCodedPath);
+            
+            this.mapper = new MapperModel(configPath);
 
         }
         #endregion Constructors
@@ -75,11 +102,22 @@ namespace LZRNS.ExcelLoader
             }
         }
 
+        public List<PlayerScore> GetPlayerScoreList(string playerFullName)
+        {
+            List<PlayerScore> scores;
+            PlayerStores.TryGetValue(playerFullName, out scores);
+
+            return scores;
+        }
+        #endregion Public Methods
+
+        #region Private Methods
         private void Load(XLWorkbook exApp, string fileName)
         {
             int currentSheetNo = 0;
-            string nameWithExtension = fileName.Split(new string[] { "stats -teams-" }, StringSplitOptions.None).Last();
+            string nameWithExtension = fileName.Split(new string[] { "stats-teams-" }, StringSplitOptions.None).Last();
             string teamName = nameWithExtension.Substring(0, nameWithExtension.Length - 5);
+            Loger.log.Debug("Loading data for team: " + teamName);
 
             sheets = exApp.Worksheets;
 
@@ -99,22 +137,17 @@ namespace LZRNS.ExcelLoader
                 if (currentSheetNo % 2 == 0)
                 {
                     ProcessSheet(sheet, ref teamStatistic, out isPageEmpty);
-                    if (isPageEmpty)
-                    {
-                        break;
-                    }
+                    //if (isPageEmpty)
+                    //{
+                    //    break;
+                    //}
                 }
                 currentSheetNo++;
             }
 
             teams[teamStatistic.TeamName] = teamStatistic;
         }
-
         
-        #endregion Public Methods
-
-        #region Private Methods
-
         private void CheckMappingValidation (MapperModel mapper, IXLWorksheet sheet)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -187,6 +220,9 @@ namespace LZRNS.ExcelLoader
                 PlayerScore pl = new PlayerScore();
                 PopulateModelField(pl, rows, otherFields, currentRowNo);
                 teamScore.AddPlayerScore(pl);
+
+                AddPlayerScore(pl);
+                AddPlayerInTeam(teamStatistic.TeamName, pl.NameAndLastName);
             }
 
             Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
@@ -275,8 +311,35 @@ namespace LZRNS.ExcelLoader
             return isEmpty;
         }
 
+        private void AddPlayerScore ( PlayerScore ps)
+        {
+            List<PlayerScore> list;
+
+            if (playerStores.TryGetValue(ps.NameAndLastName, out list)) {
+                list.Add(ps);
+            } else
+            {
+                playerStores[ps.NameAndLastName] = new List<PlayerScore>() { ps };
+            }
+        }
+
+        private void AddPlayerInTeam(string team, string playerName)
+        {
+            HashSet<string> players;
+
+            if (teamAndPlayers.TryGetValue(team, out players))
+            {
+                players.Add(playerName);
+            }
+            else
+            {
+                teamAndPlayers[team] = new HashSet<string>() { playerName };
+            }
+
+        }
 
         #endregion Private Methods
+
 
 
 

@@ -43,6 +43,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -76,7 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
-    <Compile Include="Helper\CareerHigh.cs" />
     <Compile Include="Helper\StatsList.cs" />
     <Compile Include="Migrations\201809090806115_AddedSeasonSummary.cs" />
     <Compile Include="Migrations\201809090806115_AddedSeasonSummary.Designer.cs">
@@ -100,15 +100,18 @@
     <Compile Include="Repository\Implementations\GameRepository.cs" />
     <Compile Include="Repository\Implementations\LeagueRepository.cs" />
     <Compile Include="Repository\Implementations\PlayerRepository.cs" />
+    <Compile Include="Repository\Implementations\RefereeRepository.cs" />
     <Compile Include="Repository\Implementations\RepositoryBase.cs" />
     <Compile Include="Repository\Implementations\SeasonRepository.cs" />
     <Compile Include="Repository\Implementations\TeamRepository.cs" />
     <Compile Include="Repository\Interfaces\IGameRepository.cs" />
     <Compile Include="Repository\Interfaces\ILeagueRepository.cs" />
     <Compile Include="Repository\Interfaces\IPlayerRepository.cs" />
+    <Compile Include="Repository\Interfaces\IRefereeRepository.cs" />
     <Compile Include="Repository\Interfaces\IRepositoryBase.cs" />
     <Compile Include="Repository\Interfaces\ISeasonRepository.cs" />
     <Compile Include="Repository\Interfaces\ITeamRepository.cs" />
+    <Compile Include="TimetableModels\SingleGameModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

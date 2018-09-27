@@ -1,6 +1,7 @@
 ﻿using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Migrations;
 using LZRNS.DomainModels.Models;
+using LZRNS.DomainModels.TimetableModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,17 +12,18 @@ namespace LZRNS.DomainModel.Context
 {
     public class BasketballDbContext : DbContext
     {
-        public BasketballDbContext() : base("domainDb")
-        {
-            //Database.SetInitializer<BasketballDbContext>(new DbInitializer());
-            //Database.Initialize(true);
-        }
-
-        //public BasketballDbContext()
+        //public BasketballDbContext() : base("domainDb")
         //{
         //    Database.SetInitializer<BasketballDbContext>(new DbInitializer());
         //    Database.Initialize(true);
         //}
+
+        
+        public BasketballDbContext()
+        {
+            Database.SetInitializer<BasketballDbContext>(new DbInitializer());
+            Database.Initialize(true);
+        }
 
         public DbSet<Game> Games { get; set; }
         public DbSet<League> Leagues { get; set; }
@@ -33,6 +35,7 @@ namespace LZRNS.DomainModel.Context
         public DbSet<PlayerPerTeam> PlayersPerTeam { get; set; }
         public DbSet<LeagueSeason> LeagueSeasons { get; set; }
         public DbSet<Stats> Stats { get; set; }
+        public DbSet<SingleGameModel> Schedules { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

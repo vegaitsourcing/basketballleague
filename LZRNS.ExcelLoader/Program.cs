@@ -18,11 +18,23 @@ namespace LZRNS.ExcelLoader
         {
 
             //string basePath = @"F:\2.Documents\LZRNS\PrevoiusSesions\2017\";
-            string basePath = @"F:\ForLoad\forUse\";
-            
-            string newDestination = @"F:\ForLoad\converted\";
+            //string basePath = @"F:\ForLoad\forUse\";
 
-            //ConvertExtensions(basePath, newDestination);
+            List<string> seasons = new List<string> { "2016", "2017", "2018" };
+
+            string basePath = @"F:\ForLoad\2016\orginal\";
+
+            //string newDestination = @"F:\ForLoad\converted\";
+            string newDestination = @"F:\ForLoad\2016\converted\";
+
+            foreach(String season in seasons)
+            {
+                Console.WriteLine("Season: " + season);
+                basePath = @"F:\ForLoad\" + season + @"\orginal\";
+                newDestination = @"F:\ForLoad\" + season + @"\converted\";
+                ConvertExtensions(basePath, newDestination);
+            }
+
             LoadDocuments(newDestination);
 
 
@@ -32,63 +44,44 @@ namespace LZRNS.ExcelLoader
         {
             IEnumerable<string> filesPaths = PathList(basePath, ".xls");
             
-            Loger.log.Debug("Starting process for loading data for: " + filesPaths.Count() + " teams");
+            Console.WriteLine("Starting process for loading data for: " + filesPaths.Count() + " teams");
             foreach (String s in filesPaths)
             {
-                //FileInfo fInfo = new FileInfo(basePath + s);
-
-                //File.Move(basePath + s, Path.ChangeExtension(basePath + s, ".xlsx"));
                 Excel.Application exApp = new Excel.Application();
-
                 Excel.Workbook xlWorkbook = exApp.Workbooks.Open(basePath + s);
 
                 string fileName = s.Substring(0, s.Length - 4);
 
-
-
-                //xlWorkbook.SaveAs(basePath + "Milos.xlsx");
-
-
-                Loger.log.Debug("Start main proces");
+                
+                Console.WriteLine("Convert file: " + fileName);
                 xlWorkbook.SaveAs(newDestination + fileName, Excel.XlFileFormat.xlOpenXMLWorkbook,
                         System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false,
                         Excel.XlSaveAsAccessMode.xlShared, false, false, System.Reflection.Missing.Value,
                         System.Reflection.Missing.Value, System.Reflection.Missing.Value);
 
-                //Workbook.LoadFromFile(basePath + s);
-                //Workbook.SaveToFile("Output.xlsx", ExcelVersion.Version2013);
-
-                //fInfo.MoveTo(Path.ChangeExtension(basePath + s, ".xlsx"));
                 xlWorkbook.Close();
                 Marshal.ReleaseComObject(xlWorkbook);
                 exApp = null;
                 GC.Collect();
 
-
             }
         }
-
-
-
-
+        
 
         public static void LoadDocuments(string basePath)
         {
-            ExcelLoader loader = new ExcelLoader();
+            ExcelLoader loader = new ExcelLoader("./TableMapper.config");
 
             IEnumerable<string> filesPaths = PathList(basePath, ".xlsx");
            
             Loger.log.Debug("Starting process for loading data for: " + filesPaths.Count() + " teams");
+
+            Console.WriteLine("Starting process for loading data for: " + filesPaths.Count() + " teams");
             foreach (string s in filesPaths)
             {
-
-                string fileName = s.Split(new string[] { "stats -teams-" }, StringSplitOptions.None).Last();
-                string teamName = fileName.Substring(0, fileName.Length - 5);
-
-                Loger.log.Debug("Start with processing team: " + teamName + ", file: " + basePath + s);
-                Console.WriteLine("ProcessFile: Start with processing team: " + teamName + ", file: " + basePath + s);
-                loader.ProcessFile(basePath + s, teamName);
-
+                Loger.log.Debug("#################################################################################################");
+                Console.WriteLine("Process team: " + s);
+                loader.ProcessFile(basePath + s, s);
             }
         }
 
