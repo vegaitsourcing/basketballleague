@@ -1,0 +1,11 @@
+﻿@using LZRNS.Models.DocumentTypes.Nodes.NestedContent
+@inherits UmbracoViewPage<SponsorshipModel>
+
+<div class="image-holder">
+    <a href="javascript:;">
+        @if (Model.Logo != null)
+        {
+            <img src="@Model.Logo.Url" alt="@Model.Logo.AlternateText">
+        }
+    </a>
+</div>

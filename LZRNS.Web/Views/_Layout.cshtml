@@ -1,0 +1,45 @@
+﻿@inherits UmbracoViewPage<PageModel>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta charset="utf-8">
+    <meta name="description" content="">
+
+
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="googlebot" content="noindex,nofollow">
+
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,700" rel="stylesheet">
+
+    <!-- main css file -->
+    <link rel="stylesheet" href="css/dist/style.min.css">
+
+
+    <!-- global js file -->
+    <script defer type="text/javascript" src="js/dist/global.min.js"></script>
+
+    <title>LZRN</title>
+    <link href="favicon.ico" rel="icon" />
+    @RenderSection("additionalHead", false)
+
+
+</head>
+
+<body>
+    @{Html.RenderAction<SharedController>(sc => sc.Header(null), Model.Header); }
+
+    @RenderBody()
+
+    @{Html.RenderAction<SharedController>(sc => sc.Footer(null), Model.Footer); }
+    @RenderSection("additionalFooter", false)
+
+
+</body>
+
+</html>

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Umbraco.Core.Models;
 
 namespace LZRNS.Models.DocumentTypes.Nodes
 {
-     public class FooterModel
+    public class FooterModel : CachedContentModel
     {
+        public FooterModel(IPublishedContent content) : base(content)
+        {
+        }
     }
 }
