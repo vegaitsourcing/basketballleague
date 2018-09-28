@@ -1,0 +1,67 @@
+﻿@inherits UmbracoViewPage<AboutUsModel>
+
+<main class="main" data-template-name="">
+    @*<div class="banner">
+        <div class="wrap">
+            <div class="banner-title">
+                <h2>Liga za <span>rekreativce</span> Novi Sad</h2>
+            </div>
+        </div>
+    </div>*@
+@{
+    Html.RenderAction<SharedController>(b => b.Banner(null), Model.Banner);
+}
+        <div class="about">
+            <div class="wrap">
+                <div class="title">
+                    <h2>O nama</h2>
+                </div>
+                <div class="about-text">
+                    @Model.Text
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <div class="wrap">
+                <div class="contact-title">
+                    <h2>Kontakt</h2>
+                </div>
+                @{Html.RenderAction("RenderForm", "ContactFormSurface"); }
+                @*<form action="#">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="form_name" name="name" placeholder="Ime">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="form_email" name="email" placeholder="E-mail">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <textarea id="form_message" class="form-control" name="message" placeholder="Poruka" rows="6"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <input type="submit" class="form-control" value="Pošalji">
+                            </div>
+                        </div>
+                    </form>*@
+            </div>
+        </div>
+</main>
+@section AdditionalFooter {
+
+    <script src="~/Scripts/contactForm.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+}
