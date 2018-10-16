@@ -197,6 +197,16 @@ namespace LZRNS.Models.Extensions
 		}
 
 		/// <summary>
+		/// Returns children from the source for the navigation.
+		/// </summary>
+		/// <param name="source">The source.</param>
+		/// <returns>Collection of navigation items for management.</returns>
+		public static IEnumerable<ManagementPageModel> GetManagementNavigationItems(this IPublishedContent source)
+		{
+			return source?.Children(c => c.IsVisible()).AsType<ManagementPageModel>() ?? Enumerable.Empty<ManagementPageModel>();
+		}
+
+		/// <summary>
 		/// Returns sidebar navigation items for the source.
 		/// </summary>
 		/// <param name="source">The source.</param>

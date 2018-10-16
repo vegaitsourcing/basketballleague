@@ -28,6 +28,37 @@ namespace LZRNS.Web
 			//	"~/scripts/main/jquery-1.11.2.min.js"
 			//));
 
+			bundles.Add(new StyleBundle("~/bundles/styles/management/").Include(
+				"~/vendor/bootstrap/css/bootstrap.min.css",
+				"~/Content/jquery-ui.min.css",
+				"~/Content/tooltipster.bundle.min.css",
+				"~/Content/tooltipster.bundle.min.css",
+				"~/Content/tooltipster-sideTip-shadow.min.css",
+				"~/Content/css/sb-admin.css",
+				"~/Content/Site.css",
+				"~/vendor/datatables/dataTables.bootstrap4.css"
+			));
+
+			bundles.Add(new StyleBundle("~/bundles/styles/fontawesome/").Include(
+				"~/vendor/font-awesome/css/font-awesome.min.css",
+				new CssRewriteUrlTransform()
+			));
+
+			bundles.Add(new ScriptBundle("~/bundles/scripts/libs/").Include(
+				"~/vendor/jquery/jquery.min.js"
+				));
+
+			bundles.Add(new ScriptBundle("~/bundles/scripts/management/").Include(
+				"~/Scripts/jquery-ui.min.js",
+				"~/vendor/bootstrap/js/bootstrap.bundle.min.js",
+				"~/vendor/jquery-easing/jquery.easing.min.js",
+				"~/Scripts/js/sb-admin.min.js",
+				"~/Scripts/tooltipster.bundle.min.js",
+				"~/vendor/datatables/jquery.dataTables.js",
+				"~/vendor/datatables/dataTables.bootstrap4.js",
+				"~/Scripts/js/sb-admin-datatables.js"
+				));
+
 			CompilationSection compilationSection = (CompilationSection)System.Configuration.ConfigurationManager.GetSection(@"system.web/compilation");
 
 			BundleTable.EnableOptimizations = !compilationSection.Debug;

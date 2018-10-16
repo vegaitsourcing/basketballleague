@@ -278,6 +278,7 @@
     <Compile Include="AdditionalModels\Pagination\ReadOnlyPagedCollection.cs" />
     <Compile Include="CachedContentModel.cs" />
     <Compile Include="DocumentTypes\Compositions\BannerModel.cs" />
+    <Compile Include="DocumentTypes\Compositions\ManagementPageModel.cs" />
     <Compile Include="DocumentTypes\Compositions\PageModel.cs" />
     <Compile Include="DocumentTypes\Nodes\FooterModel.cs" />
     <Compile Include="DocumentTypes\Nodes\HeaderModel.cs" />
@@ -329,6 +330,10 @@
     <ProjectReference Include="..\LZRNS.Core\LZRNS.Core.csproj">
       <Project>{e8c6667b-38c8-4258-9313-f8b83d79e43a}</Project>
       <Name>LZRNS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LZRNS.DomainModels\LZRNS.DomainModels.csproj">
+      <Project>{584350E5-F1DB-4334-B57A-7E1FA59A6A25}</Project>
+      <Name>LZRNS.DomainModels</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
