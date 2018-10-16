@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\UmbracoCms.7.12.2\build\UmbracoCms.props" Condition="Exists('..\packages\UmbracoCms.7.12.2\build\UmbracoCms.props')" />
-  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.4\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.4\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -164,9 +164,8 @@
       <HintPath>..\packages\Microsoft.CodeAnalysis.CSharp.1.0.1\lib\net45\Microsoft.CodeAnalysis.CSharp.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.4\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=2.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -419,6 +418,7 @@
     <Content Include="images\svg\ico-tw.svg" />
     <Content Include="images\svg\ico-x.svg" />
     <Content Include="js\default.js" />
+    <Content Include="js\management.js" />
     <Content Include="js\functions.js" />
     <Content Include="js\libs\jquery-3.3.1.min.js" />
     <Content Include="js\libs\ofi.js" />
@@ -463,13 +463,8 @@
     <Content Include="css\shared\_team.scss" />
     <Content Include="css\style.min.css.map" />
     <Content Include="css\style.scss" />
-    <Content Include="Scripts\js\dist\global.min.js.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\contactForm.js" />
-    <Content Include="Scripts\js\dist\default.js" />
-    <Content Include="Scripts\js\dist\global.js" />
-    <Content Include="Scripts\js\dist\global.min.js" />
-    <Content Include="Scripts\js\dist\libs.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-ui.min.js" />
@@ -619,7 +614,7 @@
     <Content Include="Views\Partials\NestedContent\_Sponsorship.cshtml" />
     <Content Include="Views\Partials\NestedContent\_NewsSlider.cshtml" />
     <Content Include="Views\Partials\NestedContent\_TableWidget.cshtml" />
-    <Content Include="Views\Partials\AddEntities\_AddLeague.cshtml" />
+    <Content Include="Views\Partials\LeagueManagementSurface\_Add.cshtml" />
     <Content Include="Views\Partials\DeleteEntities\_DeleteLeague.cshtml" />
     <Content Include="Views\Partials\EditEntities\_EditLeague.cshtml" />
     <Content Include="Views\TableWidget.cshtml" />
@@ -636,6 +631,7 @@
     <Content Include="Views\Team.cshtml" />
     <Content Include="Views\LeagueManagement\Index.cshtml" />
     <Content Include="Views\Management\Index.cshtml" />
+    <Content Include="Views\Partials\LeagueManagementSurface\_Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -662,17 +658,11 @@
     <Compile Include="Controllers\Management\ImportController.cs" />
     <Compile Include="Controllers\Management\LeagueManagementController.cs" />
     <Compile Include="Controllers\Management\ManagementController.cs" />
-    <Compile Include="Controllers\Management\MatchManagmentController.cs" />
-    <Compile Include="Controllers\Management\PlayerManagmentController.cs" />
-    <Compile Include="Controllers\Management\RefereeManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\ResultsController.cs" />
     <Compile Include="Controllers\RenderMvc\ScheduleController.cs" />
-    <Compile Include="Controllers\Management\SeasonManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\SitemapController.cs" />
     <Compile Include="Controllers\RenderMvc\StatsController.cs" />
-    <Compile Include="Controllers\Management\StatsManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\TableController.cs" />
-    <Compile Include="Controllers\Management\TeamManagmentController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
     <Compile Include="Controllers\RenderMvc\XMLSitemapController.cs" />
     <Compile Include="Controllers\Surface\BaseSurfaceController.cs" />
@@ -748,9 +738,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.3.2\build\Microsoft.Net.Compilers.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.4\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.4\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
     <Error Condition="!Exists('..\packages\UmbracoCms.7.12.2\build\UmbracoCms.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\UmbracoCms.7.12.2\build\UmbracoCms.props'))" />
     <Error Condition="!Exists('..\packages\UmbracoCms.7.12.2\build\UmbracoCms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\UmbracoCms.7.12.2\build\UmbracoCms.targets'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
   </Target>
   <PropertyGroup>
     <PostBuildEvent>

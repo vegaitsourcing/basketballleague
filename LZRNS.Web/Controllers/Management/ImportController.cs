@@ -13,7 +13,7 @@ using LZRNS.DomainModels.Models;
 using LZRNS.DomainModel.Context;
 using LZRNS.DomainModels.Repository.Interfaces;
 
-namespace LZRNS.Web.Controllers.RenderMvc
+namespace LZRNS.Web.Controllers.Management
 {
 	public class ImportController : RenderMvcController
 	{

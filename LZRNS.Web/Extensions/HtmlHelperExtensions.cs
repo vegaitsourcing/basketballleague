@@ -28,6 +28,18 @@ namespace LZRNS.Web.Extensions
 			source.RenderAction(methodInfo.Name, controllerName, routeValueDictionary);
 		}
 
+		public static string Action<TController>(this UrlHelper source, Expression<Action<TController>> expression)
+			where TController : Controller
+		{
+			if (source == null) throw new ArgumentNullException(nameof(source));
+			if (expression == null) throw new ArgumentNullException(nameof(expression));
+
+			MethodInfo methodInfo = GetMethodInfo(expression);
+			string controllerName = typeof(TController).Name.RemoveControllerSuffix();
+
+			return source.Action(methodInfo.Name, controllerName);
+		}
+
 		private static MethodInfo GetMethodInfo<T>(Expression<T> expression)
 		{
 			var body = expression.Body as MethodCallExpression;

@@ -26,7 +26,7 @@
 			</button>
 			<div class="collapse navbar-collapse" id="navbarResponsive">
 				<ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-					<li class="nav-item @(Model.Settings.ManagementPage.IsActivePage ? "active" : null)" data-toggle="tooltip" data-placement="right" title="@Model.Settings.ManagementPage.PageTitle">
+					<li class="nav-item" data-toggle="tooltip" data-placement="right" title="@Model.Settings.ManagementPage.PageTitle">
 						<a class="nav-link" href="@Model.Settings.ManagementPage.Url">
 							<i class="fa fa-fw fa-@Model.Settings.ManagementPage.MenuIconStyle"></i>
 							<span class="nav-link-text">@Model.Settings.ManagementPage.PageTitle</span>
@@ -98,7 +98,7 @@
 		</a>
 	</div>
 
-	@Scripts.Render("~/bundles/scripts/libs/", "~/bundles/scripts/management/")
+	@Scripts.Render("~/bundles/scripts/libs/", "~/bundles/scripts/unobtrusive/", "~/bundles/scripts/management/")
 	@RenderSection("scripts", required: false)
 
 	<script>

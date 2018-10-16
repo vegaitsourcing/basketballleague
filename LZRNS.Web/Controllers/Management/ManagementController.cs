@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
 
-namespace LZRNS.Web.Controllers.RenderMvc
+namespace LZRNS.Web.Controllers.Management
 {
 	public class ManagementController : RenderMvcController
 	{

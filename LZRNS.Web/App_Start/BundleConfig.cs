@@ -48,16 +48,25 @@ namespace LZRNS.Web
 				"~/vendor/jquery/jquery.min.js"
 				));
 
-			bundles.Add(new ScriptBundle("~/bundles/scripts/management/").Include(
+			bundles.Add(new ScriptBundle("~/bundles/scripts/unobtrusive/").Include(
 				"~/Scripts/jquery-ui.min.js",
+				"~/scripts/jquery.validate.min.js",
+				"~/scripts/jquery.validate.unobtrusive.min.js",
+				"~/scripts/jquery.unobtrusive-ajax.js"
+				));
+
+			bundles.Add(new ScriptBundle("~/bundles/scripts/management/").Include(
 				"~/vendor/bootstrap/js/bootstrap.bundle.min.js",
 				"~/vendor/jquery-easing/jquery.easing.min.js",
 				"~/Scripts/js/sb-admin.min.js",
 				"~/Scripts/tooltipster.bundle.min.js",
 				"~/vendor/datatables/jquery.dataTables.js",
 				"~/vendor/datatables/dataTables.bootstrap4.js",
-				"~/Scripts/js/sb-admin-datatables.js"
+				"~/Scripts/js/sb-admin-datatables.js",
+				"~/js/management.js"
 				));
+
+
 
 			CompilationSection compilationSection = (CompilationSection)System.Configuration.ConfigurationManager.GetSection(@"system.web/compilation");
 
