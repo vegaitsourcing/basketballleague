@@ -1,42 +1,22 @@
 ﻿@model LZRNS.DomainModel.Models.League
 @using LZRNS.Web.Controllers.Management
 
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			@using (Ajax.BeginForm(nameof(LeagueManagementSurfaceController.Edit), nameof(LeagueManagementSurfaceController).RemoveControllerSuffix(), null,
-									new AjaxOptions
-									{
-										HttpMethod = "POST",
-										InsertionMode = InsertionMode.Replace,
-										UpdateTargetId = "modal",
-										OnSuccess = "location.reload()"
-									},
-									new { @class = "form contact-form" }))
-			{
-				@Html.AntiForgeryToken()
-				@Html.HiddenFor(x => x.Id)
-				<div class="modal-header">
-					<h5 class="modal-title">Dodavanje liga</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-					<div class="modal-body">
-						<div class="form-horizontal">
-							<div class="form-group">
-								@Html.LabelFor(x => x.Name, new { @class = "control-label col-md-8" })
-								<div class="col-md-10">
-									@Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-									@Html.ValidationMessageFor(x => x.Name)
-								</div>
-							</div>
-
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
-						<button class="btn btn-danger btn-delete" data-id="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
-					</div>
-			}
+@using (Ajax.BeginForm(nameof(LeagueManagementSurfaceController.Edit), nameof(LeagueManagementSurfaceController).RemoveControllerSuffix(), null,new AjaxOptions{HttpMethod = "POST", OnComplete = "location.reload()"}))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(x => x.Id)
+	<i class="fa fa-fw fa-backward" id="back" style="cursor:pointer;"></i>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-3">
+				@Html.LabelFor(x => x.Name, new { @class = "control-label" })
+				@Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+				@Html.ValidationMessageFor(x => x.Name)
+			</div>
 		</div>
 	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
+		<button class="btn btn-danger btn-delete" data-leagueId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
+	</div>
+}

@@ -632,6 +632,11 @@
     <Content Include="Views\LeagueManagement\Index.cshtml" />
     <Content Include="Views\Management\Index.cshtml" />
     <Content Include="Views\Partials\LeagueManagementSurface\_Edit.cshtml" />
+    <Content Include="Views\SeasonManagement\Index.cshtml" />
+    <Content Include="Views\Partials\SeasonManagementSurface\_Add.cshtml" />
+    <Content Include="Views\Partials\SeasonManagementSurface\_Edit.cshtml" />
+    <Content Include="Views\Partials\SeasonManagementSurface\_AddLeagueSeason.cshtml" />
+    <Content Include="Views\Partials\SeasonManagementSurface\_EditLeagueSeason.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -652,6 +657,7 @@
     <Compile Include="App_Start\ExistingLanguagesRouteConstraint.cs" />
     <Compile Include="App_Start\LZRNSApp.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Management\SeasonManagementController.cs" />
     <Compile Include="Controllers\RenderMvc\AboutUsController.cs" />
     <Compile Include="Controllers\RenderMvc\Error404Controller.cs" />
     <Compile Include="Controllers\RenderMvc\HomeController.cs" />

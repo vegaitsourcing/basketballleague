@@ -1,0 +1,57 @@
+﻿@model SeasonManagementModel
+@using LZRNS.Web.Controllers.Management
+@{
+	Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
+}
+
+<p>
+	<button class="open-add-modal btn btn-primary">Dodaj novu sezonu</button>
+</p>
+<div class="card mb-3">
+	<div class="card-header">
+		<i class="fa fa-@Model.MenuIconStyle"></i> @Model.PageTitle
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th>
+							Naziv sezone
+						</th>
+						<th>
+							Godina početka sezone
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Seasons)
+					{
+						<tr class="open-edit-modal" data-seasonId="@item.Id" data-name="@item.Name">
+							<td>
+								@Html.DisplayFor(modelItem => item.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.SeasonStartYear)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-footer small text-muted">LZRNS - @Model.PageTitle</div>
+</div>
+
+@section scripts{
+	<script>
+		controller = {
+			addAction: '@(Url.Action<SeasonManagementSurfaceController>(c => c.Add()))',
+			editAction: '@(Url.Action<SeasonManagementSurfaceController>(c => c.Edit(null)))',
+			deleteAction: '@(Url.Action<SeasonManagementSurfaceController>(c => c.Delete(new Guid())))',
+			addLeagueSeasonAction: '@(Url.Action<SeasonManagementSurfaceController>(c => c.AddLeagueSeason(new Guid(), new Guid())))',
+			editLeagueSeasonAction: '@(Url.Action<SeasonManagementSurfaceController>(c => c.EditLeagueSeason(new Guid())))',
+			deleteLeagueSeasonAction: '@(Url.Action<SeasonManagementSurfaceController>(c => c.DeleteLeagueSeason(new Guid())))'
+		}
+	</script>
+	}

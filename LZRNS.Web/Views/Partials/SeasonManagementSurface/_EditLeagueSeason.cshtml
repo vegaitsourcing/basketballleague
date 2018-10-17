@@ -1,0 +1,33 @@
+﻿@model LZRNS.DomainModels.Models.LeagueSeason
+@using LZRNS.Web.Controllers.Management
+
+
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		@using (Ajax.BeginForm(nameof(SeasonManagementSurfaceController.EditLeagueSeason), nameof(SeasonManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnComplete = $"leagueSeasonSuccess" }))
+		{
+			@Html.AntiForgeryToken()
+			@Html.HiddenFor(x => x.Id)
+			@Html.HiddenFor(x => x.LeagueId)
+			@Html.HiddenFor(x => x.SeasonId)
+			<div class="modal-header">
+				<h5 class="modal-title">Izmena lige u sezoni</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-10">
+						@Html.LabelFor(x => x.Summary, new { @class = "control-label" })
+						@Html.TextAreaFor(x => x.Summary, new { @class = "form-control" })
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
+				<button class="btn btn-danger btn-delete-leagueSeason" data-leagueSeasonId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
+			</div>
+		}
+	</div>
+</div>

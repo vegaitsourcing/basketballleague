@@ -24,7 +24,7 @@
 				<tbody>
 					@foreach (var item in Model.Leagues)
 					{
-						<tr class="open-edit-modal" data-id="@item.Id" data-name="@item.Name">
+						<tr class="open-edit-modal" data-leagueId="@item.Id">
 							<td>
 								@Html.DisplayFor(modelItem => item.Name)
 							</td>
@@ -34,10 +34,7 @@
 			</table>
 		</div>
 	</div>
-	<div class="card-footer small text-muted">LZRNS - administracija liga</div>
-</div>
-
-<div class="modal" tabindex="-1" role="dialog" id="modal">
+	<div class="card-footer small text-muted">LZRNS - @Model.PageTitle</div>
 </div>
 
 @section scripts{
