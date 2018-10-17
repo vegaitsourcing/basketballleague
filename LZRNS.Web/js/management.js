@@ -38,10 +38,12 @@ $(document).ready(function () {
 	$(document).on('click', '.btn-delete', function () {
 		$.get(controller.deleteAction, this.dataset,
 			function (data, status) {
-				if (status === "success") {
+				if (data.status === "success") {
 					location.reload();
+					return;
 				}
-			}, "html");
+				confirm(data.message);
+			});
 	});
 
 	// 2 leagueSeason events, for delete and for add/edit

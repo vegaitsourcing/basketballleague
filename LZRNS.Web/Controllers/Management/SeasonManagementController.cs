@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using LZRNS.DomainModels.Models;
 using System.Collections.Generic;
+using System.Data.Entity.Core;
 
 namespace LZRNS.Web.Controllers.Management
 {
@@ -78,10 +79,29 @@ namespace LZRNS.Web.Controllers.Management
 		}
 
 		[HttpGet]
-		public ActionResult Delete(Guid seasonId)
+		public JsonResult Delete(Guid seasonId)
 		{
-			_seasonRepo.Delete(_seasonRepo.GetById(seasonId));
-			return null;
+			var status = "success";
+			var message = "";
+			try
+			{
+				_seasonRepo.Delete(_seasonRepo.GetById(seasonId));
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(typeof(LeagueManagementController), "Unsuccessfull delete action", ex);
+				status = "failed";
+				if (ex.GetType() == typeof(UpdateException))
+				{
+					message = ex.Message;
+				}
+				else
+				{
+					message = "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
+				}
+			}
+
+			return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
 		}
 
 		#endregion

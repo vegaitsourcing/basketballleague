@@ -9,6 +9,6 @@ namespace LZRNS.DomainModels.Repository.Interfaces
 		LeagueSeason AddLeagueToSeason(LeagueSeason leagueSeason);
 		LeagueSeason GetLeagueSeasonById(Guid id);
 		bool UpdateLeagueSeason(LeagueSeason leagueSeason);
-		bool DeleteLeagueSeason(LeagueSeason leagueSeason);
+		void DeleteLeagueSeason(LeagueSeason leagueSeason);
 	}
 }

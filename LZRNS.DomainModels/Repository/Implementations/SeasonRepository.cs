@@ -40,18 +40,10 @@ namespace LZRNS.DomainModels.Repository.Implementations
 			return _context.Set<LeagueSeason>().Find(id);
 		}
 
-		public bool DeleteLeagueSeason(LeagueSeason leagueSeason)
+		public void DeleteLeagueSeason(LeagueSeason leagueSeason)
 		{
-			try
-			{
 				_context.Set<LeagueSeason>().Remove(leagueSeason);
 				_context.SaveChanges();
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
 		}
 	}
 }

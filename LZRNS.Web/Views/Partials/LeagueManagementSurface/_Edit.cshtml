@@ -1,7 +1,7 @@
 ﻿@model LZRNS.DomainModel.Models.League
 @using LZRNS.Web.Controllers.Management
 
-@using (Ajax.BeginForm(nameof(LeagueManagementSurfaceController.Edit), nameof(LeagueManagementSurfaceController).RemoveControllerSuffix(), null,new AjaxOptions{HttpMethod = "POST", OnComplete = "location.reload()"}))
+@using (Ajax.BeginForm(nameof(LeagueManagementSurfaceController.Edit), nameof(LeagueManagementSurfaceController).RemoveControllerSuffix(), null,new AjaxOptions{HttpMethod = "POST", OnSuccess = "location.reload()"}))
 {
 	@Html.AntiForgeryToken()
 	@Html.HiddenFor(x => x.Id)

@@ -12,6 +12,6 @@ namespace LZRNS.DomainModels.Repository.Interfaces
         T GetById(Guid id);
         T Add(T item);
         bool Update(T item);
-        bool Delete(T id);
+        void Delete(T id);
     }
 }

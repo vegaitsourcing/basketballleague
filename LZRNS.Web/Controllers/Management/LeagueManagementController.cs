@@ -1,10 +1,10 @@
-﻿using LZRNS.DomainModels.Repository.Interfaces;
+﻿using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.DocumentTypes.Pages;
+using System;
+using System.Data.Entity.Core;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
-using LZRNS.DomainModel.Models;
-using LZRNS.Web.Controllers.Surface;
-using System;
 
 namespace LZRNS.Web.Controllers.Management
 {
@@ -25,19 +25,32 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
-	public class LeagueManagementSurfaceController : BaseSurfaceController
+	public class LeagueManagementSurfaceController : SurfaceController
 	{
 		private ILeagueRepository _leagueRepo;
-		public LeagueManagementSurfaceController(ILeagueRepository leagueRepo)
+		private ISeasonRepository _seasonRepo;
+
+		public LeagueManagementSurfaceController(ILeagueRepository leagueRepo, ISeasonRepository seasonRepo)
 		{
 			_leagueRepo = leagueRepo;
+			_seasonRepo = seasonRepo;
 		}
 
+		#region [Render Views Actions]
 		[HttpGet]
 		public ActionResult Add()
 		{
 			return PartialView(new League());
 		}
+		[HttpGet]
+		public ActionResult Edit(Guid leagueId)
+		{
+			return PartialView(_leagueRepo.GetById(leagueId));
+		}
+		#endregion
+
+		#region [Data Change Actions]
+
 		[HttpPost]
 		public ActionResult Add(League model)
 		{
@@ -49,11 +62,6 @@ namespace LZRNS.Web.Controllers.Management
 			return PartialView(model);
 		}
 
-		[HttpGet]
-		public ActionResult Edit(Guid leagueId)
-		{
-			return PartialView(_leagueRepo.GetById(leagueId));
-		}
 		[HttpPost]
 		public ActionResult Edit(League model)
 		{
@@ -66,10 +74,31 @@ namespace LZRNS.Web.Controllers.Management
 		}
 
 		[HttpGet]
-		public ActionResult Delete(Guid leagueId)
+		public JsonResult Delete(Guid leagueId)
 		{
-			_leagueRepo.Delete(_leagueRepo.GetById(leagueId));
-			return null;
+			var status = "success";
+			var message = "";
+			try
+			{
+				_leagueRepo.Delete(_leagueRepo.GetById(leagueId));
+			}
+			catch (Exception ex)
+			{
+				Logger.Error(typeof(LeagueManagementController), "Unsuccessfull delete action", ex);
+				status = "failed";
+				if (ex.GetType() == typeof(UpdateException))
+				{
+					message = ex.Message;
+				}
+				else
+				{
+					message = "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
+				}
+			}
+
+			return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
 		}
+
+		#endregion
 	}
 }

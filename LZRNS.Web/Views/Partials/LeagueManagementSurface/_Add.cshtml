@@ -3,16 +3,8 @@
 
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			@using (Ajax.BeginForm(nameof(LeagueManagementSurfaceController.Add), nameof(LeagueManagementSurfaceController).RemoveControllerSuffix(), null,
-									new AjaxOptions
-									{
-										HttpMethod = "POST",
-										InsertionMode = InsertionMode.Replace,
-										UpdateTargetId = "modal",
-										OnSuccess = "location.reload()"
-									},
-									new { @class = "form contact-form" }))
-			{
+			@using (Ajax.BeginForm(nameof(LeagueManagementSurfaceController.Add), nameof(LeagueManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "location.reload()" }))
+			{ 
 				@Html.AntiForgeryToken()
 				<div class="modal-header">
 					<h5 class="modal-title">Dodavanje liga</h5>
