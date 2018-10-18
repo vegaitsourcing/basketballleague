@@ -15,13 +15,46 @@ function editAction(dataset) {
 		}, "html");
 }
 
+// sets base64 string of input file for passed image
+function setBase64ToImage(file, $imageEl) {
+	var reader = new FileReader();
+	var result;
+
+	reader.readAsDataURL(file);
+	reader.onload = function () {
+		$imageEl.attr("src", reader.result);
+	};
+
+	return result;
+}
+
 $(document).ready(function () {
+	//function for submitting ajax form with input type file, because ajax...
+	$(document).on('click', '#player-submit', function (e) {
+		e.preventDefault();
+		$form = $(this).closest('form');
+
+		if ($form.valid()) {
+			$.ajax({
+				url: $form.attr("action"),
+				type: 'POST',
+				data: new FormData($form[0]),
+				processData: false,
+				contentType: false,
+				success: function () {
+					location.reload();
+				},
+			});
+		}
+	});
+
+
 	$(document).on('click', '#back', function () {
 		location.reload();
 	})
 
 	// 3 standard generic operations, add modal, edit modal and delete button
-	$(".open-add-modal").on('click', function () {
+	$(document).on('click', ".open-add-modal", function () {
 		$.get(controller.addAction, function (data, status) {
 			if (status === "success") {
 				$('#modal').html(data);
@@ -31,7 +64,7 @@ $(document).ready(function () {
 		}, "html");
 	});
 
-	$(".open-edit-modal").on('dblclick', function () {
+	$(document).on('dblclick', ".open-edit-modal", function () {
 		editAction(this.dataset);
 	});
 
@@ -82,4 +115,11 @@ $(document).ready(function () {
 			$hrefElement.addClass("in-progress");
 		}
 	})
+
+	$(document).on('change', 'input[name=ImageFile]', function () {
+		var files = this.files;
+		if (files.length > 0) {
+			setBase64ToImage(files[0], $("#imageFrame"));
+		}
+	});
 });

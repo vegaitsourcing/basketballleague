@@ -7,6 +7,7 @@ namespace LZRNS.Common
 	{
 		public static int SitemapDepthLevelDefaultValue => Get<int>("sitemapDepthLevelDefaultValue");
 		public static bool RobotsNoindexNofollow => Get<bool>("robotsNoindexNofollow");
+		public static string MediaDirectoryPath => Get<string>("media-location");
 
 		public static T Get<T>(string key)
 		{

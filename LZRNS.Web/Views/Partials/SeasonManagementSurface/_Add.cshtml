@@ -24,14 +24,14 @@
 						<div class="form-horizontal">
 							<div class="form-group">
 								@Html.LabelFor(x => x.Name, new { @class = "control-label col-md-8" })
-								<div class="col-md-10">
+								<div class="col-md-12 mb-3">
 									@Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
-									@Html.ValidationMessageFor(x => x.Name)
+									@Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
 								</div>
 								@Html.LabelFor(x => x.SeasonStartYear, new { @class = "control-label col-md-8" })
-								<div class="col-md-10">
+								<div class="col-md-12 mb-3">
 									@Html.TextBoxFor(x => x.SeasonStartYear, new { @class = "form-control" })
-									@Html.ValidationMessageFor(x => x.SeasonStartYear)
+									@Html.ValidationMessageFor(x => x.SeasonStartYear, null, new { @class = "text-danger" })
 								</div>
 							</div>
 

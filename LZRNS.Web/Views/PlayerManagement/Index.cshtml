@@ -1,0 +1,70 @@
+﻿@model PlayerManagementModel
+@using LZRNS.Web.Controllers.Management
+@{
+	Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
+}
+
+<p>
+	<button class="open-add-modal btn btn-primary">Dodaj novog igrača</button>
+</p>
+<div class="card mb-3">
+	<div class="card-header">
+		<i class="fa fa-@Model.MenuIconStyle"></i> @Model.PageTitle
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th>Slika</th>
+						<th>Ime</th>
+						<th>Srednje ime</th>
+						<th>Prezime</th>
+						<th>Visina</th>
+						<th>Težina</th>
+						<th>Godište</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Players)
+					{
+						<tr class="open-edit-modal" data-playerId="@item.Id">
+							<td class="text-center">
+								<img class="img-responsive" src="@item.Image" width="50" height="50" style="border-radius:50%"/>
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.MiddleName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.LastName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Height)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.Weight)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.YearOfBirth)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-footer small text-muted">LZRNS - @Model.PageTitle</div>
+</div>
+
+@section scripts{
+	<script>
+		controller = {
+			addAction: '@(Url.Action<PlayerManagementSurfaceController>(c => c.Add()))',
+			editAction: '@(Url.Action<PlayerManagementSurfaceController>(c => c.Edit(null)))',
+			deleteAction: '@(Url.Action<PlayerManagementSurfaceController>(c => c.Delete(new Guid())))'
+		}
+	</script>
+	}

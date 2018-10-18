@@ -1,100 +1,113 @@
 ﻿using LZRNS.DomainModels.Models;
-using System;
-using System.Text;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using LZRNS.DomainModels.Helper;
+using System.Web;
 
 namespace LZRNS.DomainModel.Models
 {
-    public class Player : AbstractModel
-    {
-        [Required]
-        public string Name { get; set; }
+	public class Player : AbstractModel
+	{
+		[Required(ErrorMessage = "Ime je obavezno polje.")]
+		[DisplayName("Ime")]
+		public string Name { get; set; }
 
-        public string MiddleName { get; set; }
+		[DisplayName("Srednje ime")]
+		public string MiddleName { get; set; }
 
-        [Required]
-        public string LastName { get; set; }
+		[Required(ErrorMessage = "Prezime je obavezno polje.")]
+		[DisplayName("Prezime")]
+		public string LastName { get; set; }
 
-        public string Image { get; set; }
+		public string Image { get; set; }
 
-        //[Required] when we are importing data from history (round statistic, we do not have this information)
-        [Range(0, 250)]
-        public int Height { get; set; }
+		//[Required] when we are importing data from history (round statistic, we do not have this information)
+		[Required(ErrorMessage = "Visina je obavezno polje.")]
+		[Range(0, 250, ErrorMessage = "Vrednost mora biti izmeđi 0 i 250")]
+		[DisplayName("Visina")]
+		public int Height { get; set; }
 
-        //[Required] when we are importing data from history (round statistic, we do not have this information)
-        [Range(0, 250)]
-        public int Weight { get; set; }
-
-
-        [Range(1900, 2100)]
-        public int YearOfBirth { get; set; }
-
-        public virtual ICollection<Stats> Stats { get; set; }
-
-        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
-
-        #region Career high
+		//[Required] when we are importing data from history (round statistic, we do not have this information)
+		[Required(ErrorMessage = "Težina je obavezno polje.")]
+		[Range(0, 250, ErrorMessage = "Vrednost mora biti između 0 i 250")]
+		[DisplayName("Težina")]
+		public int Weight { get; set; }
 
 
-        public Stats CareerHighPts
-        {
-            get
-            {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Pts).First() : null;
-            }
-        }
+		[Required(ErrorMessage = "Godište je obavezno polje.")]
+		[Range(1900, 2100, ErrorMessage = "Vrednost mora biti između 1900 i 2100")]
+		[DisplayName("Godište")]
+		public int YearOfBirth { get; set; }
 
-        public Stats CareerHighReb
-        {
-            get
-            {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Reb).First() : null;
-            }
-        }
+		[NotMapped]
+		[DisplayName("Slika")]
+		public HttpPostedFileBase ImageFile { get; set; }
 
-        public Stats CareerHighAst
-        {
-            get
-            {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Ast).First() : null;
-            }
-        }
+		public virtual ICollection<Stats> Stats { get; set; }
 
-        public Stats CareerHighStl
-        {
-            get
-            {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Stl).First() : null;
-            }
-        }
+		public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 
-        public Stats CareerHighBlk
-        {
-            get
-            {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Blk).First() : null;
-            }
-        }
+		#region Career high
 
-        public Stats CareerHighEff
-        {
-            get
-            {
-                return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Eff).First() : null;
-            }
-        }
 
-        public string GetFullName
-        {
-            get
-            {
-                return Name + " " + LastName;
-            }
-        }
+		public Stats CareerHighPts
+		{
+			get
+			{
+				return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Pts).First() : null;
+			}
+		}
 
-        #endregion
-    }
+		public Stats CareerHighReb
+		{
+			get
+			{
+				return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Reb).First() : null;
+			}
+		}
+
+		public Stats CareerHighAst
+		{
+			get
+			{
+				return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Ast).First() : null;
+			}
+		}
+
+		public Stats CareerHighStl
+		{
+			get
+			{
+				return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Stl).First() : null;
+			}
+		}
+
+		public Stats CareerHighBlk
+		{
+			get
+			{
+				return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Blk).First() : null;
+			}
+		}
+
+		public Stats CareerHighEff
+		{
+			get
+			{
+				return Stats != null && Stats.Any() ? Stats.OrderByDescending(s => s.Eff).First() : null;
+			}
+		}
+
+		public string GetFullName
+		{
+			get
+			{
+				return Name + " " + LastName;
+			}
+		}
+
+		#endregion
+	}
 }

@@ -1,0 +1,59 @@
+﻿@model LZRNS.DomainModel.Models.Player
+@using LZRNS.Web.Controllers.Management
+
+@using (Html.BeginForm(nameof(PlayerManagementSurfaceController.Edit), nameof(PlayerManagementSurfaceController).RemoveControllerSuffix()))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(x => x.Id)
+	<i class="fa fa-fw fa-backward" id="back" style="cursor:pointer;"></i>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="text-center">
+					<img src="@Model.Image" class="img-responsive" id="imageFrame" height="150" width="150" style="border-radius:50%" />
+				</div>
+				@Html.LabelFor(x => x.ImageFile, new { @class = "control-label col-md-8" })
+				@Html.EditorFor(x => x.ImageFile)
+			</div>
+			<div class="col-md-3">
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.Name, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.Name, new { @class = "form-control" })
+					@Html.ValidationMessageFor(x => x.Name, null, new { @class = "text-danger" })
+				</div>
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.Height, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.Height, new { @class = "form-control" })
+					@Html.ValidationMessageFor(x => x.Height, null, new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.MiddleName, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control " })
+				</div>
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.Weight, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.Weight, new { @class = "form-control" })
+					@Html.ValidationMessageFor(x => x.Weight, null, new { @class = "text-danger" })
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.LastName, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+					@Html.ValidationMessageFor(x => x.LastName, null, new { @class = "text-danger" })
+				</div>
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.YearOfBirth, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.YearOfBirth, new { @class = "form-control" })
+					@Html.ValidationMessageFor(x => x.YearOfBirth, null, new { @class = "text-danger" })
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary" id="player-submit"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
+		<button class="btn btn-danger btn-delete" data-playerId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
+	</div>
+}
