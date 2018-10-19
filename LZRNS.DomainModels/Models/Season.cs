@@ -1,5 +1,4 @@
 ﻿using LZRNS.DomainModels.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -21,6 +20,6 @@ namespace LZRNS.DomainModel.Models
 		public virtual ICollection<LeagueSeason> LeagueSeasons { get; set; }
 
 		[NotMapped]
-		public IList<SelectListItem> Leagues { get; set; }
+		public IList<SelectListItem> LeagueList { get; set; }
 	}
 }

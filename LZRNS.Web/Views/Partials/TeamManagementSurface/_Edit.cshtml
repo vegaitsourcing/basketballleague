@@ -1,0 +1,67 @@
+﻿@model LZRNS.DomainModel.Models.Team
+@using LZRNS.Web.Controllers.Management
+
+@using (Html.BeginForm(nameof(TeamManagementSurfaceController.Edit), nameof(TeamManagementSurfaceController).RemoveControllerSuffix()))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(x => x.Id)
+	@Html.HiddenFor(x => x.Image)
+	<i class="fa fa-fw fa-backward" id="back" style="cursor:pointer;"></i>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-3">
+				<div class="text-center">
+					<img src="@Model.Image" class="img-responsive" id="imageFrame" height="150" width="150" style="border-radius:50%;background-color:#dee2e6;" />
+				</div>
+				@Html.LabelFor(x => x.ImageFile, new { @class = "control-label col-md-8" })
+				@Html.EditorFor(x => x.ImageFile)
+			</div>
+			<div class="col-md-3">
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.TeamName, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.TeamName, new { @class = "form-control" })
+					@Html.ValidationMessageFor(x => x.TeamName, null, new { @class = "text-danger" })
+				</div>
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.PreviousTeamGuid, new { @class = "control-label" })
+					@Html.DropDownListFor(x => x.PreviousTeamGuid, Model.Teams, "Izaberite tim iz prošle sezone", new { @class = "form-control" })
+				</div>
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.LeagueSeasonId, new { @class = "control-label" })
+					@Html.DropDownListFor(x => x.LeagueSeasonId, Model.LeagueSeasons, "Izaberite ligu u sezoni", new { @class = "form-control" })
+					@Html.ValidationMessageFor(x => x.LeagueSeasonId, null, new { @class = "text-danger" })
+				</div>
+				<div class="row mr-3 mb-3">
+					@Html.LabelFor(x => x.Coach, new { @class = "control-label" })
+					@Html.TextBoxFor(x => x.Coach, new { @class = "form-control" })
+				</div>
+			</div>
+			<div class="col-md-6 text-center">
+				<div class="row">
+					<div class="col-md-6 d-inline-block">
+						<label class="control-label">Svi igrači</label>
+						<div class="list-group" style="overflow-y: scroll; height:400px;">
+							@foreach (var player in Model.PlayerList)
+							{
+								<a href="#" class="list-group-item player-item" data-teamId="@Model.Id" data-playerId="@(player.Value)">@player.Text</a>
+							}
+						</div>
+					</div>
+					<div class="col-md-6 d-inline-block">
+						<label class="control-label">Igrači u timu</label>
+						<div class="list-group" style="overflow-y: scroll; height:400px;">
+							@foreach (var teamMember in Model.PlayersPerSeason)
+							{
+								<a href="#" class="list-group-item player-item team-member" data-teamId="@Model.Id" data-teamMemberId="@(teamMember.Id)">@teamMember.Player.GetFullName</a>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary" id="image-submit"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
+		<button class="btn btn-danger btn-delete" data-teamId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
+	</div>
+}

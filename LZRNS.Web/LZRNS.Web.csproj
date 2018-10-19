@@ -641,6 +641,10 @@
     <Content Include="Views\Partials\PlayerManagementSurface\_Add.cshtml" />
     <Content Include="Views\Partials\PlayerManagementSurface\_Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\HttpPostedFileBase.cshtml" />
+    <Content Include="Views\TeamManagement\Index.cshtml" />
+    <Content Include="Views\Partials\TeamManagementSurface\_Add.cshtml" />
+    <Content Include="Views\Partials\TeamManagementSurface\_Edit.cshtml" />
+    <Content Include="Views\RefereeManagement\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -661,6 +665,8 @@
     <Compile Include="App_Start\ExistingLanguagesRouteConstraint.cs" />
     <Compile Include="App_Start\LZRNSApp.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\Management\RefereeManagementController.cs" />
+    <Compile Include="Controllers\Management\TeamManagementController.cs" />
     <Compile Include="Controllers\Management\PlayerManagementController.cs" />
     <Compile Include="Controllers\Management\SeasonManagementController.cs" />
     <Compile Include="Controllers\RenderMvc\AboutUsController.cs" />

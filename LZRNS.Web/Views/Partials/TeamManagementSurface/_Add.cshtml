@@ -1,0 +1,52 @@
+﻿@model LZRNS.DomainModel.Models.Team
+@using LZRNS.Web.Controllers.Management
+
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+@using (Html.BeginForm(nameof(TeamManagementSurfaceController.Add), nameof(TeamManagementSurfaceController).RemoveControllerSuffix()))
+{
+			@Html.AntiForgeryToken()
+			<div class="modal-header">
+				<h5 class="modal-title">Dodavanje igrača</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+				<div class="modal-body">
+					<div class="form-horizontal">
+						<div class="form-group">
+							<div class="col-md-12 text-center">
+								<img class="img-responsive" id="imageFrame" height="150" width="150" style="border-radius:50%;background-color:#dee2e6;" />
+							</div>
+							@Html.LabelFor(x => x.ImageFile, new { @class = "control-label col-md-8" })
+							<div class="col-md-12 mb-3">
+								@Html.EditorFor(x => x.ImageFile)
+							</div>
+							@Html.LabelFor(x => x.TeamName, new { @class = "control-label col-md-8" })
+							<div class="col-md-12 mb-3">
+								@Html.TextBoxFor(x => x.TeamName, new { @class = "form-control" })
+								@Html.ValidationMessageFor(x => x.TeamName, null, new { @class = "text-danger" })
+							</div>
+							@Html.LabelFor(x => x.PreviousTeamGuid, new { @class = "control-label col-md-8" })
+							<div class="col-md-12 mb-3">
+								@Html.DropDownListFor(x => x.PreviousTeamGuid, Model.Teams, "Izaberite tim iz prošle sezone", new { @class = "form-control" })
+							</div>
+							@Html.LabelFor(x => x.LeagueSeasonId, new { @class = "control-label col-md-8" })
+							<div class="col-md-12 mb-3">
+								@Html.DropDownListFor(x => x.LeagueSeasonId, Model.LeagueSeasons, "Izaberite ligu u sezoni", new { @class = "form-control" })
+								@Html.ValidationMessageFor(x => x.LeagueSeasonId, null, new { @class = "text-danger" })
+							</div>
+							@Html.LabelFor(x => x.Coach, new { @class = "control-label col-md-8" })
+							<div class="col-md-12 mb-3">
+								@Html.TextBoxFor(x => x.Coach, new { @class = "form-control" })
+							</div>
+						</div>
+
+					</div>
+				</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-primary green-save-button" id="image-submit"><i class="fa fa-fw fa-save"></i>Dodaj</button>
+					</div>
+			}
+	</div>
+</div>

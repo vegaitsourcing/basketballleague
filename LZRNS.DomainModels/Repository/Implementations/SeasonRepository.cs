@@ -3,6 +3,8 @@ using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace LZRNS.DomainModels.Repository.Implementations
@@ -33,6 +35,11 @@ namespace LZRNS.DomainModels.Repository.Implementations
 			{
 				return false;
 			}
+		}
+
+		public IEnumerable<LeagueSeason> GetAllLeagueSeasons()
+		{
+			return _context.Set<LeagueSeason>();
 		}
 
 		public LeagueSeason GetLeagueSeasonById(Guid id)

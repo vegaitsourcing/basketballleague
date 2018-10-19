@@ -2,10 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace LZRNS.DomainModels.Models
@@ -25,5 +22,7 @@ namespace LZRNS.DomainModels.Models
 		public virtual ICollection<Team> Teams { get; set; }
 
 		public virtual ICollection<Round> Rounds { get; set; }
+
+		public string FullName => Season.Name + " - " + League.Name;
 	}
 }

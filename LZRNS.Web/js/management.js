@@ -30,7 +30,7 @@ function setBase64ToImage(file, $imageEl) {
 
 $(document).ready(function () {
 	//function for submitting ajax form with input type file, because ajax...
-	$(document).on('click', '#player-submit', function (e) {
+	$(document).on('click', '#image-submit', function (e) {
 		e.preventDefault();
 		$form = $(this).closest('form');
 
@@ -68,14 +68,21 @@ $(document).ready(function () {
 		editAction(this.dataset);
 	});
 
-	$(document).on('click', '.btn-delete', function () {
+	$(document).on('click', '.btn-delete', function (e) {
+		e.preventDefault();
+
 		$.get(controller.deleteAction, this.dataset,
 			function (data, status) {
 				if (data.status === "success") {
 					location.reload();
 					return;
 				}
-				confirm(data.message);
+				if (confirm(data.message)) {
+					location.reload();
+				}
+				else{
+					location.reload();
+				}
 			});
 	});
 
@@ -115,6 +122,37 @@ $(document).ready(function () {
 			$hrefElement.addClass("in-progress");
 		}
 	})
+
+	// players in team event
+	$(document).on('click', '.player-item', function (e) {
+		e.preventDefault();
+		$hrefElement = $(this);
+		var dataset = this.dataset;
+		if ($hrefElement.hasClass("team-member")) {
+			$.ajax({
+				url: controller.deleteTeamMemberAction,
+				type: 'POST',
+				data: JSON.stringify(dataset),
+				processData: false,
+				contentType: 'application/json',
+				success: function (result, status, xhr) {
+					editAction(dataset);
+				},
+			});
+		}
+		else {
+			$.ajax({
+				url: controller.addPlayerToTeamAction,
+				type: 'POST',
+				data: JSON.stringify(dataset),
+				processData: false,
+				contentType: 'application/json',
+				success: function (result, status, xhr) {
+					editAction(dataset);
+				},
+			});
+		}
+	});
 
 	$(document).on('change', 'input[name=ImageFile]', function () {
 		var files = this.files;

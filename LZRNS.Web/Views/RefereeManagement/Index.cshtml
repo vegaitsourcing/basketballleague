@@ -1,0 +1,54 @@
+﻿@model RefereeManagementModel
+@using LZRNS.Web.Controllers.Management
+@{
+	Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
+}
+
+<p>
+	<button class="open-add-modal btn btn-primary">Dodaj novog sudiju</button>
+</p>
+<div class="card mb-3">
+	<div class="card-header">
+		<i class="fa fa-@Model.MenuIconStyle"></i> @Model.PageTitle
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th>
+							Ime
+						</th>
+						<th>
+							Prezime
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Referees)
+					{
+						<tr class="open-edit-modal" data-refereeId="@item.Id">
+							<td>
+								@Html.DisplayFor(modelItem => item.Name)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.LastName)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-footer small text-muted">LZRNS - @Model.PageTitle</div>
+</div>
+
+@section scripts{
+	<script>
+		controller = {
+			addAction: '@(Url.Action<RefereeManagementSurfaceController>(c => c.Add()))',
+			editAction: '@(Url.Action<RefereeManagementSurfaceController>(c => c.Edit(null)))',
+			deleteAction: '@(Url.Action<RefereeManagementSurfaceController>(c => c.Delete(new Guid())))'
+		}
+	</script>
+	}

@@ -55,7 +55,7 @@ namespace LZRNS.Web.Controllers.Management
 		{
 			var model = _seasonRepo.GetById(seasonId);
 			var allLeagues = _leagueRepo.GetAll().ToList();
-			model.Leagues = new List<SelectListItem>();
+			model.LeagueList = new List<SelectListItem>();
 
 			foreach(var league in allLeagues)
 			{
@@ -63,7 +63,7 @@ namespace LZRNS.Web.Controllers.Management
 						.Where(y => y.LeagueId == league.Id)
 						.FirstOrDefault();
 
-				model.Leagues.Add(new SelectListItem
+				model.LeagueList.Add(new SelectListItem
 				{
 					Selected = existingLeagueSeason != null,
 					Text = league.Name,
@@ -71,7 +71,7 @@ namespace LZRNS.Web.Controllers.Management
 				});
 			}
 
-			model.Leagues = model.Leagues
+			model.LeagueList = model.LeagueList
 				.OrderBy(x => x.Text)
 				.ToList();
 

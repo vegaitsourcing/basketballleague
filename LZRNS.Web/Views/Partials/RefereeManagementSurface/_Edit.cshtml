@@ -1,0 +1,27 @@
+﻿@model LZRNS.DomainModel.Models.Referee
+@using LZRNS.Web.Controllers.Management
+
+@using (Ajax.BeginForm(nameof(RefereeManagementSurfaceController.Edit), nameof(RefereeManagementSurfaceController).RemoveControllerSuffix(), null,new AjaxOptions{HttpMethod = "POST", OnSuccess = "location.reload()"}))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(x => x.Id)
+	<i class="fa fa-fw fa-backward" id="back" style="cursor:pointer;"></i>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-3">
+				@Html.LabelFor(x => x.Name, new { @class = "control-label" })
+				@Html.TextBoxFor(x => x.Name, new { @class = "form-control mb-3" })
+				@Html.ValidationMessageFor(x => x.Name)
+			</div>
+			<div class="col-md-3">
+				@Html.LabelFor(x => x.LastName, new { @class = "control-label" })
+				@Html.TextBoxFor(x => x.LastName, new { @class = "form-control mb-3" })
+				@Html.ValidationMessageFor(x => x.LastName)
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
+		<button class="btn btn-danger btn-delete" data-refereeId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
+	</div>
+}
