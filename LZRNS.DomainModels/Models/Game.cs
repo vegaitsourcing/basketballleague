@@ -1,6 +1,7 @@
 ﻿using LZRNS.DomainModels.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
@@ -21,17 +22,23 @@ namespace LZRNS.DomainModel.Models
 		[Required]
 		public Guid RoundId { get; set; }
 
+
+		[Required(ErrorMessage = "Morate selektovati datum.")]
+		[DisplayName("Datum")]
 		public DateTime DateTime { get; set; }
 
 		[ForeignKey("TeamAId")]
 		public virtual Team TeamA { get; set; }
 
-		[Required]
+		[DisplayName("Prvi tim")]
+		[Required(ErrorMessage = "Morate selektovati prvi tim.")]
 		public Guid TeamAId { get; set; }
 
 		[ForeignKey("TeamBId")]
 		public virtual Team TeamB { get; set; }
 
+		[DisplayName("Drugi tim")]
+		[Required(ErrorMessage = "Morate selektovati drugi tim.")]
 		public Guid TeamBId { get; set; }
 
 		public virtual ICollection<Referee> Referees { get; set; }

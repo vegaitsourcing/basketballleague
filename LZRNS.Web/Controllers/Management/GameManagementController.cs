@@ -72,9 +72,20 @@ namespace LZRNS.Web.Controllers.Management
 			return PartialView(model);
 		}
 		[HttpGet]
-		public ActionResult Edit(Guid roundId)
+		public ActionResult Edit(Guid gameId)
 		{
-			return PartialView(_roundRepo.GetById(roundId));
+			var model = _gameRepo.GetById(gameId);
+
+			model.Teams = _teamRepo.GetAll()
+				.ToList()
+				.Where(x => x.LeagueSeasonId.Equals(model.Round.LeagueSeasonId))
+				.Select(x => new SelectListItem()
+				{
+					Text = x.TeamName,
+					Value = x.Id.ToString()
+				});
+
+			return PartialView(model);
 		}
 		[HttpGet]
 		public ActionResult SeasonSelector(Guid seasonId)

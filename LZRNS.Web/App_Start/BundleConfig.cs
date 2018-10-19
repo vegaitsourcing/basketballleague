@@ -39,6 +39,7 @@ namespace LZRNS.Web
 				"~/vendor/datatables/dataTables.bootstrap4.css"
 			));
 
+
 			bundles.Add(new StyleBundle("~/bundles/styles/fontawesome/").Include(
 				"~/vendor/font-awesome/css/font-awesome.min.css",
 				new CssRewriteUrlTransform()
