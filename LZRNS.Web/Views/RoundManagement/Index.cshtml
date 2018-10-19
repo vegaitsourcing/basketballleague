@@ -1,0 +1,54 @@
+﻿@model RoundManagementModel
+@using LZRNS.Web.Controllers.Management
+@{
+	Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
+}
+
+<p>
+	<button class="open-add-modal btn btn-primary">Dodaj novu rundu</button>
+</p>
+<div class="card mb-3">
+	<div class="card-header">
+		<i class="fa fa-@Model.MenuIconStyle"></i> @Model.PageTitle
+	</div>
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				<thead>
+					<tr>
+						<th>
+							Naziv runde
+						</th>
+						<th>
+							Liga u sezoni
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model.Rounds)
+					{
+						<tr class="open-edit-modal" data-roundId="@item.Id">
+							<td>
+								@Html.DisplayFor(modelItem => item.RoundName)
+							</td>
+							<td>
+								@Html.DisplayFor(modelItem => item.LeagueSeason.FullName)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card-footer small text-muted">LZRNS - @Model.PageTitle</div>
+</div>
+
+@section scripts{
+	<script>
+		controller = {
+			addAction: '@(Url.Action<RoundManagementSurfaceController>(c => c.Add()))',
+			editAction: '@(Url.Action<RoundManagementSurfaceController>(c => c.Edit(null)))',
+			deleteAction: '@(Url.Action<RoundManagementSurfaceController>(c => c.Delete(new Guid())))'
+		}
+	</script>
+	}

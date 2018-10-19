@@ -14,34 +14,37 @@ using Umbraco.Web;
 
 namespace LZRNS.Web
 {
-    public class LZRNSApp : UmbracoApplication
-    {
-        protected override void OnApplicationStarted(object sender, EventArgs e)
-        {
-            base.OnApplicationStarted(sender, e);
+	public class LZRNSApp : UmbracoApplication
+	{
+		protected override void OnApplicationStarted(object sender, EventArgs e)
+		{
+			base.OnApplicationStarted(sender, e);
 
-            var builder = new ContainerBuilder();
-            builder.RegisterControllers(typeof(LZRNSApp).Assembly);
-            builder.RegisterApiControllers(typeof(LZRNSApp).Assembly);
+			var builder = new ContainerBuilder();
+			builder.RegisterControllers(typeof(LZRNSApp).Assembly);
+			builder.RegisterApiControllers(typeof(LZRNSApp).Assembly);
 
-            builder.RegisterControllers(typeof(UmbracoApplication).Assembly);
-            builder.RegisterApiControllers(typeof(UmbracoApplication).Assembly);
-            builder.Register(c => new UmbracoHelper(UmbracoContext.Current));
+			builder.RegisterControllers(typeof(UmbracoApplication).Assembly);
+			builder.RegisterApiControllers(typeof(UmbracoApplication).Assembly);
+			builder.Register(c => new UmbracoHelper(UmbracoContext.Current));
 
-            //context
-            builder.RegisterType<BasketballDbContext>();
+			//context
+			builder.RegisterType<BasketballDbContext>();
 
-            //register repositories
-            builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
-            builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
-            builder.RegisterType<SeasonRepository>().As<ISeasonRepository>();
-            builder.RegisterType<TeamRepository>().As<ITeamRepository>();
-            builder.RegisterType<RefereeRepository>().As<IRefereeRepository>();
+			//register repositories
+			builder.RegisterType<PlayerRepository>().As<IPlayerRepository>();
+			builder.RegisterType<LeagueRepository>().As<ILeagueRepository>();
+			builder.RegisterType<SeasonRepository>().As<ISeasonRepository>();
+			builder.RegisterType<TeamRepository>().As<ITeamRepository>();
+			builder.RegisterType<RefereeRepository>().As<IRefereeRepository>();
+			builder.RegisterType<RoundRepository>().As<IRoundRepository>();
+			builder.RegisterType<GameRepository>().As<IGameRepository>();
 
-            var container = builder.Build();
 
-            DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
-            GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
-        }
-    }
+			var container = builder.Build();
+
+			DependencyResolver.SetResolver(new AutofacDependencyResolver(container));
+			GlobalConfiguration.Configuration.DependencyResolver = new AutofacWebApiDependencyResolver(container);
+		}
+	}
 }

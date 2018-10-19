@@ -1,0 +1,31 @@
+﻿@model IEnumerable<LZRNS.DomainModel.Models.Game>
+
+
+<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+	<thead>
+		<tr>
+			<th>
+				Prvi tim
+			</th>
+			<th>
+				Drugi tim
+			</th>
+			<th>
+				Datum utakmice
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if (Model != null && Model.Any())
+		{
+			foreach (var item in Model)
+			{
+				<tr class="open-edit-modal" data-gameId="@item.Id">
+					<td>@item.TeamA.TeamName</td>
+					<td>@item.TeamB.TeamName</td>
+					<td>@item.DateTime.ToString("dd.MM.yyyy HH:mm")</td>
+				</tr>
+			}
+		}
+	</tbody>
+</table>

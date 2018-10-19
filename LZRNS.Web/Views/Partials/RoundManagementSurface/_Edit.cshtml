@@ -1,0 +1,27 @@
+﻿@model LZRNS.DomainModels.Models.Round
+@using LZRNS.Web.Controllers.Management
+
+@using (Ajax.BeginForm(nameof(RoundManagementSurfaceController.Edit), nameof(RoundManagementSurfaceController).RemoveControllerSuffix(), null,new AjaxOptions{HttpMethod = "POST", OnSuccess = "location.reload()"}))
+{
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(x => x.Id)
+	<i class="fa fa-fw fa-backward" id="back" style="cursor:pointer;"></i>
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-md-3">
+				@Html.LabelFor(x => x.RoundName, new { @class = "control-label" })
+				@Html.TextBoxFor(x => x.RoundName, new { @class = "form-control mb-3" })
+				@Html.ValidationMessageFor(x => x.RoundName, null, new { @class = "text-danger" })
+			</div>
+			<div class="col-md-3">
+				@Html.LabelFor(x => x.LeagueSeasonId, new { @class = "control-label" })
+				@Html.DropDownListFor(x => x.LeagueSeasonId, Model.LeagueSeasons, "Izaberite ligu u sezoni", new { @class = "form-control mb-3" })
+				@Html.ValidationMessageFor(x => x.LeagueSeasonId, null, new { @class = "text-danger" })
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
+		<button class="btn btn-danger btn-delete" data-roundId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
+	</div>
+}

@@ -1,0 +1,44 @@
+﻿@model GameManagementModel
+@using LZRNS.Web.Controllers.Management
+@{
+	Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
+}
+
+@if (Model.Seasons != null && Model.Seasons.Any())
+{
+	var isFirst = true;
+	<ul class="nav nav-tabs">
+		@foreach (var season in Model.Seasons)
+		{
+			<li class="nav-item">
+				<a class="nav-link @(isFirst ? "active" : "")" data-seasonId ="@season.Value" href="#">@season.Text</a>
+			</li>
+			isFirst = false;
+		}
+	</ul>
+}
+
+	<div class="row m-4" id="control-row">
+	</div>
+		<div class="card mb-3">
+			<div class="card-header">
+				<i class="fa fa-@Model.MenuIconStyle"></i> @Model.PageTitle
+			</div>
+			<div class="card-body">
+				<div class="table-responsive" id="table-games"></div>
+			</div>
+			<div class="card-footer small text-muted">LZRNS - @Model.PageTitle</div>
+		</div>
+
+@section scripts{
+	<script>
+		controller = {
+			addAction: '@(Url.Action<GameManagementSurfaceController>(c => c.Add(new Guid(), new Guid())))',
+			editAction: '@(Url.Action<GameManagementSurfaceController>(c => c.Edit(null)))',
+			deleteAction: '@(Url.Action<GameManagementSurfaceController>(c => c.Delete(new Guid())))',
+			seasonSelectorAction: '@(Url.Action<GameManagementSurfaceController>(c => c.SeasonSelector(new Guid())))',
+			roundSelectorAction: '@(Url.Action<GameManagementSurfaceController>(c => c.RoundSelector(new Guid())))',
+			gamesTableAction: '@(Url.Action<GameManagementSurfaceController>(c => c.GamesTable(new Guid())))',
+		}
+	</script>
+	}

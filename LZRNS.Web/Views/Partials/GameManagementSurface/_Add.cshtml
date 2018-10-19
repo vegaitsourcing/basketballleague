@@ -1,0 +1,44 @@
+﻿@model LZRNS.DomainModel.Models.Game
+@using LZRNS.Web.Controllers.Management
+
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		@using (Ajax.BeginForm(nameof(GameManagementSurfaceController.Add), nameof(GameManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "location.reload()" }))
+		{
+			@Html.AntiForgeryToken()
+			@Html.HiddenFor(x => x.RoundId)
+			@Html.HiddenFor(x => x.SeasonId)
+			<div class="modal-header">
+				<h5 class="modal-title">Dodavanje utakmice</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						@Html.LabelFor(x => x.DateTime, new { @class = "control-label col-md-8" })
+						<div class="col-md-12 mb-3">
+							@Html.TextBoxFor(x => x.DateTime, new { @class = "form-control" })
+							@Html.ValidationMessageFor(x => x.DateTime, null, new { @class = "text-danger" })
+						</div>
+						@Html.LabelFor(x => x.TeamAId, new { @class = "control-label col-md-8" })
+						<div class="col-md-12 mb-3">
+							@Html.DropDownListFor(x => x.TeamAId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control" })
+							@Html.ValidationMessageFor(x => x.TeamAId, null, new { @class = "text-danger" })
+						</div>
+						@Html.LabelFor(x => x.TeamBId, new { @class = "control-label col-md-8" })
+						<div class="col-md-12 mb-3">
+							@Html.DropDownListFor(x => x.TeamBId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control" })
+							@Html.ValidationMessageFor(x => x.TeamBId, null, new { @class = "text-danger" })
+						</div>
+					</div>
+
+				</div>
+			</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary green-save-button"><i class="fa fa-fw fa-save"></i>Dodaj</button>
+				</div>
+			}
+	</div>
+</div>

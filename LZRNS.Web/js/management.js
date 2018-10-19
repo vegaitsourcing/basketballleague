@@ -28,7 +28,72 @@ function setBase64ToImage(file, $imageEl) {
 	return result;
 }
 
+//get dropdown menus for seasons and rounds
+function getSeasonSelector(dataset) {
+	$.get(controller.seasonSelectorAction, dataset, function (data, status) {
+		if (status === "success") {
+			$("#control-row").html(data);
+		}
+	}, "html");
+}
+
 $(document).ready(function () {
+	//round management functions
+	$activeSeason = $(document).find('.nav-link.active');
+
+	if ($activeSeason.length > 0) {
+		getSeasonSelector($activeSeason[0].dataset);
+	}
+
+	$(document).on('change', '#selected-league', function () {
+		var dataset = {
+			leagueSeasonId: $(this).val()
+		}
+		$('#selected-round').remove();
+		$('.open-add-modal').remove();
+
+		$.get(controller.roundSelectorAction, dataset, function (data, status) {
+			if (status === "success") {
+				$("#control-row").append(data);
+			}
+		}, "html");
+	});
+
+	$(document).on('change', '#selected-round', function () {
+		var dataset = {
+			roundId: $(this).val()
+		}
+
+		if ($(this).val() === "") {
+			$('.open-add-modal').remove();
+		}
+		else {
+			$.get(controller.gamesTableAction, dataset, function (data, status) {
+				if (status === "success") {
+					if ($('.open-add-modal').length === 0) {
+						$("#control-row").append("<button class=\"open-add-modal btn btn-primary\">Dodaj novu utakmicu</button>");
+						$(".open-add-modal")[0].dataset.leagueseasonid = $("#selected-league").val()
+						$(".open-add-modal")[0].dataset.roundid = $("#selected-round").val();
+					}
+					else {
+						$(".open-add-modal")[0].dataset.roundid = $("#selected-round").val();
+					}
+					$("#table-games").html(data);
+					initDataTable();
+				}
+			}, "html");
+		}
+	});
+
+	$(document).on('click', '.nav-link', function () {
+		$navLink = $(this);
+
+		$('.nav-link').removeClass("active");
+		$navLink.addClass("active");
+		getSeasonSelector($navLink[0].dataset);
+	})
+
+
 	//function for submitting ajax form with input type file, because ajax...
 	$(document).on('click', '#image-submit', function (e) {
 		e.preventDefault();
@@ -48,14 +113,13 @@ $(document).ready(function () {
 		}
 	});
 
-
 	$(document).on('click', '#back', function () {
 		location.reload();
 	})
 
 	// 3 standard generic operations, add modal, edit modal and delete button
 	$(document).on('click', ".open-add-modal", function () {
-		$.get(controller.addAction, function (data, status) {
+		$.get(controller.addAction, this.dataset, function (data, status) {
 			if (status === "success") {
 				$('#modal').html(data);
 				$('#modal').modal();

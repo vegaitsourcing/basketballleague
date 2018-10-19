@@ -109,6 +109,7 @@
     <Compile Include="Repository\Implementations\GameRepository.cs" />
     <Compile Include="Repository\Implementations\LeagueRepository.cs" />
     <Compile Include="Repository\Implementations\PlayerRepository.cs" />
+    <Compile Include="Repository\Implementations\RoundRepository.cs" />
     <Compile Include="Repository\Implementations\RefereeRepository.cs" />
     <Compile Include="Repository\Implementations\RepositoryBase.cs" />
     <Compile Include="Repository\Implementations\SeasonRepository.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="Repository\Interfaces\IGameRepository.cs" />
     <Compile Include="Repository\Interfaces\ILeagueRepository.cs" />
     <Compile Include="Repository\Interfaces\IPlayerRepository.cs" />
+    <Compile Include="Repository\Interfaces\IRoundRepository.cs" />
     <Compile Include="Repository\Interfaces\IRefereeRepository.cs" />
     <Compile Include="Repository\Interfaces\IRepositoryBase.cs" />
     <Compile Include="Repository\Interfaces\ISeasonRepository.cs" />
