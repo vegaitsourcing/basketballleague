@@ -19,7 +19,7 @@
 					<div class="form-group">
 						@Html.LabelFor(x => x.DateTime, new { @class = "control-label col-md-8" })
 						<div class="col-md-12 mb-3">
-							@Html.TextBoxFor(x => x.DateTime, new { @class = "form-control" })
+							@Html.TextBoxFor(x => x.DateTime, new { @type = "datetime-local", @class = "form-control datepicker", @Value = Model.DateTime.ToString("yyyy-MM-ddThh:mm") })
 							@Html.ValidationMessageFor(x => x.DateTime, null, new { @class = "text-danger" })
 						</div>
 						@Html.LabelFor(x => x.TeamAId, new { @class = "control-label col-md-8" })

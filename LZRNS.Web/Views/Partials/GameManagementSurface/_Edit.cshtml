@@ -13,20 +13,8 @@
 			<div class="col-md-3">
 				<div class="row mr-3 mb-3">
 					@Html.LabelFor(x => x.DateTime, new { @class = "control-label" })
-					<div class='input-group date' id='wat'>
-						@Html.TextBoxFor(x => x.DateTime, new { @class = "form-control" })
-						<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</span>
-					</div>
+					@Html.TextBoxFor(x => x.DateTime, new { @type = "datetime-local", @class = "form-control datepicker", @Value = Model.DateTime.ToString("yyyy-MM-ddThh:mm") })
 					@Html.ValidationMessageFor(x => x.DateTime, null, new { @class = "text-danger" })
-					<script>
-						$(function () {
-							$('#wat').datetimepicker({
-								locale: 'sr'
-							});
-						});
-					</script>
 				</div>
 				<div class="row mr-3 mb-3">
 					@Html.LabelFor(x => x.TeamAId, new { @class = "control-label" })

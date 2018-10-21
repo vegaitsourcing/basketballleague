@@ -23,7 +23,8 @@ namespace LZRNS.DomainModel.Models
 		public Guid RoundId { get; set; }
 
 
-		[Required(ErrorMessage = "Morate selektovati datum.")]
+		[Required(ErrorMessage = "Morate uneti datum.")]
+		[Range(typeof(DateTime), "1-1-2010", "1-1-2100", ErrorMessage = "Morate uneti validan datum.")]
 		[DisplayName("Datum")]
 		public DateTime DateTime { get; set; }
 
