@@ -11,7 +11,7 @@
 		@foreach (var season in Model.Seasons)
 		{
 			<li class="nav-item">
-				<a class="nav-link @(isFirst ? "active" : "")" data-seasonId ="@season.Value" href="#">@season.Text</a>
+				<a class="nav-link @(isFirst ? "active" : "")" data-seasonId="@season.Value" href="#">@season.Text</a>
 			</li>
 			isFirst = false;
 		}
@@ -39,6 +39,9 @@
 			seasonSelectorAction: '@(Url.Action<GameManagementSurfaceController>(c => c.SeasonSelector(new Guid())))',
 			roundSelectorAction: '@(Url.Action<GameManagementSurfaceController>(c => c.RoundSelector(new Guid())))',
 			gamesTableAction: '@(Url.Action<GameManagementSurfaceController>(c => c.GamesTable(new Guid())))',
+			addGamePlayerAction: '@(Url.Action<GameManagementSurfaceController>(c => c.AddGamePlayer(new Guid(), new Guid())))',
+			deleteGamePlayerAction: '@(Url.Action<GameManagementSurfaceController>(c => c.DeleteGamePlayer(new Guid(), new Guid())))',
+			updateGamePlayerAction: '@(Url.Action<GameManagementSurfaceController>(c => c.EditPlayerStats(null)))'
 		}
 	</script>
 	}

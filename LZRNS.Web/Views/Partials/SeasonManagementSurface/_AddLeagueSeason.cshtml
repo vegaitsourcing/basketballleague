@@ -4,7 +4,7 @@
 
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
-		@using (Ajax.BeginForm(nameof(SeasonManagementSurfaceController.AddLeagueSeason), nameof(SeasonManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnComplete = $"leagueSeasonSuccess" }))
+		@using (Ajax.BeginForm(nameof(SeasonManagementSurfaceController.AddLeagueSeason), nameof(SeasonManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnComplete = "onPostSuccess" }))
 		{
 			@Html.AntiForgeryToken()
 			@Html.HiddenFor(x => x.LeagueId)

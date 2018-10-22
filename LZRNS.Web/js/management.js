@@ -1,6 +1,6 @@
-//function called when ajax call is finished for leaguesSeason edit/add forms
-function leagueSeasonSuccess(data) {
-	editAction(data.responseJSON);
+//function called when ajax call is finished for leaguesSeason edit/add forms & add game player form
+function onPostSuccess(data) {
+	editAction(data.responseJSON ? data.responseJSON : data);
 	$('#modal').modal('hide');
 }
 
@@ -13,6 +13,18 @@ function editAction(dataset) {
 				$.validator.unobtrusive.parse($(".main-content"));
 			}
 		}, "html");
+}
+
+//gets form data from "form" in my case jquery array of inputs
+function getFormData($form) {
+	var unindexed_array = $form.serializeArray();
+	var indexed_array = {};
+
+	$.map(unindexed_array, function (n, i) {
+		indexed_array[n['name']] = n['value'];
+	});
+
+	return indexed_array;
 }
 
 // sets base64 string of input file for passed image
@@ -144,12 +156,31 @@ $(document).ready(function () {
 				if (confirm(data.message)) {
 					location.reload();
 				}
-				else{
+				else {
 					location.reload();
 				}
 			});
 	});
 
+	//action for updating player stats
+	$(document).on('click', '.btn-player-stats', function (e) {
+		e.preventDefault();
+		$inputs = $(this).closest('.player-stats').find('input');
+
+		$.ajax({
+			url: controller.updateGamePlayerAction,
+			type: 'POST',
+			data: JSON.stringify(getFormData($inputs)),
+			processData: false,
+			contentType: 'application/json',
+			success: function (data, status) {
+				if (status === "success") {
+					editAction(data);
+					$('#modal').modal('hide');
+				}
+			},
+		});
+	})
 	// 2 leagueSeason events, for delete and for add/edit
 	$(document).on('click', '.btn-delete-leagueSeason', function () {
 		$.get(controller.deleteLeagueSeasonAction, this.dataset,
@@ -158,7 +189,7 @@ $(document).ready(function () {
 					editAction(data);
 					$('#modal').modal('hide');
 				}
-			}, "html");
+			}, "json");
 	});
 
 	$(document).on('click', '.league-item', function (e) {
@@ -173,7 +204,6 @@ $(document).ready(function () {
 					$.validator.unobtrusive.parse($("#modal"));
 				}
 			}, "html");
-			$hrefElement.addClass("in-progress");
 		}
 		else {
 			$.get(controller.addLeagueSeasonAction, this.dataset, function (data, status) {
@@ -183,7 +213,32 @@ $(document).ready(function () {
 					$.validator.unobtrusive.parse($("#modal"));
 				}
 			}, "html");
-			$hrefElement.addClass("in-progress");
+		}
+	})
+
+
+	// game player event, for delete and for add/edit
+	$(document).on('click', '.game-player-item', function (e) {
+		e.preventDefault();
+		$hrefElement = $(this);
+
+		if ($hrefElement.hasClass("active")) {
+			$.get(controller.deleteGamePlayerAction, this.dataset,
+				function (data, status) {
+					if (status === "success") {
+						editAction(data);
+						$('#modal').modal('hide');
+					}
+				}, "json");
+		}
+		else {
+			$.get(controller.addGamePlayerAction, this.dataset, function (data, status) {
+				if (status === "success") {
+					$('#modal').html(data);
+					$('#modal').modal();
+					$.validator.unobtrusive.parse($("#modal"));
+				}
+			}, "html");
 		}
 	})
 

@@ -674,6 +674,8 @@
     <Content Include="Views\Partials\RoundManagementSurface\_Edit.cshtml" />
     <Content Include="Views\Partials\GameManagementSurface\_GamesTable.cshtml" />
     <Content Include="Views\Partials\GameManagementSurface\_Add.cshtml" />
+    <Content Include="Views\Partials\GameManagementSurface\_AddGamePlayer.cshtml" />
+    <Content Include="Views\Partials\GameManagementSurface\_EditPlayerStats.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

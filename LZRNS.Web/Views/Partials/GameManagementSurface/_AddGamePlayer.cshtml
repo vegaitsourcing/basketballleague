@@ -1,0 +1,34 @@
+﻿@model LZRNS.DomainModels.Models.Stats
+@using LZRNS.Web.Controllers.Management
+
+<div class="modal-dialog" role="document">
+	<div class="modal-content">
+		@using (Ajax.BeginForm(nameof(GameManagementSurfaceController.AddGamePlayer), nameof(GameManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "onPostSuccess" }))
+		{
+			@Html.AntiForgeryToken()
+			@Html.HiddenFor(x => x.GameId)
+			@Html.HiddenFor(x => x.PlayerId)
+			<div class="modal-header">
+				<h5 class="modal-title">Dodavanje startup igrača</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="form-horizontal">
+					<div class="form-group">
+						@Html.LabelFor(x => x.JerseyNumber, new { @class = "control-label col-md-8" })
+						<div class="col-md-12 mb-3">
+							@Html.TextBoxFor(x => x.JerseyNumber, new { @class = "form-control" })
+							@Html.ValidationMessageFor(x => x.JerseyNumber, null, new { @class = "text-danger" })
+						</div>
+					</div>
+
+				</div>
+			</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary green-save-button"><i class="fa fa-fw fa-save"></i>Dodaj</button>
+				</div>
+			}
+	</div>
+</div>

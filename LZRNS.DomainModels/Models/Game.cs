@@ -24,7 +24,6 @@ namespace LZRNS.DomainModel.Models
 
 
 		[Required(ErrorMessage = "Morate uneti datum.")]
-		[Range(typeof(DateTime), "1-1-2010", "1-1-2100", ErrorMessage = "Morate uneti validan datum.")]
 		[DisplayName("Datum")]
 		public DateTime DateTime { get; set; }
 
@@ -49,6 +48,12 @@ namespace LZRNS.DomainModel.Models
 
 		[NotMapped]
 		public virtual ICollection<StatsPerGame> StatsPerGame { get; }
+
+		[NotMapped]
+		public ICollection<Stats> TeamAPlayerStats { get; set; }
+
+		[NotMapped]
+		public ICollection<Stats> TeamBPlayerStats { get; set; }
 
 		[NotMapped]
 		public StatsPerGame StatsPerGameA { get; }

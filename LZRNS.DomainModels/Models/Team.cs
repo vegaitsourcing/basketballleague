@@ -54,7 +54,7 @@ namespace LZRNS.DomainModel.Models
 		[NotMapped]
 		public IEnumerable<SelectListItem> LeagueSeasons { get; set; }
 		[NotMapped]
-		public IList<SelectListItem> PlayerList { get; set; }
+		public IEnumerable<SelectListItem> AvailablePlayers { get; set; }
 		#endregion
 
 		#region Points

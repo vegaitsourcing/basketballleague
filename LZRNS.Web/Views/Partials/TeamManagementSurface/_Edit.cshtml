@@ -41,7 +41,7 @@
 					<div class="col-md-6 d-inline-block">
 						<label class="control-label">Svi igrači</label>
 						<div class="list-group" style="overflow-y: scroll; height:400px;">
-							@foreach (var player in Model.PlayerList)
+							@foreach (var player in Model.AvailablePlayers)
 							{
 								<a href="#" class="list-group-item player-item" data-teamId="@Model.Id" data-playerId="@(player.Value)">@player.Text</a>
 							}

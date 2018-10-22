@@ -1,34 +1,74 @@
 ﻿.open-edit-modal:hover {
-    background: rgba(0,0,0,.03);
-    cursor: pointer;
+	background: rgba(0,0,0,.03);
+	cursor: pointer;
 }
 
 .modal-body {
-    background-color: #e9ecef;
+	background-color: #e9ecef;
 }
 
 .modal-footer {
-    background-color: #dee2e6;
+	background-color: #dee2e6;
 }
 
 .content-wrapper {
-    background-color: #e9ecef;
+	background-color: #e9ecef;
 }
 
 .modal.show:not(.fade) {
-    z-index: 1040;
+	z-index: 1040;
 }
 
 .modal-backdrop.show:not(.fade) {
-    z-index: 1030;
+	z-index: 1030;
 }
 
 .modal.show.fade {
-    z-index: 1060;
-    top: 60px;
-    left: 30px;
+	z-index: 1060;
+	top: 60px;
+	left: 30px;
 }
 
 .modal-backdrop.show.fade {
-    z-index: 1050;
+	z-index: 1050;
+}
+
+.stats-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: table;
+	white-space: nowrap;
+	width: 100%;
+}
+
+.stats-list li {
+	display: table-row;
+}
+
+.stats-list li:nth-child(1) {
+	background-color: #ffffff;
+	text-transform: uppercase;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #000000;
+}
+
+
+.stats-list li:nth-child(1) span {
+	border-bottom: 2px solid #000000;
+	padding: 14px;
+}
+
+.stats-list span {
+	border-bottom: 1px solid #000000;
+	text-align: left;
+	display: table-cell;
+	padding: 6px;
+	vertical-align: middle;
+	background-color:#ffffff;
+}
+
+.stats-list input {
+	border: none;
 }

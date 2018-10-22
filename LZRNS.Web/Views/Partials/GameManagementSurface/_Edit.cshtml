@@ -26,12 +26,97 @@
 					@Html.DropDownListFor(x => x.TeamBId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control" })
 					@Html.ValidationMessageFor(x => x.TeamBId, null, new { @class = "text-danger" })
 				</div>
-
+			</div>
+			<div class="col-md-9 text-center">
+				<div class="row">
+					<div class="col-md-6 d-inline-block">
+						<label class="control-label">Startup tima @Model.TeamA.TeamName</label>
+						<div class="list-group" style="overflow-y: scroll; height:400px;">
+							@foreach (var player in Model.TeamA.AvailablePlayers)
+							{
+								<a href="#" class="list-group-item game-player-item @(player.Selected ? "active" : "")" data-gameId="@Model.Id" data-playerId="@(player.Value)">@player.Text</a>
+							}
+						</div>
+					</div>
+					<div class="col-md-6 d-inline-block">
+						<label class="control-label">Startup tima @Model.TeamB.TeamName</label>
+						<div class="list-group" style="overflow-y: scroll; height:400px;">
+							@foreach (var player in Model.TeamB.AvailablePlayers)
+							{
+								<a href="#" class="list-group-item game-player-item @(player.Selected ? "active" : "")" data-gameId="@Model.Id" data-playerId="@player.Value">@player.Text</a>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<label class="control-label">Statistika tima @Model.TeamA.TeamName</label>
+					<ul class="stats-list">
+						<li>
+							<span>Broj dresa</span>
+							<span>Ime</span>
+							<span>MIN</span>
+							<span>2pts pogodaka</span>
+							<span>2pts promašaja</span>
+							<span>3pts pogodaka</span>
+							<span>3pts promašaja</span>
+							<span>Ft pogodaka</span>
+							<span>Ft promašaja</span>
+							<span>OReb</span>
+							<span>DReb</span>
+							<span>Ast</span>
+							<span>To</span>
+							<span>Stl</span>
+							<span>Blk</span>
+							<span>Fd</span>
+							<span>Fc</span>
+							<span>Td</span>
+							<span></span>
+						</li>
+						@foreach (var stats in Model.TeamAPlayerStats)
+						{
+							@Html.Partial("_EditPlayerStats", stats)
+						}
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<label class="control-label">Statistika tima @Model.TeamB.TeamName</label>
+					<ul class="stats-list">
+						<li>
+							<span>Broj dresa</span>
+							<span>Ime</span>
+							<span>MIN</span>
+							<span>2pts pogodaka</span>
+							<span>2pts promašaja</span>
+							<span>3pts pogodaka</span>
+							<span>3pts promašaja</span>
+							<span>Ft pogodaka</span>
+							<span>Ft promašaja</span>
+							<span>OReb</span>
+							<span>DReb</span>
+							<span>Ast</span>
+							<span>To</span>
+							<span>Stl</span>
+							<span>Blk</span>
+							<span>Fd</span>
+							<span>Fc</span>
+							<span>Td</span>
+							<span></span>
+						</li>
+						@foreach (var stats in Model.TeamBPlayerStats)
+						{
+							@Html.Partial("_EditPlayerStats", stats)
+						}
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
 		<button type="submit" class="btn btn-primary"><i class="fa fa-fw fa-save"></i>Sačuvaj</button>
-		<button class="btn btn-danger btn-delete" data-leagueId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
+		<button class="btn btn-danger btn-delete" data-gameId="@Model.Id"><i class="fa fa-fw fa-trash"></i>Obriši</button>
 	</div>
 }

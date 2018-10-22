@@ -86,11 +86,11 @@ namespace LZRNS.Web.Controllers.Management
 				})
 				.OrderBy(x => x.Text);
 
-			model.PlayerList = _playerRepo.GetAll()
-				.Where(x => !model.PlayersPerSeason.Where(y => y.PlayerId.Equals(x.Id)).Any())
-				.Select(z => new SelectListItem() { Text = z.GetFullName, Value = z.Id.ToString()})
-				.OrderBy(x => x.Text)
-				.ToList();
+			model.AvailablePlayers = _playerRepo.GetAll()
+				.ToList()
+				.Where(y => !(y.PlayersPerSeason.Any()))
+				.Select(z => new SelectListItem() { Text = z.GetFullName, Value = z.Id.ToString() })
+				.OrderBy(x => x.Text);
 
 			return PartialView(model);
 		}

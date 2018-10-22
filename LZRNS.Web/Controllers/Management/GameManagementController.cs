@@ -3,6 +3,7 @@ using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.DocumentTypes.Pages;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Core;
 using System.Linq;
 using System.Web.Mvc;
@@ -85,8 +86,44 @@ namespace LZRNS.Web.Controllers.Management
 					Value = x.Id.ToString()
 				});
 
+			model.TeamA.AvailablePlayers = GetPlayerList(model.TeamA.PlayersPerSeason, gameId);
+			model.TeamB.AvailablePlayers = GetPlayerList(model.TeamB.PlayersPerSeason, gameId);
+
+			model.TeamAPlayerStats = model.TeamA.PlayersPerSeason
+				.Where(x => x.Player.Stats
+					.Where(y => y.GameId == gameId).Any())
+				.Select(x => x.Player.Stats.FirstOrDefault())
+				.ToList();
+
+			model.TeamBPlayerStats = model.TeamB.PlayersPerSeason
+				.Where(x => x.Player.Stats
+					.Where(y => y.GameId == gameId).Any())
+				.Select(x => x.Player.Stats.FirstOrDefault())
+				.ToList();
+
 			return PartialView(model);
 		}
+
+		private List<SelectListItem> GetPlayerList(ICollection<PlayerPerTeam> players, Guid gameId)
+		{
+			var result = new List<SelectListItem>();
+
+			foreach (var player in players)
+			{
+				var stat = player.Player.Stats.Where(z => z.GameId.Equals(gameId)).FirstOrDefault();
+				var selected = stat != null;
+
+				result.Add(new SelectListItem()
+				{
+					Selected = selected,
+					Text = player.Player.GetFullName,
+					Value = selected ? stat.Id.ToString() : player.PlayerId.ToString()
+				});
+			}
+
+			return result;
+		}
+
 		[HttpGet]
 		public ActionResult SeasonSelector(Guid seasonId)
 		{
@@ -143,6 +180,19 @@ namespace LZRNS.Web.Controllers.Management
 		}
 
 		[HttpPost]
+		public JsonResult EditPlayerStats(Stats model)
+		{
+			ModelState.Clear();
+			if (TryValidateModel(model))
+			{
+				_gameRepo.UpdateStatsForPlayerInGame(model);
+			}
+
+			return Json(new { gameId = model.GameId }, JsonRequestBehavior.AllowGet);
+		}
+
+
+		[HttpPost]
 		public ActionResult Edit(Game model)
 		{
 			if (ModelState.IsValid)
@@ -154,13 +204,13 @@ namespace LZRNS.Web.Controllers.Management
 		}
 
 		[HttpGet]
-		public JsonResult Delete(Guid leagueId)
+		public JsonResult Delete(Guid gameId)
 		{
 			var status = "success";
 			var message = "";
 			try
 			{
-				_roundRepo.Delete(_roundRepo.GetById(leagueId));
+				_roundRepo.Delete(_roundRepo.GetById(gameId));
 			}
 			catch (Exception ex)
 			{
@@ -177,6 +227,35 @@ namespace LZRNS.Web.Controllers.Management
 			}
 
 			return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpPost]
+		public JsonResult AddGamePlayer(Stats model)
+		{
+			if (ModelState.IsValid)
+			{
+				_gameRepo.AddStatsForPlayerInGame(model);
+			}
+
+			return Json(new { gameId = model.GameId });
+		}
+
+		[HttpGet]
+		public ActionResult AddGamePlayer(Guid gameId, Guid playerId)
+		{
+			var model = new Stats();
+			model.GameId = gameId;
+			model.PlayerId = playerId;
+
+			return PartialView(model);
+		}
+
+		[HttpGet]
+		public JsonResult DeleteGamePlayer(Guid gameId, Guid playerId)
+		{
+				_gameRepo.DeleteStatsForPlayerInGame(playerId);
+
+			return Json(new { gameId = gameId }, JsonRequestBehavior.AllowGet);
 		}
 
 		#endregion

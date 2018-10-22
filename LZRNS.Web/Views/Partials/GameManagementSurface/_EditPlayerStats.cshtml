@@ -1,0 +1,29 @@
+﻿@model LZRNS.DomainModels.Models.Stats
+
+<li class="player-stats">
+	@Html.AntiForgeryToken()
+	@Html.HiddenFor(x => x.Id)
+	@Html.HiddenFor(x => x.GameId)
+	@Html.HiddenFor(x => x.PlayerId)
+	<span>@Html.TextBoxFor(x => x.JerseyNumber, new { @type = "number", @class = "form-control" })</span>
+	<span>@Model.Player.GetFullName</span>
+	<span>@Html.TextBoxFor(x => x.MinutesPlayed, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.TwoPtMade, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.TwoPtMissed, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.ThreePtMade, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.ThreePtMissed, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.FtMade, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.FtMissed, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.OReb, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.DReb, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.Ast, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.To, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.Stl, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.Blk, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.Fd, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.Fc, new { @type = "number", @class = "form-control" })</span>
+	<span>@Html.TextBoxFor(x => x.Td, new { @class = "form-control" })</span>
+	<span>
+		<button class="btn btn-primary btn-player-stats"><i class="fa fa-fw fa-save"></i></button>
+	</span>
+</li>
