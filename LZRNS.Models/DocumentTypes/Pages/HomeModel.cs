@@ -3,8 +3,8 @@ using Umbraco.Core.Models;
 using LZRNS.Models.DocumentTypes.Compositions;
 using System.Collections.Generic;
 using LZRNS.Models.Extensions;
-using LZRNS.Models.DocumentTypes.Nodes.NestedContent;
-using System.Linq;
+using LZRNS.Models.DocumentTypes.Nodes.NestedContent.Sections;
+using LZRNS.Common.Extensions;
 
 namespace LZRNS.Models.DocumentTypes.Pages
 {
@@ -22,16 +22,15 @@ namespace LZRNS.Models.DocumentTypes.Pages
 		{
 		}
 
-        public IEnumerable<NewsSliderModel> NewsSlider => this.GetCachedValue(() => Content
-       .GetPropertyValue<IEnumerable<IPublishedContent>>()
-       .AsType<NewsSliderModel>().ToList());
+		public string PreBannerTitle => this.GetPropertyValue<string>();
+		public string BannerTitle => this.GetPropertyValue<string>();
+		public string PostBannerTitle => this.GetPropertyValue<string>();
 
-        public IEnumerable<SponsorshipModel> Sponsorship => this.GetCachedValue(() => Content
-       .GetPropertyValue<IEnumerable<IPublishedContent>>()
-       .AsType<SponsorshipModel>().ToList());
+		public bool BannerTitleExists =>
+			PreBannerTitle.HasValue() && BannerTitle.HasValue() && PostBannerTitle.HasValue();
 
-        public IEnumerable<TableWidgetModel> TableWidget => this.GetCachedValue(() => Content
-       .GetPropertyValue<IEnumerable<IPublishedContent>>()
-       .AsType<TableWidgetModel>().ToList());
-    }
+		public IEnumerable<SectionBaseModel> Sections => this.GetCachedValue(() =>
+			Content.GetPropertyValue<IEnumerable<IPublishedContent>>().EmptyIfNull()
+				.AsDocumentTypeModel<SectionBaseModel>());
+	}
 }

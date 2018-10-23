@@ -1,0 +1,26 @@
+﻿@inherits UmbracoViewPage<NewsSectionModel>
+
+<div class="news">
+	<div class="wrap">
+		@if (Model.Title.HasValue())
+		{
+			<div class="title">
+				<h2>@Model.Title</h2>
+			</div>
+		}
+		@if (Model.NewsBoxes.HasValue())
+		{
+			<div class="news-slider">
+				@foreach (var newsBox in Model.NewsBoxes)
+				{
+					if (newsBox.Text.HasValue())
+					{
+						<div class="news-box">
+							@newsBox.Text
+						</div>
+					}
+				}
+			</div>
+		}
+	</div>
+</div>

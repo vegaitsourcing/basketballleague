@@ -1,11 +1,10 @@
-﻿using Umbraco.Web;
-
-namespace LZRNS.Web.Dictionary
+﻿namespace LZRNS.Web.Dictionary
 {
-    public class UmbracoDictionary
-    {
-        private static UmbracoHelper Helper => new UmbracoHelper(UmbracoContext.Current);
-        public static string PrijateljiLige => Helper.GetDictionaryValue("Home.PrijateljiLige");
-
-    }
+	public static class UmbracoDictionary
+	{
+		public static class Shared
+		{
+			public static string Round => umbraco.library.GetDictionaryItem("Shared.Round");
+		}
+	}
 }

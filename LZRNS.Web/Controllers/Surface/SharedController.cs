@@ -8,12 +8,6 @@ namespace LZRNS.Web.Controllers.Surface
 	public class SharedController : BaseSurfaceController
 	{
 		[ChildActionOnly]
-		public ActionResult SeoMetaTags(PageModel model)
-		{
-			return RenderActionResult(model, () => PartialView(model));
-		}
-
-		[ChildActionOnly]
 		public ActionResult Header(HeaderModel model, IEnumerable<PageModel> navigationItems)
 		{
 			model.NavigationItems = navigationItems;

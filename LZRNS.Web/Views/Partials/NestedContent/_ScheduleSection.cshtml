@@ -1,0 +1,110 @@
+﻿@using System.Globalization
+@inherits UmbracoViewPage<ScheduleSectionModel>
+
+<div class="schedule">
+	<div class="wrap">
+		@if (Model.Title.HasValue())
+		{
+			<div class="title">
+				<h2>@Model.Title</h2>
+			</div>
+		}
+		@if (Model.RoundName.HasValue())
+		{
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="round">
+						<span class="number">@Model.RoundName</span>
+						<span>@UmbracoDictionary.Shared.Round</span>
+					</div>
+				</div>
+				@if (Model.FirstDate.HasValue())
+				{
+					<div class="col-lg-5">
+						@if (Model.FirstDateRange.HasValue())
+						{
+							CultureInfo cultureInfo = new CultureInfo("sr-Latn-RS");
+							<div class="dates">
+								@foreach (var date in Model.FirstDateRange)
+								{
+									<div class="date @(Model.FirstDate == date ? "active" : string.Empty)">
+										<span class="month">@(date.ToString("MMMM", cultureInfo).ToFirstUpper())</span>
+										<span class="day">@date.Day</span>
+									</div>
+								}
+							</div>
+						}
+						<div class="items">
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+						</div>
+					</div>
+
+				}
+				<div class="col-lg-5">
+					@if (Model.SecondDateRange.HasValue())
+					{
+						CultureInfo cultureInfo = new CultureInfo("sr-Latn-RS");
+						<div class="dates second-col">
+							@foreach (var date in Model.SecondDateRange)
+							{
+								<div class="date @(Model.SecondDate == date ? "active" : string.Empty)">
+									<span class="month">@(date.ToString("MMMM", cultureInfo).ToFirstUpper())</span>
+									<span class="day">@date.Day</span>
+								</div>
+							}
+						</div>
+					}
+						<div class="items">
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+							<div class="item">
+								<div class="time">09:00</div>
+								<div class="match">Nightwatch vs Vrane</div>
+							</div>
+						</div>
+					</div>
+			</div>
+		}
+	</div>
+</div>

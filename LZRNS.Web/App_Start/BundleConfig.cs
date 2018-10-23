@@ -29,19 +29,13 @@ namespace LZRNS.Web
 			//	"~/scripts/main/jquery-1.11.2.min.js"
 			//));
 
-			bundles.Add(new StyleBundle("~/bundles/fonts", "https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800"));
-			bundles.Add(new StyleBundle("~/bundles/fonts", "https://fonts.googleapis.com/css?family=Raleway:200,300,400,700"));
-
 			bundles.Add(new StyleBundle("~/bundles/styles/main").Include(
 				"~/css/style.min.css",
 				new CssRewriteUrlTransform()
 			));
 
-
-			bundles.Add(new ScriptBundle("~/bundles/scripts/main", "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"));
-
 			bundles.Add(new ScriptBundle("~/bundles/scripts/main").Include(
-				"~/Scripts/js/dist/global.min.js"
+				"~/js/global.min.js"
 			));
 
 			bundles.Add(new StyleBundle("~/bundles/styles/management/").Include(

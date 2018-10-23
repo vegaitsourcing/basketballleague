@@ -421,6 +421,7 @@
     <Content Include="images\svg\ico-tw.svg" />
     <Content Include="images\svg\ico-x.svg" />
     <Content Include="js\default.js" />
+    <Content Include="js\global.min.js" />
     <Content Include="js\management.js" />
     <Content Include="js\functions.js" />
     <Content Include="js\libs\jquery-3.3.1.min.js" />
@@ -467,13 +468,13 @@
     <Content Include="css\style.min.css.map" />
     <Content Include="css\style.scss" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\svgicons.ttf" />
-    <Content Include="fonts\svgicons.woff" />
-    <Content Include="fonts\svgicons.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="fonts\dist\svgicons.ttf" />
+    <Content Include="fonts\dist\svgicons.woff" />
+    <Content Include="fonts\dist\svgicons.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\contactForm.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -631,9 +632,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Partials\Shared\_Footer.cshtml" />
     <Content Include="Views\Partials\Shared\_Header.cshtml" />
-    <Content Include="Views\Partials\NestedContent\_Sponsorship.cshtml" />
-    <Content Include="Views\Partials\NestedContent\_NewsSlider.cshtml" />
-    <Content Include="Views\Partials\NestedContent\_TableWidget.cshtml" />
     <Content Include="Views\Partials\LeagueManagementSurface\_Add.cshtml" />
     <Content Include="Views\TableWidget.cshtml" />
     <Content Include="Views\Partials\Listing\_Pagination.cshtml" />
@@ -676,6 +674,8 @@
     <Content Include="Views\Partials\GameManagementSurface\_Add.cshtml" />
     <Content Include="Views\Partials\GameManagementSurface\_AddGamePlayer.cshtml" />
     <Content Include="Views\Partials\GameManagementSurface\_EditPlayerStats.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_NewsSection.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_ScheduleSection.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
