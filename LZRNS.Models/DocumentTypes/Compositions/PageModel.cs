@@ -57,10 +57,10 @@ namespace LZRNS.Models.DocumentTypes.Compositions
 		public IEnumerable<PageModel> SideBarNavigationItems => this.GetCachedValue(() => Content.GetSideBarNavigationItems(Constants.HomePageLevel + 1));
 		public IEnumerable<PageModel> SitemapItems => this.GetCachedValue(() => Content.GetSitemapItems());
 		public IEnumerable<PageModel> SitemapXMLItems => this.GetCachedValue(() => Content.GetSitemapXMLItems());
-		public HomeModel Home => this.GetCachedValue(() => GetHomeModel());
-		public SettingsModel Settings => this.GetCachedValue(() => GetSettingsModel());
+		public HomeModel Home => this.GetCachedValue(GetHomeModel);
+		public SettingsModel Settings => this.GetCachedValue(GetSettingsModel);
 
-		public bool IsActivePage => this.GetCachedValue(() => GetIsActivePage());
+		public bool IsActivePage => this.GetCachedValue(GetIsActivePage);
 		public bool HasNavigationItems => this.GetCachedValue(() => NavigationItems.Any());
 		public string FullUrl => this.GetCachedValue(() => Content.UrlAbsolute());
 		public string Url => Content.Url;

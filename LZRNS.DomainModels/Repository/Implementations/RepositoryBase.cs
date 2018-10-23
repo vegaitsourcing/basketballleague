@@ -33,7 +33,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
 			}
 			catch(Exception ex)
 			{
-				throw new UpdateException("Brisanje neuspešno, proverite veze između tabela.", ex.InnerException);
+				throw new UpdateException("Brisanje neuspešno, proverite veze između tabela.", ex);
 			}
 		}
 

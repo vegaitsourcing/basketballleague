@@ -93,12 +93,14 @@ namespace LZRNS.Web.Controllers.Management
 				.Where(x => x.Player.Stats
 					.Where(y => y.GameId == gameId).Any())
 				.Select(x => x.Player.Stats.FirstOrDefault())
+				.OrderBy(x => x.Player.GetFullName)
 				.ToList();
 
 			model.TeamBPlayerStats = model.TeamB.PlayersPerSeason
 				.Where(x => x.Player.Stats
 					.Where(y => y.GameId == gameId).Any())
 				.Select(x => x.Player.Stats.FirstOrDefault())
+				.OrderBy(x => x.Player.GetFullName)
 				.ToList();
 
 			return PartialView(model);
@@ -108,7 +110,7 @@ namespace LZRNS.Web.Controllers.Management
 		{
 			var result = new List<SelectListItem>();
 
-			foreach (var player in players)
+			foreach (var player in players.OrderBy(x => x.Player.GetFullName))
 			{
 				var stat = player.Player.Stats.Where(z => z.GameId.Equals(gameId)).FirstOrDefault();
 				var selected = stat != null;
@@ -210,7 +212,7 @@ namespace LZRNS.Web.Controllers.Management
 			var message = "";
 			try
 			{
-				_roundRepo.Delete(_roundRepo.GetById(gameId));
+				_gameRepo.Delete(_gameRepo.GetById(gameId));
 			}
 			catch (Exception ex)
 			{
@@ -230,7 +232,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 
 		[HttpPost]
-		public JsonResult AddGamePlayer(Stats model)
+		public JsonResult AddPlayerStats(Stats model)
 		{
 			if (ModelState.IsValid)
 			{
@@ -241,7 +243,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 
 		[HttpGet]
-		public ActionResult AddGamePlayer(Guid gameId, Guid playerId)
+		public ActionResult AddPlayerStats(Guid gameId, Guid playerId)
 		{
 			var model = new Stats();
 			model.GameId = gameId;
@@ -251,7 +253,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 
 		[HttpGet]
-		public JsonResult DeleteGamePlayer(Guid gameId, Guid playerId)
+		public JsonResult DeletePlayerStats(Guid gameId, Guid playerId)
 		{
 				_gameRepo.DeleteStatsForPlayerInGame(playerId);
 

@@ -1,13 +1,12 @@
-﻿using LZRNS.Models.DocumentTypes.Compositions;
-using System;
+﻿using LZRNS.DomainModel.Models;
+using LZRNS.Models.DocumentTypes.Compositions;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LZRNS.Models.DocumentTypes.Pages
 {
-     public class ManagementModel  : ManagementPageModel
+	public class ManagementModel : ManagementPageModel
 	{
-    }
+		public ICollection<Game> ResultsRoundGames { get; set; }
+		public ICollection<Game> ScheduleRoundGames { get; set; }
+	}
 }

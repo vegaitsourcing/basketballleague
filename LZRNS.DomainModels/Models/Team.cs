@@ -30,7 +30,10 @@ namespace LZRNS.DomainModel.Models
 		public string Coach { get; set; }
 
 		[NotMapped]
-		public virtual ICollection<StatsPerGame> StatsPerGame { get; set; }
+		public virtual ICollection<StatsPerGame> StatsPerGame =>
+			Games
+				.Select(x => new StatsPerGame(x.Id, this))
+				.ToList();
 
 		public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 

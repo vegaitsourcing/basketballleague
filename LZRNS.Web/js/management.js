@@ -51,7 +51,7 @@ function getSeasonSelector(dataset) {
 
 $(document).ready(function () {
 	//round management functions
-	$activeSeason = $(document).find('.nav-link.active');
+	$activeSeason = $(document).find('.nav-link.season.active');
 
 	if ($activeSeason.length > 0) {
 		getSeasonSelector($activeSeason[0].dataset);
@@ -97,7 +97,7 @@ $(document).ready(function () {
 		}
 	});
 
-	$(document).on('click', '.nav-link', function () {
+	$(document).on('click', '.nav-link.season', function () {
 		$navLink = $(this);
 
 		$('.nav-link').removeClass("active");
@@ -168,7 +168,7 @@ $(document).ready(function () {
 		$inputs = $(this).closest('.player-stats').find('input');
 
 		$.ajax({
-			url: controller.updateGamePlayerAction,
+			url: controller.updatePlayerStatsAction,
 			type: 'POST',
 			data: JSON.stringify(getFormData($inputs)),
 			processData: false,
@@ -223,7 +223,7 @@ $(document).ready(function () {
 		$hrefElement = $(this);
 
 		if ($hrefElement.hasClass("active")) {
-			$.get(controller.deleteGamePlayerAction, this.dataset,
+			$.get(controller.deletePlayerStatsAction, this.dataset,
 				function (data, status) {
 					if (status === "success") {
 						editAction(data);
@@ -232,7 +232,7 @@ $(document).ready(function () {
 				}, "json");
 		}
 		else {
-			$.get(controller.addGamePlayerAction, this.dataset, function (data, status) {
+			$.get(controller.addPlayerStatsAction, this.dataset, function (data, status) {
 				if (status === "success") {
 					$('#modal').html(data);
 					$('#modal').modal();

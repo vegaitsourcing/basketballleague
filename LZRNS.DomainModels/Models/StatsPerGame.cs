@@ -1,248 +1,246 @@
 ﻿using LZRNS.DomainModel.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LZRNS.DomainModels.Models
 {
-    public class StatsPerGame
-    {
-        public virtual Game Game { get; }
+	public class StatsPerGame
+	{
+		public StatsPerGame(Guid gameId, Team team)
+		{
+			Team = team;
+			GameId = gameId;
+		}
 
-        public Guid GameId { get; }
+		public virtual Team Team { get; }
+		public virtual Guid GameId { get; }
 
-        public virtual Team Team { get; }
+		#region Points
 
-        public Guid TeamId { get; }
+		#region Pts
 
-        #region Points
+		public int Pts
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Pts);
+			}
+		}
 
-        #region Pts
+		#endregion
 
-        public int Pts
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Pts);
-            }
-        }
+		#region TwoPt
 
-        #endregion
+		public int TwoPtA
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).TwoPtA);
+			}
+		}
 
-        #region TwoPt
+		public int TwoPtM
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).TwoPtMade);
+			}
+		}
 
-        public int TwoPtA
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).TwoPtA);
-            }
-        }
+		public double TwoPtPercA
+		{
+			get
+			{
+				return (TwoPtM / TwoPtA) * 100;
+			}
+		}
 
-        public int TwoPtM
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).TwoPtMade);
-            }
-        }
+		#endregion
 
-        public double TwoPtPercA
-        {
-            get
-            {
-                return (TwoPtM / TwoPtA) * 100;
-            }
-        }
+		#region ThreePt
 
-        #endregion
+		public int ThreePtA
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).ThreePtA);
+			}
+		}
 
-        #region ThreePt
+		public int ThreePtM
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).ThreePtMade);
+			}
+		}
 
-        public int ThreePtA
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).ThreePtA);
-            }
-        }
+		public double ThreePtPerc
+		{
+			get
+			{
+				return (ThreePtM / ThreePtA) * 100;
+			}
+		}
 
-        public int ThreePtM
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).ThreePtMade);
-            }
-        }
+		#endregion ThreePt
 
-        public double ThreePtPerc
-        {
-            get
-            {
-                return (ThreePtM / ThreePtA) * 100;
-            }
-        }
+		#region Ft
 
-        #endregion ThreePt
+		public int FtA
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).FtA);
+			}
+		}
 
-        #region Ft
+		public int FtM
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).FtMade);
+			}
+		}
 
-        public int FtA
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).FtA);
-            }
-        }
+		public double FtPerc
+		{
+			get
+			{
+				return (FtM / FtA) * 100;
+			}
+		}
 
-        public int FtM
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).FtMade);
-            }
-        }
+		#endregion
 
-        public double FtPerc
-        {
-            get
-            {
-                return (FtM / FtA) * 100;
-            }
-        }
+		#region Fg
 
-        #endregion
+		public int FgA
+		{
+			get
+			{
+				return TwoPtA + ThreePtA;
+			}
+		}
 
-        #region Fg
+		public int FgM
+		{
+			get
+			{
+				return TwoPtM + ThreePtM;
+			}
+		}
 
-        public int FgA
-        {
-            get
-            {
-                return TwoPtA + ThreePtA;
-            }
-        }
+		public double FgPerc
+		{
+			get
+			{
+				return (FgM / FgA) * 100;
+			}
+		}
 
-        public int FgM
-        {
-            get
-            {
-                return TwoPtM + ThreePtM;
-            }
-        }
+		#endregion
 
-        public double FgPerc
-        {
-            get
-            {
-                return (FgM / FgA) * 100;
-            }
-        }
+		#endregion
 
-        #endregion
+		#region Rebounds
 
-        #endregion
+		public int Reb
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Reb);
+			}
+		}
 
-        #region Rebounds
+		public int OReb
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).OReb);
+			}
+		}
 
-        public int Reb
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Reb);
-            }
-        }
+		public int DReb
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).DReb);
+			}
+		}
 
-        public int OReb
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).OReb);
-            }
-        }
+		#endregion
 
-        public int DReb
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).DReb);
-            }
-        }
-        
-        #endregion
+		#region Assists
 
-        #region Assists
+		public int Ast
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Ast);
+			}
+		}
 
-        public int Ast
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Ast);
-            }
-        }
+		#endregion
 
-        #endregion
+		#region TO
 
-        #region TO
+		public int To
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).To);
+			}
+		}
 
-        public int To
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).To);
-            }
-        }
+		#endregion
 
-        #endregion
+		#region Steals
 
-        #region Steals
+		public int Stl
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Stl);
+			}
+		}
 
-        public int Stl
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Stl);
-            }
-        }
+		#endregion
 
-        #endregion
+		#region Blocks
 
-        #region Blocks
+		public int Blk
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Blk);
+			}
+		}
 
-        public int Blk
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Blk);
-            }
-        }
+		#endregion
 
-        #endregion
+		#region Minutes
 
-        #region Minutes
+		public int Min
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).MinutesPlayed);
+			}
+		}
 
-        public int Min
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).MinutesPlayed);
-            }
-        }
+		#endregion
 
-        #endregion
+		#region Eff
 
-        #region Eff
+		public int Eff
+		{
+			get
+			{
+				return Team.PlayersPerSeason.Select(x => x.Player).Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Eff);
+			}
+		}
 
-        public int Eff
-        {
-            get
-            {
-                return Team.Players.Sum(p => p.Stats.FirstOrDefault(s => s.PlayerId == p.Id && s.GameId == GameId).Eff);
-            }
-        }
-
-        #endregion
-    }
+		#endregion
+	}
 }

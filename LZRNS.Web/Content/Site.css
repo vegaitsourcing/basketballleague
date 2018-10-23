@@ -62,7 +62,7 @@
 
 .stats-list span {
 	border-bottom: 1px solid #000000;
-	text-align: left;
+	text-align: center;
 	display: table-cell;
 	padding: 6px;
 	vertical-align: middle;

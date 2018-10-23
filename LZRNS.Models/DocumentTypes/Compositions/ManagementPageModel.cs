@@ -35,6 +35,7 @@ namespace LZRNS.Models.DocumentTypes.Compositions
 
 		public IEnumerable<ManagementPageModel> NavigationItems => this.GetCachedValue(() => Content.GetManagementNavigationItems());
 		public SettingsModel Settings => this.GetCachedValue(() => GetSettingsModel());
+		public StatisticsSettingsModel StatisticsSettings => this.GetCachedValue(() => UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>());
 
 		public bool IsActivePage => this.GetCachedValue(() => GetIsActivePage());
 		public bool HasNavigationItems => this.GetCachedValue(() => NavigationItems.Any());

@@ -1,4 +1,56 @@
-﻿@{
-    Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
-    ViewBag.Title = "Management";
+﻿@model ManagementModel
+
+@{
+	Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
+	ViewBag.Title = "Management";
+}
+
+<h2>Početna godina trenutne sezone: @Model.StatisticsSettings.SeasonYearStart</h2>
+@if (Model.ResultsRoundGames != null && Model.ResultsRoundGames.Any())
+{
+	<div class="row text-center justify-content-center">
+		<div class="col-md-12">
+			<h3>Rezultati runde: @Model.StatisticsSettings.ResultsRound</h3>
+		</div>
+		<div class="col-md-2">
+			@foreach (var result in Model.ResultsRoundGames)
+			{
+				<ul class="stats-list">
+					<li>
+						<span>@result.TeamA.TeamName Poeni</span>
+						<span>@result.TeamB.TeamName Poeni</span>
+					</li>
+					<li class="player-stats">
+						<span>@result.StatsPerGameA.Pts</span>
+						<span>@result.StatsPerGameB.Pts</span>
+					</li>
+				</ul>
+			}
+		</div>
+	</div>
+}
+@if (Model.ScheduleRoundGames != null && Model.ScheduleRoundGames.Any())
+{
+	<div class="row text-center justify-content-center">
+		<div class="col-md-12">
+			<h3>Raspored utakmica runde: @Model.StatisticsSettings.ScheduleRound</h3>
+		</div>
+		<div class="col-md-4">
+			<ul class="stats-list">
+				<li>
+					<span>Prvi tim</span>
+					<span>Drugi tim</span>
+					<span>Vreme</span>
+				</li>
+				@foreach (var result in Model.ScheduleRoundGames)
+				{
+					<li class="player-stats">
+						<span>@result.TeamA.TeamName</span>
+						<span>@result.TeamB.TeamName</span>
+						<span>@result.DateTime.ToString("dd.MM.yyyy HH:mm")</span>
+					</li>
+				}
+			</ul>
+		</div>
+	</div>	
 }

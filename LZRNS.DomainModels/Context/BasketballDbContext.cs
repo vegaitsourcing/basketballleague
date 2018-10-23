@@ -1,12 +1,8 @@
 ﻿using LZRNS.DomainModel.Models;
-using LZRNS.DomainModels.Migrations;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.TimetableModels;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using System.Text;
 
 namespace LZRNS.DomainModel.Context
 {

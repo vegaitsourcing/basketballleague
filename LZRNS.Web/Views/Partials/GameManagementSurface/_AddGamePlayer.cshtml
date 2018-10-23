@@ -3,7 +3,7 @@
 
 <div class="modal-dialog" role="document">
 	<div class="modal-content">
-		@using (Ajax.BeginForm(nameof(GameManagementSurfaceController.AddGamePlayer), nameof(GameManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "onPostSuccess" }))
+		@using (Ajax.BeginForm(nameof(GameManagementSurfaceController.AddPlayerStats), nameof(GameManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "onPostSuccess" }))
 		{
 			@Html.AntiForgeryToken()
 			@Html.HiddenFor(x => x.GameId)
@@ -19,7 +19,7 @@
 					<div class="form-group">
 						@Html.LabelFor(x => x.JerseyNumber, new { @class = "control-label col-md-8" })
 						<div class="col-md-12 mb-3">
-							@Html.TextBoxFor(x => x.JerseyNumber, new { @class = "form-control" })
+							@Html.TextBoxFor(x => x.JerseyNumber, new { @class = "form-control", @type = "number" })
 							@Html.ValidationMessageFor(x => x.JerseyNumber, null, new { @class = "text-danger" })
 						</div>
 					</div>

@@ -56,10 +56,12 @@ namespace LZRNS.DomainModel.Models
 		public ICollection<Stats> TeamBPlayerStats { get; set; }
 
 		[NotMapped]
-		public StatsPerGame StatsPerGameA { get; }
+		public StatsPerGame StatsPerGameA =>
+				new StatsPerGame(this.Id, this.TeamA);
 
 		[NotMapped]
-		public StatsPerGame StatsPerGameB { get; }
+		public StatsPerGame StatsPerGameB =>
+				new StatsPerGame(this.Id, this.TeamB);
 
 		public Team ReturnTeam(Guid id)
 		{

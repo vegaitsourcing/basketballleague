@@ -4,44 +4,55 @@
 <html lang="en">
 
 <head>
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="format-detection" content="telephone=no">
-    <meta charset="utf-8">
-    <meta name="description" content="">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="format-detection" content="telephone=no">
+	<meta charset="utf-8">
+	<link href="@Url.Content("~/favicon.ico")" rel="icon" />
+	<title>@Model.SeoTitle | @(Model.Settings?.SiteName)</title>
 
+	@if (Model.HideFromGoogleSearch)
+	{
+		<meta name="robots" content="noindex, nofollow">
+		<meta name="googlebot" content="noindex, nofollow">
+	}
 
-    <meta name="robots" content="noindex,nofollow">
-    <meta name="googlebot" content="noindex,nofollow">
+	@if (Model.SeoDescription.HasValue())
+	{
+		<meta name="description" content="@Model.SeoDescription" />
+	}
+	@if (Model.SeoKeywords.HasValue())
+	{
+		<meta name="keywords" content="@Model.SeoKeywords" />
+	}
+	@if (Model.SeoAuthor.HasValue())
+	{
+		<meta name="author" content="@Model.SeoAuthor" />
+	}
+	<link rel="canonical" href="@Model.CanonicalLink" />
 
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:200,300,400,700" rel="stylesheet">
-
-    <!-- main css file -->
-    <link rel="stylesheet" href="css/dist/style.min.css">
-
-    <link href="~/css/style.min.css" rel="stylesheet" />
-    <!-- global js file -->
-    
-    <script defer type="text/javascript" src="~/Scripts/js/dist/global.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-
-    <title>LZRN</title>
-    <link href="~/favicon.ico" rel="icon" />
-    @RenderSection("additionalHead", false)
-
-
+	@Styles.Render("~/bundles/fonts")
+	@Styles.Render("~/bundles/styles/main")
+	@(Model.Settings?.GoogleTagManagerScriptCode)
+	@(Model.Settings?.GoogleAnalyticsScriptCode)
+	@RenderSection("additionalHeader", false)
 </head>
 
 <body>
-    @{Html.RenderAction<SharedController>(sc => sc.Header(null), Model.Header); }
 
-    @RenderBody()
+@(Model.Settings?.GoogleTagManagerNonScriptCode)
 
-    @{Html.RenderAction<SharedController>(sc => sc.Footer(null), Model.Footer); }
-    @RenderSection("additionalFooter", false)
+@{Html.RenderAction<SharedController>(sc => sc.Header(null, null), Model.Header, Model.Home.NavigationItems); }
+@RenderBody()
+@{Html.RenderAction<SharedController>(sc => sc.Footer(null), Model.Footer); }
+	
 
-
+@Scripts.Render("~/bundles/scripts/main")
+@if ((Model.Settings?.GoogleMapKey.HasValue() ?? false))
+{
+	<script type="text/javascript" src="@Model.Settings.GoogleMapKey"></script>
+}
+@RenderSection("additionalFooter", false)
 </body>
 
 </html>

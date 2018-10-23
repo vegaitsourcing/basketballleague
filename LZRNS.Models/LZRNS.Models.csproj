@@ -287,6 +287,7 @@
     <Compile Include="DocumentTypes\Nodes\NestedContent\NewsSliderModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\SponsorshipModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\TableWidgetModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\StatisticsSettingsModel.cs" />
     <Compile Include="DocumentTypes\Nodes\SettingsModel.cs" />
     <Compile Include="DocumentTypes\Pages\AboutUsModel.cs" />
     <Compile Include="DocumentTypes\Pages\Error404Model.cs" />
@@ -310,6 +311,7 @@
     <Compile Include="DocumentTypes\Pages\TableModel.cs" />
     <Compile Include="DocumentTypes\Pages\Management\TeamManagementModel.cs" />
     <Compile Include="DocumentTypes\Pages\TeamsModel.cs" />
+    <Compile Include="Extensions\GlobalExtensions.cs" />
     <Compile Include="Extensions\MultiUrlsPickerExtensions.cs" />
     <Compile Include="Extensions\PublishedContentExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

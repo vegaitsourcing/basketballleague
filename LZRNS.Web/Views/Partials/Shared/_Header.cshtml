@@ -1,23 +1,25 @@
 ﻿@inherits UmbracoViewPage<HeaderModel>
 
 <header class="header" role="banner">
-    <div class="wrap">
-        <a href="index.html" class="logo">
-            <img src="@Model.Logo.Url" alt="">
-        </a>
-        <button type="button" class="open-menu"><span class="font-ico-hamburger"></span></button>
-        <nav class="main-nav">
-            <ul>
-                <li><a href="about.html">O nama</a></li>
-                <li><a href="javasript:;">Istorijat</a></li>
-                <li><a class="active" href="javasript:;">Raspored</a></li>
-                <li><a href="rezultati.html">Rezultati</a></li>
-                <li><a href="javasript:;">Tabela</a></li>
-                <li><a href="javasript:;">Timovi</a></li>
-                <li><a href="javasript:;">Igrači</a></li>
-                <li><a href="javasript:;">Statistika</a></li>
-                <li><a href="javasript:;">Galerija</a></li>
-            </ul>
-        </nav>
-    </div>
+	<div class="wrap">
+		@if (Model.Logo != null && !string.IsNullOrWhiteSpace(Model.Logo.Url))
+		{
+			<a href="/" class="logo">
+				<img src="@Model.Logo.Url" alt="">
+			</a>
+		}
+
+		@if (Model.NavigationItems != null && Model.NavigationItems.Any())
+		{
+			<button type="button" class="open-menu"><span class="font-ico-hamburger"></span></button>
+					<nav class="main-nav">
+						<ul>
+							@foreach (var navItem in Model.NavigationItems)
+							{
+								<li><a href="@navItem.Url" @(navItem.IsActivePage ? "class=active" : string.Empty)>@navItem.Title</a></li>
+							}
+						</ul>
+					</nav>
+		}
+	</div>
 </header>

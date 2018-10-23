@@ -1,5 +1,6 @@
 ﻿using System.Web.Configuration;
 using System.Web.Optimization;
+using LZRNS.Common;
 
 namespace LZRNS.Web
 {
@@ -28,6 +29,21 @@ namespace LZRNS.Web
 			//	"~/scripts/main/jquery-1.11.2.min.js"
 			//));
 
+			bundles.Add(new StyleBundle("~/bundles/fonts", "https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800"));
+			bundles.Add(new StyleBundle("~/bundles/fonts", "https://fonts.googleapis.com/css?family=Raleway:200,300,400,700"));
+
+			bundles.Add(new StyleBundle("~/bundles/styles/main").Include(
+				"~/css/style.min.css",
+				new CssRewriteUrlTransform()
+			));
+
+
+			bundles.Add(new ScriptBundle("~/bundles/scripts/main", "https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"));
+
+			bundles.Add(new ScriptBundle("~/bundles/scripts/main").Include(
+				"~/Scripts/js/dist/global.min.js"
+			));
+
 			bundles.Add(new StyleBundle("~/bundles/styles/management/").Include(
 				"~/vendor/bootstrap/css/bootstrap.min.css",
 				"~/Content/jquery-ui.min.css",
@@ -47,14 +63,14 @@ namespace LZRNS.Web
 
 			bundles.Add(new ScriptBundle("~/bundles/scripts/libs/").Include(
 				"~/vendor/jquery/jquery.min.js"
-				));
+			));
 
 			bundles.Add(new ScriptBundle("~/bundles/scripts/unobtrusive/").Include(
 				"~/Scripts/jquery-ui.min.js",
 				"~/scripts/jquery.validate.min.js",
 				"~/scripts/jquery.validate.unobtrusive.min.js",
 				"~/scripts/jquery.unobtrusive-ajax.js"
-				));
+			));
 
 			bundles.Add(new ScriptBundle("~/bundles/scripts/management/").Include(
 				"~/vendor/bootstrap/js/bootstrap.bundle.min.js",
@@ -65,13 +81,9 @@ namespace LZRNS.Web
 				"~/vendor/datatables/dataTables.bootstrap4.js",
 				"~/Scripts/js/sb-admin-datatables.js",
 				"~/js/management.js"
-				));
+			));
 
-
-
-			CompilationSection compilationSection = (CompilationSection)System.Configuration.ConfigurationManager.GetSection(@"system.web/compilation");
-
-			BundleTable.EnableOptimizations = !compilationSection.Debug;
+			BundleTable.EnableOptimizations = AppSettings.BundleEnabled;
 		}
 	}
 }

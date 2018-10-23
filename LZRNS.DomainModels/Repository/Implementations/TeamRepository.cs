@@ -1,10 +1,7 @@
 ﻿using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using LZRNS.DomainModel.Context;
 using LZRNS.DomainModels.Models;
 

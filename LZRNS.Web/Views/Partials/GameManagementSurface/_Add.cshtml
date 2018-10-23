@@ -24,7 +24,7 @@
 						</div>
 						@Html.LabelFor(x => x.TeamAId, new { @class = "control-label col-md-8" })
 						<div class="col-md-12 mb-3">
-							@Html.DropDownListFor(x => x.TeamAId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control" })
+							@Html.DropDownListFor(x => x.TeamAId, Model.Teams, "Izaberite prvi tim", new { @class = "form-control" })
 							@Html.ValidationMessageFor(x => x.TeamAId, null, new { @class = "text-danger" })
 						</div>
 						@Html.LabelFor(x => x.TeamBId, new { @class = "control-label col-md-8" })

@@ -18,12 +18,12 @@
 				</div>
 				<div class="row mr-3 mb-3">
 					@Html.LabelFor(x => x.TeamAId, new { @class = "control-label" })
-					@Html.DropDownListFor(x => x.TeamAId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control" })
+					@Html.DropDownListFor(x => x.TeamAId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
 					@Html.ValidationMessageFor(x => x.TeamAId, null, new { @class = "text-danger" })
 				</div>
 				<div class="row mr-3 mb-3">
 					@Html.LabelFor(x => x.TeamBId, new { @class = "control-label" })
-					@Html.DropDownListFor(x => x.TeamBId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control" })
+					@Html.DropDownListFor(x => x.TeamBId, Model.Teams, "Izaberite drugi tim", new { @class = "form-control", disabled = "disabled", @readonly = "readonly" })
 					@Html.ValidationMessageFor(x => x.TeamBId, null, new { @class = "text-danger" })
 				</div>
 			</div>

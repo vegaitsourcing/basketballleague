@@ -1,5 +1,6 @@
 ﻿using LZRNS.DomainModel.Models;
 using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,9 +22,10 @@ namespace LZRNS.DomainModels.Models
 		[ForeignKey("PlayerId")]
 		public virtual Player Player { get; set; }
 
-		[Required]
+		[Required(ErrorMessage = "Broj dresa je obavezno polje.")]
 		[StringLength(2, MinimumLength = 1)]
-		[RegularExpression("^[0-9]*$", ErrorMessage = "JerseyNumber must be numeric")]
+		[DisplayName("Broj dresa")]
+		[RegularExpression("^[0-9]*$", ErrorMessage = "Broj dresa mora biti broj.")]
 		public string JerseyNumber { get; set; }
 
 		[Required]

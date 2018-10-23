@@ -48,9 +48,10 @@ namespace LZRNS.Web.Controllers.Management
 			var model = new Team();
 
 			model.Teams = _teamRepo.GetAll()
+				.ToList()
 				.Select(x => new SelectListItem()
 				{
-					Text = x.TeamName,
+					Text = $"{x.TeamName} - {x.LeagueSeason.FullName}",
 					Value = x.Id.ToString()
 				});
 
@@ -72,8 +73,9 @@ namespace LZRNS.Web.Controllers.Management
 			var model = _teamRepo.GetById(teamId);
 
 			model.Teams = _teamRepo.GetAll()
+				.ToList()
 				.Select(x => new SelectListItem() {
-					Text = x.TeamName,
+					Text = $"{x.TeamName} - {x.LeagueSeason.FullName}",
 					Value = x.Id.ToString()
 				});
 
@@ -88,9 +90,10 @@ namespace LZRNS.Web.Controllers.Management
 
 			model.AvailablePlayers = _playerRepo.GetAll()
 				.ToList()
-				.Where(y => !(y.PlayersPerSeason.Any()))
+				.Where(x => !(x.PlayersPerSeason.Any()) || x.PlayersPerSeason.Where(y => y.TeamId == model.PreviousTeamGuid).Any())
+				.Where(s => !(model.PlayersPerSeason.Where(d => d.PlayerId == s.Id).Any()))
 				.Select(z => new SelectListItem() { Text = z.GetFullName, Value = z.Id.ToString() })
-				.OrderBy(x => x.Text);
+				.OrderBy(o => o.Text);
 
 			return PartialView(model);
 		}
