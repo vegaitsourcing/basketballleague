@@ -24,5 +24,13 @@
 			public static string Blk => umbraco.library.GetDictionaryItem("Stats.Blk");
 			public static string Pts => umbraco.library.GetDictionaryItem("Stats.Pts");
 		}
+
+		public static class TopStats
+		{
+			public static string Points => umbraco.library.GetDictionaryItem("TopStats.Points");
+			public static string Rebounds => umbraco.library.GetDictionaryItem("TopStats.Rebounds");
+			public static string Assists => umbraco.library.GetDictionaryItem("TopStats.Assists");
+			public static string Steals => umbraco.library.GetDictionaryItem("TopStats.Steals");
+		}
 	}
 }

@@ -679,6 +679,8 @@
     <Content Include="Views\Partials\ManagementHtml\_ScheduledGames.cshtml" />
     <Content Include="Views\Partials\NestedContent\_ResultsSection.cshtml" />
     <Content Include="Views\Partials\ManagementHtml\_GameResults.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_TopStatsSection.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_TopStats.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

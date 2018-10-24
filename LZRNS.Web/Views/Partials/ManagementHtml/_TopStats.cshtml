@@ -1,0 +1,40 @@
+﻿@using LZRNS.DomainModels.Models
+@inherits UmbracoViewPage<IEnumerable<IGrouping<Guid, Stats>>>
+
+@if (Model.HasValue())
+{
+	<div class="stats-cards row">
+		@{
+			var topPoints = Model.Select(x => new Tuple<string, int>(x.First().Player.GetFullName, x.Sum(y => y.Pts))).OrderByDescending(x => x.Item2).Take(5);
+			var topRebounds = Model.Select(x => new Tuple<string, int>(x.First().Player.GetFullName, x.Sum(y => y.Reb))).OrderByDescending(x => x.Item2).Take(5);
+			var topAssists = Model.Select(x => new Tuple<string, int>(x.First().Player.GetFullName, x.Sum(y => y.Ast))).OrderByDescending(x => x.Item2).Take(5);
+			var topSteals = Model.Select(x => new Tuple<string, int>(x.First().Player.GetFullName, x.Sum(y => y.Stl))).OrderByDescending(x => x.Item2).Take(5);
+		}
+
+		@RenderCard(UmbracoDictionary.TopStats.Points, topPoints)
+		@RenderCard(UmbracoDictionary.TopStats.Rebounds, topRebounds)
+		@RenderCard(UmbracoDictionary.TopStats.Assists, topAssists)
+		@RenderCard(UmbracoDictionary.TopStats.Steals, topSteals)
+	</div>
+
+}
+
+@helper RenderCard(string cardName, IEnumerable<Tuple<string, int>> topStats)
+{
+	if (topStats.HasValue())
+	 {
+		 <div class="col-12 col-sm-6 col-lg-3">
+			 <div class="card">
+				 <div class="card-title">
+					 <h4>@cardName</h4>
+				 </div>
+				 <ol class="players">
+					 @foreach (var topStat in topStats)
+					 {
+						 <li class="player">@topStat.Item1<span class="points">@topStat.Item2</span></li>
+					 }
+				 </ol>
+			 </div>
+		 </div>
+	 }
+}

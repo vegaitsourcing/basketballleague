@@ -1,0 +1,16 @@
+﻿@inherits UmbracoViewPage<TopStatsSectionModel>
+
+<div class="top-stats">
+	<div class="wrap">
+		<div class="image-holder">
+			<img src="@Url.Content("~/images/content/krunica.png")" alt="">
+		</div>
+		@if (Model.Title.HasValue())
+		{
+			<div class="title">
+				<h2>@Model.Title</h2>
+			</div>
+		}
+		@{Html.RenderAction<ManagementHtmlController>(c => c.TopStats(0, null), Model.SeasonYearStart, Model.RoundName);}
+	</div>
+</div>
