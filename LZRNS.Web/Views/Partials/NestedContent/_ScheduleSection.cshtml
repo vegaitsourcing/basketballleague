@@ -41,6 +41,6 @@
 				}
 			</div>
 		}
-		@{Html.RenderAction<ManagementHtmlController>(c => c.ScheduledGames(0, null, DateTime.Now), Model.SeasonYearStart, Model.RoundName, date);}
+		@{Html.RenderAction<ManagementHtmlController>(c => c.ScheduledGames(0, null, null, DateTime.Now), Model.SeasonYearStart, Model.RoundName, Model.LeagueName, date);}
 	</div>
 }

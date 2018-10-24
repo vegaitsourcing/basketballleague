@@ -12,14 +12,17 @@ namespace LZRNS.Models.DocumentTypes.Pages
 	{
 		public HomeModel()
 		{
+			this.CurrentShownLeague = this.GetPropertyValue<string>();
 		}
 
 		public HomeModel(IPublishedContent content) : base(content)
 		{
+			this.CurrentShownLeague = this.GetPropertyValue<string>();
 		}
 
 		public HomeModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
 		{
+			this.CurrentShownLeague = this.GetPropertyValue<string>();
 		}
 
 		public string PreBannerTitle => this.GetPropertyValue<string>();
@@ -32,5 +35,8 @@ namespace LZRNS.Models.DocumentTypes.Pages
 		public IEnumerable<SectionBaseModel> Sections => this.GetCachedValue(() =>
 			Content.GetPropertyValue<IEnumerable<IPublishedContent>>().EmptyIfNull()
 				.AsDocumentTypeModel<SectionBaseModel>());
+
+		public IEnumerable<string> Leagues => this.GetPropertyValue<IEnumerable<string>>();
+		public string CurrentShownLeague { get; set; }
 	}
 }

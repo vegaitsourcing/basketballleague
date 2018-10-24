@@ -10,5 +10,6 @@ namespace LZRNS.Models.DocumentTypes.Nodes.NestedContent.Sections
 		}
 
 		public string Title => this.GetPropertyValue<string>();
+		public string LeagueName { get; set; }
 	}
 }

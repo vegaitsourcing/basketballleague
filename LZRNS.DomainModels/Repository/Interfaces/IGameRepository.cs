@@ -10,6 +10,5 @@ namespace LZRNS.DomainModels.Repository.Interfaces
 		Stats AddStatsForPlayerInGame(Stats stats);
 		void UpdateStatsForPlayerInGame(Stats stats);
 		void DeleteStatsForPlayerInGame(Guid gamePlayerId);
-		ICollection<Game> GetGamesForSeasonAndRound(int seasonStartYear, string roundName);
 	}
 }

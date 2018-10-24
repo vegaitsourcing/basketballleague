@@ -78,7 +78,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
-    <Compile Include="Helper\StatsList.cs" />
     <Compile Include="Migrations\201809261425121_modelchange.cs" />
     <Compile Include="Migrations\201809261425121_modelchange.Designer.cs">
       <DependentUpon>201809261425121_modelchange.cs</DependentUpon>
@@ -123,14 +122,13 @@
     <Compile Include="Repository\Interfaces\ISeasonRepository.cs" />
     <Compile Include="Repository\Interfaces\ITeamRepository.cs" />
     <Compile Include="TimetableModels\SingleGameModel.cs" />
+    <Compile Include="ViewModels\LeaderboardPlacing.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201809261425121_modelchange.resx">
       <DependentUpon>201809261425121_modelchange.cs</DependentUpon>

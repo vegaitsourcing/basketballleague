@@ -11,6 +11,6 @@
 				<h2>@Model.Title</h2>
 			</div>
 		}
-		@{Html.RenderAction<ManagementHtmlController>(c => c.TopStats(0, null), Model.SeasonYearStart, Model.RoundName);}
+		@{Html.RenderAction<ManagementHtmlController>(c => c.TopStats(0, null, null), Model.SeasonYearStart, Model.RoundName, Model.LeagueName);}
 	</div>
 </div>

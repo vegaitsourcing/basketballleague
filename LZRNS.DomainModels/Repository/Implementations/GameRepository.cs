@@ -42,13 +42,5 @@ namespace LZRNS.DomainModels.Repository.Implementations
 			_context.SaveChanges();
 
 		}
-
-		public ICollection<Game> GetGamesForSeasonAndRound(int seasonStartYear, string roundName)
-		{
-			return _context.Games
-				.Where(x => x.Season.SeasonStartYear.Equals(seasonStartYear) &&
-					x.Round.RoundName.Equals(roundName))
-				.ToList();
-		}
 	}
 }

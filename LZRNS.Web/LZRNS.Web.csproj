@@ -681,6 +681,9 @@
     <Content Include="Views\Partials\ManagementHtml\_GameResults.cshtml" />
     <Content Include="Views\Partials\NestedContent\_TopStatsSection.cshtml" />
     <Content Include="Views\Partials\ManagementHtml\_TopStats.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_LeaderboardSection.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_Leaderboard.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_SponsorsSection.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

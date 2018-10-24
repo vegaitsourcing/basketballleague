@@ -1,55 +1,74 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 
 namespace LZRNS.Web.Controllers.Surface
 {
 	public class ManagementHtmlController : BaseSurfaceController
 	{
-		private readonly IGameRepository _gameRepo;
-		private readonly IPlayerRepository _playerRepo;
+		private readonly ISeasonRepository _seasonRepo;
 
-		public ManagementHtmlController(IGameRepository gameRepo, IPlayerRepository playerRepo)
+		public ManagementHtmlController(ISeasonRepository seasonRepo)
 		{
-			_gameRepo = gameRepo;
-			_playerRepo = playerRepo;
+			_seasonRepo = seasonRepo;
 		}
 
 		[ChildActionOnly]
-		public ActionResult ScheduledGames(int seasonStartYear, string roundName, DateTime? gamesDate)
+		public ActionResult ScheduledGames(int seasonStartYear, string roundName, string leagueName, DateTime? gamesDate)
 		{
 			if (seasonStartYear.Equals(default(int)) ||
 				string.IsNullOrWhiteSpace(roundName) ||
 				!gamesDate.HasValue) return new EmptyResult();
 
-			var model = _gameRepo.GetGamesForSeasonAndRound(seasonStartYear, roundName)
-				.Where(x => x.DateTime.Date == gamesDate.Value.Date);
+			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
+					.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
+					.Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
+					.SelectMany(y => y.Games)
+					.Where(x => x.DateTime.Date == gamesDate.Value.Date);
 
 			return PartialView(model);
 		}
 
-		public ActionResult GameResults(int seasonStartYear, string roundName)
+		public ActionResult GameResults(int seasonStartYear, string roundName, string leagueName)
 		{
 			if (seasonStartYear.Equals(default(int)) ||
 				string.IsNullOrWhiteSpace(roundName)) return new EmptyResult();
 
-			return PartialView(_gameRepo.GetGamesForSeasonAndRound(seasonStartYear, roundName).ToList());
+			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
+				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
+				.Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
+				.SelectMany(y => y.Games);
+
+			return PartialView(model);
 		}
 
-		public ActionResult TopStats(int seasonStartYear, string roundName)
+		public ActionResult TopStats(int seasonStartYear, string roundName, string leagueName)
 		{
 			if (seasonStartYear.Equals(default(int)) ||
 			    string.IsNullOrWhiteSpace(roundName)) return new EmptyResult();
 
-			var model = _gameRepo.GetGamesForSeasonAndRound(seasonStartYear, roundName)
-				.ToList()
+			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
+				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
+				.Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
+				.SelectMany(y => y.Games)
 				.Select(x => x.TeamAPlayerStats
 					.Concat(x.TeamBPlayerStats))
 				.SelectMany(x => x)
-				.GroupBy(y => y.PlayerId);
+				.GroupBy(y => y.PlayerId); ;
+
+			return PartialView(model);
+		}
+
+		public ActionResult Leaderboard(int seasonStartYear, string roundName, string leagueName)
+		{
+			if (seasonStartYear.Equals(default(int)) ||
+			    string.IsNullOrWhiteSpace(roundName)) return new EmptyResult();
+
+			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
+				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
+				.Teams.Select(x => x.GetLeaderBoardPlacing(roundName))
+				.OrderByDescending(x => x.Pts);
 
 			return PartialView(model);
 		}

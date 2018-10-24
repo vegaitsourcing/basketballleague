@@ -8,6 +8,13 @@
 				{
 					<h1>@Model.PreBannerTitle <span class="orange">@Model.BannerTitle</span> @Model.PostBannerTitle</h1>
 				}
+				@if (Model.Leagues.HasValue())
+				{
+					foreach (var league in Model.Leagues)
+					{
+						<a class="something-to-implement" href="@(Model.Url + $"?ln={league}")">@league</a>
+					}
+				}
 			</div>
 		</div>
 	</div>
@@ -15,7 +22,7 @@
 	{
 		foreach (var section in Model.Sections)
 		{
-			Html.RenderAction<NestedContentController>(c => c.Render(null), section);
+			Html.RenderAction<NestedContentController>(c => c.RenderSection(null, null), section, Model.CurrentShownLeague);
 		}
 	}
 

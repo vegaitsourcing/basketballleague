@@ -5,6 +5,7 @@ using LZRNS.DomainModels.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 
 namespace LZRNS.DomainModels.Repository.Implementations
 {
@@ -12,6 +13,11 @@ namespace LZRNS.DomainModels.Repository.Implementations
 	{
 		public SeasonRepository(BasketballDbContext context) : base(context)
 		{
+		}
+
+		public Season GetSeasonByYear(int seasonStartYear)
+		{
+			return _context.Seasons.First(x => x.SeasonStartYear.Equals(seasonStartYear));
 		}
 
 		public LeagueSeason AddLeagueToSeason(LeagueSeason leagueSeason)

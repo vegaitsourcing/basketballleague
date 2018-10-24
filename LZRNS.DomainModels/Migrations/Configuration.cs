@@ -51,7 +51,6 @@ namespace LZRNS.DomainModels.Migrations
                 TeamName = RandomString(7),
                 Coach = RandomString(7),
                 Players = new List<Player>(),
-                Games = new List<Game>(),
                 Id = Guid.NewGuid()
             };
         }

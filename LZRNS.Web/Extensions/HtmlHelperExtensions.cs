@@ -28,7 +28,7 @@ namespace LZRNS.Web.Extensions
 			source.RenderAction(methodInfo.Name, controllerName, routeValueDictionary);
 		}
 
-		public static string Action<TController>(this UrlHelper source, Expression<Action<TController>> expression)
+		public static string Action<TController>(this UrlHelper source, Expression<Action<TController>> expression, object routeValues = null)
 			where TController : Controller
 		{
 			if (source == null) throw new ArgumentNullException(nameof(source));
@@ -37,7 +37,7 @@ namespace LZRNS.Web.Extensions
 			MethodInfo methodInfo = GetMethodInfo(expression);
 			string controllerName = typeof(TController).Name.RemoveControllerSuffix();
 
-			return source.Action(methodInfo.Name, controllerName);
+			return source.Action(methodInfo.Name, controllerName, routeValues);
 		}
 
 		private static MethodInfo GetMethodInfo<T>(Expression<T> expression)
