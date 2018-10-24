@@ -1,0 +1,14 @@
+﻿@inherits UmbracoViewPage<IEnumerable<LZRNS.DomainModel.Models.Game>>
+
+@if (Model.HasValue())
+{
+	<div class="items">
+		@foreach (var game in Model)
+		{
+			<div class="item">
+				<div class="time">@game.DateTime.ToString("HH:mm")</div>
+				<div class="match">@game.TeamA.TeamName vs @game.TeamB.TeamName</div>
+			</div>
+		}
+	</div>
+}

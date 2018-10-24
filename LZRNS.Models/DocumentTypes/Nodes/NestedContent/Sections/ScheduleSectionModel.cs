@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using LZRNS.Models.Extensions;
 using Umbraco.Core.Models;
@@ -20,6 +19,9 @@ namespace LZRNS.Models.DocumentTypes.Nodes.NestedContent.Sections
 		public string RoundName => this.GetCachedValue(() => 
 			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.ScheduleRound);
 
+		public int? SeasonYearStart => this.GetCachedValue(() =>
+			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.SeasonYearStart);
+
 		public DateTime FirstDate => this.GetPropertyValue<DateTime>();
 		public DateTime SecondDate => this.GetPropertyValue<DateTime>();
 
@@ -28,10 +30,8 @@ namespace LZRNS.Models.DocumentTypes.Nodes.NestedContent.Sections
 
 		private IEnumerable<DateTime> GetDateRange(DateTime date, bool dateLast)
 		{
-			var start = dateLast ? date.AddDays(-4) : date.AddDays(4);
-			//: TODO MAKE THIS THING WORK PLEAZ I WANT ONE LINER HERE!
-			return Enumerable.Range(0, 1 + (date - start).Days)
-				.Select(offset =>start.AddDays(offset));
+			return Enumerable.Range(0, 1 + (date.AddDays(4) - date).Days)
+				.Select(offset => dateLast ? date.AddDays(offset - 4) : date.AddDays(offset));
 		}
 
 	}

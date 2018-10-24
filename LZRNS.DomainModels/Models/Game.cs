@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace LZRNS.DomainModel.Models
@@ -50,10 +51,26 @@ namespace LZRNS.DomainModel.Models
 		public virtual ICollection<StatsPerGame> StatsPerGame { get; }
 
 		[NotMapped]
-		public ICollection<Stats> TeamAPlayerStats { get; set; }
+		public ICollection<Stats> TeamAPlayerStats =>
+			this.TeamA.PlayersPerSeason
+				.Where(x => x.Player.Stats
+					.Any(y => y.GameId == this.Id))
+				.Select(z => z.Player)
+				.Select(k => k.Stats
+					.FirstOrDefault(s => s.PlayerId == k.Id && s.GameId == this.Id))
+				.OrderBy(w => w.Player.GetFullName)
+				.ToList();
 
 		[NotMapped]
-		public ICollection<Stats> TeamBPlayerStats { get; set; }
+		public ICollection<Stats> TeamBPlayerStats =>
+			this.TeamB.PlayersPerSeason
+				.Where(x => x.Player.Stats
+					.Any(y => y.GameId == this.Id))
+				.Select(z => z.Player)
+				.Select(k => k.Stats
+					.FirstOrDefault(s => s.PlayerId == k.Id && s.GameId == this.Id))
+				.OrderBy(w => w.Player.GetFullName)
+				.ToList();
 
 		[NotMapped]
 		public StatsPerGame StatsPerGameA =>

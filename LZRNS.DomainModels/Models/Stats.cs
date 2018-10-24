@@ -8,8 +8,6 @@ namespace LZRNS.DomainModels.Models
 {
 	public class Stats : AbstractModel
 	{
-		public Stats() { }
-
 		[Required]
 		public Guid GameId { get; set; }
 
@@ -37,21 +35,10 @@ namespace LZRNS.DomainModels.Models
 		[Required]
 		public int TwoPtMade { get; set; }
 
-		public int TwoPtA
-		{
-			get
-			{
-				return TwoPtMade + TwoPtMissed;
-			}
-		}
+		public int TwoPtA => TwoPtMade + TwoPtMissed;
 
-		public double TwoPtPerc
-		{
-			get
-			{
-				return TwoPtA is 0 ? 0 : (TwoPtMade / TwoPtA) * 100;
-			}
-		}
+		public double TwoPtPerc =>
+			TwoPtA is 0 ? 0 : Math.Round((double)TwoPtMade / TwoPtA * 100, 1);
 
 		[Required]
 		public int ThreePtMissed { get; set; }
@@ -60,45 +47,17 @@ namespace LZRNS.DomainModels.Models
 		public int ThreePtMade { get; set; }
 
 
-		public int ThreePtA
-		{
-			get
-			{
-				return ThreePtMade + ThreePtMissed;
-			}
-		}
+		public int ThreePtA => ThreePtMade + ThreePtMissed;
 
-		public double ThreePtPerc
-		{
-			get
-			{
-				return ThreePtA is 0 ? 0 : (ThreePtMade / ThreePtA) * 100;
-			}
-		}
+		public double ThreePtPerc =>
+			ThreePtA is 0 ? 0 : Math.Round((double)ThreePtMade / ThreePtA * 100, 1);
 
-		public int FgA
-		{
-			get
-			{
-				return TwoPtA + ThreePtA;
-			}
-		}
+		public int FgA => TwoPtA + ThreePtA;
 
-		public int FgM
-		{
-			get
-			{
-				return TwoPtMade + ThreePtMade;
-			}
-		}
+		public int FgM => TwoPtMade + ThreePtMade;
 
-		public double FgPerc
-		{
-			get
-			{
-				return FgA is 0 ? 0 : (FgM / FgA) * 100;
-			}
-		}
+		public double FgPerc =>
+			FgA is 0 ? 0 : Math.Round((double)FgM / FgA * 100, 1);
 
 		[Required]
 		public int FtMissed { get; set; }
@@ -106,21 +65,10 @@ namespace LZRNS.DomainModels.Models
 		[Required]
 		public int FtMade { get; set; }
 
-		public int FtA
-		{
-			get
-			{
-				return FtMade + FtMissed;
-			}
-		}
+		public int FtA => FtMade + FtMissed;
 
-		public double FtPerc
-		{
-			get
-			{
-				return FtA is 0 ? 0 : (FtMade / FtA) * 100;
-			}
-		}
+		public double FtPerc => 
+			FtA is 0 ? 0 : Math.Round((double)FtMade / FtA * 100, 1);
 
 		[Required]
 		public int OReb { get; set; }
@@ -128,13 +76,7 @@ namespace LZRNS.DomainModels.Models
 		[Required]
 		public int DReb { get; set; }
 
-		public int Reb
-		{
-			get
-			{
-				return OReb + DReb;
-			}
-		}
+		public int Reb => OReb + DReb;
 
 		[Required]
 		public int Ast { get; set; }
@@ -148,22 +90,10 @@ namespace LZRNS.DomainModels.Models
 		[Required]
 		public int Blk { get; set; }
 
-		public int Pts
-		{
-			get
-			{
-				return 2 * TwoPtMade + 3 * ThreePtMade + FtMade;
-			}
-		}
+		public int Pts => 2 * TwoPtMade + 3 * ThreePtMade + FtMade;
 
-		public int Eff
-		{
-			get
-			{
-				return (Pts + Reb + Ast + Stl + Blk)
-					- (FgA + FtA + To);
-			}
-		}
+		public int Eff => 
+			(Pts + Reb + Ast + Stl + Blk) - (FgA + FtA + To);
 
 		[Required]
 		public int Fd { get; set; }
@@ -171,14 +101,9 @@ namespace LZRNS.DomainModels.Models
 		[Required]
 		public int Fc { get; set; }
 
-		public int Pir
-		{
-			get
-			{
-				return (Pts + Reb + Ast + Stl + Blk + Fd)
-				- ((FgA - FgM) + (FtA - FtMade) + To + Fc);
-			}
-		}
+		public int Pir => 
+			(Pts + Reb + Ast + Stl + Blk + Fd)
+			- ((FgA - FgM) + (FtA - FtMade) + To + Fc);
 
 		public Td Td { get; set; }
 	}

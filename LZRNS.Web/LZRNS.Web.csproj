@@ -672,10 +672,13 @@
     <Content Include="Views\Partials\RoundManagementSurface\_Edit.cshtml" />
     <Content Include="Views\Partials\GameManagementSurface\_GamesTable.cshtml" />
     <Content Include="Views\Partials\GameManagementSurface\_Add.cshtml" />
-    <Content Include="Views\Partials\GameManagementSurface\_AddGamePlayer.cshtml" />
+    <Content Include="Views\Partials\GameManagementSurface\_AddPlayerStats.cshtml" />
     <Content Include="Views\Partials\GameManagementSurface\_EditPlayerStats.cshtml" />
     <Content Include="Views\Partials\NestedContent\_NewsSection.cshtml" />
     <Content Include="Views\Partials\NestedContent\_ScheduleSection.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_ScheduledGames.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_ResultsSection.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_GameResults.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -719,6 +722,7 @@
     <Compile Include="Controllers\Surface\ContactFormSurfaceController.cs" />
     <Compile Include="Controllers\Surface\FormsController.cs" />
     <Compile Include="Controllers\Surface\NestedContentController.cs" />
+    <Compile Include="Controllers\Surface\ManagementHtmlController.cs" />
     <Compile Include="Controllers\Surface\SharedController.cs" />
     <Compile Include="Dictionary\UmbracoDictionary.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />

@@ -39,10 +39,10 @@ namespace LZRNS.Web.Controllers.Management
 
 	public class GameManagementSurfaceController : SurfaceController
 	{
-		private ISeasonRepository _seasonRepo;
-		private IRoundRepository _roundRepo;
-		private ITeamRepository _teamRepo;
-		private IGameRepository _gameRepo;
+		private readonly ISeasonRepository _seasonRepo;
+		private readonly IRoundRepository _roundRepo;
+		private readonly ITeamRepository _teamRepo;
+		private readonly IGameRepository _gameRepo;
 
 		public GameManagementSurfaceController(ISeasonRepository seasonRepo, IRoundRepository roundRepo, ITeamRepository teamRepo, IGameRepository gameRepo)
 		{
@@ -89,20 +89,6 @@ namespace LZRNS.Web.Controllers.Management
 			model.TeamA.AvailablePlayers = GetPlayerList(model.TeamA.PlayersPerSeason, gameId);
 			model.TeamB.AvailablePlayers = GetPlayerList(model.TeamB.PlayersPerSeason, gameId);
 
-			model.TeamAPlayerStats = model.TeamA.PlayersPerSeason
-				.Where(x => x.Player.Stats
-					.Where(y => y.GameId == gameId).Any())
-				.Select(x => x.Player.Stats.FirstOrDefault())
-				.OrderBy(x => x.Player.GetFullName)
-				.ToList();
-
-			model.TeamBPlayerStats = model.TeamB.PlayersPerSeason
-				.Where(x => x.Player.Stats
-					.Where(y => y.GameId == gameId).Any())
-				.Select(x => x.Player.Stats.FirstOrDefault())
-				.OrderBy(x => x.Player.GetFullName)
-				.ToList();
-
 			return PartialView(model);
 		}
 
@@ -112,7 +98,7 @@ namespace LZRNS.Web.Controllers.Management
 
 			foreach (var player in players.OrderBy(x => x.Player.GetFullName))
 			{
-				var stat = player.Player.Stats.Where(z => z.GameId.Equals(gameId)).FirstOrDefault();
+				var stat = player.Player.Stats.FirstOrDefault(z => z.GameId.Equals(gameId));
 				var selected = stat != null;
 
 				result.Add(new SelectListItem()
@@ -245,9 +231,11 @@ namespace LZRNS.Web.Controllers.Management
 		[HttpGet]
 		public ActionResult AddPlayerStats(Guid gameId, Guid playerId)
 		{
-			var model = new Stats();
-			model.GameId = gameId;
-			model.PlayerId = playerId;
+			var model = new Stats
+			{
+				GameId = gameId,
+				PlayerId = playerId
+			};
 
 			return PartialView(model);
 		}

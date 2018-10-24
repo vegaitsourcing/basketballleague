@@ -1,0 +1,115 @@
+﻿@inherits UmbracoViewPage<ResultsSectionModel>
+
+<div class="results">
+	<div class="wrap">
+	@if (Model.Title.HasValue())
+	{
+		<div class="title">
+			<h2>@Model.Title</h2>
+		</div>
+	}
+	@if (Model.RoundName.HasValue() && Model.SeasonYearStart.HasValue())
+	{
+		<div class="row">
+		<div class="col-lg-2">
+			<div class="round">
+				<span class="number">@Model.RoundName</span>
+				<span>@UmbracoDictionary.Shared.Round</span>
+			</div>
+		</div>
+		@{Html.RenderAction<ManagementHtmlController>(c => c.GameResults(0, null), Model.SeasonYearStart, Model.RoundName);}
+		@*<div class="col-lg-5">
+			<div class="items">
+				<div class="item js-open-popup" data-popup-link="result-popup">
+					<div class="top">
+						<span class="name">Del amore eko voda</span>
+						<span class="result">76</span>
+					</div>
+					<div class="bottom">
+						<span class="name">Starogradski gonici</span>
+						<span class="result">50</span>
+					</div>
+					<div class="result-details">
+						test 7
+					</div>
+				</div>
+				<div class="item js-open-popup" data-popup-link="result-popup">
+					<div class="top">
+						<span class="name">Del amore eko voda</span>
+						<span class="result">76</span>
+					</div>
+					<div class="bottom">
+						<span class="name">Starogradski gonici</span>
+						<span class="result">50</span>
+					</div>
+					<div class="result-details">
+						test 8
+					</div>
+				</div>
+				<div class="item js-open-popup" data-popup-link="result-popup">
+					<div class="top">
+						<span class="name">Del amore eko voda</span>
+						<span class="result">76</span>
+					</div>
+					<div class="bottom">
+						<span class="name">Starogradski gonici</span>
+						<span class="result">50</span>
+					</div>
+					<div class="result-details">
+						test 3
+					</div>
+				</div>
+				<div class="item js-open-popup" data-popup-link="result-popup">
+					<div class="top">
+						<span class="name">Del amore eko voda</span>
+						<span class="result">76</span>
+					</div>
+					<div class="bottom">
+						<span class="name">Starogradski gonici</span>
+						<span class="result">50</span>
+					</div>
+					<div class="result-details">
+						test 4
+					</div>
+				</div>
+				<div class="item js-open-popup" data-popup-link="result-popup">
+					<div class="top">
+						<span class="name">Del amore eko voda</span>
+						<span class="result">76</span>
+					</div>
+					<div class="bottom">
+						<span class="name">Starogradski gonici</span>
+						<span class="result">50</span>
+					</div>
+					<div class="result-details">
+						test 5
+					</div>
+				</div>
+				<div class="item js-open-popup" data-popup-link="result-popup">
+					<div class="top">
+						<span class="name">Del amore eko voda</span>
+						<span class="result">76</span>
+					</div>
+					<div class="bottom">
+						<span class="name">Starogradski gonici</span>
+						<span class="result">50</span>
+					</div>
+					<div class="result-details">
+						test 6
+					</div>
+				</div>
+			</div>
+		</div>*@
+		</div>
+	}
+		<div class="popup-overlay" data-popup-window="result-popup">
+			<div class="popup">
+				<button type="button" class="btn-close js-close-popup"><span class="font-ico-x"></span></button>
+				<div class="popup-placeholder">
+					<!-- this is dynamically populated -->
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+

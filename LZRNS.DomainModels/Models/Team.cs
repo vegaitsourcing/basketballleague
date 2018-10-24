@@ -31,7 +31,7 @@ namespace LZRNS.DomainModel.Models
 
 		[NotMapped]
 		public virtual ICollection<StatsPerGame> StatsPerGame =>
-			Games
+			Games?
 				.Select(x => new StatsPerGame(x.Id, this))
 				.ToList();
 

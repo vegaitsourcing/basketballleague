@@ -1,0 +1,90 @@
+﻿@using LZRNS.DomainModel.Models
+@using LZRNS.DomainModels.Models
+@inherits UmbracoViewPage<IEnumerable<LZRNS.DomainModel.Models.Game>>
+
+@if (Model.HasValue())
+{
+	var splittedResults = Model.Select((item, index) => new {index, item})
+		.GroupBy(x => x.index % 2)
+		.Select(x => x.Select(y => y.item));
+
+	foreach (var splittedResult in splittedResults)
+	 {
+		 @RenderColumn(splittedResult)
+	 }
+}
+
+@helper RenderTable(ICollection<Stats> stats, string teamName)
+{
+	<div class="table">
+		<span>@teamName</span>
+		<table>
+			<thead>
+			<tr>
+				<th class="pos">#</th>
+				<th class="name">@UmbracoDictionary.Stats.Name</th>
+				<th>@UmbracoDictionary.Stats.Min</th>
+				<th>@UmbracoDictionary.Stats.Eff</th>
+				<th>@UmbracoDictionary.Stats.TwoPts</th>
+				<th>@UmbracoDictionary.Stats.ThreePts</th>
+				<th>@UmbracoDictionary.Stats.Ft</th>
+				<th>@UmbracoDictionary.Stats.Reb</th>
+				<th>@UmbracoDictionary.Stats.Off</th>
+				<th>@UmbracoDictionary.Stats.Def</th>
+				<th>@UmbracoDictionary.Stats.Ast</th>
+				<th>@UmbracoDictionary.Stats.To</th>
+				<th>@UmbracoDictionary.Stats.Stl</th>
+				<th>@UmbracoDictionary.Stats.Blk</th>
+				<th>@UmbracoDictionary.Stats.Pts</th>
+			</tr>
+			</thead>
+			<tbody>
+			@foreach (var playerStats in stats)
+			{
+				<tr>
+					<td class="pos">@playerStats.JerseyNumber</td>
+					<td class="name">@playerStats.Player.GetFullName</td>
+					<td>@playerStats.MinutesPlayed</td>
+					<td>@playerStats.Eff</td>
+					<td><span>@playerStats.TwoPtMade/@playerStats.TwoPtA</span><span>@playerStats.TwoPtPerc%</span></td>
+					<td><span>@playerStats.ThreePtMade/@playerStats.ThreePtA</span><span>@playerStats.ThreePtPerc%</span></td>
+					<td><span>@playerStats.FtMade/@playerStats.FtA</span><span>@playerStats.FtPerc%</span></td>
+					<td>@playerStats.Reb</td>
+					<td>@playerStats.OReb</td>
+					<td>@playerStats.DReb</td>
+					<td>@playerStats.Ast</td>
+					<td>@playerStats.To</td>
+					<td>@playerStats.Stl</td>
+					<td>@playerStats.Blk</td>
+					<td>@playerStats.Pts</td>
+				</tr>
+			}
+			</tbody>
+		</table>
+	</div>
+}
+
+@helper RenderColumn(IEnumerable<Game> games)
+{
+	<div class="col-lg-5">
+		<div class="items">
+			@foreach (var game in games)
+			{
+				<div class="item js-open-popup" data-popup-link="result-popup">
+					<div class="top">
+						<span class="name">@game.TeamA.TeamName</span>
+						<span class="result">@game.StatsPerGameA.Pts</span>
+					</div>
+					<div class="bottom">
+						<span class="name">@game.TeamB.TeamName</span>
+						<span class="result">@game.StatsPerGameB.Pts</span>
+					</div>
+					<div class="result-details">
+						@RenderTable(game.TeamAPlayerStats, game.TeamA.TeamName)
+						@RenderTable(game.TeamBPlayerStats, game.TeamB.TeamName)
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+}
