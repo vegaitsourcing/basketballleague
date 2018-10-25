@@ -19,13 +19,13 @@ namespace LZRNS.Web.Controllers.Management
 		{
 			model.ResultsRoundGames = _seasonRepo.GetSeasonByYear(model.StatisticsSettings.SeasonYearStart)
 				.LeagueSeasons.First( /*TODO: INSERT LEAGUE ID PLS*/)
-				.Rounds.Where(x => x.RoundName.CompareTo(model.StatisticsSettings.ResultsRound) <= 0)
+				.Rounds.Where(x => x.RoundName.Equals(model.StatisticsSettings.ResultsRound))
 				.SelectMany(y => y.Games)
 				.ToList();
 
 			model.ScheduleRoundGames = _seasonRepo.GetSeasonByYear(model.StatisticsSettings.SeasonYearStart)
 				.LeagueSeasons.First( /*TODO: INSERT LEAGUE ID PLS*/)
-				.Rounds.Where(x => x.RoundName.CompareTo(model.StatisticsSettings.ScheduleRound) <= 0)
+				.Rounds.Where(x => x.RoundName.Equals(model.StatisticsSettings.ScheduleRound))
 				.SelectMany(y => y.Games)
 				.ToList();
 

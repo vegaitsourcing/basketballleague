@@ -677,6 +677,7 @@
     <Content Include="Views\Partials\NestedContent\_BracketModule.cshtml" />
     <Content Include="Views\Partials\NestedContent\_ImageModule.cshtml" />
     <Content Include="Views\Partials\NestedContent\_TextModule.cshtml" />
+    <Content Include="Views\Results.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -710,6 +711,7 @@
     <Compile Include="Controllers\Management\ImportController.cs" />
     <Compile Include="Controllers\Management\LeagueManagementController.cs" />
     <Compile Include="Controllers\Management\ManagementController.cs" />
+    <Compile Include="Controllers\RenderMvc\ResultsController.cs" />
     <Compile Include="Controllers\RenderMvc\ScheduleController.cs" />
     <Compile Include="Controllers\RenderMvc\SitemapController.cs" />
     <Compile Include="Controllers\RenderMvc\XMLSitemapController.cs" />

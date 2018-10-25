@@ -37,7 +37,7 @@ namespace LZRNS.Web.Controllers.Surface
 
 			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
-				.Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
+				.Rounds.Where(x => x.RoundName.Equals(roundName))
 				.SelectMany(y => y.Games);
 
 			return PartialView(model);
