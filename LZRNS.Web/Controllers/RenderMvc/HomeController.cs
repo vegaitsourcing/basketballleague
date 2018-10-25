@@ -9,7 +9,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
 	{
 		public ActionResult Index(HomeModel model, string ln)
 		{
-			model.CurrentShownLeague = !string.IsNullOrWhiteSpace(ln) ? ln : model.Leagues.LastOrDefault();
+			model.CurrentShownLeague = !string.IsNullOrWhiteSpace(ln) ? ln : model.Leagues.FirstOrDefault();
 
 			return CurrentTemplate(model);
 		}
