@@ -1,0 +1,35 @@
+﻿@inherits UmbracoViewPage<SponsorsSectionModel>
+
+<div class="friends-league">
+	<div class="wrap">
+		@if (Model.Title.HasValue())
+		{
+			<div class="friends-title">
+				<h2>@Model.Title</h2>
+			</div>
+		}
+		@if (Model.Sponsors.HasValue())
+		{
+			<div class="friends-logo">
+				@foreach (var sponsor in Model.Sponsors)
+				{
+					if (sponsor.Image.HasValue())
+					 {
+						 <div class="image-holder">
+							 @if (sponsor.Link.HasValue() && sponsor.Link.Url.HasValue() && sponsor.Image.HasValue())
+							 {
+								 <a href="@sponsor.Link.Url" target="@sponsor.Link.Target">
+									 <img src="@sponsor.Image.Url" alt="@sponsor.Image.AlternateText">
+								 </a>
+							 }
+							 else if (sponsor.Image.HasValue())
+							 {
+								 <img src="@sponsor.Image.Url" alt="@sponsor.Image.AlternateText">
+							 }
+						 </div>
+					 }
+				}
+			</div>
+		}
+	</div>
+</div>

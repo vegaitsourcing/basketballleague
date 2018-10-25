@@ -1,0 +1,40 @@
+﻿@using LZRNS.DomainModels.Models
+@inherits UmbracoViewPage<IEnumerable<LZRNS.DomainModels.ViewModels.LeaderboardPlacing>>
+
+@if (Model.HasValue())
+{
+	<div class="table">
+		<table>
+			<thead>
+				<tr>
+					<th class="pos">#</th>
+					<th class="name">Tim</th>
+					<th>Bodovi</th>
+					<th>Pobede</th>
+					<th>Porazi</th>
+					<th>DK</th>
+					<th>PK</th>
+					<th>Koš razlika</th>
+				</tr>
+			</thead>
+			<tbody>
+			@{
+				int i = 1;
+				foreach (var lbPlacing in Model)
+				{
+						<tr>
+							<td class="pos">@(i++)</td>
+							<td class="name">@lbPlacing.TeamName</td>
+							<td>@lbPlacing.Pts</td>
+							<td>@lbPlacing.Wins</td>
+							<td>@lbPlacing.Defeats</td>
+							<td>@lbPlacing.ScoredPts</td>
+							<td>@lbPlacing.ReceivedPts</td>
+							<td>@lbPlacing.Diff</td>
+						</tr>
+				}
+				}
+			</tbody>
+		</table>
+	</div>
+					}

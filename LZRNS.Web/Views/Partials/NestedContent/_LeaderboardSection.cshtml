@@ -1,0 +1,16 @@
+﻿@inherits UmbracoViewPage<LeaderboardSectionModel>
+
+<div class="statistics">
+	<div class="wrap">
+		@if (Model.Title.HasValue())
+		{
+			<div class="title">
+				<h2>@Model.Title</h2>
+			</div>
+		}
+		@{Html.RenderAction<ManagementHtmlController>(c => c.Leaderboard(0, null, null), Model.SeasonYearStart, Model.RoundName, Model.LeagueName);}
+		
+	</div>
+</div>
+
+
