@@ -1,7 +1,10 @@
-﻿using LZRNS.Models.DocumentTypes.Compositions;
+﻿using System.Collections.Generic;
+using LZRNS.Models.DocumentTypes.Compositions;
 using LZRNS.Models.Extensions;
 using System.Globalization;
+using System.Linq;
 using System.Web;
+using LZRNS.Common.Extensions;
 using Umbraco.Core.Models;
 
 namespace LZRNS.Models.DocumentTypes.Pages
@@ -19,8 +22,14 @@ namespace LZRNS.Models.DocumentTypes.Pages
         public AboutUsModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
 		{
         }
+	    public BannerModel Banner => this.GetCachedValue(() =>
+		    Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
+			    .EmptyIfNull()
+			    .FirstOrDefault()
+			    .AsType<BannerModel>());
 
-        public IHtmlString Text => this.GetPropertyValue<IHtmlString>();
+	    public string ContactFormTitle => this.GetPropertyValue<string>();
+		public IHtmlString Text => this.GetPropertyValue<IHtmlString>();
         public string EmailAddress => this.GetPropertyValue<string>();
     }
 }

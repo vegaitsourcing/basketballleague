@@ -683,6 +683,7 @@
     <Content Include="Views\Partials\NestedContent\_LeaderboardSection.cshtml" />
     <Content Include="Views\Partials\ManagementHtml\_Leaderboard.cshtml" />
     <Content Include="Views\Partials\NestedContent\_SponsorsSection.cshtml" />
+    <Content Include="Views\Partials\Items\_Error.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

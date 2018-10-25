@@ -32,5 +32,11 @@
 			public static string Assists => umbraco.library.GetDictionaryItem("TopStats.Assists");
 			public static string Steals => umbraco.library.GetDictionaryItem("TopStats.Steals");
 		}
+
+		public static class Contact
+		{
+			public static string Success => umbraco.library.GetDictionaryItem("Contact.Success");
+			public static string Error => umbraco.library.GetDictionaryItem("Contact.Error");
+		}
 	}
 }
