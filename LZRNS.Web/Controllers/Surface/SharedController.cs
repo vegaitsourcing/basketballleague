@@ -20,11 +20,5 @@ namespace LZRNS.Web.Controllers.Surface
 		{
 			return PartialView(model);
 		}
-
-		[ChildActionOnly]
-		public ActionResult Banner(BannerModel model)
-		{
-			return PartialView(model);
-		}
 	}
 }

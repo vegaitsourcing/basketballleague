@@ -1,4 +1,71 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
-@{
-	Layout = null;
+﻿@using System.Globalization
+@inherits UmbracoViewPage<ScheduleModel>
+	
+<main class="main schedule-page" data-template-name="@Model.Title">
+	<div class="banner">
+		<div class="wrap">
+			@if (Model.Banner.HasValue())
+			{
+				<div class="banner-title">
+					@if (Model.Banner.BannerTitleExists)
+					{
+						<h2>@Model.Banner.PreBannerTitle <span>@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h2>
+					}
+				</div>
+			}
+			@if (Model.Leagues.HasValue())
+			{
+				foreach (var league in Model.Leagues)
+				{
+					<a class="something-to-implement" href="@(Model.Url + $"?ln={league}")">@league</a>
+				}
+			}
+		</div>
+	</div>
+	<div class="schedule">
+		<div class="wrap">
+			@if (Model.Title.HasValue())
+			{
+				<div class="title">
+					<h2>@Model.Title</h2>
+				</div>
+			}
+			@foreach (var schedule in Model.Schedule)
+			{
+				if (schedule.RoundName.HasValue() && Model.SeasonYearStart.HasValue())
+				 {
+					 <div class="row">
+						 <div class="col-lg-2">
+							 <div class="round">
+								 <span class="number">@schedule.RoundName</span>
+								 <span>@UmbracoDictionary.Shared.Round</span>
+							 </div>
+						 </div>
+						 @RenderScheduleColumn(schedule.FirstDate, schedule.FirstDateRange, schedule.RoundName)
+						 @RenderScheduleColumn(schedule.SecondDate, schedule.SecondDateRange, schedule.RoundName)
+					 </div>
+				 }
+			}
+		</div>
+	</div>
+</main>
+
+@helper RenderScheduleColumn(DateTime date, IEnumerable<DateTime> dateRange, string roundName)
+{
+	<div class="col-lg-5">
+		@if (dateRange.HasValue())
+		{
+			CultureInfo cultureInfo = new CultureInfo("sr-Latn-RS");
+			<div class="dates">
+				@foreach (var rangeDate in dateRange)
+				{
+					<div class="date @(date == rangeDate ? "active" : string.Empty)">
+						<span class="month">@(rangeDate.ToString("MMMM", cultureInfo).ToFirstUpper())</span>
+						<span class="day">@rangeDate.Day</span>
+					</div>
+				}
+			</div>
+		}
+		@{Html.RenderAction<ManagementHtmlController>(c => c.ScheduledGames(0, null, null, DateTime.Now), Model.SeasonYearStart, roundName, Model.CurrentShownLeague, date);}
+	</div>
 }

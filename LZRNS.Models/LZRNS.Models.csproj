@@ -284,6 +284,7 @@
     <Compile Include="DocumentTypes\Nodes\HeaderModel.cs" />
     <Compile Include="DocumentTypes\Nodes\Items\ContactFormViewModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\SocialModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\ScheduleItemModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\SponsorModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\NewsBoxModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\NestedContentBaseModel.cs" />

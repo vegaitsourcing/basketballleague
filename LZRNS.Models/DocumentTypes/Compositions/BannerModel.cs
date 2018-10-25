@@ -1,6 +1,4 @@
 ﻿using LZRNS.Models.Extensions;
-using LZRNS.Models.MediaTypes;
-using System.Web;
 using Umbraco.Core.Models;
 
 namespace LZRNS.Models.DocumentTypes.Compositions
@@ -11,7 +9,11 @@ namespace LZRNS.Models.DocumentTypes.Compositions
 		{
         }
 
-        public ImageModel Image => this.GetCachedValue(() => Content.GetPropertyValue<IPublishedContent>().AsMediaType<ImageModel>());
-        public IHtmlString BannerTitle => this.GetPropertyValue<IHtmlString>();
+	    public string PreBannerTitle => this.GetPropertyValue<string>();
+	    public string BannerTitle => this.GetPropertyValue<string>();
+	    public string PostBannerTitle => this.GetPropertyValue<string>();
+
+	    public bool BannerTitleExists =>
+		    PreBannerTitle.HasValue() && BannerTitle.HasValue() && PostBannerTitle.HasValue();
     }
 }

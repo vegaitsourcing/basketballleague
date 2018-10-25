@@ -638,7 +638,6 @@
     <Content Include="Views\AboutUs.cshtml" />
     <Content Include="Views\Partials\Items\_ContactUsForm.cshtml" />
     <Content Include="Views\Partials\Items\_ContactUsSuccessForm.cshtml" />
-    <Content Include="Views\Partials\Shared\_Banner.cshtml" />
     <Content Include="Views\AllPlayers.cshtml" />
     <Content Include="Views\AllTeams.cshtml" />
     <Content Include="Views\League.cshtml" />
