@@ -44,7 +44,9 @@ let app = {
 		// call functions that are needed on window resize
 	},
 	docReady: function(){
-		functions.initHistorySeason();
+		if($('.history-page').length > 0){
+			functions.initHistorySeason();
+		}		
 	}
 };
 
