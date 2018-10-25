@@ -1,0 +1,83 @@
+﻿@inherits UmbracoViewPage<HistoryModel>
+
+<main class="main" data-template-name="@Model.Title">
+	<div class="banner">
+		<div class="wrap">
+			@if (Model.Banner.HasValue())
+			{
+				<div class="banner-title">
+					@if (Model.Banner.BannerTitleExists)
+					{
+						<h2>@Model.Banner.PreBannerTitle <span>@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h2>
+					}
+				</div>
+			}
+		</div>
+	</div>
+	<div class="history-page">
+		<div class="wrap">
+			@if (Model.Title.HasValue())
+			{
+				<div class="title">
+					<h2>@Model.Title</h2>
+				</div>
+			}
+			@if (Model.Seasons.HasValue())
+			{
+				<div class="row">
+					<div class="col-lg-2">
+						<ul class="years">
+							@{
+								foreach (var season in Model.Seasons)
+								 {
+									 <li data-season="@season.Title"><a href="javascript:;">@season.Title</a></li>
+								 }
+							}
+						</ul>
+					</div>
+					@foreach (var season in Model.Seasons)
+					{
+						<div class="col-lg-10 years-container" data-season="@season.Title" style="display: none;">
+							@season.Title
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+							<ol>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+								<li>Dugino poselo</li>
+								<li>Familija</li>
+							</ol>
+							<div class="tree-holder">
+								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
+								<img src="images/content/stablo.png" alt="">
+							</div>
+							<div class="img-wrap">
+								<div class="img-holder">
+									<img src="images/content/img-05.jpg" alt="">
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
+								</div>
+							</div>
+						</div>
+					}
+				</div>
+			}
+		</div>
+	</div>
+</main>

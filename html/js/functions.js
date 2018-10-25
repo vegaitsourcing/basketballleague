@@ -1,7 +1,6 @@
 'use strict';
 
-module.exports = {
-
+module.exports = {	
 	initSlider: function() {
 		let $slider = $('.slider');
 		if ($slider !== undefined && $slider.length) {
@@ -279,5 +278,35 @@ module.exports = {
 				arrayItems.css('height', maxH);
 			}
 		}
+	},
+	
+	//show season content
+	showSeasonContent: function() {
+		var activeSeason = $('.years li.active')[0].dataset.season;
+
+		$('.years-container').filter(function(i) {
+			return $('.years-container')[i].dataset.season === activeSeason;
+		}).show();
+	},
+	
+	//event for click on history season
+	initOnClickSeason: function(){
+		var self = this;
+		$(document).on('click',
+		'.years li a',
+		function(e) {
+			e.preventDefault();
+			$('.years li').removeClass('active');
+			$('.years-container').hide();
+			$(this).parent().addClass('active');
+
+			self.showSeasonContent();
+		});
+	},
+	
+	//init first element as active on history pageX
+	initHistorySeason: function(){
+		$('.years li').first().addClass('active');
+		this.showSeasonContent();
 	}
 };

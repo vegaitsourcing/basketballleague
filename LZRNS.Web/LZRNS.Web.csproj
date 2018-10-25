@@ -575,11 +575,7 @@
     <Content Include="config\applications.config" />
     <Content Include="config\404handlers.config" />
     <Content Include="Views\Home.cshtml" />
-    <Content Include="Views\Table.cshtml" />
-    <Content Include="Views\Results.cshtml" />
     <Content Include="Views\Schedule.cshtml" />
-    <Content Include="Views\Stats.cshtml" />
-    <Content Include="Views\Teams.cshtml" />
     <Content Include="Views\Import\Index.cshtml" />
     <Content Include="Views\Partials\Shared\_ManagmentLayout.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -633,17 +629,10 @@
     <Content Include="Views\Partials\Shared\_Footer.cshtml" />
     <Content Include="Views\Partials\Shared\_Header.cshtml" />
     <Content Include="Views\Partials\LeagueManagementSurface\_Add.cshtml" />
-    <Content Include="Views\TableWidget.cshtml" />
     <Content Include="Views\Partials\Listing\_Pagination.cshtml" />
     <Content Include="Views\AboutUs.cshtml" />
     <Content Include="Views\Partials\Items\_ContactUsForm.cshtml" />
     <Content Include="Views\Partials\Items\_ContactUsSuccessForm.cshtml" />
-    <Content Include="Views\AllPlayers.cshtml" />
-    <Content Include="Views\AllTeams.cshtml" />
-    <Content Include="Views\League.cshtml" />
-    <Content Include="Views\Player.cshtml" />
-    <Content Include="Views\Season.cshtml" />
-    <Content Include="Views\Team.cshtml" />
     <Content Include="Views\LeagueManagement\Index.cshtml" />
     <Content Include="Views\Management\Index.cshtml" />
     <Content Include="Views\Partials\LeagueManagementSurface\_Edit.cshtml" />
@@ -684,6 +673,7 @@
     <Content Include="Views\Partials\ManagementHtml\_Leaderboard.cshtml" />
     <Content Include="Views\Partials\NestedContent\_SponsorsSection.cshtml" />
     <Content Include="Views\Partials\Items\_Error.cshtml" />
+    <Content Include="Views\History.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -712,16 +702,13 @@
     <Compile Include="Controllers\Management\SeasonManagementController.cs" />
     <Compile Include="Controllers\RenderMvc\AboutUsController.cs" />
     <Compile Include="Controllers\RenderMvc\Error404Controller.cs" />
+    <Compile Include="Controllers\RenderMvc\HistoryController.cs" />
     <Compile Include="Controllers\RenderMvc\HomeController.cs" />
     <Compile Include="Controllers\Management\ImportController.cs" />
     <Compile Include="Controllers\Management\LeagueManagementController.cs" />
     <Compile Include="Controllers\Management\ManagementController.cs" />
-    <Compile Include="Controllers\RenderMvc\ResultsController.cs" />
     <Compile Include="Controllers\RenderMvc\ScheduleController.cs" />
     <Compile Include="Controllers\RenderMvc\SitemapController.cs" />
-    <Compile Include="Controllers\RenderMvc\StatsController.cs" />
-    <Compile Include="Controllers\RenderMvc\TableController.cs" />
-    <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
     <Compile Include="Controllers\RenderMvc\XMLSitemapController.cs" />
     <Compile Include="Controllers\Surface\BaseSurfaceController.cs" />
     <Compile Include="Controllers\Surface\ContactFormSurfaceController.cs" />
