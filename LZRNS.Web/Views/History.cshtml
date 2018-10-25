@@ -1,4 +1,5 @@
-﻿@inherits UmbracoViewPage<HistoryModel>
+﻿@using LZRNS.Web.Controllers.Management
+@inherits UmbracoViewPage<HistoryModel>
 
 <main class="main" data-template-name="@Model.Title">
 	<div class="banner">
@@ -29,51 +30,22 @@
 						<ul class="years">
 							@{
 								foreach (var season in Model.Seasons)
-								 {
-									 <li data-season="@season.Title"><a href="javascript:;">@season.Title</a></li>
-								 }
+								{
+									<li data-season="@season.Title"><a href="javascript:;">@season.Title</a></li>
+								}
 							}
 						</ul>
 					</div>
 					@foreach (var season in Model.Seasons)
 					{
 						<div class="col-lg-10 years-container" data-season="@season.Title" style="display: none;">
-							@season.Title
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-							<ol>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-								<li>Dugino poselo</li>
-								<li>Familija</li>
-							</ol>
-							<div class="tree-holder">
-								<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-								<img src="images/content/stablo.png" alt="">
-							</div>
-							<div class="img-wrap">
-								<div class="img-holder">
-									<img src="images/content/img-05.jpg" alt="">
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud</p>
-								</div>
-							</div>
+							@if (season.Modules.HasValue())
+							{
+								foreach (var module in season.Modules)
+								 {
+									 Html.RenderAction<NestedContentController>(c => c.Render(null), module);
+								 }
+							}
 						</div>
 					}
 				</div>

@@ -674,6 +674,9 @@
     <Content Include="Views\Partials\NestedContent\_SponsorsSection.cshtml" />
     <Content Include="Views\Partials\Items\_Error.cshtml" />
     <Content Include="Views\History.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_BracketModule.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_ImageModule.cshtml" />
+    <Content Include="Views\Partials\NestedContent\_TextModule.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

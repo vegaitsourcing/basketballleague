@@ -284,6 +284,10 @@
     <Compile Include="DocumentTypes\Nodes\HeaderModel.cs" />
     <Compile Include="DocumentTypes\Nodes\Items\ContactFormViewModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\HistorySeasonModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\Modules\BracketModuleModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\Modules\ImageModuleModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\Modules\ModuleBaseModel.cs" />
+    <Compile Include="DocumentTypes\Nodes\NestedContent\Modules\TextModuleModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\SocialModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\ScheduleItemModel.cs" />
     <Compile Include="DocumentTypes\Nodes\NestedContent\SponsorModel.cs" />

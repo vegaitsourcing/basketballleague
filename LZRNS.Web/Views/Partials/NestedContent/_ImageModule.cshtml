@@ -1,0 +1,13 @@
+﻿@inherits UmbracoViewPage<LZRNS.Models.DocumentTypes.Nodes.NestedContent.Modules.ImageModuleModel>
+
+@if (Model.Image.HasValue() || Model.Text.HasValue())
+{
+	<div class="img-wrap">
+		<div class="img-holder">
+			@if(Model.Image.HasValue()){
+				<img src="@Model.Image.Url" alt="@Model.Image.AlternateText">
+			}
+			@Model.Text
+		</div>
+	</div>
+}

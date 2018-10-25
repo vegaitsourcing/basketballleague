@@ -1,0 +1,12 @@
+﻿@inherits UmbracoViewPage<LZRNS.Models.DocumentTypes.Nodes.NestedContent.Modules.BracketModuleModel>
+
+@if (Model.Bracket.HasValue() || Model.Text.HasValue())
+{
+	<div class="tree-holder">
+		@Model.Text
+		@if (Model.Bracket.HasValue())
+		{
+			<img src="@Model.Bracket.Url" alt="@Model.Bracket.AlternateText">
+		}
+	</div>
+}
