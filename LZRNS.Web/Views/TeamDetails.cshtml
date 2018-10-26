@@ -1,4 +1,177 @@
-﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
-@{
-	Layout = null;
+﻿@using LZRNS.DomainModels.ViewModels
+@inherits UmbracoViewPage<TeamDetailsModel>
+
+<div class="team-info">
+	<div class="wrap">
+		<div class="row">
+			<div class="col-md-6 left-div">
+				<div class="main-info">
+					<div class="team-logo">
+						@if (Model.Team.Image.HasValue())
+						{
+							<img src="@Model.Team.Image" Alt="slika tima">
+						}
+					</div>
+					<div class="main-stats">
+						<div class="team-name">
+							@if (Model.Team.TeamName.HasValue())
+							{
+								<h3>@Model.Team.TeamName</h3>
+							}
+						</div>
+						<div class="season-stats">
+							<ul>
+								<li>Mesto na tabeli: <span>@Model.Team.Ranking</span></li>
+								<li>Pobede|Porazi: <span>@Model.Team.Wins|@Model.Team.Defeats</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+
+				<div class="players">
+					<div class="table">
+						<table>
+							<thead>
+							<tr>
+								@*<th>#</th>*@
+								<th>Ime i prezime</th>
+								<th>Visina</th>
+								<th>Težina</th>
+								<th>Godište</th>
+							</tr>
+							</thead>
+							<tbody>
+							@if (Model.Team.Players.HasValue())
+							{
+								foreach (var player in Model.Team.Players)
+								{
+									<tr>
+										@*<td>4</td>*@
+										<td>@player.Name</td>
+										<td>@player.Height cm</td>
+										<td>@player.Weight kg</td>
+										<td>@player.YearOfBirth</td>
+									</tr>
+								}
+							}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+			<div class="col-md-6">
+				<div class="col">
+					<div class="schedule-results">
+						<div class="table">
+							<table>
+								<thead>
+								<tr>
+									<th>Kolo</th>
+									<th>Protivnik</th>
+									<th><span>Datum i vreme /<span>Rezultat</span></span></th>
+								</tr>
+								</thead>
+								<tbody>
+								@if (Model.Team.CurrentSeasonGames.HasValue())
+								{
+									foreach (var game in Model.Team.CurrentSeasonGames)
+									{
+										<tr>
+											<td>@game.RoundName</td>
+											<td>@game.TeamName.Replace(Model.Team.TeamName, "")</td>
+											<td>@game.DateTime.ToString("dd.MM.yyyy HH:mm") / @game.Result</td>
+										</tr>
+									}
+								}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		@if (Model.Team.GamesHistory.HasValue())
+		{
+			<div class="row js-tabs-container">
+				<div class="stats col-12">
+					<div class="tabs-container">
+						<ul class="tabs">
+							@foreach (var grouping in Model.Team.GamesHistory)
+							{
+								<li @(Model.SeasonYearStart.Equals(grouping.Key) ? "class=selected" : string.Empty) data-tab="@grouping.Key">
+									<span>@grouping.Key</span>
+								</li>
+							}
+						</ul>
+						@foreach (var group in Model.Team.GamesHistory)
+						{
+							@RenderHistoryTable(group)
+						}
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+
+@helper RenderHistoryTable(IGrouping<int, GameForTeamDetails> gamesBySeason)
+{
+	<span class="tab-heading" data-tab="@gamesBySeason.Key">@gamesBySeason.Key</span>
+	<div class="tab-content @gamesBySeason.Key">
+		<div class="table">
+			<table>
+				<thead>
+				<tr>
+					<th class="kolo">KOLO</th>
+					<th class="name">PROTIVNIK</th>
+					<th>MIN</th>
+					<th>EFF</th>
+					<th>2pts</th>
+					<th>3pts</th>
+					<th>FT</th>
+					<th>REB</th>
+					<th>off</th>
+					<th>def</th>
+					<th>AST</th>
+					<th>TO</th>
+					<th>STL</th>
+					<th>BLK</th>
+					<th>PTS</th>
+				</tr>
+				</thead>
+				<tbody>
+				@foreach (var game in gamesBySeason)
+				{
+					<tr>
+						<td class="kolo">@game.RoundName</td>
+						<td class="name">@game.TeamName.Replace(Model.Team.TeamName, "")</td>
+						<td>@game.StatsPerGame.Min</td>
+						<td>@game.StatsPerGame.Eff</td>
+						<td>
+							<span>@game.StatsPerGame.TwoPtM / @game.StatsPerGame.TwoPtA</span>
+							<span>@game.StatsPerGame.TwoPtPercA%</span>
+						</td>
+						<td>
+							<span>@game.StatsPerGame.ThreePtM / @game.StatsPerGame.ThreePtA</span>
+							<span>@game.StatsPerGame.ThreePtPer%</span>
+						</td>
+						<td>
+							<span>@game.StatsPerGame.FtM / @game.StatsPerGame.FtA</span>
+							<span>@game.StatsPerGame.FtPerc%</span>
+						</td>
+						<td>@game.StatsPerGame.Reb</td>
+						<td>@game.StatsPerGame.OReb</td>
+						<td>@game.StatsPerGame.DReb</td>
+						<td>@game.StatsPerGame.Ast</td>
+						<td>@game.StatsPerGame.To</td>
+						<td>@game.StatsPerGame.Stl</td>
+						<td>@game.StatsPerGame.Blk</td>
+						<td>@game.StatsPerGame.Pts</td>
+					</tr>
+				}
+				</tbody>
+			</table>
+		</div>
+	</div>
 }

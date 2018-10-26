@@ -2,6 +2,7 @@
 using LZRNS.Models.DocumentTypes.Pages;
 using System.Web.Mvc;
 using LZRNS.DomainModels.Repository.Interfaces;
+using LZRNS.DomainModels.ViewModels;
 using Umbraco.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.RenderMvc
@@ -18,9 +19,10 @@ namespace LZRNS.Web.Controllers.RenderMvc
 		public ActionResult Index(TeamDetailsModel model, string id)
 		{
 			if (string.IsNullOrWhiteSpace(id)) Response.Redirect(model.Home.Url);
-			if (!Guid.TryParse(id, out var guid)) Response.Redirect(model.Home.Url);
+			Guid guid = Guid.Empty;
+			if (!Guid.TryParse(id, out guid)) Response.Redirect(model.Home.Url);
 
-			model.Team = _teamRepo.GetById(guid);
+			model.Team = new TeamDetails(_teamRepo.GetById(guid), model.RoundName);
 
 			return CurrentTemplate(model);
 		}

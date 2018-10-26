@@ -48,7 +48,7 @@ namespace LZRNS.DomainModels.Models
 		public int TwoPtM =>
 			PlayerStats.Sum(k => k.TwoPtMade);
 
-		public double TwoPtPercA => TwoPtM / TwoPtA * 100;
+		public double TwoPtPercA => Math.Round((double)TwoPtM / TwoPtA * 100, 1);
 
 		#endregion
 
@@ -60,7 +60,7 @@ namespace LZRNS.DomainModels.Models
 		public int ThreePtM =>
 			PlayerStats.Sum(k => k.ThreePtMade);
 
-		public double ThreePtPer => ThreePtM / ThreePtA * 100;
+		public double ThreePtPer => Math.Round((double)ThreePtM / ThreePtA * 100, 1);
 
 		#endregion ThreePt
 
@@ -73,7 +73,7 @@ namespace LZRNS.DomainModels.Models
 			PlayerStats.Sum(k => k.FtMade);
 
 		public double FtPerc =>
-			FtM / FtA * 100;
+			Math.Round((double)FtM / FtA * 100, 1);
 
 		#endregion
 
@@ -86,7 +86,7 @@ namespace LZRNS.DomainModels.Models
 			TwoPtM + ThreePtM;
 
 		public double FgPerc =>
-			FgM / FgA * 100;
+			Math.Round((double)FgM / FgA * 100, 1);
 
 		#endregion
 

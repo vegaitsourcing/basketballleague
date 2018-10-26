@@ -122,7 +122,10 @@
     <Compile Include="Repository\Interfaces\ISeasonRepository.cs" />
     <Compile Include="Repository\Interfaces\ITeamRepository.cs" />
     <Compile Include="TimetableModels\SingleGameModel.cs" />
+    <Compile Include="ViewModels\GameForTeamDetails.cs" />
     <Compile Include="ViewModels\LeaderboardPlacing.cs" />
+    <Compile Include="ViewModels\PlayerInTeamDetails.cs" />
+    <Compile Include="ViewModels\TeamDetails.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

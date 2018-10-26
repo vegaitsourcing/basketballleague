@@ -68,7 +68,9 @@ namespace LZRNS.Web.Controllers.Surface
 			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
 				.Teams.Select(x => x.GetLeaderBoardPlacing(roundName))
-				.OrderByDescending(x => x.Pts);
+				.OrderByDescending(x => x.Pts)
+				.ThenByDescending(x => x.Diff)
+				.ThenBy(x => x.TeamName);
 
 			return PartialView(model);
 		}

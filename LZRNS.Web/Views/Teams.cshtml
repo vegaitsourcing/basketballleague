@@ -29,22 +29,29 @@
 							UpdateTargetId = "names-list"
 						}))
 					{
+						@Html.Hidden("seasonYearStart")
 						<label class="sr-only" for="search-input">Search</label>
-						<input id="search-input" name="searchString" type="text" placeholder="Search"/>
+						@Html.TextBox("searchString", string.Empty, new { @id = "search-input", @placeholder="Pretraži"})
 						<button type="submit"><span class="icon font-ico-search"/></button>
 					}
 				</div>
 				<div class="buttons">
-					<button type="button" class="btn">Aktivni</button>
-					<button type="button" class="btn">Svi</button>
+					<button type="button" class="btn active-teams active" data-seasonYearStart="@Model.SeasonYearStart">Aktivni</button>
+					<button type="button" class="btn all-teams" data-seasonYearStart="@Model.SeasonYearStart">Svi</button>
 				</div>
 			</div>
 			<div class="names-list" id="names-list">
+				@{Html.RenderAction<TeamsSurfaceController>(c => c.SearchResults(null), Model.SeasonYearStart);}
 			</div>
 		</div>
 	</div>
 </main>
 
 @section additionalFooter{
+	<style>
+		.active {
+			background-color: red;
+		}
+	</style>
 	<script src="~/js/teams.js"></script>
 }
