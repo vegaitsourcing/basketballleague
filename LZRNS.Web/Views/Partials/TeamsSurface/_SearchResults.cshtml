@@ -1,0 +1,24 @@
+﻿@model IEnumerable<Tuple<string, string>>
+
+<div class="row">
+	@{
+		var splittedResults = Model.Select((item, index) => new {index, item})
+			.GroupBy(x => x.index % 4)
+			.Select(x => x.Select(y => y.item));
+
+		foreach (var splittedResult in splittedResults)
+		{
+			if (splittedResult.HasValue())
+			{
+				<div class="col-lg-3 col-md-6">
+					<ul>
+						@foreach (var result in splittedResult)
+						{
+							<li><a href="@result.Item1">@result.Item2</a></li>
+						}
+					</ul>
+				</div>
+			}
+		}
+	}
+</div>

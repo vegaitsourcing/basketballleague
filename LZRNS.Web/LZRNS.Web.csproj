@@ -420,16 +420,9 @@
     <Content Include="images\svg\ico-share.svg" />
     <Content Include="images\svg\ico-tw.svg" />
     <Content Include="images\svg\ico-x.svg" />
-    <Content Include="js\default.js" />
+    <Content Include="js\teams.js" />
     <Content Include="js\global.min.js" />
     <Content Include="js\management.js" />
-    <Content Include="js\functions.js" />
-    <Content Include="js\libs\jquery-3.3.1.min.js" />
-    <Content Include="js\libs\ofi.js" />
-    <Content Include="js\libs\slick.js" />
-    <Content Include="js\pages\content.js" />
-    <Content Include="js\pages\home.js" />
-    <Content Include="js\pages\index.js" />
     <Content Include="packages.config" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -677,7 +670,11 @@
     <Content Include="Views\Partials\NestedContent\_BracketModule.cshtml" />
     <Content Include="Views\Partials\NestedContent\_ImageModule.cshtml" />
     <Content Include="Views\Partials\NestedContent\_TextModule.cshtml" />
-    <Content Include="Views\Results.cshtml" />
+    <Content Include="Views\LeaderboardLanding.cshtml" />
+    <Content Include="Views\ResultsLanding.cshtml" />
+    <Content Include="Views\Teams.cshtml" />
+    <Content Include="Views\Partials\TeamsSurface\_SearchResults.cshtml" />
+    <Content Include="Views\TeamsSurface\TeamDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -711,7 +708,10 @@
     <Compile Include="Controllers\Management\ImportController.cs" />
     <Compile Include="Controllers\Management\LeagueManagementController.cs" />
     <Compile Include="Controllers\Management\ManagementController.cs" />
-    <Compile Include="Controllers\RenderMvc\ResultsController.cs" />
+    <Compile Include="Controllers\RenderMvc\LeaderboardLandingController.cs" />
+    <Compile Include="Controllers\RenderMvc\TeamDetailsController.cs" />
+    <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
+    <Compile Include="Controllers\RenderMvc\ResultsLandingController.cs" />
     <Compile Include="Controllers\RenderMvc\ScheduleController.cs" />
     <Compile Include="Controllers\RenderMvc\SitemapController.cs" />
     <Compile Include="Controllers\RenderMvc\XMLSitemapController.cs" />
@@ -720,6 +720,7 @@
     <Compile Include="Controllers\Surface\FormsController.cs" />
     <Compile Include="Controllers\Surface\NestedContentController.cs" />
     <Compile Include="Controllers\Surface\ManagementHtmlController.cs" />
+    <Compile Include="Controllers\Surface\TeamsSurfaceController.cs" />
     <Compile Include="Controllers\Surface\SharedController.cs" />
     <Compile Include="Dictionary\UmbracoDictionary.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />

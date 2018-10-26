@@ -10,17 +10,17 @@ using Umbraco.Core.Models;
 
 namespace LZRNS.Models.DocumentTypes.Pages
 {
-	public class ResultsModel : PageModel
+	public class LeaderboardLandingModel : PageModel
 	{
-		public ResultsModel()
+		public LeaderboardLandingModel()
 		{
 		}
 
-		public ResultsModel(IPublishedContent content) : base(content)
+		public LeaderboardLandingModel(IPublishedContent content) : base(content)
 		{
 		}
 
-		public ResultsModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
+		public LeaderboardLandingModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
 		{
 		}
 

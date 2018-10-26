@@ -315,7 +315,10 @@
     <Compile Include="DocumentTypes\Pages\Management\PlayerManagmentModel.cs" />
     <Compile Include="DocumentTypes\Pages\Management\RefereeManagementModel.cs" />
     <Compile Include="DocumentTypes\Pages\Management\ScheduleManagementModel.cs" />
-    <Compile Include="DocumentTypes\Pages\ResultsModel.cs" />
+    <Compile Include="DocumentTypes\Pages\LeaderboardLandingModel.cs" />
+    <Compile Include="DocumentTypes\Pages\TeamDetailsModel.cs" />
+    <Compile Include="DocumentTypes\Pages\TeamsModel.cs" />
+    <Compile Include="DocumentTypes\Pages\ResultsLandingModel.cs" />
     <Compile Include="DocumentTypes\Pages\ScheduleModel.cs" />
     <Compile Include="DocumentTypes\Pages\Management\SeasonManagementModel.cs" />
     <Compile Include="DocumentTypes\Pages\SitemapModel.cs" />

@@ -6,16 +6,16 @@ using LZRNS.DomainModels.Repository.Interfaces;
 
 namespace LZRNS.Web.Controllers.RenderMvc
 {
-	public class ResultsController : RenderMvcController
+	public class ResultsLandingController : RenderMvcController
 	{
 		private readonly ISeasonRepository _seasonRepo;
 
-		public ResultsController(ISeasonRepository seasonRepo)
+		public ResultsLandingController(ISeasonRepository seasonRepo)
 		{
 			_seasonRepo = seasonRepo;
 		}
 
-		public ActionResult Index(ResultsModel model, string ln, string r)
+		public ActionResult Index(ResultsLandingModel model, string ln, string r)
 		{
 			model.CurrentShownLeague = !string.IsNullOrWhiteSpace(ln) ? ln : model.Leagues.FirstOrDefault();
 

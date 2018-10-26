@@ -1,0 +1,50 @@
+﻿@inherits UmbracoViewPage<TeamsModel>
+
+<main class="main" data-template-name="@Model.Title">
+	<div class="banner">
+		<div class="wrap">
+			@if (Model.Banner.HasValue())
+			{
+				<div class="banner-title">
+					@if (Model.Banner.BannerTitleExists)
+					{
+						<h2>@Model.Banner.PreBannerTitle <span>@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h2>
+					}
+				</div>
+			}
+		</div>
+	</div>
+	<div class="wrap">
+		<div class="teams-wrap">
+			<div class="teams-top">
+				<div class="search">
+					@using (Ajax.BeginForm(
+						nameof(TeamsSurfaceController.SearchResults),
+						nameof(TeamsSurfaceController).RemoveControllerSuffix(),
+						null,
+						new AjaxOptions
+						{
+							HttpMethod = "POST",
+							InsertionMode = InsertionMode.Replace,
+							UpdateTargetId = "names-list"
+						}))
+					{
+						<label class="sr-only" for="search-input">Search</label>
+						<input id="search-input" name="searchString" type="text" placeholder="Search"/>
+						<button type="submit"><span class="icon font-ico-search"/></button>
+					}
+				</div>
+				<div class="buttons">
+					<button type="button" class="btn">Aktivni</button>
+					<button type="button" class="btn">Svi</button>
+				</div>
+			</div>
+			<div class="names-list" id="names-list">
+			</div>
+		</div>
+	</div>
+</main>
+
+@section additionalFooter{
+	<script src="~/js/teams.js"></script>
+}

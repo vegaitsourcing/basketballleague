@@ -1,0 +1,66 @@
+﻿@inherits UmbracoViewPage<ResultsLandingModel>
+
+<main class="main" data-template-name="@Model.Title">
+	<div class="banner">
+		<div class="wrap">
+			@if (Model.Banner.HasValue())
+			{
+				<div class="banner-title">
+					@if (Model.Banner.BannerTitleExists)
+					{
+						<h2>@Model.Banner.PreBannerTitle <span>@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h2>
+					}
+				</div>
+			}
+			@if (Model.Leagues.HasValue())
+			{
+				foreach (var league in Model.Leagues)
+				{
+					<a class="something-to-implement" href="@(Model.Url + $"?ln={league}")">@league</a>
+				}
+			}
+		</div>
+	</div>
+	<div class="results results-page">
+		<div class="wrap">
+		@if (Model.Title.HasValue())
+		{
+			<div class="title">
+				<h2>@Model.Title</h2>
+			</div>
+		}
+			<div class="row">
+				<div class="col-lg-10 offset-lg-2">
+					<div class="arrows">
+						@if (Model.HasPreviousRound)
+						{
+							<a class="left-arrow" href="@(Model.Url + $"?ln={Model.CurrentShownLeague}&r={Model.PreviousRound}")"><span class="font-ico-arrow-left"></span></a>
+						}
+						@if (Model.HasNextRound)
+						{
+							<a class="right-arrow" href="@(Model.Url + $"?ln={Model.CurrentShownLeague}&r={Model.NextRound}")"><span class="font-ico-arrow-right"></span></a>
+						}
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-2">
+					<div class="round">
+						<span class="number">@Model.CurrentShownRound</span>
+						<span>@UmbracoDictionary.Shared.Round</span>
+					</div>
+				</div>
+				@{Html.RenderAction<ManagementHtmlController>(c => c.GameResults(0, null, null), Model.SeasonYearStart, Model.CurrentShownRound, Model.CurrentShownLeague);}
+			</div>
+			<div class="popup-overlay" data-popup-window="result-popup">
+				<div class="popup">
+					<button type="button" class="btn-close js-close-popup"><span class="font-ico-x"></span></button>
+					<div class="popup-placeholder">
+						<!-- this is dynamically populated -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</main>
+

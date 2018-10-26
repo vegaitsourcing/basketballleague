@@ -1,4 +1,4 @@
-﻿@inherits UmbracoViewPage<ResultsModel>
+﻿@inherits UmbracoViewPage<LeaderboardLandingModel>
 
 <main class="main" data-template-name="@Model.Title">
 	<div class="banner">
@@ -21,14 +21,14 @@
 			}
 		</div>
 	</div>
-	<div class="results results-page">
+	<div class="statistics">
 		<div class="wrap">
-		@if (Model.Title.HasValue())
-		{
-			<div class="title">
-				<h2>@Model.Title</h2>
-			</div>
-		}
+			@if (Model.Title.HasValue())
+			{
+				<div class="title">
+					<h2>@Model.Title</h2>
+				</div>
+			}
 			<div class="row">
 				<div class="col-lg-10 offset-lg-2">
 					<div class="arrows">
@@ -43,24 +43,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-2">
-					<div class="round">
-						<span class="number">@Model.CurrentShownRound</span>
-						<span>@UmbracoDictionary.Shared.Round</span>
-					</div>
-				</div>
-				@{Html.RenderAction<ManagementHtmlController>(c => c.GameResults(0, null, null), Model.SeasonYearStart, Model.CurrentShownRound, Model.CurrentShownLeague);}
-			</div>
-			<div class="popup-overlay" data-popup-window="result-popup">
-				<div class="popup">
-					<button type="button" class="btn-close js-close-popup"><span class="font-ico-x"></span></button>
-					<div class="popup-placeholder">
-						<!-- this is dynamically populated -->
-					</div>
-				</div>
-			</div>
+			@{Html.RenderAction<ManagementHtmlController>(c => c.Leaderboard(0, null, null), Model.SeasonYearStart, Model.CurrentShownRound, Model.CurrentShownLeague);}
 		</div>
 	</div>
 </main>
-
