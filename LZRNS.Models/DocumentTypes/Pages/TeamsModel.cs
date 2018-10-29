@@ -30,6 +30,9 @@ namespace LZRNS.Models.DocumentTypes.Pages
 				.FirstOrDefault()
 				.AsType<BannerModel>());
 
+		public IEnumerable<string> Leagues => this.GetPropertyValue<IEnumerable<string>>();
+		public string CurrentShownLeague { get; set; }
+
 		public int SeasonYearStart => this.GetCachedValue(() =>
 			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.SeasonYearStart) ?? DateTime.Now.Year;
 	}

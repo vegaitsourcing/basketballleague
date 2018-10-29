@@ -21,18 +21,18 @@ namespace LZRNS.Web.Controllers.Surface
 
 		[ChildActionOnly]
 		[HttpGet]
-		public ActionResult SearchResults(int? seasonYearStart) =>
-			PartialView(GetAllTeams(seasonYearStart));
+		public ActionResult SearchResults(int? seasonYearStart, string currentShownLeague) =>
+			PartialView(GetAllTeams(seasonYearStart, currentShownLeague));
 
 		[HttpPost]
-		public ActionResult SearchResults(string searchString, int? seasonYearStart) =>
+		public ActionResult SearchResults(string searchString, int? seasonYearStart, string currentShownLeague) =>
 			string.IsNullOrWhiteSpace(searchString) ?
-				PartialView(GetAllTeams(seasonYearStart)) : 
-				PartialView(GetAllTeams(seasonYearStart)
+				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)) : 
+				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)
 					.Where(x => x.Item2.ToLower()
 						.Contains(searchString.ToLower())));
 
-		private IEnumerable<Tuple<string, string>> GetAllTeams(int? seasonYearStart) =>
+		private IEnumerable<Tuple<string, string>> GetAllTeams(int? seasonYearStart, string currentShownLeague) =>
 			_teamRepo.GetAll()
 				.GroupBy(t => t.TeamName)
 				.Where(x => x.Any(t => seasonYearStart == null || t.LeagueSeason.Season.SeasonStartYear.Equals(seasonYearStart)))
@@ -41,6 +41,7 @@ namespace LZRNS.Web.Controllers.Surface
 					.OrderByDescending(t => t.LeagueSeason.Season.SeasonStartYear)
 					.FirstOrDefault())
 				.OrderBy(t => t.TeamName)
+				.Where(t => t.LeagueSeason.League.Name.Equals(currentShownLeague))
 				.Select(y => new Tuple<string, string>(
 					$"{Umbraco.GetSingleContentOfType<TeamDetailsModel>(CultureInfo.CurrentCulture).Url}?id={y.Id.ToString()}",
 					y.TeamName))

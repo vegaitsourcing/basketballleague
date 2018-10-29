@@ -12,6 +12,13 @@
 					}
 				</div>
 			}
+			@if (Model.Leagues.HasValue())
+			{
+				foreach (var league in Model.Leagues)
+				{
+					<a class="something-to-implement" href="@(Model.Url + $"?ln={league}")">@league</a>
+				}
+			}
 		</div>
 	</div>
 	<div class="wrap">
@@ -27,21 +34,26 @@
 							HttpMethod = "POST",
 							InsertionMode = InsertionMode.Replace,
 							UpdateTargetId = "names-list"
+						},
+						new
+						{
+							@id = "teams-form"
 						}))
 					{
-						@Html.Hidden("seasonYearStart")
+						@Html.Hidden("seasonYearStart", Model.SeasonYearStart, new { @id = "seasonYearStart"})
+						@Html.HiddenFor(m => m.CurrentShownLeague);
 						<label class="sr-only" for="search-input">Search</label>
 						@Html.TextBox("searchString", string.Empty, new { @id = "search-input", @placeholder="Pretraži"})
 						<button type="submit"><span class="icon font-ico-search"/></button>
 					}
 				</div>
 				<div class="buttons">
-					<button type="button" class="btn active-teams active" data-seasonYearStart="@Model.SeasonYearStart">Aktivni</button>
-					<button type="button" class="btn all-teams" data-seasonYearStart="@Model.SeasonYearStart">Svi</button>
+					<button type="button" class="btn active" id="active-teams" data-seasonYearStart="@Model.SeasonYearStart">Aktivni</button>
+					<button type="button" class="btn" id="all-teams" data-seasonYearStart="@Model.SeasonYearStart">Svi</button>
 				</div>
 			</div>
 			<div class="names-list" id="names-list">
-				@{Html.RenderAction<TeamsSurfaceController>(c => c.SearchResults(null), Model.SeasonYearStart);}
+				@{Html.RenderAction<TeamsSurfaceController>(c => c.SearchResults(null, null), Model.SeasonYearStart, Model.CurrentShownLeague);}
 			</div>
 		</div>
 	</div>
@@ -53,5 +65,5 @@
 			background-color: red;
 		}
 	</style>
-	<script src="~/js/teams.js"></script>
+	@Scripts.Render("~/bundles/scripts/teams")
 }

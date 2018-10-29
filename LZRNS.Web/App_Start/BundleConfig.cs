@@ -19,8 +19,10 @@ namespace LZRNS.Web
 				"~/js/global.min.js"
 			));
 
-			bundles.Add(new ScriptBundle("~/bundles/scripts/unobtrusive").Include(
-				"~/scripts/jquery.unobtrusive-ajax.js"
+
+			bundles.Add(new ScriptBundle("~/bundles/scripts/teams").Include(
+				"~/scripts/jquery.unobtrusive-ajax.js",
+				"~/js/teams.js"
 			));
 
 			bundles.Add(new StyleBundle("~/bundles/styles/management/").Include(

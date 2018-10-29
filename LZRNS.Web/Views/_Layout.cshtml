@@ -49,7 +49,7 @@
 @{Html.RenderAction<SharedController>(sc => sc.Footer(null), Model.Footer); }
 	
 
-@Scripts.Render("~/bundles/scripts/main", "~/bundles/scripts/unobtrusive")
+@Scripts.Render("~/bundles/scripts/main")
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 @if ((Model.Settings?.GoogleMapKey.HasValue() ?? false))
 {
