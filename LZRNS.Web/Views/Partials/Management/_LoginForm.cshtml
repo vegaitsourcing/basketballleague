@@ -1,0 +1,14 @@
+﻿@using LZRNS.Web.Controllers.Management
+@inherits UmbracoViewPage<Umbraco.Web.Models.LoginModel>
+
+@using (Html.BeginUmbracoForm<ManagementController>("HandleLogin"))
+{
+	@Html.ValidationSummary(true)
+	@Html.AntiForgeryToken()
+	@Html.LabelFor(m => m.Username, "Korisnicko Ime")
+	@Html.TextBoxFor(m => m.Username)
+	@Html.LabelFor(m => m.Password, "Lozinka")
+	@Html.PasswordFor(m => m.Password)
+
+	<button>Prijavi se</button>
+}

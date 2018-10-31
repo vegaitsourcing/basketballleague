@@ -675,6 +675,8 @@
     <Content Include="Views\Teams.cshtml" />
     <Content Include="Views\Partials\TeamsSurface\_SearchResults.cshtml" />
     <Content Include="Views\TeamsSurface\TeamDetails.cshtml" />
+    <Content Include="Views\Management\Login.cshtml" />
+    <Content Include="Views\Partials\Management\_LoginForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

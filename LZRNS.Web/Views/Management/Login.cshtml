@@ -1,0 +1,8 @@
+﻿@using LZRNS.Web.Controllers.Management
+@inherits UmbracoViewPage<ManagementPageModel>
+@{
+	Layout = "~/Views/Partials/Shared/_ManagmentLayout.cshtml";
+	ViewBag.Title = "Management";
+}
+
+@{ Html.RenderAction<ManagementController>(c => c.LoginForm()); }

@@ -1,5 +1,6 @@
 ﻿@inherits UmbracoViewPage<ManagementPageModel>
 
+@using LZRNS.Web.Controllers.Management
 @using LZRNS.Web.Extensions
 <!DOCTYPE html>
 <html lang="en">
@@ -32,9 +33,9 @@
 							<span class="nav-link-text">@Model.Settings.ManagementPage.PageTitle</span>
 						</a>
 					</li>
-					@if (Model.Settings.ManagementPage.HasNavigationItems)
+					@if (Model.Settings.ManagementPage.HasNavigationItems && Members.IsLoggedIn())
 					{
-						foreach (var item in Model.Settings.ManagementPage.NavigationItems)
+						foreach (var item in Model.Settings.ManagementPage.NavigationItems.Where(ni => Members.MemberHasAccess(ni.Content.Path)))
 						{
 							<li class="nav-item @(item.IsActivePage ? "active" : null)" data-toggle="tooltip" data-placement="right" title="@item.PageTitle">
 								<a class="nav-link" href="@item.Url">
@@ -43,6 +44,15 @@
 								</a>
 							</li>
 						}
+					}
+					@if (Members.IsLoggedIn())
+					{
+						<li class="nav-item" data-toggle="tooltip" data-placement="right">
+							@using (Html.BeginUmbracoForm<ManagementController>(nameof(ManagementController.Logout)))
+							{
+								<button>Odjavi se</button>
+							}
+						</li>
 					}
 				</ul>
 				<ul class="navbar-nav sidenav-toggler">
