@@ -25,6 +25,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
+	[MemberAuthorize]
 	public class LeagueManagementSurfaceController : SurfaceController
 	{
 		private ILeagueRepository _leagueRepo;

@@ -11,6 +11,7 @@ using Umbraco.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.Management
 {
+	[MemberAuthorize]
 	public class GameManagementController : RenderMvcController
 	{
 		private ILeagueRepository _leagueRepo;
@@ -37,6 +38,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
+	[MemberAuthorize]
 	public class GameManagementSurfaceController : SurfaceController
 	{
 		private readonly ISeasonRepository _seasonRepo;

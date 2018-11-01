@@ -11,6 +11,7 @@ using Umbraco.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.Management
 {
+	[MemberAuthorize]
 	public class TeamManagementController : RenderMvcController
 	{
 		private ITeamRepository _teamRepo;
@@ -28,6 +29,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
+	[MemberAuthorize]
 	public class TeamManagementSurfaceController : SurfaceController
 	{
 		private ITeamRepository _teamRepo;

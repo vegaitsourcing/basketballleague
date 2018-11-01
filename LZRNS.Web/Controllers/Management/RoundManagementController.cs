@@ -9,6 +9,7 @@ using Umbraco.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.Management
 {
+	[MemberAuthorize]
 	public class RoundManagementController : RenderMvcController
 	{
 		private IRoundRepository _roundRepo;
@@ -26,6 +27,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
+	[MemberAuthorize]
 	public class RoundManagementSurfaceController : SurfaceController
 	{
 		private IRoundRepository _roundRepo;
