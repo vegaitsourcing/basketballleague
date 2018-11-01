@@ -1,14 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using LZRNS.Common;
+using LZRNS.Models.DocumentTypes.Nodes;
+using LZRNS.Models.DocumentTypes.Pages;
+using LZRNS.Models.Extensions;
+using LZRNS.Models.Helpers;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Umbraco.Core.Models;
 using Umbraco.Web;
 using Umbraco.Web.Models;
-using LZRNS.Common;
-using LZRNS.Models.DocumentTypes.Nodes;
-using LZRNS.Models.DocumentTypes.Pages;
-using LZRNS.Models.Extensions;
-using LZRNS.Models.Helpers;
 
 namespace LZRNS.Models.DocumentTypes.Compositions
 {
@@ -29,6 +29,10 @@ namespace LZRNS.Models.DocumentTypes.Compositions
 		#region [Content]
 
 		public string Title => this.GetPropertyWithDefaultValue(Name);
+
+		public BannerModel Banner => this.GetCachedValue(() =>
+			Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
+				.AsSingle<BannerModel>());
 
 		#endregion
 

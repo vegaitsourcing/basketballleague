@@ -317,6 +317,7 @@
     <Compile Include="DocumentTypes\Pages\Management\RefereeManagementModel.cs" />
     <Compile Include="DocumentTypes\Pages\Management\ScheduleManagementModel.cs" />
     <Compile Include="DocumentTypes\Pages\LeaderboardLandingModel.cs" />
+    <Compile Include="DocumentTypes\Pages\StatisticsModel.cs" />
     <Compile Include="DocumentTypes\Pages\TeamDetailsModel.cs" />
     <Compile Include="DocumentTypes\Pages\TeamsModel.cs" />
     <Compile Include="DocumentTypes\Pages\ResultsLandingModel.cs" />

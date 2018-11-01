@@ -1,0 +1,12 @@
+﻿@inherits UmbracoViewPage<BannerModel>
+
+<div class="banner">
+	<div class="wrap">
+		<div class="banner-title">
+			@if (Model.BannerTitleExists)
+			{
+				<h2>@Model.PreBannerTitle <span>@Model.BannerTitle</span> @Model.PostBannerTitle</h2>
+			}
+		</div>
+	</div>
+</div>
