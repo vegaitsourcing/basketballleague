@@ -23,13 +23,7 @@ namespace LZRNS.Models.DocumentTypes.Pages
 		public ScheduleModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
 		{
 		}
-
-		public BannerModel Banner => this.GetCachedValue(() =>
-			Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
-				.EmptyIfNull()
-				.FirstOrDefault()
-				.AsType<BannerModel>());
-
+		
 		public IEnumerable<ScheduleItemModel> Schedule => this.GetCachedValue(() =>
 			Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
 				.EmptyIfNull()

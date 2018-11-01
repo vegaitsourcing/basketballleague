@@ -1,20 +1,7 @@
-﻿@using LZRNS.Web.Controllers.Management
-@inherits UmbracoViewPage<HistoryModel>
+﻿@inherits UmbracoViewPage<HistoryModel>
 
 <main class="main" data-template-name="@Model.Title">
-	<div class="banner">
-		<div class="wrap">
-			@if (Model.Banner.HasValue())
-			{
-				<div class="banner-title">
-					@if (Model.Banner.BannerTitleExists)
-					{
-						<h2>@Model.Banner.PreBannerTitle <span>@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h2>
-					}
-				</div>
-			}
-		</div>
-	</div>
+	@{Html.RenderAction<SharedController>(c => c.Banner(null), Model.Banner);}
 	<div class="history-page">
 		<div class="wrap">
 			@if (Model.Title.HasValue())
@@ -42,9 +29,9 @@
 							@if (season.Modules.HasValue())
 							{
 								foreach (var module in season.Modules)
-								 {
-									 Html.RenderAction<NestedContentController>(c => c.Render(null), module);
-								 }
+								{
+									Html.RenderAction<NestedContentController>(c => c.Render(null), module);
+								}
 							}
 						</div>
 					}
