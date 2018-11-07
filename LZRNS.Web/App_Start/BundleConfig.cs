@@ -11,7 +11,7 @@ namespace LZRNS.Web
 			bundles.UseCdn = true;   //enable CDN support
 
 			bundles.Add(new StyleBundle("~/bundles/styles/main").Include(
-				"~/css/style.min.css",
+				"~/css/dist/style.min.css",
 				new CssRewriteUrlTransform()
 			));
 

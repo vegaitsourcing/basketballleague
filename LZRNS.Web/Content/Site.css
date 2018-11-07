@@ -54,10 +54,29 @@
 	color: #000000;
 }
 
+.stats-list li span {
+    width: 4%;
+}
+
+.stats-list li span.player-name {
+    width: 10%;
+}
+
+.stats-list li span:nth-child(even) {
+    background: #cedcf0;
+}
+
+.stats-list li span:nth-child(odd) {
+    background: #dae5f4;
+}
+
+.stats-list li span input {
+    background-color: rgba(255, 255, 255, 0.33);
+}
 
 .stats-list li:nth-child(1) span {
 	border-bottom: 2px solid #000000;
-	padding: 14px;
+	padding: 14px 6px;
 }
 
 .stats-list span {

@@ -54,15 +54,15 @@
 					<label class="control-label">Statistika tima @Model.TeamA.TeamName</label>
 					<ul class="stats-list">
 						<li>
-							<span>Broj dresa</span>
-							<span>Ime</span>
+							<span>Dres</span>
+							<span class="player-name">Igrač</span>
 							<span>MIN</span>
-							<span>2pts pogodaka</span>
-							<span>2pts promašaja</span>
-							<span>3pts pogodaka</span>
-							<span>3pts promašaja</span>
-							<span>Ft pogodaka</span>
-							<span>Ft promašaja</span>
+							<span>2pts pog</span>
+							<span>2pts prom</span>
+							<span>3pts pog</span>
+							<span>3pts prom</span>
+							<span>Ft pog</span>
+							<span>Ft prom</span>
 							<span>OReb</span>
 							<span>DReb</span>
 							<span>Ast</span>
@@ -85,27 +85,27 @@
 				<div class="col-md-12">
 					<label class="control-label">Statistika tima @Model.TeamB.TeamName</label>
 					<ul class="stats-list">
-						<li>
-							<span>Broj dresa</span>
-							<span>Ime</span>
-							<span>MIN</span>
-							<span>2pts pogodaka</span>
-							<span>2pts promašaja</span>
-							<span>3pts pogodaka</span>
-							<span>3pts promašaja</span>
-							<span>Ft pogodaka</span>
-							<span>Ft promašaja</span>
-							<span>OReb</span>
-							<span>DReb</span>
-							<span>Ast</span>
-							<span>To</span>
-							<span>Stl</span>
-							<span>Blk</span>
-							<span>Fd</span>
-							<span>Fc</span>
-							<span>Td</span>
-							<span></span>
-						</li>
+                        <li>
+                            <span>Dres</span>
+                            <span class="player-name">Igrač</span>
+                            <span>MIN</span>
+                            <span>2pts pog</span>
+                            <span>2pts prom</span>
+                            <span>3pts pog</span>
+                            <span>3pts prom</span>
+                            <span>Ft pog</span>
+                            <span>Ft prom</span>
+                            <span>OReb</span>
+                            <span>DReb</span>
+                            <span>Ast</span>
+                            <span>To</span>
+                            <span>Stl</span>
+                            <span>Blk</span>
+                            <span>Fd</span>
+                            <span>Fc</span>
+                            <span>Td</span>
+                            <span></span>
+                        </li>
 						@foreach (var stats in Model.TeamBPlayerStats)
 						{
 							@Html.Partial("_EditPlayerStats", stats)

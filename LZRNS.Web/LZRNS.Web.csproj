@@ -677,6 +677,7 @@
     <Content Include="Views\TeamsSurface\TeamDetails.cshtml" />
     <Content Include="Views\Management\Login.cshtml" />
     <Content Include="Views\Partials\Management\_LoginForm.cshtml" />
+    <Content Include="Views\Players.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -711,6 +712,7 @@
     <Compile Include="Controllers\Management\LeagueManagementController.cs" />
     <Compile Include="Controllers\Management\ManagementController.cs" />
     <Compile Include="Controllers\RenderMvc\LeaderboardLandingController.cs" />
+    <Compile Include="Controllers\RenderMvc\PlayersController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamDetailsController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
     <Compile Include="Controllers\RenderMvc\ResultsLandingController.cs" />
@@ -729,6 +731,7 @@
     <Compile Include="Extensions\HttpResponseExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UmbracoContextExtensions.cs" />
+    <Compile Include="Helpers\RenderHelper.cs" />
     <Compile Include="HttpHandlers\RobotsHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorViewEngines\PartialViewEngine.cs" />
