@@ -11,9 +11,11 @@ using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModel.Context;
 using LZRNS.DomainModels.Repository.Interfaces;
+using LZRNS.Models.AdditionalModels.Forms;
 
 namespace LZRNS.Web.Controllers.Management
 {
+	[MemberAuthorize]
 	public class ImportController : RenderMvcController
 	{
 
@@ -32,14 +34,12 @@ namespace LZRNS.Web.Controllers.Management
 
 
 		[HttpPost]
-		public ActionResult Index(HttpPostedFileBase[] files)
+		public ActionResult Index([Bind(Prefix = nameof(ImportModel.FormModel))]ImportFormModel model)
 		{
-			if (files == null || files.Length == 0)
+			if (!ModelState.IsValid)
 			{
-				var currentPageId = UmbracoContext.PageId;
-
-
-				return View();
+				ModelState.AddModelError("", "Niste odabrali dokument za import.");
+				return View(new ImportModel(CurrentPage));
 			}
 
 			ExL.ExcelLoader loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
@@ -48,7 +48,7 @@ namespace LZRNS.Web.Controllers.Management
 			string league = "A";
 
 
-			foreach (var file in files)
+			foreach (var file in model.Files)
 			{
 				if (file != null)
 				{
@@ -69,7 +69,7 @@ namespace LZRNS.Web.Controllers.Management
 
 			PopulateEntityModel(loader, season, league);
 
-			return View();
+			return View(new ImportModel(CurrentPage));
 		}
 
 		private void PopulateEntityModel(ExL.ExcelLoader loadedData, string seasonName, string leagueName)

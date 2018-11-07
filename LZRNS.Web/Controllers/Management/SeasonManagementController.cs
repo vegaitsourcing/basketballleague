@@ -12,6 +12,7 @@ using System.Data.Entity.Core;
 
 namespace LZRNS.Web.Controllers.Management
 {
+	[MemberAuthorize]
 	public class SeasonManagementController : RenderMvcController
 	{
 		private ISeasonRepository _seasonRepo;
@@ -29,6 +30,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
+	[MemberAuthorize]
 	public class SeasonManagementSurfaceController : BaseSurfaceController
 	{
 		private ISeasonRepository _seasonRepo;

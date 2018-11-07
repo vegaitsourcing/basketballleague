@@ -10,6 +10,7 @@ using Umbraco.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.Management
 {
+	[MemberAuthorize]
 	public class PlayerManagementController : RenderMvcController
 	{
 		private IPlayerRepository _playerRepo;
@@ -27,6 +28,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
+	[MemberAuthorize]
 	public class PlayerManagementSurfaceController : SurfaceController
 	{
 		private IPlayerRepository _playerRepo;

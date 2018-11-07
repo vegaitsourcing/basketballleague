@@ -678,7 +678,7 @@
     <Content Include="Views\Management\Login.cshtml" />
     <Content Include="Views\Partials\Management\_LoginForm.cshtml" />
     <Content Include="Views\Players.cshtml" />
-    <None Include="Web.Debug.config">
+    <Content Include="Views\Statistics.cshtml" />    <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
@@ -713,6 +713,7 @@
     <Compile Include="Controllers\Management\ManagementController.cs" />
     <Compile Include="Controllers\RenderMvc\LeaderboardLandingController.cs" />
     <Compile Include="Controllers\RenderMvc\PlayersController.cs" />
+    <Compile Include="Controllers\RenderMvc\StatisticsController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamDetailsController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
     <Compile Include="Controllers\RenderMvc\ResultsLandingController.cs" />

@@ -8,6 +8,7 @@ using Umbraco.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.Management
 {
+	[MemberAuthorize]
 	public class RefereeManagementController : RenderMvcController
 	{
 		private IRefereeRepository _refereeRepo;
@@ -25,6 +26,7 @@ namespace LZRNS.Web.Controllers.Management
 		}
 	}
 
+	[MemberAuthorize]
 	public class RefereeManagementSurfaceController : SurfaceController
 	{
 		private IRefereeRepository _refereeRepo;

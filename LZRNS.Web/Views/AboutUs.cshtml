@@ -1,19 +1,7 @@
 ﻿@inherits UmbracoViewPage<AboutUsModel>
 
 <main class="main" data-template-name="">
-	<div class="banner">
-		<div class="wrap">
-			@if (Model.Banner.HasValue())
-			{
-				<div class="banner-title">
-					@if (Model.Banner.BannerTitleExists)
-					{
-						<h2>@Model.Banner.PreBannerTitle <span>@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h2>
-					}
-				</div>
-			}
-		</div>
-	</div>
+	@{Html.RenderAction<SharedController>(c => c.Banner(null), Model.Banner);}
 	<div class="about">
 		<div class="wrap">
 			@if (Model.Title.HasValue())
@@ -35,7 +23,7 @@
 		<div class="wrap">
 			@if (Model.ContactFormTitle.HasValue())
 			{
-				
+
 				<div class="contact-title">
 					<h2>@Model.ContactFormTitle</h2>
 				</div>

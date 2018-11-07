@@ -22,12 +22,7 @@ namespace LZRNS.Models.DocumentTypes.Pages
         public AboutUsModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
 		{
         }
-	    public BannerModel Banner => this.GetCachedValue(() =>
-		    Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
-			    .EmptyIfNull()
-			    .FirstOrDefault()
-			    .AsType<BannerModel>());
-
+	    
 	    public string ContactFormTitle => this.GetPropertyValue<string>();
 		public IHtmlString Text => this.GetPropertyValue<IHtmlString>();
         public string EmailAddress => this.GetPropertyValue<string>();

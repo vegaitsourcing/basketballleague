@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using LZRNS.Models.DocumentTypes.Compositions;
+﻿using LZRNS.Models.DocumentTypes.Compositions;
 using LZRNS.Models.DocumentTypes.Nodes;
+using System.Collections.Generic;
+using System.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.Surface
 {
@@ -18,6 +18,14 @@ namespace LZRNS.Web.Controllers.Surface
 		[ChildActionOnly]
 		public ActionResult Footer(FooterModel model)
 		{
+			return PartialView(model);
+		}
+
+		[ChildActionOnly]
+		public ActionResult Banner(BannerModel model)
+		{
+			if(model == null) return new EmptyResult();
+
 			return PartialView(model);
 		}
 	}
