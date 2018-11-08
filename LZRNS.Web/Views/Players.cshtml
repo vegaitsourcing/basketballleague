@@ -16,33 +16,36 @@
                 <div class="search">
                     <form action="" method="get">
                         <label class="sr-only" for="input-123">Search</label>
-                        <input id="input-123" name="q" type="text" value="@Model.CurrentQuery" placeholder="Search" />
+                        <input id="input-123" name="q" type="text" value="@Model.CurrentQuery" placeholder="Pretraga" />
                         <button type="submit"><span class="icon font-ico-search" /></button>
                     </form>
                 </div>
                 <div class="buttons">
-                    @{ 
+                    @{
                         var firstButtonClass = Model.ActiveOnly ? "active" : string.Empty;
                         var secondButtonClass = !Model.ActiveOnly ? "active" : string.Empty;
+                       
                     }
-                    <a href="?activeOnly=true" class="btn @firstButtonClass">Aktivni</a>
-                    <a href="?activeOnly=false" class="btn @secondButtonClass">Svi</a>
+                    <a href="@CreateUrl("activeOnly", "true")" class="btn @firstButtonClass">Aktivni</a>
+                    <a href="@CreateUrl("activeOnly", "false")" class="btn @secondButtonClass">Svi</a>
                 </div>
             </div>
             <div class="letters-nav">
-                <span class="letters-button" data-placeholder="A - Z"><span class="icon font-ico-arrow-down"></span></span>
+                @{
+                    var showAllClass = string.IsNullOrWhiteSpace(Model.CurrentFL) ? "active" : string.Empty;
+                    var currentPlaceholder = string.IsNullOrWhiteSpace(Model.CurrentFL) ? "A - Ž" : Model.CurrentFL;
+                }
+                <span class="letters-button" data-placeholder="@currentPlaceholder"><span class="icon font-ico-arrow-down"></span></span>
                 <ul>
-                    @{
-                        var currentUrl = Request.Url;
-                    }
-                    <li class="all active">A - Z</li>
+
+                    <li class="all @showAllClass"><a href=".">A - Ž</a></li>
 
                     @foreach (var letter in RenderHelper.GetAlphabet())
                     {
                         var cssClass = letter.Equals(Model.CurrentFL, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
-                        <li class="@cssClass"><a href="?fl=@letter">@letter</a></li>
+                        <li class="@cssClass"><a href="@CreateUrl("fl", letter)">@letter</a></li>
                     }
-                    
+
                 </ul>
             </div>
             <div class="names-list">
@@ -54,7 +57,7 @@
                             {
                                 <li><a href="javasript:;">@player.GetFullName</a></li>
                             }
-                           
+
                         </ul>
                     </div>
                 </div>
@@ -62,3 +65,17 @@
         </div>
     </div>
 </main>
+
+@functions 
+{
+    public string CreateUrl(string queryName, string queryValue)
+    {
+        var currentUrl = Request.Url;
+        var uriBuilder = new UriBuilder(currentUrl);
+        var query = HttpUtility.ParseQueryString(uriBuilder.Query);
+        query[queryName] = queryValue;
+        uriBuilder.Query = query.ToString();
+        return uriBuilder.ToString();
+    }
+}
+    

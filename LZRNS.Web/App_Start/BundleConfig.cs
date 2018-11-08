@@ -16,7 +16,7 @@ namespace LZRNS.Web
 			));
 
 			bundles.Add(new ScriptBundle("~/bundles/scripts/main").Include(
-				"~/js/global.min.js"
+				"~/js/dist/global.min.js"
 			));
 
 

@@ -420,6 +420,11 @@
     <Content Include="images\svg\ico-share.svg" />
     <Content Include="images\svg\ico-tw.svg" />
     <Content Include="images\svg\ico-x.svg" />
+    <Content Include="js\default.js" />
+    <Content Include="js\functions.js" />
+    <Content Include="js\pages\content.js" />
+    <Content Include="js\pages\home.js" />
+    <Content Include="js\pages\index.js" />
     <Content Include="js\teams.js" />
     <Content Include="js\global.min.js" />
     <Content Include="js\management.js" />
@@ -678,7 +683,8 @@
     <Content Include="Views\Management\Login.cshtml" />
     <Content Include="Views\Partials\Management\_LoginForm.cshtml" />
     <Content Include="Views\Players.cshtml" />
-    <Content Include="Views\Statistics.cshtml" />    <None Include="Web.Debug.config">
+    <Content Include="Views\Statistics.cshtml" />
+    <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">

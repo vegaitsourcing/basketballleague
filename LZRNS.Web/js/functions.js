@@ -133,7 +133,7 @@ module.exports = {
 
 		$('.letters-nav li').on('click', function() {
 			var $this = $(this);
-			var val = $this.text();
+			var val = $this.find('a').text();
 			var button = $this.closest('ul').prev('.letters-button');
 			var wrap = $this.closest('.letters-nav');
 			var items = $this.siblings('li');
