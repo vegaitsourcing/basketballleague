@@ -11,12 +11,12 @@ namespace LZRNS.Web
 			bundles.UseCdn = true;   //enable CDN support
 
 			bundles.Add(new StyleBundle("~/bundles/styles/main").Include(
-				"~/css/style.min.css",
+				"~/css/dist/style.min.css",
 				new CssRewriteUrlTransform()
 			));
 
 			bundles.Add(new ScriptBundle("~/bundles/scripts/main").Include(
-				"~/js/global.min.js"
+				"~/js/dist/global.min.js"
 			));
 
 
@@ -63,11 +63,7 @@ namespace LZRNS.Web
 				"~/Scripts/js/sb-admin-datatables.js",
 				"~/js/management.js"
 			));
-
-			bundles.Add(new ScriptBundle("~/bundles/scripts/statistics").Include(
-				"~/js/statistics.js"
-			));
-
+			
 			BundleTable.EnableOptimizations = AppSettings.BundleEnabled;
 		}
 	}

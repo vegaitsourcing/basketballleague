@@ -6,7 +6,7 @@
 	@Html.HiddenFor(x => x.GameId)
 	@Html.HiddenFor(x => x.PlayerId)
 	<span>@Html.TextBoxFor(x => x.JerseyNumber, new { @type = "number", @class = "form-control" })</span>
-	<span>@Model.Player.GetFullName</span>
+	<span class="player-name">@Model.Player.GetFullName</span>
 	<span>@Html.TextBoxFor(x => x.MinutesPlayed, new { @type = "number", @class = "form-control" })</span>
 	<span>@Html.TextBoxFor(x => x.TwoPtMade, new { @type = "number", @class = "form-control" })</span>
 	<span>@Html.TextBoxFor(x => x.TwoPtMissed, new { @type = "number", @class = "form-control" })</span>

@@ -420,7 +420,9 @@
     <Content Include="images\svg\ico-share.svg" />
     <Content Include="images\svg\ico-tw.svg" />
     <Content Include="images\svg\ico-x.svg" />
-    <Content Include="js\statistics.js" />
+    <Content Include="js\default.js" />
+    <Content Include="js\functions.js" />
+    <Content Include="js\pages\statistics.js" />
     <Content Include="js\teams.js" />
     <Content Include="js\global.min.js" />
     <Content Include="js\management.js" />
@@ -678,8 +680,8 @@
     <Content Include="Views\TeamsSurface\TeamDetails.cshtml" />
     <Content Include="Views\Management\Login.cshtml" />
     <Content Include="Views\Partials\Management\_LoginForm.cshtml" />
+    <Content Include="Views\Players.cshtml" />
     <Content Include="Views\Statistics.cshtml" />
-    <Content Include="Views\Partials\Shared\_Banner.cshtml" />
     <Content Include="Views\Partials\ManagementHtml\_TopStatsPerLeague.cshtml" />
     <Content Include="Views\Partials\ManagementHtml\_TopStatsLeagues.cshtml" />
     <None Include="Web.Debug.config">
@@ -716,6 +718,7 @@
     <Compile Include="Controllers\Management\LeagueManagementController.cs" />
     <Compile Include="Controllers\Management\ManagementController.cs" />
     <Compile Include="Controllers\RenderMvc\LeaderboardLandingController.cs" />
+    <Compile Include="Controllers\RenderMvc\PlayersController.cs" />
     <Compile Include="Controllers\RenderMvc\StatisticsController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamDetailsController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamsController.cs" />
@@ -736,6 +739,7 @@
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UmbracoContextExtensions.cs" />
+    <Compile Include="Helpers\RenderHelper.cs" />
     <Compile Include="HttpHandlers\RobotsHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RazorViewEngines\PartialViewEngine.cs" />

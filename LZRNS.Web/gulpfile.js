@@ -262,9 +262,9 @@ gulp.task('js-build', function() {
 });
 
 //watch
-gulp.task('default', ['html-dev', 'styles', 'sasslint', 'js-build'], function () {
+gulp.task('default', ['html-dev', 'styles', 'js-build'], function () {
 	//watch .scss files
-	gulp.watch('css/**/*.scss', ['styles', 'sasslint']);
+	gulp.watch('css/**/*.scss', ['styles']);
 
 	//watch .js files
 	gulp.watch(['js/**/*.js', '!js/dist/*.js'], ['js-build']);
