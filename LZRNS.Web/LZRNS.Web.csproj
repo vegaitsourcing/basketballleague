@@ -420,6 +420,7 @@
     <Content Include="images\svg\ico-share.svg" />
     <Content Include="images\svg\ico-tw.svg" />
     <Content Include="images\svg\ico-x.svg" />
+    <Content Include="js\statistics.js" />
     <Content Include="js\teams.js" />
     <Content Include="js\global.min.js" />
     <Content Include="js\management.js" />
@@ -679,6 +680,8 @@
     <Content Include="Views\Partials\Management\_LoginForm.cshtml" />
     <Content Include="Views\Statistics.cshtml" />
     <Content Include="Views\Partials\Shared\_Banner.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_TopStatsPerLeague.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_TopStatsLeagues.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -730,6 +733,7 @@
     <Compile Include="Dictionary\UmbracoDictionary.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\HttpResponseExtensions.cs" />
+    <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UmbracoContextExtensions.cs" />
     <Compile Include="HttpHandlers\RobotsHandler.cs" />

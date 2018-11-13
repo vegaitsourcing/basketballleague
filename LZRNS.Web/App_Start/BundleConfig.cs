@@ -64,6 +64,10 @@ namespace LZRNS.Web
 				"~/js/management.js"
 			));
 
+			bundles.Add(new ScriptBundle("~/bundles/scripts/statistics").Include(
+				"~/js/statistics.js"
+			));
+
 			BundleTable.EnableOptimizations = AppSettings.BundleEnabled;
 		}
 	}

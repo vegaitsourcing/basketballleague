@@ -1,7 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using LZRNS.Common;
+using LZRNS.DomainModels.Extensions;
+using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
+using LZRNS.Models.AdditionalModels;
+using LZRNS.Models.Extensions;
 
 namespace LZRNS.Web.Controllers.Surface
 {
@@ -57,6 +63,39 @@ namespace LZRNS.Web.Controllers.Surface
 				.SelectMany(x => x)
 				.GroupBy(y => y.PlayerId); ;
 
+			return PartialView(model);
+		}
+
+		public ActionResult TopStatsLeagues(int seasonStartYear, TopStatisticCategories category)
+		{
+			if (seasonStartYear == default(int))
+			{
+				return new EmptyResult();
+			}
+
+			var leagues = _seasonRepo.GetSeasonByYear(seasonStartYear)
+				?.LeagueSeasons
+				.Where(l => l.Rounds != null && l.Rounds.Any())
+				.ToArray();
+
+			if(leagues == null || !leagues.Any()) return new EmptyResult();
+
+			int topStatsCount = AppSettings.StatisticsTableTopStatsToShow;
+
+			List<LeagueTopStatsModel> leaguesTopStats = leagues.GetTopStatsPerLeague(category, topStatsCount).ToList();
+			var model = new SeasonLeagueTopStatsModel(leaguesTopStats);
+
+			return PartialView(model);
+		}
+
+		[ChildActionOnly]
+		public ActionResult TopStatsPerLeague(LeagueTopStatsModel model)
+		{
+			if (model == null)
+			{
+				return new EmptyResult();
+			}
+			
 			return PartialView(model);
 		}
 
