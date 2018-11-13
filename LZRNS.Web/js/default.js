@@ -3,7 +3,8 @@
 let functions = require('./functions');
 
 let pages = {
-	statistics: require('./pages/statistics')
+	statistics: require('./pages/statistics'),
+	teams: require('./pages/teams')
 };
 
 let app = {

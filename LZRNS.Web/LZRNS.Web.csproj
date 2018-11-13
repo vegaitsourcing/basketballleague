@@ -423,7 +423,7 @@
     <Content Include="js\default.js" />
     <Content Include="js\functions.js" />
     <Content Include="js\pages\statistics.js" />
-    <Content Include="js\teams.js" />
+    <Content Include="js\pages\teams.js" />
     <Content Include="js\global.min.js" />
     <Content Include="js\management.js" />
     <Content Include="packages.config" />
