@@ -23,13 +23,7 @@ namespace LZRNS.Models.DocumentTypes.Pages
 		public ResultsLandingModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
 		{
 		}
-
-		public BannerModel Banner => this.GetCachedValue(() =>
-			Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
-				.EmptyIfNull()
-				.FirstOrDefault()
-				.AsType<BannerModel>());
-
+		
 		public string RoundName => this.GetCachedValue(() =>
 			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.ResultsRound) ?? "1";
 
