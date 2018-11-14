@@ -422,10 +422,8 @@
     <Content Include="images\svg\ico-x.svg" />
     <Content Include="js\default.js" />
     <Content Include="js\functions.js" />
-    <Content Include="js\pages\content.js" />
-    <Content Include="js\pages\home.js" />
-    <Content Include="js\pages\index.js" />
-    <Content Include="js\teams.js" />
+    <Content Include="js\pages\statistics.js" />
+    <Content Include="js\pages\teams.js" />
     <Content Include="js\global.min.js" />
     <Content Include="js\management.js" />
     <Content Include="packages.config" />
@@ -685,6 +683,10 @@
     <Content Include="Views\Players.cshtml" />
     <Content Include="Views\Statistics.cshtml" />
     <Content Include="Views\PlayerDetails.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_TopStatsPerLeague.cshtml" />
+    <Content Include="Views\Partials\ManagementHtml\_TopStatsLeagues.cshtml" />
+    <Content Include="Views\TeamDetails.cshtml" />
+    <Content Include="Views\Partials\Shared\_Banner.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -738,6 +740,7 @@
     <Compile Include="Dictionary\UmbracoDictionary.cs" />
     <Compile Include="Extensions\HtmlHelperExtensions.cs" />
     <Compile Include="Extensions\HttpResponseExtensions.cs" />
+    <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UmbracoContextExtensions.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />

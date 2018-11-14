@@ -1,0 +1,14 @@
+﻿@using LZRNS.Models.AdditionalModels
+@inherits UmbracoViewPage<SeasonLeagueTopStatsModel>
+	
+@if (Model.Leagues != null && Model.Leagues.Any())
+{
+	foreach (var league in Model.Leagues)
+	{
+		<div class="row cards @(Model.Leagues.IndexOf(league) + 1 % 2 == 0 ? "bg-orange" : "bg-grey")" league>
+			@{
+				Html.RenderAction<ManagementHtmlController>(c => c.TopStatsPerLeague(null), league);
+			}
+		</div>
+	}
+}

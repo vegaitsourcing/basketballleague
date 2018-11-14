@@ -275,8 +275,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalModels\Forms\ImportFormModel.cs" />
+    <Compile Include="AdditionalModels\LeagueTopStatsModel.cs" />
     <Compile Include="AdditionalModels\Pagination\PaginationModel.cs" />
     <Compile Include="AdditionalModels\Pagination\ReadOnlyPagedCollection.cs" />
+    <Compile Include="AdditionalModels\SeasonLeagueTopStatsModel.cs" />
     <Compile Include="CachedContentModel.cs" />
     <Compile Include="DocumentTypes\Compositions\BannerModel.cs" />
     <Compile Include="DocumentTypes\Compositions\ManagementPageModel.cs" />
@@ -329,6 +331,7 @@
     <Compile Include="DocumentTypes\Pages\Management\StatsManagementModel.cs" />
     <Compile Include="DocumentTypes\Pages\Management\TeamManagementModel.cs" />
     <Compile Include="Extensions\GlobalExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\MultiUrlsPickerExtensions.cs" />
     <Compile Include="Extensions\PublishedContentExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

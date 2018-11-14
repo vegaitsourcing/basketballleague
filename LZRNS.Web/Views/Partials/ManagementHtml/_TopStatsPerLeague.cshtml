@@ -1,0 +1,53 @@
+﻿@using LZRNS.DomainModels.Models
+@inherits UmbracoViewPage<LZRNS.Models.AdditionalModels.LeagueTopStatsModel>
+
+@if (Model.TopStats != null && Model.TopStats.Any())
+{
+	foreach (var topStat in Model.TopStats)
+	{
+		@RenderTable(topStat)
+	}
+}
+
+@helper RenderTable(TopStatsModel topStats)
+{
+	string tableName = UmbracoDictionary.GetTableName(topStats.TableType);
+	<div class="col-lg-4 col-sm-6">
+		<div class="card" data-table-popup-link="result-popup" data-table-type="@topStats.TableType">
+			<div class="card-title">
+				<h4>@tableName</h4>
+			</div>
+			<ol class="players">
+				@foreach (var item in topStats.GetTopStats())
+				{
+					<li class="player">@item.PlayerName<span class="points">@topStats.GetValue(item)</span></li>
+				}
+			</ol>
+			<div class="result-details" data-result-type="@topStats.TableType">
+				<div class="table">
+					<table>
+						<thead>
+						<tr>
+							<th class="pos">#</th>
+							<th class="name">@UmbracoDictionary.Stats.Name</th>
+							<th>@tableName</th>
+						</tr>
+						</thead>
+						<tbody>
+						@foreach (var item in topStats.Stats)
+						{
+							<tr>
+								<td class="pos">@(topStats.Stats.IndexOf(item) + 1)</td>
+								<td class="name">@item.PlayerName</td>
+								<td>
+									@topStats.GetValue(item)
+								</td>
+							</tr>
+						}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+}

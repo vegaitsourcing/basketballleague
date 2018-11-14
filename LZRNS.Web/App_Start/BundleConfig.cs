@@ -21,8 +21,7 @@ namespace LZRNS.Web
 
 
 			bundles.Add(new ScriptBundle("~/bundles/scripts/teams").Include(
-				"~/scripts/jquery.unobtrusive-ajax.js",
-				"~/js/teams.js"
+				"~/scripts/jquery.unobtrusive-ajax.js"
 			));
 
 			bundles.Add(new StyleBundle("~/bundles/styles/management/").Include(
@@ -63,7 +62,7 @@ namespace LZRNS.Web
 				"~/Scripts/js/sb-admin-datatables.js",
 				"~/js/management.js"
 			));
-
+			
 			BundleTable.EnableOptimizations = AppSettings.BundleEnabled;
 		}
 	}

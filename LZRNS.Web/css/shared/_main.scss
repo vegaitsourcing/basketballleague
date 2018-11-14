@@ -86,19 +86,21 @@
     h1 {
         text-transform: uppercase;
         color: $white;
-        font-weight: 700;
+        font-weight: 800;
 		font-size: 78px;
-		line-height: 90px;
+		line-height: 1.2;
 
         max-width: 400px;
 
         @media only screen and (max-width: 768px) {
-            font-size: 60px;
+			font-size: 60px;
+			line-height: 1.2;
         }
 
         @media only screen and (max-width: 576px) {
-            font-size: 40px;
-            max-width: 320px;
+            font-size: 36px;
+			max-width: 320px;
+			line-height: 1.2;
         }
     }
     span {
@@ -107,22 +109,22 @@
 }
 
 .banner {
-	background: url('../../images/content/minibaner1920.jpg') no-repeat center top;
+	background: url('../../images/content/minibaneri/1920.png') no-repeat center top;
 	background-size: cover;
 	height: 400px;
 
 	@media only screen and (max-width: 1200px) {
-        background: url('../../images/content/minibaner1366.jpg') no-repeat center top;
+        background: url('../../images/content/minibaneri/1366.png') no-repeat center top;
         height: 300px;
     }
 
     @media only screen and (max-width: 768px) {
-        background: url('../../images/content/minibaner768.jpg') no-repeat center top;
+        background: url('../../images/content/minibaneri/768.png') no-repeat center top;
         height: 175px;
     }
 
     @media only screen and (max-width: 576px) {
-        background: url('../../images/content/minibaner576.jpg') no-repeat center top;
+        background: url('../../images/content/minibaneri/576.png') no-repeat center top;
         height: 150px;
     }
 
@@ -315,11 +317,16 @@
 		.title {
 			left: 20px;
 			h2 {
-				font-size: 46px;
+				font-size: 42px;
 			}
 		}
 		.round {
-			bottom: 30px;
+			bottom: 10px;
+			right: 31px;
+			font-size: 12px;
+			.number {
+				font-size: 40px;
+			}
 		}
 		.items {
 			.time {
@@ -372,14 +379,6 @@
 		bottom: 0;
 		right: 30px;
 
-		@media only screen and (max-width: 992px) {
-			bottom: 9px;
-		}
-
-		@media only screen and (max-width: 768px) {
-			bottom: 30px;
-		}
-
 		.number {
 			font-size: 60px;
 			line-height: 1.1;
@@ -389,6 +388,23 @@
 			display: block;
 			text-transform: uppercase;
 			font-weight: 700;
+		}
+
+		@media only screen and (max-width: 992px) {
+			bottom: 9px;
+		}
+
+		@media only screen and (max-width: 768px) {
+			bottom: 30px;
+		}
+
+		@include media-breakpoint-down(sm) {
+			bottom: 10px;
+			right: 31px;
+			font-size: 12px;
+			.number {
+				font-size: 40px;
+			}
 		}
 	}
 	.item {
@@ -508,7 +524,7 @@
 		.title {
 			left: 20px;
 			h2 {
-				font-size: 46px;
+				font-size: 42px;
 			}
 		}
 	}
@@ -646,7 +662,13 @@
     .wrap {
         position: relative;
     }
-
+	.image-holder {
+		display: block;
+	    width: 130px;
+	    position: absolute;
+	    top: -184px;
+	    left: -1px;
+	}
     .title {
         position: absolute;
 		left: -80px;
@@ -745,6 +767,9 @@
 	}
 	.arrows {
 		float: right;
+		.left-arrow {
+			margin-right: 20px;
+		}
 
 		span {
 			color: $grey-dark;
@@ -844,7 +869,7 @@
 					font-size: 12px;
 					text-align: center;
 					font-weight: 600;
-					min-width: 40px;
+					min-width: 60px;
 
 					&.pos {
 						font-weight: 500;
@@ -875,6 +900,9 @@
 	position: relative;
 	.arrows {
 		float: right;
+		.left-arrow {
+			margin-right: 20px;
+		}
 
 		span {
 			color: $grey-dark;
@@ -882,6 +910,10 @@
 			@include hover {
 				color: $white;
 			}
+		}
+
+		@media only screen and (max-width: 992px) {
+			float: left;
 		}
 	}
 }
@@ -952,124 +984,104 @@
 	}
 }
 .letters-nav {
-    margin-bottom: 32px;
-    position: relative;
-
-    .letters-button {
-        display: none;
-        width: 100%;
-        border: 1px solid $orange;
-        color: $orange;
-        height: 60px;
-        padding: 0 15px;
-        line-height: 60px;
-        font-size: 27px;
-        border-radius: 10px;
-        font-weight: 700;
-
-        &::after {
-            content: attr(data-placeholder);
-            text-transform: uppercase;
-        }
-
-        .icon {
-            color: $orange;
-            font-size: 18px;
-            position: absolute;
-            right: 15px;
-            top: 22px;
-        }
-    }
-
-    ul {
-        display: block;
-        max-width: 100%;
-        padding: 0 13px;
-        background-color: $white;
-        border: 1px solid $orange;
-        border-radius: 10px;
-
-        li {
-            display: inline-block;
-            text-align: center;
-            text-transform: uppercase;
-            color: $grey-dark;
-            font-size: 20px;
-            line-height: 1.55;
-            padding: 6px 7px;
-            width: 32px;
-            cursor: pointer;
-            transition: 0.3s ease-in;
-
-            a {
-                color: $grey-dark;
-            }
-        }
-
-        .active {
-            background-color: $orange;
-            color: $white;
-        }
-    }
-
-    @include media-breakpoint-up(md) {
-        li {
-            &.all {
-                display: none;
-            }
-        }
-    }
-
-    @include media-breakpoint-only(md) {
-        display: flex;
-        justify-content: center;
-
-        ul {
-            padding: 0 21px;
-            max-width: 728px;
-
-            li {
-                font-size: 18px;
-                width: 20px;
-                padding: 3px 1px;
-            }
-        }
-    }
-
-    @include media-breakpoint-down(sm) {
-        z-index: 10;
-
-        ul {
-            padding: 10px 0;
-        }
-
-        &.open {
-            ul {
-                display: block;
-            }
-        }
-
-        .letters-button {
-            display: block;
-        }
-
-        ul {
-            display: none;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            transform: translateY(100%);
-            max-height: 250px;
-            overflow: auto;
-
-            li {
-                display: block;
-                width: 100%;
-                padding: 0;
-            }
-        }
-    }
+	margin-bottom: 32px;
+	position: relative;
+	.letters-button {
+		display: none;
+		width: 100%;
+		border: 1px solid $orange;
+		color: $orange;
+		height: 60px;
+		padding: 0 15px;
+		line-height: 60px;
+		font-size: 27px;
+		border-radius: 10px;
+		font-weight: 700;
+		&::after {
+			content: attr(data-placeholder);
+			text-transform: uppercase;
+		}
+		.icon {
+			color: $orange;
+			font-size: 18px;
+			position: absolute;
+			right: 15px;
+			top: 22px;
+		}
+	}
+	ul {
+		display: block;
+		max-width: 100%;
+		padding: 0 13px;
+		background-color: $white;
+		border: 1px solid $orange;
+		border-radius: 10px;
+		li {
+			display: inline-block;
+			text-align: center;
+			text-transform: uppercase;
+			color: $grey-dark;
+			font-size: 20px;
+			line-height: 1.55;
+			padding: 6px 7px;
+			width: 32px;
+			cursor: pointer;
+			transition: 0.3s ease-in;
+		}
+		.active {
+			background-color: $orange;
+			color: $white;
+		}
+	}
+	@include media-breakpoint-up(md) {
+		li {
+			&.all {
+				display: none;
+			}
+		}
+	}
+	@include media-breakpoint-only(md) {
+		display: flex;
+		justify-content: center;
+		ul {
+			padding: 0 21px;
+			max-width: 728px;
+			li {
+				font-size: 18px;
+				width: 20px;
+				padding: 3px 1px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		z-index: 10;
+		ul {
+			padding: 10px 0;
+		}
+		&.open {
+			ul {
+				display: block;
+			}
+		}
+		.letters-button {
+			display: block;
+		}
+		ul {
+			display: none;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			transform: translateY(100%);
+			max-height: 250px;
+			overflow: auto;
+			li {
+				display: block;
+				width: 100%;
+				padding: 0;
+			}
+		}
+	}
 }
 .teams-wrap {
 	.names-list {
@@ -1113,8 +1125,37 @@
 			color: rgba($grey-light, 0.4);
 			margin-bottom: 0;
 			line-height: 1;
-            font-weight: 800;
+			font-weight: 800;
 		}
+
+		@media only screen and (max-width: 1200px) {
+            right: 5%;
+        }
+
+        @media only screen and (min-width: 992px) and (max-width: 1080px) {
+            right: 5%;
+            h2 {
+                font-size: 150px;
+            }
+
+        }
+
+        @include media-breakpoint-down(md) {
+            right: 3%;
+            h2 {
+                font-size: 100px;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            h2 {
+                font-size: 46px;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            right: 15px;
+        }
 	}
 	p {
 		word-break: break-all;
@@ -1210,13 +1251,129 @@
 	}
 }
 .statistic-page {
+	position: relative;
 	overflow-x: hidden;
-	.cards {
-		padding: 50px 0;
+	padding-top: 180px;
+	background-color: #e2e2e2;
+	.wrap {
+		position: relative;
+	}
+	.statistic-top {
+		display: flex;
+		justify-content: space-between;
+		.btn {
+			position: relative;
+			width: 120px;
+			text-align: center;
+		}
+
+		.left {
+			z-index: 3;
+			.btn {
+				top: -15px;
+			}
+		}
+		.right {
+			z-index: 3;
+			.btn {
+				top: 15px;
+				width: 120px;
+				text-align: center;
+			}
+		}
+
+		.newListSelected {
+			margin-top: 15px;
+			width: 245px;
+			display: inline-block;
+		}
+
+		@media only screen and (max-width: 992px) {
+			flex-direction: column;
+			.right {
+				margin-top: -15px;
+				:last-child {
+					margin-top: 15px;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 768px) {
+			.left {
+				.btn {
+					top: -30px;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 532px) {
+			.left {
+				.btn {
+					top: -15px;
+				}
+			}
+			.right {
+				margin-top: -20px;
+			}
+		}
+
+		@media only screen and (max-width: 427px) {
+			.left {
+				.btn {
+					top: -5px;
+				}
+			}
+		}
+
+
+	}
+	.title {
+		position: absolute;
+		right: -80px;
+		top: -100px;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: rgba($grey-light, 0.4);
+			margin-bottom: 0;
+			line-height: 1;
+			font-weight: 800;
+		}
+
+		@media only screen and (max-width: 1200px) {
+            right: 5%;
+        }
+
+        @media only screen and (min-width: 992px) and (max-width: 1080px) {
+            right: 5%;
+            h2 {
+                font-size: 150px;
+            }
+
+        }
+
+        @include media-breakpoint-down(md) {
+            right: 3%;
+            h2 {
+                font-size: 100px;
+            }
+        }
+
+        @include media-breakpoint-down(sm) {
+            h2 {
+                font-size: 46px;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            right: 15px;
+        }
 	}
 	.bg-grey,
 	.bg-orange {
+		padding-bottom: 50px;
 		position: relative;
+		padding: 35px 0 60px;
 		&::before,
 		&::after {
 			content: '';
@@ -1290,6 +1447,12 @@
 		.result-details {
 			display: none;
 		}
+
+		@include media-breakpoint-down(xs) {
+			max-width: 350px;
+			margin-left: auto;
+			margin-right: auto;
+		}
 	}
 	.table {
 		table {
@@ -1353,7 +1516,6 @@
 						}
 					}
 				}
-
 			}
 		}
 	}
