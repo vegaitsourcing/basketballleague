@@ -1,6 +1,7 @@
 ﻿using LZRNS.Common.Extensions;
 using LZRNS.Models.DocumentTypes.Compositions;
 using LZRNS.Models.Extensions;
+using RJP.MultiUrlPicker.Models;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -33,6 +34,8 @@ namespace LZRNS.Models.DocumentTypes.Pages
 
         public IEnumerable<string> Leagues => this.GetPropertyValue<IEnumerable<string>>();
         public string CurrentShownLeague { get; set; }
+
+        public Link PlayerDetailsPage => this.GetPropertyValue<Link>();
 
     }
 }

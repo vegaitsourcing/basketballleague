@@ -2,14 +2,11 @@
 
 @inherits UmbracoViewPage<LZRNS.Models.ViewModel.PlayersViewModel>
 
-<main class="main" data-template-name="@Page.Name">
-    <div class="banner">
-        <div class="wrap">
-            <div class="banner-title">
-                <h2>Liga za <span>rekreativce</span> Novi Sad</h2>
-            </div>
-        </div>
-    </div>
+@{ 
+    var playerDetailUrl = Model.PlayersModel.PlayerDetailsPage.Url;
+}
+
+
     <div class="wrap">
         <div class="players-wrap">
             <div class="players-top">
@@ -55,7 +52,7 @@
                         <ul class="four-col">
                             @foreach (var player in Model.Players)
                             {
-                                <li><a href="javasript:;">@player.GetFullName</a></li>
+                                <li><a href="@playerDetailUrl?id=@player.Id">@player.GetFullName</a></li>
                             }
 
                         </ul>

@@ -684,6 +684,7 @@
     <Content Include="Views\Partials\Management\_LoginForm.cshtml" />
     <Content Include="Views\Players.cshtml" />
     <Content Include="Views\Statistics.cshtml" />
+    <Content Include="Views\PlayerDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -718,6 +719,7 @@
     <Compile Include="Controllers\Management\LeagueManagementController.cs" />
     <Compile Include="Controllers\Management\ManagementController.cs" />
     <Compile Include="Controllers\RenderMvc\LeaderboardLandingController.cs" />
+    <Compile Include="Controllers\RenderMvc\PlayerDetailsController.cs" />
     <Compile Include="Controllers\RenderMvc\PlayersController.cs" />
     <Compile Include="Controllers\RenderMvc\StatisticsController.cs" />
     <Compile Include="Controllers\RenderMvc\TeamDetailsController.cs" />
