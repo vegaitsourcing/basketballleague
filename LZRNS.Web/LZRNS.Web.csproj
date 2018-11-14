@@ -684,6 +684,8 @@
     <Content Include="Views\Statistics.cshtml" />
     <Content Include="Views\Partials\ManagementHtml\_TopStatsPerLeague.cshtml" />
     <Content Include="Views\Partials\ManagementHtml\_TopStatsLeagues.cshtml" />
+    <Content Include="Views\TeamDetails.cshtml" />
+    <Content Include="Views\Partials\Shared\_Banner.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
