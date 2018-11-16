@@ -5,26 +5,35 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core;
+using System.Linq;
 
 namespace LZRNS.DomainModels.Repository.Implementations
 {
-	public class RepositoryBase<T> : IRepositoryBase<T> where T : AbstractModel
-	{
-		public BasketballDbContext _context;
-		public RepositoryBase(BasketballDbContext context)
-		{
-			_context = context;
-		}
+    public class RepositoryBase<T> : IRepositoryBase<T> where T : AbstractModel
+    {
+        public BasketballDbContext _context;
+        public RepositoryBase(BasketballDbContext context)
+        {
+            _context = context;
+        }
 
-		public T Add(T item)
-		{
-			item.Id = Guid.NewGuid();
-			var entity = _context.Set<T>().Add(item);
-			_context.SaveChanges();
-			return entity;
-		}
+        public T Add(T item)
+        {
+            item.Id = Guid.NewGuid();
+            var entity = _context.Set<T>().Add(item);
+            _context.SaveChanges();
+            return entity;
+        }
 
-		public void Delete(T item)
+        public IEnumerable<T> AddRange(IEnumerable<T> items)
+        {
+            var entities = _context.Set<T>().AddRange(items);
+            _context.SaveChanges();
+
+            return entities;
+        }
+
+        public void Delete(T item)
 		{
 			try
 			{
