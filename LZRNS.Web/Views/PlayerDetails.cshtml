@@ -12,7 +12,7 @@
 				<div class="row">
 					<div class="col-lg-7">
 						<div class="main-info">
-							<div class="picture"></div>
+							<div class="picture" style="background-image: url('@Model.CurrentPlayer.Image')"></div>
 							<div class="name-and-team">
 								<h4 class="name">@Model.CurrentPlayer.GetFullName</h4>
 								@if (Model.CurrentPlayer.CurrentTeam != null)
@@ -21,40 +21,40 @@
 								}
 							</div>
 							<ul class="vitals">
-								<li>Visina: <span>@(Model.CurrentPlayer.Height)cm</span> </li>
-								<li>Tezina: <span>@(Model.CurrentPlayer.Weight)kg</span></li>
-								<li>Godiste: <span>@(Model.CurrentPlayer.YearOfBirth).</span></li>
+								<li>@UmbracoDictionary.Player.Height <span>@(Model.CurrentPlayer.Height)cm</span> </li>
+								<li>@UmbracoDictionary.Player.Weight <span>@(Model.CurrentPlayer.Weight)kg</span></li>
+								<li>@UmbracoDictionary.Player.Year <span>@(Model.CurrentPlayer.YearOfBirth).</span></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-lg-5">
 						<div class="career-highs">
-							<h3>Career highs</h3>
+							<h3>@UmbracoDictionary.Player.CareerHighs</h3>
 							<table>
 								<tbody>
 									@if (Model.CurrentPlayer.CareerHighPts != null)
 									{
-										@RenderCareerHighs("PTS", Model.CurrentPlayer.CareerHighPts, s => s.Pts)
+										@RenderCareerHighs(UmbracoDictionary.Stats.Pts, Model.CurrentPlayer.CareerHighPts, s => s.Pts)
 									}
 									@if (Model.CurrentPlayer.CareerHighReb != null)
 									{
-										@RenderCareerHighs("REB", Model.CurrentPlayer.CareerHighReb, s => s.Reb)
+										@RenderCareerHighs(UmbracoDictionary.Stats.Reb, Model.CurrentPlayer.CareerHighReb, s => s.Reb)
 									}
 									@if (Model.CurrentPlayer.CareerHighAst != null)
 									{
-										@RenderCareerHighs("AST", Model.CurrentPlayer.CareerHighAst, s => s.Ast)
+										@RenderCareerHighs(UmbracoDictionary.Stats.Ast, Model.CurrentPlayer.CareerHighAst, s => s.Ast)
 									}
 									@if (Model.CurrentPlayer.CareerHighStl != null)
 									{
-										@RenderCareerHighs("STL", Model.CurrentPlayer.CareerHighStl, s => s.Stl)
+										@RenderCareerHighs(UmbracoDictionary.Stats.Stl, Model.CurrentPlayer.CareerHighStl, s => s.Stl)
 									}
 									@if (Model.CurrentPlayer.CareerHighBlk != null)
 									{
-										@RenderCareerHighs("BLK", Model.CurrentPlayer.CareerHighBlk, s => s.Blk)
+										@RenderCareerHighs(UmbracoDictionary.Stats.Blk, Model.CurrentPlayer.CareerHighBlk, s => s.Blk)
 									}
 									@if (Model.CurrentPlayer.CareerHighEff != null)
 									{
-										@RenderCareerHighs("EFF", Model.CurrentPlayer.CareerHighEff, s => s.Eff)
+										@RenderCareerHighs(UmbracoDictionary.Stats.Eff, Model.CurrentPlayer.CareerHighEff, s => s.Eff)
 									}
 								</tbody>
 							</table>
@@ -81,24 +81,7 @@
 									<div class="table">
 										<table>
 											<thead>
-												<tr>
-													<th class="kolo">KOLO</th>
-													<th class="name">PROTIVNIK</th>
-													<th>MIN</th>
-													<th>EFF</th>
-													<th>FG</th>
-													<th>2pts</th>
-													<th>3pts</th>
-													<th>FT</th>
-													<th>REB</th>
-													<th>off</th>
-													<th>def</th>
-													<th>AST</th>
-													<th>TO</th>
-													<th>STL</th>
-													<th>BLK</th>
-													<th>PTS</th>
-												</tr>
+												@RenderTableHeading(false)
 											</thead>
 											<tbody>
 												@foreach (var stat in item.Player.Stats.OrderBy(s => s.Game.Round.Id))
@@ -149,161 +132,13 @@
 					<div class="stats col-12">
 						<div class="tabs-container">
 							<ul class="tabs">
-								@RenderStatsTab("Averages", "tab7", true, Model.AverageStats)
-								@RenderStatsTab("Totals", "tab8", true, Model.TotalStats)
-								@RenderStatsTab("Per minute", "tab9", true, Model.PerMinuteStats)
+								@RenderStatsTab(UmbracoDictionary.Stats.Filter.Categories.Totals, "tab7", true, Model.TotalStats)
+								@RenderStatsTab(UmbracoDictionary.Stats.Filter.Categories.Averages, "tab8", true, Model.AverageStats)
+								@RenderStatsTab(UmbracoDictionary.Stats.Filter.Categories.PerMinute, "tab9", true, Model.PerMinuteStats)
 							</ul>
-							<span class="tab-heading" data-tab="tab7">Totals</span>
-							<div class="tab-content tab7">
-								<div class="table">
-									<table>
-										<thead>
-											<tr>
-												<th class="kolo">KOLO</th>
-												<th class="name">PROTIVNIK</th>
-												<th>MIN</th>
-												<th>EFF</th>
-												<th>FG</th>
-												<th>2pts</th>
-												<th>3pts</th>
-												<th>FT</th>
-												<th>REB</th>
-												<th>off</th>
-												<th>def</th>
-												<th>AST</th>
-												<th>TO</th>
-												<th>STL</th>
-												<th>BLK</th>
-												<th>PTS</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td class="kolo">2011.</td>
-												<td class="name">Proslost</td>
-												<td>
-													5
-												</td>
-												<td>5</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-											</tr>
-											<tr>
-												<td class="kolo">2012.</td>
-												<td class="name">2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td>5</td>
-											</tr>
-											<tr>
-												<td class="kolo">2012.</td>
-												<td class="name">Proslost</td>
-												<td>
-													5
-												</td>
-												<td>5</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-											</tr>
-											<tr>
-												<td class="kolo">2013.</td>
-												<td class="name">Proslost</td>
-												<td>
-													5
-												</td>
-												<td>5</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>
-													<span>0/3</span>
-													<span>0</span>
-												</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-												<td>1</td>
-												<td>2</td>
-												<td>3</td>
-												<td>4</td>
-												<td>5</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<span class="tab-heading" data-tab="tab8">Averages</span>
-							<div class="tab-content tab8">
-								test
-							</div>
-							<span class="tab-heading" data-tab="tab8">Per minute</span>
-							<div class="tab-content tab9">
-								test
-							</div>
+							@RenderStatsTable(UmbracoDictionary.Stats.Filter.Categories.Totals, "tab7", Model.TotalStats)
+							@RenderStatsTable(UmbracoDictionary.Stats.Filter.Categories.Averages, "tab8", Model.AverageStats)
+							@RenderStatsTable(UmbracoDictionary.Stats.Filter.Categories.PerMinute, "tab9", Model.PerMinuteStats)
 						</div>
 					</div>
 				</div>
@@ -313,69 +148,50 @@
 </main>
 
 @helper RenderCareerHighs(string category, Stats stats, Func<Stats, int> valueCriteriea)
+{
+	var playerTeam = Model.CurrentPlayer.CurrentTeam;
+	if (playerTeam == null)
 	{
-		var playerTeam = Model.CurrentPlayer.CurrentTeam;
-		if (playerTeam == null)
-		{
-			return;
-		}
-		var team = stats.Game.TeamAId == playerTeam.Id ? stats.Game.TeamB : stats.Game.TeamA;
-		<tr>
-			<td>@category:</td>
-			<td class="amount">@valueCriteriea.Invoke(stats)</td>
-			<td>vs</td>
-			<td class="against">@team.TeamName</td>
-			<td class="year">@stats.Game.Season.Name</td>
-		</tr>
+		return;
+	}
+	var team = stats.Game.TeamAId == playerTeam.Id ? stats.Game.TeamB : stats.Game.TeamA;
+	<tr>
+		<td>@category:</td>
+		<td class="amount">@valueCriteriea.Invoke(stats)</td>
+		<td>vs</td>
+		<td class="against">@team.TeamName</td>
+		<td class="year">@stats.Game.Season.Name</td>
+	</tr>
 }
 
 @helper RenderStatsTab(string tabName, string tabKey, bool isSelected, IReadOnlyList<PlayerStats> stats)
-	{
-		if (stats == null || !stats.Any())
-		{
-			return;
-		}
-		<li @(isSelected ? "class=selected" : string.Empty) data-tab="@tabKey">
-			<span>@tabName</span>
-		</li>
-}
-
-@helper RenderStatsTable(string tableName, string tableKey, IReadOnlyList<PlayerStats> stats)
-	{
+{
 	if (stats == null || !stats.Any())
 	{
 		return;
 	}
-		<span class="tab-heading" data-tab="@tableKey">@tableName</span>
-		<div class="tab-content @tableKey">
-			<div class="table">
-				<table>
-					<thead>
-						<tr>
-							<th class="kolo">KOLO</th>
-							<th class="name">PROTIVNIK</th>
-							<th>MIN</th>
-							<th>EFF</th>
-							<th>FG</th>
-							<th>2pts</th>
-							<th>3pts</th>
-							<th>FT</th>
-							<th>REB</th>
-							<th>off</th>
-							<th>def</th>
-							<th>AST</th>
-							<th>TO</th>
-							<th>STL</th>
-							<th>BLK</th>
-							<th>PTS</th>
-						</tr>
-					</thead>
-					<tbody>
+	<li @(isSelected ? "class=selected" : string.Empty) data-tab="@tabKey">
+		<span>@tabName</span>
+	</li>
+}
+
+@helper RenderStatsTable(string tableName, string tableKey, IReadOnlyList<PlayerStats> stats)
+{
+	if (stats == null || !stats.Any())
+	{
+		return;
+	}
+	<span class="tab-heading" data-tab="@tableKey">@tableName</span>
+	<div class="tab-content @tableKey">
+		<div class="table">
+			<table>
+				<thead>
+					@RenderTableHeading(true)
+				</thead>
+				<tbody>
 					@foreach (var item in stats)
 					{
 						<tr>
-							<td class="kolo">2011.</td>
-							<td class="name">Proslost</td>
 							<td>
 								@item.MinutesPlayed
 							</td>
@@ -402,8 +218,33 @@
 							<td>@item.Points</td>
 						</tr>
 					}
-					</tbody>
-				</table>
-			</div>
+				</tbody>
+			</table>
 		</div>
+	</div>
+}
+
+@helper RenderTableHeading(bool hideRoundAndRival)
+{
+	<tr>
+		@if (!hideRoundAndRival)
+		{
+			<th class="kolo">@UmbracoDictionary.Shared.Round</th>
+			<th class="name">@UmbracoDictionary.Shared.Rival</th>
+		}
+		<th>@UmbracoDictionary.Stats.Min</th>
+		<th>@UmbracoDictionary.Stats.Eff</th>
+		<th>@UmbracoDictionary.Stats.Fg</th>
+		<th>@UmbracoDictionary.Stats.TwoPts</th>
+		<th>@UmbracoDictionary.Stats.ThreePts</th>
+		<th>@UmbracoDictionary.Stats.Ft</th>
+		<th>@UmbracoDictionary.Stats.Reb</th>
+		<th>@UmbracoDictionary.Stats.Off</th>
+		<th>@UmbracoDictionary.Stats.Def</th>
+		<th>@UmbracoDictionary.Stats.Ast</th>
+		<th>@UmbracoDictionary.Stats.To</th>
+		<th>@UmbracoDictionary.Stats.Stl</th>
+		<th>@UmbracoDictionary.Stats.Blk</th>
+		<th>@UmbracoDictionary.Stats.Pts</th>
+	</tr>
 }

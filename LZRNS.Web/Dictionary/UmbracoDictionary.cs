@@ -8,6 +8,7 @@ namespace LZRNS.Web.Dictionary
 		public static class Shared
 		{
 			public static string Round => umbraco.library.GetDictionaryItem("Shared.Round");
+			public static string Rival => umbraco.library.GetDictionaryItem("Shared.Rival");
 		}
 
 		public static class Stats
@@ -27,7 +28,7 @@ namespace LZRNS.Web.Dictionary
 			public static string Stl => umbraco.library.GetDictionaryItem("Stats.Stl");
 			public static string Blk => umbraco.library.GetDictionaryItem("Stats.Blk");
 			public static string Pts => umbraco.library.GetDictionaryItem("Stats.Pts");
-
+			
 			public static class Filter
 			{
 				public static string Active => umbraco.library.GetDictionaryItem("Stats.Filter.Active");
@@ -58,6 +59,14 @@ namespace LZRNS.Web.Dictionary
 			public static string OffensiveRebounds = umbraco.library.GetDictionaryItem("TopStats.OffensiveRebounds");
 			public static string DefensiveRebounds = umbraco.library.GetDictionaryItem("TopStats.DefensiveRebounds");
 			public static string Turnovers = umbraco.library.GetDictionaryItem("TopStats.Turnovers");
+		}
+
+		public static class Player
+		{
+			public static string CareerHighs => umbraco.library.GetDictionaryItem("Player.CareerHighs");
+			public static string Weight => umbraco.library.GetDictionaryItem("Player.Weight");
+			public static string Height => umbraco.library.GetDictionaryItem("Player.Height");
+			public static string Year => umbraco.library.GetDictionaryItem("Player.Year");
 		}
 
 		public static class Contact
