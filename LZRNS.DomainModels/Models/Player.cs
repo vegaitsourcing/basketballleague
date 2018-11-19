@@ -10,6 +10,8 @@ namespace LZRNS.DomainModel.Models
 {
 	public class Player : AbstractModel
 	{
+		private Team _currentTeam;
+
 		[Required(ErrorMessage = "Ime je obavezno polje.")]
 		[DisplayName("Ime")]
 		public string Name { get; set; }
@@ -49,6 +51,8 @@ namespace LZRNS.DomainModel.Models
 
 		public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 
+		public Team CurrentTeam => _currentTeam ?? (_currentTeam = PlayersPerSeason?.LastOrDefault()?.Team);
+		
 		#region Career high
 
 

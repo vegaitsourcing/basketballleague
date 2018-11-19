@@ -1,440 +1,409 @@
-﻿@inherits UmbracoViewPage<LZRNS.Models.ViewModel.PlayerDetailsViewModel>
-
+﻿@using LZRNS.DomainModels.Models
+@inherits UmbracoViewPage<LZRNS.Models.ViewModel.PlayerDetailsViewModel>
 
 <main class="main" data-template-name="@Page.Name">
-    <div class="banner">
-        <div class="wrap">
-            <div class="banner-title">
-                <h2>Liga za <span>rekreativce</span> Novi Sad</h2>
-            </div>
-        </div>
-    </div>
-    <div class="player-info">
-        <div class="wrap">
-            <div class="row">
-                <div class="col-lg-7">
-                    <div class="main-info">
-                        <div class="picture"></div>
-                        <div class="name-and-team">
-                            <h4 class="name">@Model.CurrentPlayer.GetFullName</h4>
-                            <h4 class="team">Starogradski Goniči</h4>
-                        </div>
-                        <ul class="vitals">
-                            <li>Visina: <span>198cm</span> </li>
-                            <li>Tezina: <span>90kg</span></li>
-                            <li>Godiste: <span>1988.</span></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="career-highs">
-                        <h3>Career highs</h3>
-                        <table>
-                            <tbody>
-                                <tr>
-                                    <td>PTS:</td>
-                                    <td class="amount">34</td>
-                                    <td>vs</td>
-                                    <td class="against">TEAM</td>
-                                    <td class="year">2015/2016</td>
-                                </tr>
-                                <tr>
-                                    <td>REB:</td>
-                                    <td class="amount">34</td>
-                                    <td>vs</td>
-                                    <td class="against">TEAM</td>
-                                    <td class="year">2015/2016</td>
-                                </tr>
-                                <tr>
-                                    <td>AST:</td>
-                                    <td class="amount">34</td>
-                                    <td>vs</td>
-                                    <td class="against">TEAM</td>
-                                    <td class="year">2015/2016</td>
-                                </tr>
-                                <tr>
-                                    <td>STL:</td>
-                                    <td class="amount">34</td>
-                                    <td>vs</td>
-                                    <td class="against">TEAM</td>
-                                    <td class="year">2015/2016</td>
-                                </tr>
-                                <tr>
-                                    <td>BLK:</td>
-                                    <td class="amount">34</td>
-                                    <td>vs</td>
-                                    <td class="against">TEAM</td>
-                                    <td class="year">2015/2016</td>
-                                </tr>
-                                <tr>
-                                    <td>EFF:</td>
-                                    <td class="amount">34</td>
-                                    <td>vs</td>
-                                    <td class="against">TEAM</td>
-                                    <td class="year">2015/2016</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="row js-tabs-container">
-                <div class="stats col-12">
-                    <div class="tabs-container">
-                        <ul class="tabs">
-                            <li class="selected" data-tab="tab1">
-                                <span>2013/14</span>
-                            </li>
-                            <li data-tab="tab2">
-                                <span>2012/13</span>
-                            </li>
-                            <li data-tab="tab3">
-                                <span>2012/11</span>
-                            </li>
-                            <li data-tab="tab4">
-                                <span>2011/10</span>
-                            </li>
-                            <li data-tab="tab5">
-                                <span>2010/09</span>
-                            </li>
-                            <li data-tab="tab6">
-                                <span>2009/</span>
-                            </li>
-                        </ul>
-                        <span class="tab-heading" data-tab="tab1">2013/14</span>
-                        <div class="tab-content tab1">
-                            <div class="table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th class="kolo">KOLO</th>
-                                            <th class="name">PROTIVNIK</th>
-                                            <th>MIN</th>
-                                            <th>EFF</th>
-                                            <th>FG</th>
-                                            <th>2pts</th>
-                                            <th>3pts</th>
-                                            <th>FT</th>
-                                            <th>REB</th>
-                                            <th>off</th>
-                                            <th>def</th>
-                                            <th>AST</th>
-                                            <th>TO</th>
-                                            <th>STL</th>
-                                            <th>BLK</th>
-                                            <th>PTS</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="kolo">2011.</td>
-                                            <td class="name">Proslost</td>
-                                            <td>
-                                                5
-                                            </td>
-                                            <td>5</td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="kolo">2012.</td>
-                                            <td class="name">2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="kolo">2012.</td>
-                                            <td class="name">Proslost</td>
-                                            <td>
-                                                5
-                                            </td>
-                                            <td>5</td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="kolo">2013.</td>
-                                            <td class="name">Proslost</td>
-                                            <td>
-                                                5
-                                            </td>
-                                            <td>5</td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <span class="tab-heading" data-tab="tab2">2012/13</span>
-                        <div class="tab-content tab2">
-                            test
-                        </div>
-                        <span class="tab-heading" data-tab="tab3">2012/11</span>
-                        <div class="tab-content tab3">
-                            test
-                        </div>
-                        <span class="tab-heading" data-tab="tab4">2011/10</span>
-                        <div class="tab-content tab4">
-                            test
-                        </div>
-                        <span class="tab-heading" data-tab="tab5">2010/09</span>
-                        <div class="tab-content tab5">
-                            test
-                        </div>
-                        <span class="tab-heading" data-tab="tab6">2009/</span>
-                        <div class="tab-content tab6">
-                            test
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row js-tabs-container">
-                <div class="stats col-12">
-                    <div class="tabs-container">
-                        <ul class="tabs">
-                            <li class="selected" data-tab="tab7">
-                                <span>Averages</span>
-                            </li>
-                            <li data-tab="tab8">
-                                <span>Totals</span>
-                            </li>
-                            <li data-tab="tab9">
-                                <span>Totals</span>
-                            </li>
-                        </ul>
-                        <span class="tab-heading" data-tab="tab7">Totals</span>
-                        <div class="tab-content tab7">
-                            <div class="table">
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th class="kolo">KOLO</th>
-                                            <th class="name">PROTIVNIK</th>
-                                            <th>MIN</th>
-                                            <th>EFF</th>
-                                            <th>FG</th>
-                                            <th>2pts</th>
-                                            <th>3pts</th>
-                                            <th>FT</th>
-                                            <th>REB</th>
-                                            <th>off</th>
-                                            <th>def</th>
-                                            <th>AST</th>
-                                            <th>TO</th>
-                                            <th>STL</th>
-                                            <th>BLK</th>
-                                            <th>PTS</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="kolo">2011.</td>
-                                            <td class="name">Proslost</td>
-                                            <td>
-                                                5
-                                            </td>
-                                            <td>5</td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="kolo">2012.</td>
-                                            <td class="name">2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="kolo">2012.</td>
-                                            <td class="name">Proslost</td>
-                                            <td>
-                                                5
-                                            </td>
-                                            <td>5</td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="kolo">2013.</td>
-                                            <td class="name">Proslost</td>
-                                            <td>
-                                                5
-                                            </td>
-                                            <td>5</td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>
-                                                <span>0/3</span>
-                                                <span>0</span>
-                                            </td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                            <td>1</td>
-                                            <td>2</td>
-                                            <td>3</td>
-                                            <td>4</td>
-                                            <td>5</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <span class="tab-heading" data-tab="tab8">Averages</span>
-                        <div class="tab-content tab8">
-                            test
-                        </div>
-                        <span class="tab-heading" data-tab="tab8">Per minute</span>
-                        <div class="tab-content tab9">
-                            test
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	@{
+		Html.RenderAction<SharedController>(c => c.Banner(null), Model.Banner);
+	}
+	@if (Model.CurrentPlayer != null)
+	{
+		<div class="player-info">
+			<div class="wrap">
+				<div class="row">
+					<div class="col-lg-7">
+						<div class="main-info">
+							<div class="picture"></div>
+							<div class="name-and-team">
+								<h4 class="name">@Model.CurrentPlayer.GetFullName</h4>
+								@if (Model.CurrentPlayer.CurrentTeam != null)
+								{
+									<h4 class="team">@Model.CurrentPlayer.CurrentTeam.TeamName</h4>
+								}
+							</div>
+							<ul class="vitals">
+								<li>Visina: <span>@(Model.CurrentPlayer.Height)cm</span> </li>
+								<li>Tezina: <span>@(Model.CurrentPlayer.Weight)kg</span></li>
+								<li>Godiste: <span>@(Model.CurrentPlayer.YearOfBirth).</span></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<div class="career-highs">
+							<h3>Career highs</h3>
+							<table>
+								<tbody>
+									@if (Model.CurrentPlayer.CareerHighPts != null)
+									{
+										@RenderCareerHighs("PTS", Model.CurrentPlayer.CareerHighPts, s => s.Pts)
+									}
+									@if (Model.CurrentPlayer.CareerHighReb != null)
+									{
+										@RenderCareerHighs("REB", Model.CurrentPlayer.CareerHighReb, s => s.Reb)
+									}
+									@if (Model.CurrentPlayer.CareerHighAst != null)
+									{
+										@RenderCareerHighs("AST", Model.CurrentPlayer.CareerHighAst, s => s.Ast)
+									}
+									@if (Model.CurrentPlayer.CareerHighStl != null)
+									{
+										@RenderCareerHighs("STL", Model.CurrentPlayer.CareerHighStl, s => s.Stl)
+									}
+									@if (Model.CurrentPlayer.CareerHighBlk != null)
+									{
+										@RenderCareerHighs("BLK", Model.CurrentPlayer.CareerHighBlk, s => s.Blk)
+									}
+									@if (Model.CurrentPlayer.CareerHighEff != null)
+									{
+										@RenderCareerHighs("EFF", Model.CurrentPlayer.CareerHighEff, s => s.Eff)
+									}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row js-tabs-container">
+					<div class="stats col-12">
+						<div class="tabs-container">
+							<ul class="tabs">
+								@foreach (var item in Model.CurrentPlayer.PlayersPerSeason)
+								{
+									var season = item.Team.LeagueSeason;
+									<li @(Model.CurrentPlayer.PlayersPerSeason.IndexOf(item) == 0 ? "class=selected" : string.Empty) data-tab="@season.SeasonId">
+										<span>@season.Season.Name</span>
+									</li>
+								}
+							</ul>
+							@foreach (var item in Model.CurrentPlayer.PlayersPerSeason)
+							{
+								var season = item.Team.LeagueSeason;
+								<span class="tab-heading" data-tab="@season.Id">@season.FullName</span>
+								<div class="tab-content @season.Id">
+									<div class="table">
+										<table>
+											<thead>
+												<tr>
+													<th class="kolo">KOLO</th>
+													<th class="name">PROTIVNIK</th>
+													<th>MIN</th>
+													<th>EFF</th>
+													<th>FG</th>
+													<th>2pts</th>
+													<th>3pts</th>
+													<th>FT</th>
+													<th>REB</th>
+													<th>off</th>
+													<th>def</th>
+													<th>AST</th>
+													<th>TO</th>
+													<th>STL</th>
+													<th>BLK</th>
+													<th>PTS</th>
+												</tr>
+											</thead>
+											<tbody>
+												@foreach (var stat in item.Player.Stats.OrderBy(s => s.Game.Round.Id))
+												{
+													var team = stat.Game.TeamAId == stat.Player.CurrentTeam.Id ? stat.Game.TeamB : stat.Game.TeamA;
+													<tr>
+														<td class="kolo">@stat.Game.Round.RoundName</td>
+														<td class="name">@team.TeamName</td>
+														<td>
+															@stat.MinutesPlayed
+														</td>
+														<td>@stat.Eff</td>
+														<td>
+															<span>@stat.FgM/@stat.FgA</span>
+															<span>@(stat.FgPerc)%</span>
+														</td>
+														<td>
+															<span>@stat.TwoPtMade/@stat.TwoPtA</span>
+															<span>@(stat.TwoPtPerc)%</span>
+														</td>
+														<td>
+															<span>@stat.ThreePtMade/@stat.ThreePtA</span>
+															<span>@(stat.ThreePtPerc)%</span>
+														</td>
+														<td>
+															<span>@stat.FtMade/@stat.FtA</span>
+															<span>@(stat.FtPerc)%</span>
+														</td>
+														<td>@stat.Reb</td>
+														<td>@stat.OReb</td>
+														<td>@stat.DReb</td>
+														<td>@stat.Ast</td>
+														<td>@stat.To</td>
+														<td>@stat.Stl</td>
+														<td>@stat.Blk</td>
+														<td>@stat.Pts</td>
+													</tr>
+												}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							}
+						</div>
+					</div>
+				</div>
+				<div class="row js-tabs-container">
+					<div class="stats col-12">
+						<div class="tabs-container">
+							<ul class="tabs">
+								@RenderStatsTab("Averages", "tab7", true, Model.AverageStats)
+								@RenderStatsTab("Totals", "tab8", true, Model.TotalStats)
+								@RenderStatsTab("Per minute", "tab9", true, Model.PerMinuteStats)
+							</ul>
+							<span class="tab-heading" data-tab="tab7">Totals</span>
+							<div class="tab-content tab7">
+								<div class="table">
+									<table>
+										<thead>
+											<tr>
+												<th class="kolo">KOLO</th>
+												<th class="name">PROTIVNIK</th>
+												<th>MIN</th>
+												<th>EFF</th>
+												<th>FG</th>
+												<th>2pts</th>
+												<th>3pts</th>
+												<th>FT</th>
+												<th>REB</th>
+												<th>off</th>
+												<th>def</th>
+												<th>AST</th>
+												<th>TO</th>
+												<th>STL</th>
+												<th>BLK</th>
+												<th>PTS</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td class="kolo">2011.</td>
+												<td class="name">Proslost</td>
+												<td>
+													5
+												</td>
+												<td>5</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+											</tr>
+											<tr>
+												<td class="kolo">2012.</td>
+												<td class="name">2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td>5</td>
+											</tr>
+											<tr>
+												<td class="kolo">2012.</td>
+												<td class="name">Proslost</td>
+												<td>
+													5
+												</td>
+												<td>5</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+											</tr>
+											<tr>
+												<td class="kolo">2013.</td>
+												<td class="name">Proslost</td>
+												<td>
+													5
+												</td>
+												<td>5</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>
+													<span>0/3</span>
+													<span>0</span>
+												</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+												<td>1</td>
+												<td>2</td>
+												<td>3</td>
+												<td>4</td>
+												<td>5</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<span class="tab-heading" data-tab="tab8">Averages</span>
+							<div class="tab-content tab8">
+								test
+							</div>
+							<span class="tab-heading" data-tab="tab8">Per minute</span>
+							<div class="tab-content tab9">
+								test
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
 </main>
+
+@helper RenderCareerHighs(string category, Stats stats, Func<Stats, int> valueCriteriea)
+	{
+		var playerTeam = Model.CurrentPlayer.CurrentTeam;
+		if (playerTeam == null)
+		{
+			return;
+		}
+		var team = stats.Game.TeamAId == playerTeam.Id ? stats.Game.TeamB : stats.Game.TeamA;
+		<tr>
+			<td>@category:</td>
+			<td class="amount">@valueCriteriea.Invoke(stats)</td>
+			<td>vs</td>
+			<td class="against">@team.TeamName</td>
+			<td class="year">@stats.Game.Season.Name</td>
+		</tr>
+}
+
+@helper RenderStatsTab(string tabName, string tabKey, bool isSelected, IReadOnlyList<PlayerStats> stats)
+	{
+		if (stats == null || !stats.Any())
+		{
+			return;
+		}
+		<li @(isSelected ? "class=selected" : string.Empty) data-tab="@tabKey">
+			<span>@tabName</span>
+		</li>
+}
+
+@helper RenderStatsTable(string tableName, string tableKey, IReadOnlyList<PlayerStats> stats)
+	{
+	if (stats == null || !stats.Any())
+	{
+		return;
+	}
+		<span class="tab-heading" data-tab="@tableKey">@tableName</span>
+		<div class="tab-content @tableKey">
+			<div class="table">
+				<table>
+					<thead>
+						<tr>
+							<th class="kolo">KOLO</th>
+							<th class="name">PROTIVNIK</th>
+							<th>MIN</th>
+							<th>EFF</th>
+							<th>FG</th>
+							<th>2pts</th>
+							<th>3pts</th>
+							<th>FT</th>
+							<th>REB</th>
+							<th>off</th>
+							<th>def</th>
+							<th>AST</th>
+							<th>TO</th>
+							<th>STL</th>
+							<th>BLK</th>
+							<th>PTS</th>
+						</tr>
+					</thead>
+					<tbody>
+					@foreach (var item in stats)
+					{
+						<tr>
+							<td class="kolo">2011.</td>
+							<td class="name">Proslost</td>
+							<td>
+								@item.MinutesPlayed
+							</td>
+							<td>@item.Efficiency</td>
+							<td>
+								@item.FieldGoals
+							</td>
+							<td>
+								@item.TwoPoints
+							</td>
+							<td>
+								@item.ThreePoints
+							</td>
+							<td>
+								@item.FreeThrows
+							</td>
+							<td>@item.Rebounds</td>
+							<td>@item.OffensiveRebounds</td>
+							<td>@item.DefensiveRebounds</td>
+							<td>@item.Assists</td>
+							<td>@item.To</td>
+							<td>@item.Steals</td>
+							<td>@item.Blocks</td>
+							<td>@item.Points</td>
+						</tr>
+					}
+					</tbody>
+				</table>
+			</div>
+		</div>
+}
