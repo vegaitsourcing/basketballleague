@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using LZRNS.DomainModel.Context;
 using LZRNS.DomainModels.Models;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace LZRNS.DomainModels.Repository.Implementations
 {
@@ -43,5 +45,10 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
 			return team;
 		}
+
+        public IEnumerable<Team> GetTeamsByLeagueSeasonId(Guid leagueSeasonId)
+        {
+            return GetAll().Where(t => t.LeagueSeasonId == leagueSeasonId);
+        }
 	}
 }

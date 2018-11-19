@@ -4,12 +4,10 @@ using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using System;
 using System.Data.Entity;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace LZRNS.DomainModels.Repository.Implementations
 {
-	public class GameRepository : RepositoryBase<Game>, IGameRepository
+    public class GameRepository : RepositoryBase<Game>, IGameRepository
 	{
 		public GameRepository(BasketballDbContext context) : base(context)
 		{
@@ -25,7 +23,6 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
 			return entity;
 		}
-
 
 		public void UpdateStatsForPlayerInGame(Stats stats)
 		{

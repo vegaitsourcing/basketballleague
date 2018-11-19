@@ -10,8 +10,6 @@ namespace LZRNS.DomainModels.Models
 {
 	public class Round : AbstractModel
 	{
-		[Required(ErrorMessage = "Naziv runde je obavezno polje.")]
-		[DisplayName("Naziv runde")]
 		public string RoundName { get; set; }
 
 		public virtual ICollection<Game> Games { get; set; }

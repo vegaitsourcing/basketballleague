@@ -8,6 +8,7 @@ namespace LZRNS.DomainModels.Repository.Interfaces
         IEnumerable<T> GetAll();
         T GetById(Guid id);
         T Add(T item);
+        IEnumerable<T> AddRange(IEnumerable<T> items);
         bool Update(T item);
         void Delete(T id);
     }
