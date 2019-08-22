@@ -6,14 +6,15 @@
     padding: 150px 0 70px;
 
     .wrap {
-        position: relative;
+				position: relative;
+				z-index: 1;
     }
 
     .title {
         position: absolute;
         right: -20px;
         top: -120px;
-
+				z-index: -1;
         h2 {
             font-size: 178px;
             text-transform: uppercase;
@@ -38,7 +39,7 @@
             right: 3%;
             h2 {
                 font-size: 100px;
-            }
+						}
         }
 
         @include media-breakpoint-down(sm) {

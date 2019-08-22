@@ -7,9 +7,15 @@
 	right: 0;
 	bottom: 0;
 	background-color: rgba($black, 0.8);
-	display: none;
+	opacity: 0;
+	z-index: -2;
+}
+
+.popup-overlay--active {
+	opacity: 1;
 	z-index: 40;
 }
+
 .popup {
 	background-color: $grey-light;
 	padding: 63px 59px;
@@ -33,7 +39,7 @@
 			display: block;
 			color: $white;
 			transform: rotate(-45deg);
-			line-height: 1.5;
+			line-height: 1;
 		}
 	}
 	@include media-breakpoint-down(sm) {
@@ -48,6 +54,61 @@
 			height: 30px;
 			right: 0;
 			top: -43px;
+		}
+	}
+}
+
+.popup-slider {
+	background-color: $black;
+	padding: 40px 15px;
+	max-height: calc(100vh - 200px);
+	@include media-breakpoint-down(md) {
+		.popup-placeholder {
+			overflow-y: scroll;
+			max-height: calc(100vh - 260px);
+			height: 100%;
+		}
+	}
+	@include media-breakpoint-up(md) {
+		width: calc(100% - 160px);
+	}
+	@include media-breakpoint-down(sm) {
+		width: calc(100% - 60px);
+		.popup-placeholder {
+			max-height: calc(100vh - 260px);
+			height: 100%;
+		}
+	}
+	@media only screen and (min-width: 480px) and (max-width: 991px) and (orientation: landscape) {
+		max-height: 100vh;
+    height: 100%;
+    max-width: 100vw;
+    width: 100%;
+		.popup-placeholder {
+			max-height: initial;
+		}
+		.close-btn {
+			position: absolute;
+			right: 35px;
+			top: 35px;
+			width: 32px;
+			height: 32px;
+			opacity: 0.6;
+			z-index: 5;
+		}
+		.close-btn::before, .close-btn::after {
+			position: absolute;
+			left: 15px;
+			content: ' ';
+			height: 28px;
+			width: 2px;
+			background-color: $white;
+		}
+		.close-btn::before {
+			transform: rotate(45deg);
+		}
+		.close-btn::after {
+			transform: rotate(-45deg);
 		}
 	}
 }

@@ -24,6 +24,7 @@
 	a {
 		color: $grey-light;
 		text-transform: uppercase;
+		transition: color .4s ease-in-out;
 		&.active {
 			color: $white;
 		}
@@ -52,6 +53,7 @@
 	span {
 		color: $grey-light;
 		font-size: 26px;
+		transition: color .4s ease-in-out;
 		@include hover {
 			color: $white;
 		}

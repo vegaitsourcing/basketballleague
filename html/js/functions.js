@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = {	
+module.exports = {
 	initSlider: function() {
 		let $slider = $('.slider');
 		if ($slider !== undefined && $slider.length) {
@@ -17,9 +17,12 @@ module.exports = {
 	},
 
 	mobileNav: function() {
+		var $body = $('body');
+
 		$('.header .open-menu').on('click', function() {
 			var $this = $(this);
 			$this.toggleClass('active');
+			$body.toggleClass('no-scroll');
 			$('.header .main-nav').slideToggle('normal', function () {
 			});
 		});
@@ -35,9 +38,16 @@ module.exports = {
 		$('.js-open-popup').on('click', function() {
 			var $popupName = $(this).data('popup-link');
 			var $popup = $('.popup-overlay[data-popup-window="' + $popupName + '"]').addClass('popup-overlay--active');
+
 			if($popupName == 'result-popup') {
 				var personDetails = $(this).find('.result-details').html();
 				$popup.find('.popup-placeholder').html(personDetails);
+			} else if($popupName == 'gallery-popup') {
+				var $content = $(this).parents('.gallery-wrap').find('.gallery-content').html();
+				var dataId = $(this).find('img').data('slide');
+
+				$popup.find('.image-content').html($content);
+				$('.image-slider').slick('slickGoTo', dataId);
 			}
 			$popup.fadeIn(400);
 			disableScroll();
@@ -60,6 +70,13 @@ module.exports = {
 					enableScroll();
 				});
 			}
+		});
+
+		// close popup on "x" btn
+		$('.close-btn').on('click', function() {
+			$('.popup-overlay').removeClass('popup-overlay--active').fadeOut(300, function() {
+				enableScroll();
+			});
 		});
 		// escape key close popup
 		$(document).on('keyup', function(e) {
@@ -119,6 +136,22 @@ module.exports = {
 					settings: {
 						slidesToShow: 1,
 						slidesToScroll: 1
+					}
+				}
+			]
+		});
+	},
+
+	imageSlider: function() {
+		$('.image-slider').slick({
+			infinite: true,
+			prevArrow: '<button class="slick-prev" aria-label="Previous" type="button"><span class="dot-left"></span></button>',
+			nextArrow: '<button class="slick-next" aria-label="Next" type="button"><span class="dot-right"></span></button>',
+			responsive: [
+				{
+					breakpoint: 992,
+					settings: {
+						arrows: false
 					}
 				}
 			]
@@ -279,7 +312,7 @@ module.exports = {
 			}
 		}
 	},
-	
+
 	//show season content
 	showSeasonContent: function() {
 		var activeSeason = $('.years li.active')[0].dataset.season;
@@ -288,7 +321,7 @@ module.exports = {
 			return $('.years-container')[i].dataset.season === activeSeason;
 		}).show();
 	},
-	
+
 	//event for click on history season
 	initOnClickSeason: function(){
 		var self = this;
@@ -303,7 +336,7 @@ module.exports = {
 			self.showSeasonContent();
 		});
 	},
-	
+
 	//init first element as active on history pageX
 	initHistorySeason: function(){
 		$('.years li').first().addClass('active');

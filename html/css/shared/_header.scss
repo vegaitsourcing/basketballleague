@@ -21,6 +21,7 @@
 		line-height: 60px;
 		padding: 21px 15px;
 		font-weight: 700;
+		transition: .2s ease-in-out;
 		&.active {
 			background-color: $orange;
 		}
@@ -58,18 +59,21 @@
 	z-index: 25;
 	img {
 		width: 100px;
+		height: 137px;
 	}
 	@include media-breakpoint-down(md) {
 		left: 20px;
 		top: 20px;
 		img {
 			width: 60px;
+			height: 82px;
 		}
 	}
 
 	@include media-breakpoint-down(sm) {
 		img {
 			width: 42px;
+			height: 57px;
 		}
 	}
 }
