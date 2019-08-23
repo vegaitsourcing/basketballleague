@@ -43,7 +43,7 @@ namespace LZRNS.Web.Controllers.Surface
 			{
 				var colonisContactUs = Umbraco.TypedContentAtXPath("//AboutUs");
 				var toAddress = colonisContactUs.First().GetPropertyValue("emailAddress");
-
+                /*smtp exception thrown*/
 				MailMessage message = new MailMessage();
 				SmtpClient client = new SmtpClient();
 
