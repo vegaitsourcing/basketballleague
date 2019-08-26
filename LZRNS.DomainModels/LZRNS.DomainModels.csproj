@@ -95,6 +95,10 @@
     <Compile Include="Migrations\201811151452091_Round.Designer.cs">
       <DependentUpon>201811151452091_Round.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908230949329__dummy-migration.cs" />
+    <Compile Include="Migrations\201908230949329__dummy-migration.Designer.cs">
+      <DependentUpon>201908230949329__dummy-migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
@@ -154,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811151452091_Round.resx">
       <DependentUpon>201811151452091_Round.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908230949329__dummy-migration.resx">
+      <DependentUpon>201908230949329__dummy-migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

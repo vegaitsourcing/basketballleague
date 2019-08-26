@@ -1,21 +1,64 @@
 .team-info {
-    background-color: #231f20;
-    padding-top: 200px;
-    padding-bottom: 200px;
-
+    background-color: $grey;
+	padding: 150px 0 70px;
+	.wrap {
+		position: relative;
+	}
     .row {
-
         &:first-child {
             @include media-breakpoint-down(sm) {
                 width: 80%;
                 margin: 0 auto;
             }
-
             @include media-breakpoint-down(xs) {
                 width: 100%;
             }
         }
+	}
+	.title {
+        position: absolute;
+        left: -60px;
+        top: -120px;
+        h2 {
+            font-size: 158px;
+            text-transform: uppercase;
+            color: rgba(188, 190, 192, 0.4);
+            line-height: 1;
+			font-weight: 800;
+			user-select: none;
+        }
 
+        @media only screen and (max-width: 1200px) {
+			left: 0px;
+			h2 {
+				font-size: 143px;
+			}
+        }
+
+        @media only screen and (min-width: 992px) and (max-width: 1080px) {
+            left: 20px;
+            h2 {
+                font-size: 130px;
+            }
+
+        }
+
+        @include media-breakpoint-down(md) {
+            left: 40px;
+            h2 {
+                font-size: 80px;
+						}
+        }
+
+        @include media-breakpoint-down(sm) {
+            h2 {
+                font-size: 46px;
+            }
+        }
+
+        @media only screen and (max-width: 576px) {
+            right: 15px;
+        }
     }
 
     .main-info {
@@ -82,7 +125,7 @@
             thead {
                 th {
                     text-transform: uppercase;
-
+					line-height: 1.5;
                     &:nth-child(2) {
                         text-align: left;
                         padding-left: 5px;
@@ -207,7 +250,7 @@
                     text-align: center;
                     font-weight: 600;
                     min-width: 40px;
-
+					line-height: 1.5;
                     &.kolo {
                         font-weight: 500;
                         opacity: 0.5;

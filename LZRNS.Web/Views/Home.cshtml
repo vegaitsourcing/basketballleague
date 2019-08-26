@@ -13,13 +13,15 @@
 				}
 				</div>
 			}
-			@if (Model.Leagues.HasValue())
-			{
-				foreach (var league in Model.Leagues)
+			<div class="league-links">
+				@if (Model.Leagues.HasValue())
 				{
-					<a class="something-to-implement" href="@(Model.Url + $"?ln={league}")">@league</a>
+					foreach (var league in Model.Leagues)
+					{
+						<a class="league-link" href="@(Model.Url + $"?ln={league}")">@league</a>
+					}
 				}
-			}
+			</div>
 		</div>
 	</div>
 	@if (Model.Sections.HasValue())

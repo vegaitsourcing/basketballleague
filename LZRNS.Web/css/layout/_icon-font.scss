@@ -36,29 +36,32 @@
 	@if $filename == ico-chevron-down {
 		$char: '\E004';
 	}
-	@if $filename == ico-download {
+	@if $filename == ico-dot {
 		$char: '\E005';
 	}
-	@if $filename == ico-fb {
+	@if $filename == ico-download {
 		$char: '\E006';
 	}
-	@if $filename == ico-hamburger {
+	@if $filename == ico-fb {
 		$char: '\E007';
 	}
-	@if $filename == ico-in {
+	@if $filename == ico-hamburger {
 		$char: '\E008';
 	}
-	@if $filename == ico-search {
+	@if $filename == ico-in {
 		$char: '\E009';
 	}
-	@if $filename == ico-share {
+	@if $filename == ico-search {
 		$char: '\E00A';
 	}
-	@if $filename == ico-tw {
+	@if $filename == ico-share {
 		$char: '\E00B';
 	}
-	@if $filename == ico-x {
+	@if $filename == ico-tw {
 		$char: '\E00C';
+	}
+	@if $filename == ico-x {
+		$char: '\E00D';
 	}
 
 	@return $char;
@@ -86,6 +89,9 @@
 }
 .font-ico-chevron-down {
 	@include font(ico-chevron-down);
+}
+.font-ico-dot {
+	@include font(ico-dot);
 }
 .font-ico-download {
 	@include font(ico-download);

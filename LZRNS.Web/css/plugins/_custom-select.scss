@@ -16,15 +16,21 @@
 		color: $white;
 		font-size: 18px;
 		position: relative;
-		&::after {
-			content: font-char(ico-arrow-down);
-			position: absolute;
-			right: 10px;
-			font-size: 40px;
-			color: $white;
-			display: inline-block;
+		transition: opacity .2s ease-in-out;
+		@include hover {
+			opacity: .8;
 		}
-
+		&::before {
+			content: '';
+			position: absolute;
+			right: 15px;
+			top: 10px;
+			border: solid $white;
+			border-width: 0 3px 3px 0;
+			display: inline-block;
+			padding: 5px;
+			transform: rotate(45deg);
+		}
 	}
 	.newList {
 		width: 100%;

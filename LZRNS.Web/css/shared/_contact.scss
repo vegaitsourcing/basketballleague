@@ -18,13 +18,13 @@
         position: absolute;
         left: 20px;
         top: -120px;
-
         h1 {
             font-size: 178px;
             text-transform: uppercase;
             color: #fcd79f;
             line-height: 1;
-            font-weight: 800;
+			font-weight: 800;
+			user-select: none;
         }
     }
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
