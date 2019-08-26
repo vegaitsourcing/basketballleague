@@ -5,9 +5,9 @@
 {
 	@Html.ValidationSummary(true)
 	@Html.AntiForgeryToken()
-	@Html.LabelFor(m => m.Username, "Korisnicko Ime")
+	@Html.LabelFor(m => m.Username, "Korisničko ime ")
 	@Html.TextBoxFor(m => m.Username)
-	@Html.LabelFor(m => m.Password, "Lozinka")
+	@Html.LabelFor(m => m.Password, "Lozinka ")
 	@Html.PasswordFor(m => m.Password)
 
 	<button>Prijavi se</button>

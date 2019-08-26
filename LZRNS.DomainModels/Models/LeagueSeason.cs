@@ -1,6 +1,7 @@
 ﻿using LZRNS.DomainModel.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 using System.Web.Mvc;
@@ -17,7 +18,8 @@ namespace LZRNS.DomainModels.Models
 		public virtual League League { get; set; }
 		[DataType(DataType.MultilineText)]
 		[AllowHtml]
-		public string Summary { get; set; }
+        [DisplayName("Rezime")]
+        public string Summary { get; set; }
 
 		public virtual ICollection<Team> Teams { get; set; }
 

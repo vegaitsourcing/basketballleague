@@ -27,13 +27,15 @@ namespace LZRNS.Web.Controllers.Surface
 				string.IsNullOrWhiteSpace(roundName) ||
 				!gamesDate.HasValue) return new EmptyResult();
 
-			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
+            //debug
+           
+            var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 					.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))?
 					.Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
 					.SelectMany(y => y.Games)
 					.Where(x => x.DateTime.Date == gamesDate.Value.Date);
-
-			return PartialView(model);
+            
+            return PartialView(model);
 		}
 
 		public ActionResult GameResults(int seasonStartYear, string roundName, string leagueName)

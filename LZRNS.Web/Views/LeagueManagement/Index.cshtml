@@ -13,25 +13,25 @@
 	</div>
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-				<thead>
-					<tr>
-						<th>
-							Naziv lige
-						</th>
-					</tr>
-				</thead>
-				<tbody>
-					@foreach (var item in Model.Leagues)
-					{
-						<tr class="open-edit-modal" data-leagueId="@item.Id">
-							<td>
-								@Html.DisplayFor(modelItem => item.Name)
-							</td>
-						</tr>
-					}
-				</tbody>
-			</table>
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>
+                            Naziv lige
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Leagues)
+                    {
+                        <tr class="open-edit-modal" data-leagueId="@item.Id">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 		</div>
 	</div>
 	<div class="card-footer small text-muted">LZRNS - @Model.PageTitle</div>

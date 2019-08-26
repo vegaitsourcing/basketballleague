@@ -25,7 +25,7 @@ namespace LZRNS.DomainModel.Models
 
 		//[Required] when we are importing data from history (round statistic, we do not have this information)
 		[Required(ErrorMessage = "Visina je obavezno polje.")]
-		[Range(0, 250, ErrorMessage = "Vrednost mora biti izmeđi 0 i 250")]
+		[Range(0, 250, ErrorMessage = "Vrednost mora biti između 0 i 250")]
 		[DisplayName("Visina")]
 		public int Height { get; set; }
 
