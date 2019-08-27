@@ -195,7 +195,6 @@ $(document).ready(function () {
 	$(document).on('click', '.league-item', function (e) {
 		e.preventDefault();
 		$hrefElement = $(this);
-
 		if ($hrefElement.hasClass("active")) {
 			$.get(controller.editLeagueSeasonAction, this.dataset, function (data, status) {
 				if (status === "success") {
@@ -207,7 +206,8 @@ $(document).ready(function () {
 		}
 		else {
 			$.get(controller.addLeagueSeasonAction, this.dataset, function (data, status) {
-				if (status === "success") {
+                if (status === "success") {
+                    console.log("Debug: " + data);
 					$('#modal').html(data);
 					$('#modal').modal();
 					$.validator.unobtrusive.parse($("#modal"));

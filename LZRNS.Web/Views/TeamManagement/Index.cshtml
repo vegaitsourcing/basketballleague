@@ -27,7 +27,7 @@
 					{
 						<tr class="open-edit-modal" data-teamId="@item.Id">
 							<td class="text-center">
-								<img class="img-responsive" src="@item.Image" width="50" height="50" style="border-radius:50%;background-color:#dee2e6;" />
+								<img class="img-responsive" src="@Url.Content(@item.Image)" width="50" height="50" style="border-radius:50%;background-color:#dee2e6;" />
 							</td>
 							<td>
 								@Html.DisplayFor(modelItem => item.TeamName)

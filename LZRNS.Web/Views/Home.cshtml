@@ -1,18 +1,18 @@
 ﻿@inherits UmbracoViewPage<HomeModel>
 
 <main class="main" data-template-name="">
-	<div class="banner-home" role="banner">
-		<div class="wrap">
+    <div class="banner-home" role="banner">
+        <div class="wrap">
 
-			@if (Model.Banner.HasValue())
-			{
-				<div class="banner-title">
-					@if (Model.Banner.BannerTitleExists)
-				{
-						<h1>@Model.Banner.PreBannerTitle <span class="orange">@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h1>
-				}
-				</div>
-			}
+            @if (Model.Banner.HasValue())
+            {
+                <div class="banner-title">
+                    @if (Model.Banner.BannerTitleExists)
+                    {
+                        <h1>@Model.Banner.PreBannerTitle <span class="orange">@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h1>
+                    }
+                </div>
+            }
 			<div class="league-links">
 				@if (Model.Leagues.HasValue())
 				{
@@ -20,16 +20,16 @@
 					{
 						<a class="league-link" href="@(Model.Url + $"?ln={league}")">@league</a>
 					}
-				}
+        		}
 			</div>
-		</div>
-	</div>
-	@if (Model.Sections.HasValue())
-	{
-		foreach (var section in Model.Sections)
-		{
-			Html.RenderAction<NestedContentController>(c => c.RenderSection(null, null), section, Model.CurrentShownLeague);
-		}
-	}
+        </div>
+    </div>
+    @if (Model.Sections.HasValue())
+    {
+        foreach (var section in Model.Sections)
+        {
+            Html.RenderAction<NestedContentController>(c => c.RenderSection(null, null), section, Model.CurrentShownLeague);
+        }
+    }
 
 </main>

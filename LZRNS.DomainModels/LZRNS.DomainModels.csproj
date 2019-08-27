@@ -95,9 +95,13 @@
     <Compile Include="Migrations\201811151452091_Round.Designer.cs">
       <DependentUpon>201811151452091_Round.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201908230949329__dummy-migration.cs" />
-    <Compile Include="Migrations\201908230949329__dummy-migration.Designer.cs">
-      <DependentUpon>201908230949329__dummy-migration.cs</DependentUpon>
+    <Compile Include="Migrations\201908221257143__update-league-season.cs" />
+    <Compile Include="Migrations\201908221257143__update-league-season.Designer.cs">
+      <DependentUpon>201908221257143__update-league-season.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908230959030__update.cs" />
+    <Compile Include="Migrations\201908230959030__update.Designer.cs">
+      <DependentUpon>201908230959030__update.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
@@ -127,6 +131,7 @@
     <Compile Include="Repository\Implementations\RepositoryBase.cs" />
     <Compile Include="Repository\Implementations\SeasonRepository.cs" />
     <Compile Include="Repository\Implementations\TeamRepository.cs" />
+    <Compile Include="Repository\Interfaces\Exceptions\DalException.cs" />
     <Compile Include="Repository\Interfaces\IGameRepository.cs" />
     <Compile Include="Repository\Interfaces\ILeagueRepository.cs" />
     <Compile Include="Repository\Interfaces\IPlayerRepository.cs" />
@@ -159,8 +164,11 @@
     <EmbeddedResource Include="Migrations\201811151452091_Round.resx">
       <DependentUpon>201811151452091_Round.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908230949329__dummy-migration.resx">
-      <DependentUpon>201908230949329__dummy-migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201908221257143__update-league-season.resx">
+      <DependentUpon>201908221257143__update-league-season.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908230959030__update.resx">
+      <DependentUpon>201908230959030__update.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

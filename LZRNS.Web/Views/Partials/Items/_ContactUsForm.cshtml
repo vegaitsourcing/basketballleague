@@ -17,14 +17,14 @@
                         @*<input type="text" class="form-control" id="form_name" name="name" placeholder="Ime">*@
 
                         @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @id= "form_name", placeholder = "Ime" })
-                        @Html.ValidationMessageFor(m => m.Name)
+                        @Html.ValidationMessageFor(m => m.Name, null, new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         @*<input type="email" class="form-control" id="form_email" name="email" placeholder="E-mail">*@
                         @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @id = "form_email", placeholder = "E-mail" })
-                        @Html.ValidationMessageFor(m => m.Email)
+                        @Html.ValidationMessageFor(m => m.Email, null, new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                     <div class="form-group">
                         @*<textarea id="form_message" class="form-control" name="message" placeholder="Poruka" rows="6"></textarea>*@
                         @Html.TextAreaFor(m => m.Message, new { placeholder = "Poruka", rows = "6", @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Message)
+                        @Html.ValidationMessageFor(m => m.Message, null, new { @class = "text-danger" })
                     </div>
                 </div>
             </div>

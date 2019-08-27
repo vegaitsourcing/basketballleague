@@ -686,6 +686,7 @@
     <Content Include="Views\Partials\ManagementHtml\_TopStatsLeagues.cshtml" />
     <Content Include="Views\TeamDetails.cshtml" />
     <Content Include="Views\Partials\Shared\_Banner.cshtml" />
+    <Content Include="Views\Partials\LeagueManagementSurface\_ErrorForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -741,6 +742,7 @@
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\UmbracoContextExtensions.cs" />
+    <Compile Include="Helpers\ImageHandler.cs" />
     <Compile Include="Helpers\RenderHelper.cs" />
     <Compile Include="HttpHandlers\RobotsHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

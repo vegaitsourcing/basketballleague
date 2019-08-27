@@ -76,3 +76,6 @@ dist
 #html
 html/*.html
 # /LZRNS.Web/Web.config
+
+#Uploaded images
+/LZRNS.Web/uploads/
