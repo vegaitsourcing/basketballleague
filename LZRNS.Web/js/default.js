@@ -29,6 +29,7 @@ let app = {
 		functions.selectDropdown();
 		functions.customSelect();
 		functions.initOnClickSeason();
+		functions.imageSlider();
 		// functions.objectFit();
 		if(('ontouchstart' in window || navigator.msMaxTouchPoints > 0) && window.matchMedia('screen and (max-width: 1024px)').matches) {
 			$('html').addClass('touch');
@@ -45,7 +46,7 @@ let app = {
 	docReady: function(){
 		if($('.history-page').length > 0){
 			functions.initHistorySeason();
-		}		
+		}
 	}
 };
 

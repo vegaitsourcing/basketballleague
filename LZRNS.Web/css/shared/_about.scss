@@ -6,20 +6,22 @@
     padding: 150px 0 70px;
 
     .wrap {
-        position: relative;
+		position: relative;
+		z-index: 1;
     }
 
     .title {
         position: absolute;
         right: -20px;
         top: -120px;
-
+		z-index: -1;
         h2 {
             font-size: 178px;
             text-transform: uppercase;
             color: rgba(188, 190, 192, 0.4);
             line-height: 1;
-            font-weight: 800;
+			font-weight: 800;
+			user-select: none;
         }
 
         @media only screen and (max-width: 1200px) {
@@ -35,10 +37,10 @@
         }
 
         @include media-breakpoint-down(md) {
+            right: 3%;
             h2 {
                 font-size: 100px;
-            }
-            right: 3%;
+						}
         }
 
         @include media-breakpoint-down(sm) {
@@ -82,9 +84,23 @@
             text-transform: uppercase;
             color: #fcd79f;
             line-height: 1;
-            font-weight: 800;
+			font-weight: 800;
+			user-select: none;
         }
+	}
+    .form-group {
+        margin-bottom: 1.5rem;
     }
+	.form-success {
+		p {
+			margin-top: 100px;
+			border: 1px solid #231f20;
+			border-radius: 5px;
+			padding: 10px;
+			display: inline-block;
+			font-weight: 700;
+		}
+	}
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.contact-title {
             h2 {
@@ -101,6 +117,11 @@
                 left: 3%;
             }
 		}
+		.form-success {
+			p {
+				margin-top: 25px;
+			}
+		}
     }
 
     @include media-breakpoint-down(sm) {
@@ -109,7 +130,12 @@
                 font-size: 46px;
                 left: 12%;
             }
-        }
+		}
+		.form-success {
+			p {
+				margin-top: 0;
+			}
+		}
     }
 
     @media only screen and (max-width: 576px) {
@@ -119,9 +145,4 @@
             }
         }
     }
-
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
 }

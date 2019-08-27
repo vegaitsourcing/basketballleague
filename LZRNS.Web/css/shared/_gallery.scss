@@ -1,0 +1,156 @@
+//----------- gallery
+//----------------------------------------------------------------------------------------
+.gallery {
+	padding: 180px 0 70px;
+	background-color: #d5d5d5;
+	.wrap {
+			position: relative;
+	}
+	.title {
+		position: absolute;
+		left: -80px;
+		top: -142px;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: #e3e3e3;
+			margin-bottom: 0;
+			line-height: 1;
+			font-weight: 800;
+			user-select: none;
+		}
+	}
+	.image-holder {
+		display: flex;
+    flex-direction: column;
+		align-items: center;
+		margin-bottom: 15px;
+		transition: opacity .2s ease-in-out;
+		img {
+			max-width: 100%;
+		}
+		p {
+			background-color: $black;
+			color: $white;
+			padding: 15px;
+			margin-bottom: 0;
+			min-height: 70px;
+			text-align: left;
+			text-transform: uppercase;
+			font-weight: 700;
+			font-size: 16px;
+			width: 100%;
+		}
+		@include hover {
+			opacity: .8;
+		}
+	}
+	@media only screen and (min-width: 1141px) and (max-width: 1240px) {
+		.title {
+			left: -40px;
+		}
+	}
+	@media only screen and (max-width: 1140px) {
+		.title {
+			left: 20px;
+		}
+	}
+	@media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.title {
+			h2 {
+				font-size: 150px;
+			}
+		}
+	}
+	@include media-breakpoint-down(md) {
+		padding-top: 120px;
+		.title {
+			top: -120px;
+			h2 {
+				font-size: 100px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		padding-top: 80px;
+		.title {
+			top: -60px;
+			h2 {
+				font-size: 42px;
+			}
+		}
+	}
+}
+
+.gallery-title {
+	background-color: $black;
+	color: $white;
+	text-transform: uppercase;
+	padding: 5px 25px;
+	margin: 70px 0 20px;
+	@include media-breakpoint-down(md) {
+		font-size: 20px;
+	}
+}
+
+.gallery-text {
+	padding: 0 25px;
+	font-weight: 600;
+	margin-bottom: 50px;
+	@include media-breakpoint-down(md) {
+		font-size: 12px;
+	}
+}
+
+.gallery-img-holder {
+	text-align: center;
+	margin-bottom: 30px;
+	transition: opacity .2s ease-in-out;
+	img {
+		max-width: 100%;
+	}
+	@include hover {
+		opacity: .8;
+		cursor: pointer;
+	}
+}
+
+.popup-slider {
+	img {
+		margin: 0 auto 20px;
+		max-width: 100%;
+	}
+	.gallery-title {
+		color: $white;
+		text-transform: uppercase;
+		padding: 0 30px;
+		font-weight: 600;
+		margin: 0 0 5px;
+		font-size: 24px;
+	}
+	.gallery-text {
+		color: $white;
+		padding: 0 30px;
+		margin: 0;
+		font-weight: 400;
+		font-size: 12px;
+	}
+	.dot-left,
+	.dot-right {
+		background-color: $white;
+		position: absolute;
+		left: -60px;
+		top: 50%;
+		padding: 5px;
+		border-radius: 50%;
+		border: 1px solid $white;
+		opacity: .5;
+	}
+	.dot-right {
+		right: -60px;
+		left: auto;
+	}
+	.slick-slide {
+		margin: 0 5px;
+	}
+}

@@ -2,7 +2,7 @@
 //------------------------------------------------------------------------------
 
 input, textarea {
-	display: block;
+		display: block;
     width: 100%;
     padding: .375rem .75rem;
     font-size: 1rem;
@@ -12,7 +12,7 @@ input, textarea {
     background-image: none;
     background-clip: padding-box;
     border: 2px solid $white;
-	border-radius: .25rem;
+		border-radius: .25rem;
 	&::placeholder {
 		color: #fff;
 	}
@@ -29,6 +29,6 @@ input {
 
 textarea {
 	overflow: auto;
-	resize: vertical;
+	resize: none;
 	height: 150px;
 }

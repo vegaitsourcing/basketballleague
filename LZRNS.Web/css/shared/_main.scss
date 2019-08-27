@@ -89,7 +89,7 @@
         font-weight: 800;
 		font-size: 78px;
 		line-height: 1.2;
-
+		user-select: none;
         max-width: 400px;
 
         @media only screen and (max-width: 768px) {
@@ -105,14 +105,41 @@
     }
     span {
         color: $orange;
-    }
+	}
+	.league-links {
+		position: absolute;
+		bottom: 10px;
+		margin-bottom: 20px;
+	}
+	.league-link {
+		background-color: none;
+		padding: 10px 17px;
+		margin-left: 10px;
+		font-weight: 700;
+		border: 1px solid $orange;
+		border-radius: 5px;
+		color: $orange;
+		transition: opacity .2s ease-in-out;
+		@include hover {
+			opacity: .8;
+		}
+		&.active {
+			background-color: $orange;
+			color: $white;
+			transition:  color .2s ease-in-out;
+			@include hover {
+				opacity: 1;
+				color: #231f20;
+			}
+		}
+	}
 }
 
 .banner {
 	background: url('../../images/content/minibaneri/1920.png') no-repeat center top;
 	background-size: cover;
 	height: 400px;
-
+	position: relative;
 	@media only screen and (max-width: 1200px) {
         background: url('../../images/content/minibaneri/1366.png') no-repeat center top;
         height: 300px;
@@ -136,7 +163,7 @@
 			margin-top: 75px;
 		}
 
-		@media only screen and (max-width: 1000px) {
+		@media only screen and (max-width: 991px) {
 			margin-left: 100px;
 		}
 
@@ -160,23 +187,48 @@
         font-weight: 800;
 		font-size: 60px;
 		line-height: 70px;
-
         max-width: 300px;
-
+		user-select: none;
         @media only screen and (max-width: 768px) {
-			font-size: 40px;
-			line-height: 45px;
+					font-size: 40px;
+					line-height: 45px;
         }
 
         @media only screen and (max-width: 576px) {
-			font-size: 26px;
-			line-height: 35px;
+						font-size: 26px;
+						line-height: 35px;
             max-width: 200px;
         }
     }
     span {
         color: $orange;
-    }
+	}
+	///////////////////////////////// TODO
+	.league-links {
+		position: absolute;
+		bottom: 0;
+		margin-bottom: 17px;
+	}
+	.league-link {
+		background-color: none;
+		padding: 17px;
+		font-weight: 700;
+		border-radius: 5px 5px 0 0;
+		color: $orange;
+		transition: opacity .2s ease-in-out;
+		@include hover {
+			opacity: .8;
+		}
+		&.active {
+			background-color: $grey;
+			color: #231f20;
+			transition:  color .2s ease-in-out;
+			@include hover {
+				opacity: 1;
+				color: lighten(#231f20, 20);
+			}
+		}
+	}
 }
 .schedule {
 	position: relative;
@@ -197,6 +249,7 @@
 			margin-bottom: 0;
 			line-height: 1;
 			font-weight: 800;
+			user-select: none;
 		}
 	}
 	.dates {
@@ -207,6 +260,7 @@
 			padding: 15px 10px;
 			position: relative;
 			border: 10px;
+			user-select: none;
 			span {
 				display: block;
 				font-weight: 700;
@@ -241,7 +295,7 @@
 		position: absolute;
 		bottom: 0;
 		right: 30px;
-
+		user-select: none;
 		@media only screen and (max-width: 992px) {
 			bottom: 4px;
 		}
@@ -371,6 +425,7 @@
 			margin-bottom: 0;
 			line-height: 1;
 			font-weight: 800;
+			user-select: none;
 		}
 	}
 	.round {
@@ -378,7 +433,7 @@
 		position: absolute;
 		bottom: 0;
 		right: 30px;
-
+		user-select: none;
 		.number {
 			font-size: 60px;
 			line-height: 1.1;
@@ -390,12 +445,8 @@
 			font-weight: 700;
 		}
 
-		@media only screen and (max-width: 992px) {
+		@media only screen and (max-width: 991px) {
 			bottom: 9px;
-		}
-
-		@media only screen and (max-width: 768px) {
-			bottom: 30px;
 		}
 
 		@include media-breakpoint-down(sm) {
@@ -411,6 +462,7 @@
 		width: 100%;
 		margin-bottom: 8px;
 		cursor: pointer;
+		transition: opacity .2s ease-in-out;
 		.result-details {
 			display: none;
 		}
@@ -528,6 +580,19 @@
 			}
 		}
 	}
+	@media only screen and (max-width: 576px) {
+		.item {
+			.top,
+			.bottom {
+				.result {
+					width: 40px;
+				}
+				.name {
+					width: calc(100% - 40px);
+				}
+		}
+		}
+	}
 }
 .table {
 	@include media-breakpoint-down(md) {
@@ -557,6 +622,7 @@
 			margin-bottom: 0;
 			line-height: 1;
 			font-weight: 800;
+			user-select: none;
 		}
 	}
 
@@ -620,6 +686,7 @@
 			font-size: 18px;
 			text-align: left;
 			font-weight: 600;
+			width: 100%;
 		}
 	}
 	.slick-dots {
@@ -647,18 +714,12 @@
 			}
 		}
 	}
-	@include media-breakpoint-down(sm) {
-		.news-box {
-			width: 100% !important;
-		}
-	}
 }
 
 .top-stats {
     padding: 180px 0 150px;
     background-color: $orange;
     position: relative;
-
     .wrap {
         position: relative;
     }
@@ -679,20 +740,41 @@
 			color: #f7bc6d;
 			margin-bottom: 0;
 			line-height: 1;
-            font-weight: 800;
-		}
-    }
-
-    @media only screen and (min-width: 992px) and (max-width: 1080px) {
-		.title {
-			left: 20px;
-			h2 {
-				font-size: 150px;
+			font-weight: 800;
+			user-select: none;
 			}
 		}
-	}
+
+		@media only screen and (max-width: 1260px) {
+			.image-holder {
+				left: 91px;
+			}
+			.title {
+				left: 10px;
+			}
+		}
+
+    @media only screen and (min-width: 992px) and (max-width: 1080px) {
+			.image-holder {
+				left: 76px;
+			}
+			.title {
+				left: 20px;
+				h2 {
+					font-size: 150px;
+				}
+			}
+		}
 
     @include media-breakpoint-down(md) {
+			.image-holder {
+				top: -163px;
+				left: 46px;
+				width: 90px;
+				img {
+					width: 100%;
+				}
+			}
 		.title {
 			h2 {
 				font-size: 100px;
@@ -700,7 +782,12 @@
 		}
 	}
 	@include media-breakpoint-down(sm) {
-        padding: 100px 0;
+		padding: 100px 0;
+		.image-holder {
+			top: -108px;
+			left: 33px;
+			width: 50px;
+		}
 		.title {
             left: 20px;
             top: -80px;
@@ -785,18 +872,31 @@
 		position: relative;
 	}
     .title {
-        position: absolute;
-		left: -80px;
-		top: -142px;
-		h2 {
-			font-size: 178px;
-			text-transform: uppercase;
-			color: #e3e3e3;
-			margin-bottom: 0;
-			line-height: 1;
-            font-weight: 800;
+			position: absolute;
+			left: -80px;
+			top: -142px;
+			h2 {
+				font-size: 178px;
+				text-transform: uppercase;
+				color: #e3e3e3;
+				margin-bottom: 0;
+				line-height: 1;
+				font-weight: 800;
+				user-select: none;
+			}
 		}
-    }
+
+		@media only screen and (max-width: 1280px) {
+			.title {
+				left: -40px;
+			}
+		}
+
+		@media only screen and (max-width: 1200px) {
+			.title {
+				left: 10px;
+			}
+		}
 
     @media only screen and (min-width: 992px) and (max-width: 1080px) {
 		.title {
@@ -912,7 +1012,7 @@
 			}
 		}
 
-		@media only screen and (max-width: 992px) {
+		@media only screen and (max-width: 991px) {
 			float: left;
 		}
 	}
@@ -927,6 +1027,115 @@
 		}
 	}
 }
+
+.players-section {
+	padding: 180px 0 70px;
+	.wrap {
+			position: relative;
+	}
+	.title {
+		position: absolute;
+		left: -80px;
+		top: -142px;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: rgba($grey-light, 0.4);
+			margin-bottom: 0;
+			line-height: 1;
+			font-weight: 800;
+		}
+	}
+	@media only screen and (max-width: 1240px) {
+		.title {
+			left: -40px;
+		}
+	}
+	@media only screen and (max-width: 1140px) {
+		.title {
+			left: 20px;
+		}
+	}
+	@media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.title {
+			h2 {
+				font-size: 150px;
+			}
+		}
+	}
+	@include media-breakpoint-down(md) {
+		padding-top: 120px;
+		.title {
+			top: -100px;
+			h2 {
+				font-size: 100px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		padding-top: 80px;
+		.title {
+			top: -60px;
+			h2 {
+				font-size: 42px;
+			}
+		}
+	}
+}
+
+.teams-section {
+	width: 100%;
+	padding: 150px 0 100px;
+	background-color: #e2e2e2;
+	.wrap {
+		position: relative;
+	}
+	.title {
+		position: absolute;
+		left: 80px;
+		top: -100px;
+		h2 {
+			font-size: 178px;
+			text-transform: uppercase;
+			color: rgba($grey-light, 0.4);
+			margin-bottom: 0;
+			line-height: 1;
+			font-weight: 800;
+			user-select: none;
+		}
+	}
+	@media only screen and (max-width: 1240px) {
+		.title {
+			left: 40px;
+		}
+	}
+	@media only screen and (min-width: 992px) and (max-width: 1080px) {
+		.title {
+			h2 {
+				font-size: 150px;
+			}
+		}
+	}
+	@include media-breakpoint-down(md) {
+		padding-top: 120px;
+		.title {
+			top: -120px;
+			h2 {
+				font-size: 100px;
+			}
+		}
+	}
+	@include media-breakpoint-down(sm) {
+		padding-top: 80px;
+		.title {
+			top: -60px;
+			h2 {
+				font-size: 42px;
+			}
+		}
+	}
+}
+
 .players-wrap,
 .teams-wrap {
 	position: relative;
@@ -944,7 +1153,6 @@
 		z-index: 10;
 		height: 50px;
 		input {
-			max-width: 581px;
 			width: 100%;
 			height: 40px;
 			padding: 0 60px 0 17px;
@@ -1006,12 +1214,22 @@
 			font-size: 18px;
 			position: absolute;
 			right: 15px;
-			top: 22px;
+			top: 21px;
+			transition: transform .2s ease-in-out;
+		}
+	}
+	&.open {
+		.letters-button {
+			.icon {
+				top: 20px;
+				transform: rotate(180deg);
+			}
 		}
 	}
 	ul {
-		display: block;
-		max-width: 100%;
+		display: flex;
+		justify-content: space-around;
+		width: 100%;
 		padding: 0 13px;
 		background-color: $white;
 		border: 1px solid $orange;
@@ -1023,14 +1241,30 @@
 			color: $grey-dark;
 			font-size: 20px;
 			line-height: 1.55;
-			padding: 6px 7px;
+			padding: 6px 2px;
 			width: 32px;
 			cursor: pointer;
-			transition: 0.3s ease-in;
-		}
-		.active {
-			background-color: $orange;
-			color: $white;
+			transition: 0.2s ease-in;
+			@include hover {
+				background-color: $orange;
+				color: $white;
+				a {
+					color: $white;
+				}
+			}
+			a {
+				color: $grey-dark;
+				@include hover {
+					color: $white;
+				}
+			}
+			&.active {
+				background-color: $orange;
+				color: $white;
+				a {
+					color: $white;
+				}
+			}
 		}
 	}
 	@include media-breakpoint-up(md) {
@@ -1045,7 +1279,6 @@
 		justify-content: center;
 		ul {
 			padding: 0 21px;
-			max-width: 728px;
 			li {
 				font-size: 18px;
 				width: 20px;
@@ -1114,7 +1347,6 @@
 	.wrap {
         position: relative;
     }
-
     .title {
         position: absolute;
 		right: -80px;
@@ -1126,6 +1358,7 @@
 			margin-bottom: 0;
 			line-height: 1;
 			font-weight: 800;
+			user-select: none;
 		}
 
 		@media only screen and (max-width: 1200px) {
@@ -1249,6 +1482,18 @@
 			}
 		}
 	}
+	@include media-breakpoint-down(md) {
+		.years {
+			margin-bottom: 20px;
+		}
+	}
+	@media only screen and (max-width: 550px) {
+		.img-wrap {
+			.img-holder {
+				padding: 25px;
+			}
+		}
+	}
 }
 .statistic-page {
 	position: relative;
@@ -1274,14 +1519,14 @@
 			}
 		}
 		.right {
-			z-index: 3;
+			z-index: 2;
 			.btn {
 				top: 15px;
 				width: 120px;
 				text-align: center;
 			}
 		}
-
+		// sass-lint:disable class-name-format
 		.newListSelected {
 			margin-top: 15px;
 			width: 245px;
@@ -1298,12 +1543,10 @@
 			}
 		}
 
-		@media only screen and (max-width: 768px) {
-			.left {
-				.btn {
-					top: -30px;
+		@media screen and (max-width: 770px) {
+				.newListSelected {
+					margin: 0;
 				}
-			}
 		}
 
 		@media only screen and (max-width: 532px) {
@@ -1323,6 +1566,22 @@
 					top: -5px;
 				}
 			}
+			.right {
+				.btn {
+					top: 6px;
+				}
+			}
+		}
+
+		@media only screen and (max-width: 407px) {
+			.right {
+				.btn {
+					top: 21px;
+				}
+				& :last-child {
+					margin-top: 6px;
+				}
+			}
 		}
 
 
@@ -1338,6 +1597,7 @@
 			margin-bottom: 0;
 			line-height: 1;
 			font-weight: 800;
+			user-select: none;
 		}
 
 		@media only screen and (max-width: 1200px) {

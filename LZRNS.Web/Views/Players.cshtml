@@ -10,63 +10,69 @@
             </div>
         </div>
     </div>
-    <div class="wrap">
-        <div class="players-wrap">
-            <div class="players-top">
-                <div class="search">
-                    <form action="" method="get">
-                        <label class="sr-only" for="input-123">Search</label>
-                        <input id="input-123" name="q" type="text" value="@Model.CurrentQuery" placeholder="Pretraga" />
-                        <button type="submit"><span class="icon font-ico-search" /></button>
-                    </form>
-                </div>
-                <div class="buttons">
-                    @{
-                        var firstButtonClass = Model.ActiveOnly ? "active" : string.Empty;
-                        var secondButtonClass = !Model.ActiveOnly ? "active" : string.Empty;
-                       
-                    }
-                    <a href="@CreateUrl("activeOnly", "true")" class="btn @firstButtonClass">Aktivni</a>
-                    <a href="@CreateUrl("activeOnly", "false")" class="btn @secondButtonClass">Svi</a>
-                </div>
-            </div>
-            <div class="letters-nav">
-                @{
-                    var showAllClass = string.IsNullOrWhiteSpace(Model.CurrentFL) ? "active" : string.Empty;
-                    var currentPlaceholder = string.IsNullOrWhiteSpace(Model.CurrentFL) ? "A - Ž" : Model.CurrentFL;
-                }
-                <span class="letters-button" data-placeholder="@currentPlaceholder"><span class="icon font-ico-arrow-down"></span></span>
-                <ul>
+	<div class="players-section">
+		<div class="wrap">
+		<!-- TODO dynamic title-->
+			<div class="title">
+				<h2>Igrači</h2>
+			</div>
+			<div class="players-wrap">
+				<div class="players-top">
+					<div class="search">
+						<form action="" method="get">
+							<label class="sr-only" for="input-123">Search</label>
+							<input id="input-123" name="q" type="text" value="@Model.CurrentQuery" placeholder="Pretraga" />
+							<button type="submit"><span class="icon font-ico-search" /></button>
+						</form>
+					</div>
+					<div class="buttons">
+						@{
+							var firstButtonClass = Model.ActiveOnly ? "active" : string.Empty;
+							var secondButtonClass = !Model.ActiveOnly ? "active" : string.Empty;
 
-                    <li class="all @showAllClass"><a href=".">A - Ž</a></li>
+						}
+						<a href="@CreateUrl("activeOnly", "true")" class="btn @firstButtonClass">Aktivni</a>
+						<a href="@CreateUrl("activeOnly", "false")" class="btn @secondButtonClass">Svi</a>
+					</div>
+				</div>
+				<div class="letters-nav">
+					@{
+						var showAllClass = string.IsNullOrWhiteSpace(Model.CurrentFL) ? "active" : string.Empty;
+						var currentPlaceholder = string.IsNullOrWhiteSpace(Model.CurrentFL) ? "A - Ž" : Model.CurrentFL;
+					}
+					<span class="letters-button" data-placeholder="@currentPlaceholder"><span class="icon font-ico-arrow-down"></span></span>
+					<ul>
 
-                    @foreach (var letter in RenderHelper.GetAlphabet())
-                    {
-                        var cssClass = letter.Equals(Model.CurrentFL, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
-                        <li class="@cssClass"><a href="@CreateUrl("fl", letter)">@letter</a></li>
-                    }
+						<li class="all @showAllClass"><a href=".">A - Ž</a></li>
 
-                </ul>
-            </div>
-            <div class="names-list">
-                <div class="row">
-                    <div class="col-lg-12 col-md-6">
-                        @*style="column-count: 4; column-gap: 11%; margin: 0 0 0 7%;"*@
-                        <ul class="four-col">
-                            @foreach (var player in Model.Players)
-                            {
-                                <li><a href="javasript:;">@player.GetFullName</a></li>
-                            }
+						@foreach (var letter in RenderHelper.GetAlphabet())
+						{
+							var cssClass = letter.Equals(Model.CurrentFL, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
+							<li class="@cssClass"><a href="@CreateUrl("fl", letter)">@letter</a></li>
+						}
 
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+					</ul>
+				</div>
+				<div class="names-list">
+					<div class="row">
+						<div class="col-lg-12 col-md-6">
+							@*style="column-count: 4; column-gap: 11%; margin: 0 0 0 7%;"*@
+							<ul class="four-col">
+								@foreach (var player in Model.Players)
+								{
+									<li><a href="javasript:;">@player.GetFullName</a></li>
+								}
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
 
-@functions 
+@functions
 {
     public string CreateUrl(string queryName, string queryValue)
     {
@@ -78,4 +84,4 @@
         return uriBuilder.ToString();
     }
 }
-    
+
