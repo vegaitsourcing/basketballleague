@@ -15,7 +15,8 @@ namespace LZRNS.DomainModel.Models
 	{
 		[Required(ErrorMessage = "Naziv tima je obavezno polje.")]
 		[DisplayName("Naziv tima")]
-		public string TeamName { get; set; }
+        [StringLength(100, ErrorMessage = "Naziv tima ne može biti duži od 100 karaktera.")]
+        public string TeamName { get; set; }
 
 		public string Image { get; set; }
 

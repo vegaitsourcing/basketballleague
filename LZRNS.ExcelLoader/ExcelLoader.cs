@@ -22,6 +22,14 @@ namespace LZRNS.ExcelLoader
 
         // key represent player full name
         private Dictionary<string, List<PlayerScore>> playerStores;
+
+        //key represent team name (unique), the value dictionary should have the following form - season:value, league:value
+        //private Dictionary<string, Dictionary<string, string>> teamsSeasonAndLeague;
+
+        private string _seasonName; 
+        private string _leagueName;
+
+
         
         private MapperModel mapper;
         private int maxPlayerPerMatch = 12;
@@ -44,6 +52,9 @@ namespace LZRNS.ExcelLoader
             get { return teamAndPlayers; }
         }
 
+        public string SeasonName { get => _seasonName; set => _seasonName = value; }
+        public string LeagueName { get => _leagueName; set => _leagueName = value; }
+
         #endregion Properies
 
 
@@ -65,6 +76,7 @@ namespace LZRNS.ExcelLoader
         {
             try
             {
+
                 using (exApp = new XLWorkbook(path))
                 {
                     Load(exApp, fileName);
@@ -111,9 +123,25 @@ namespace LZRNS.ExcelLoader
         #region Private Methods
         private void Load(XLWorkbook exApp, string fileName)
         {
+            //fileName should have the following format - teamName-seasonName-leagueName.xlsx (at least one file)
             int currentSheetNo = 0;
-            string nameWithExtension = fileName.Split(new string[] { "stats-teams-" }, StringSplitOptions.None).Last();
-            string teamName = nameWithExtension.Substring(0, nameWithExtension.Length - 5);
+
+            //string nameWithExtension = fileName.Split(new string[] { "stats-teams-" }, StringSplitOptions.None).Last();
+
+            string[] nameParts = fileName.Split('-');
+
+            string teamName = nameParts[2];
+            if (teamName.Contains(".xlsx"))
+            {
+                teamName = teamName.Substring(0, teamName.Length - 5);
+            }
+            //only one file will determine SeasonName and LeagueName - first with appropriate filename structure
+            if (nameParts.Length == 5 && SeasonName == null && LeagueName == null)
+            {
+                SeasonName = nameParts[3];
+                LeagueName = nameParts[4].Substring(0, nameParts[4].Length - 5);
+            }
+
             Loger.log.Debug("Loading data for team: " + teamName);
 
             sheets = exApp.Worksheets;
@@ -121,6 +149,7 @@ namespace LZRNS.ExcelLoader
             //Only for first sheet we want to check validation for mapping fields configuration
             foreach (IXLWorksheet sheet in sheets)
             {
+                //check file format/mapping
                 CheckMappingValidation(mapper, sheet);
                 break;
             }
@@ -133,18 +162,21 @@ namespace LZRNS.ExcelLoader
                 // for odd sheet we want to skip loading
                 if (currentSheetNo % 2 == 0)
                 {
+                    ///process sheet by sheet
                     ProcessSheet(sheet, ref teamStatistic, out isPageEmpty);
                     //if (isPageEmpty)
                     //{
                     //    break;
                     //}
+                    //NOTE:only for debug
+                    //break;
                 }
                 currentSheetNo++;
             }
 
             teams[teamStatistic.TeamName] = teamStatistic;
         }
-        
+        //tested
         private void CheckMappingValidation (MapperModel mapper, IXLWorksheet sheet)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -165,8 +197,8 @@ namespace LZRNS.ExcelLoader
                 }
                
                 object value = row.Cell(item.ColumnIndex).Value;
-
-                if (value == null || !value.Equals(item.CellName))
+                
+                if (value == null || !value.Equals(item.CellName))  
                 {
 
                     Loger.log.Error("Mapping is invalid for sheet: " + sheet.Name);
@@ -215,11 +247,15 @@ namespace LZRNS.ExcelLoader
             {
                 currentRowNo++;
                 PlayerScore pl = new PlayerScore();
+                //tested
                 PopulateModelField(pl, rows, otherFields, currentRowNo);
+                /*contains list of all players score*/
                 teamScore.AddPlayerScore(pl);
 
                 AddPlayerScore(pl);
                 AddPlayerInTeam(teamStatistic.TeamName, pl.NameAndLastName);
+                //NOTE:only for debug
+                //break;
             }
 
             Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
@@ -316,6 +352,7 @@ namespace LZRNS.ExcelLoader
                 list.Add(ps);
             } else
             {
+                //what if two players have the same name
                 playerStores[ps.NameAndLastName] = new List<PlayerScore>() { ps };
             }
         }

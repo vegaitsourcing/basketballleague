@@ -103,6 +103,10 @@
     <Compile Include="Migrations\201908230959030__update.Designer.cs">
       <DependentUpon>201908230959030__update.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908270815117_update-team-name.cs" />
+    <Compile Include="Migrations\201908270815117_update-team-name.Designer.cs">
+      <DependentUpon>201908270815117_update-team-name.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
@@ -125,7 +129,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Implementations\GameRepository.cs" />
     <Compile Include="Repository\Implementations\LeagueRepository.cs" />
-    <Compile Include="Repository\Implementations\LeagueSeasonRepository.cs" />
     <Compile Include="Repository\Implementations\PlayerRepository.cs" />
     <Compile Include="Repository\Implementations\RoundRepository.cs" />
     <Compile Include="Repository\Implementations\RefereeRepository.cs" />
@@ -135,7 +138,6 @@
     <Compile Include="Repository\Interfaces\Exceptions\DalException.cs" />
     <Compile Include="Repository\Interfaces\IGameRepository.cs" />
     <Compile Include="Repository\Interfaces\ILeagueRepository.cs" />
-    <Compile Include="Repository\Interfaces\ILeagueSeasonRepository.cs" />
     <Compile Include="Repository\Interfaces\IPlayerRepository.cs" />
     <Compile Include="Repository\Interfaces\IRoundRepository.cs" />
     <Compile Include="Repository\Interfaces\IRefereeRepository.cs" />
@@ -171,6 +173,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908230959030__update.resx">
       <DependentUpon>201908230959030__update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908270815117_update-team-name.resx">
+      <DependentUpon>201908270815117_update-team-name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

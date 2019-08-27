@@ -10,7 +10,7 @@ namespace LZRNS.ExcelLoader
 
         public TeamStatistic(String tName)
         {
-            this.teamName = tName;
+            teamName = tName;
             teamScores = new List<TeamScore>();
         }
 
