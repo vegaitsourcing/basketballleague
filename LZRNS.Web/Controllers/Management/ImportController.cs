@@ -19,10 +19,16 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class ImportController : RenderMvcController
     {
-
+        /*
         private ITeamRepository _teamRepo;
         private ISeasonRepository _seasonRepo;
+        private ILeagueRepository _leagueRepo;
+        private IPlayerRepository _playerRepo;
+        */
+        //add dependency injection principle
+        private BasketballDbContext _db = new BasketballDbContext();
 
+        /*
         public ImportController(ITeamRepository teamRepo)
         {
             _teamRepo = teamRepo;
@@ -35,6 +41,23 @@ namespace LZRNS.Web.Controllers.Management
             _seasonRepo = seasonRepo;
 
         }
+        */
+
+        /*
+    public ImportController(ITeamRepository teamRepo, ISeasonRepository seasonRepo, ILeagueRepository leagueRepo, IPlayerRepository playerRepo)
+    {
+        _teamRepo = teamRepo;
+        _seasonRepo = seasonRepo;
+        _leagueRepo = leagueRepo;
+        _playerRepo = playerRepo;
+
+    }*/
+
+        public ImportController()
+        {
+
+        }
+
         public ActionResult Index(ImportModel model)
         {
             return View(model);
@@ -52,13 +75,6 @@ namespace LZRNS.Web.Controllers.Management
 
             ExL.ExcelLoader loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
             TimeTableLoader.Converter.Converter converter = new TimeTableLoader.Converter.Converter();
-            //hardcoded
-            //string season = "2014";
-            //string league = "Liga A";
-            //string season = loader.SeasonName;
-            //string league = loader.LeagueName;
-
-
             foreach (var file in model.Files)
             {
                 if (file != null)
@@ -83,56 +99,120 @@ namespace LZRNS.Web.Controllers.Management
             return View(new ImportModel(CurrentPage));
         }
 
+        //private 
         private void PopulateEntityModel(ExL.ExcelLoader loadedData, string seasonName, string leagueName)
         {
-            BasketballDbContext db = new BasketballDbContext();
+            //BasketballDbContext db = new BasketballDbContext();
+            /*use season repoinstead of context*/
 
             bool ToUpdate = true;
-            Season season = db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName)) ?? new Season();
-           if(season.Name == null)
+
+            Season season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
+            // DAL layer should be used
+            //_seasonRepo.GetSeasonByName(seasonName);
+
+
+            LeagueSeason leagueSeason = null;
+            League league = null;
+            if (season == null)
             {
+                season = new Season();
                 season.Name = seasonName;
-                ToUpdate = false;
-            }
-            if(season.SeasonStartYear == 0)
-            {
-                season.SeasonStartYear = 2014;
-                ToUpdate = false;
+                season.SeasonStartYear = Int32.Parse(seasonName);
+                //NOTE: remove guid
+                season.Id = Guid.NewGuid();
+                _db.Seasons.Add(season);
             }
 
-            if (!ToUpdate) _seasonRepo.Add(season);
-            else _seasonRepo.Update(season);
 
-            League league = db.Leagues.FirstOrDefault(l => l.Name.Equals(leagueName)) ?? new League();
+            //NOTE: DAL 
+            //_seasonRepo.Add(season);
 
-            if(league.Name == null)
+            /*use league repo instead of context*/
+            List<League> leagues = _db.Leagues.Where(l => l.Name == leagueName).ToList();
+
+            // DAL
+            //_leagueRepo.GetLeaguesByName(leagueName).ToList();
+            if (leagues.Count == 0)
             {
+                league = new League();
+                //NOTE:remove guid
+                league.Id = Guid.NewGuid(); ;
                 league.Name = leagueName;
-                db.Leagues.Add(league);
+                //league = 
+                _db.Leagues.Add(league);
+                //_db.Leagues.
+                // DAL
+                //_leagueRepo.CreateLeague(leagueName);
             }
-            
-            //League league = new League();
-            //league.Name = leagueName;
+            else
+            {
+                //List<Guid> leaguesIds = leagues.Select(l => l.Id).ToList();
+                //this must be changed - only for testing added
 
-            LeagueSeason leagueSeason = new LeagueSeason();
-            leagueSeason.League = league;
+                leagueSeason = _db.LeagueSeasons.Where(ls => ls.SeasonId == season.Id && ls.League.Name == leagueName).FirstOrDefault();
+            }
+            if (leagueSeason != null)
+            {
+                league = _db.Leagues.Where(l => l.Id == leagueSeason.LeagueId).FirstOrDefault();
+            }
+            else
+            {
+
+                //DAL 
+                //_seasonRepo.GetLeagueSeasonsBySeasonAndLeague(season.Id, leaguesIds);
+                //
+
+                //league = _leagueRepo.CreateLeague(leagueName);
+                leagueSeason = new LeagueSeason();
+                //NOTE:remove guid
+                leagueSeason.Id = Guid.NewGuid(); ;
+                leagueSeason.SeasonId = season.Id;
+                leagueSeason.LeagueId = league.Id;
+                _db.LeagueSeasons.Add(leagueSeason);
 
 
-            leagueSeason.Teams = PopulateTeamEntityModel(loadedData);
+            }
+            if (leagueSeason.Rounds == null)
+            {
+                leagueSeason.Rounds = new List<Round>();
+            }
+
+            List<Team> teams = PopulateTeamEntityModel(loadedData);
+
+            if (leagueSeason.Teams != null)
+            {
+                Round round = null;
+                int roundCounter = leagueSeason.Rounds.Count;
+                foreach (Team team in teams)
+                {
+                    if (!leagueSeason.Teams.Contains(team))
+                    {
+                        leagueSeason.Teams.Add(team);
+                        round = new Round();
+                        round.Id = Guid.NewGuid();
+                        round.RoundName = (roundCounter + 1).ToString();
+                        roundCounter++;
+                        round.LeagueSeason = leagueSeason;
+                        _db.Rounds.Add(round);
+                      
+                    }
+                }
+            }
+            else
+            {
+                leagueSeason.Teams = teams;
+            }
+          
+
+            //DAL
+            //_seasonRepo.AddLeagueToSeason(leagueSeason);
 
 
-            db.LeagueSeasons.Add(leagueSeason);
-
-            //var player = db.Players.FirstOrDefault(x => x.Name.Equals("something"));
-            //player.LastName = "new lastname";
-            //db.SaveChanges()
-
-
-            //db.Seasons.Add(season);
 
             try
             {
-                db.SaveChanges();
+                _db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -145,15 +225,37 @@ namespace LZRNS.Web.Controllers.Management
         private List<Team> PopulateTeamEntityModel(ExL.ExcelLoader loadedData)
         {
             List<Team> teamsList = new List<Team>();
-
+            bool isAdded = false;
             foreach (KeyValuePair<string, HashSet<string>> keyValuePair in loadedData.TeamAndPlayers)
             {
-                Team team = new Team();
-                //fetch team by team name or create and save
-                team.TeamName = keyValuePair.Key;
+                isAdded = false;
+                Team team = _db.Teams.Where(t => t.TeamName.Equals(keyValuePair.Key) && t.LeagueSeason.Season.Name.Equals(loadedData.SeasonName)).FirstOrDefault();
+                //DAL
+                //_teamRepo.FindTeam(keyValuePair.Key, loadedData.SeasonName);
+                if (team == null)
+                {
+                    team = new Team();
+                    //NOTE:remove guid
+                    team.Id = Guid.NewGuid(); ;
+                    team.TeamName = keyValuePair.Key;
+                    isAdded = true;
+                }
+
 
                 team.Players = GeneratePlayers(loadedData, keyValuePair.Value);
 
+                if (isAdded)
+                {
+                    _db.Teams.Add(team);
+                    //DAL
+                    //_teamRepo.Add(team);
+                }
+                else
+                {
+                    //handle update
+                    //DAL
+                    //_teamRepo.Update(team);
+                }
                 teamsList.Add(team);
             }
 
@@ -164,10 +266,11 @@ namespace LZRNS.Web.Controllers.Management
         private List<Player> GeneratePlayers(ExL.ExcelLoader loadedData, HashSet<string> playersIds)
         {
             List<Player> playerList = new List<Player>(playersIds.Count);
+
             foreach (string playerId in playersIds)
             {
                 List<ExL.PlayerScore> scores = loadedData.GetPlayerScoreList(playerId);
-                if (scores.Count > 0)
+                if (scores != null && scores.Count > 0)
                 {
                     Player p = PopulatePlayerEntityModel(scores);
                     playerList.Add(p);
@@ -179,19 +282,38 @@ namespace LZRNS.Web.Controllers.Management
 
         private Player PopulatePlayerEntityModel(List<ExL.PlayerScore> playerScores)
         {
-            Player player = new Player();
+            Player player = null;
+            //BasketballDbContext db = new BasketballDbContext();
+            //_playerRepo.GetPlayerByName()
+            ///_teamRepo.
             ExL.PlayerScore pScore = playerScores.First();
 
-            player.Name = pScore.FirstName;
-            player.LastName = pScore.LastName;
-            player.MiddleName = pScore.MiddleName;
+            //player = _db.Players.Where(p => p.Name == pScore.FirstName && p.LastName == pScore.LastName && p.MiddleName == pScore.MiddleName).FirstOrDefault();
+            //_playerRepo.GetPlayerByName(pScore.FirstName, pScore.LastName, pScore.MiddleName);
+            if (player == null)
+            {
+                player = new Player();
+                //NOTE:remove guid
+                player.Id = Guid.NewGuid(); ;
+                player.Name = pScore.FirstName;
+                player.LastName = pScore.LastName;
+                player.MiddleName = pScore.MiddleName;
+                //player.Team_Id = pScore.
+                //_playerRepo.Add(player);
+                _db.Players.Add(player);
 
+            }
+            //player.PlayersPerSeason.
+            /*
+            Stats stats;
             foreach (ExL.PlayerScore playerScore in playerScores)
             {
                 //TO DO (set Stats)
-                Stats stats = new Stats();
-
-            }
+                stats = PopulateStats(playerScore);
+                //stats.
+                if (player.Stats == null) player.Stats = new List<Stats>();
+                player.Stats.Add(stats);
+            }*/
 
             return player;
         }
@@ -206,17 +328,28 @@ namespace LZRNS.Web.Controllers.Management
 
         private Stats PopulateStats(ExL.PlayerScore ps)
         {
+            //BasketballDbContext db = new BasketballDbContext();
             Stats stats = new Stats()
             {
                 Ast = ps.Assistance,
                 Blk = ps.Block,
                 DReb = ps.DefensiveReb,
                 FtMade = ps.FreeThrowsMade,
-                FtMissed = ps.FreeThrowsAttempt
-                //Gam
+                FtMissed = ps.FreeThrowsAttempt,
+                MinutesPlayed = ps.Minutes,
+                JerseyNumber = ps.Number.ToString(),
+                OReb = ps.OffensiveReb,
+                TwoPtMissed = ps.PointAttempt2,
+                TwoPtMade = ps.PointMade2,
+                ThreePtMissed = ps.PointAttempt3,
+                ThreePtMade = ps.PointMade3,
+                Stl = ps.Steal,
+                To = ps.TurnOver,
+
+
             };
-
-
+            ///stats.
+            //db.Stats.Add(stats);
             return stats;
         }
 

@@ -50,7 +50,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
             }
             catch (Exception ex)
             {
-
+                System.Diagnostics.Debug.WriteLine("debug");
             }
             return entity;
         }

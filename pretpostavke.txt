@@ -1,0 +1,34 @@
+
+
+Pretpostavke i ograničenja podataka kod letnje lige na osnovu sadašnjeg stanja:
+
+
+1) Sezona mora imati jedinstven naziv.
+2) Liga i sezona kao kombinacija moraju biti jedinstveni - dakle moguće je da postoji više liga sa nazivom Liga A, Liga B itd. ali za svaku sezonu nezavisno, odnosno nije moguće da postoje dve Liga A u bilo kojoj sezoni
+3) Podaci koji su upisani u excel ne sadrže jedinstvene identifikatore igrača. Prema tome, pretpostavke su da:
+
+a) u okviru jednog tima, ne postoji više igrača sa istim imenom
+b) da nema prelaska igrača iz tima u tim tokom iste sezone
+c) da nema prelaska igrača iz tima u tim kroz različite sezone (u jednoj sezoni igra za jedan klub, u sledećoj za neki drugi)
+
+Verovatno je da pretpostavka tri nije tačna, odnosno da jedan igrač može menjati klubove iz sezone u sezonu. U tom slučaju nije moguće voditi evidenciju o prelasku igrača, odnosno ne zna se da li je novi igrač u pitanju ili je neko
+prešao iz drugog kluba (ovo je možda i moguće srediti, ali je malo komplikovano, i opet nije najsigurnije rešenje). 
+
+Rešenje problema; uvesti šifarnik po sezonama u formatu:
+
+- jmbg (ili neki identifikacioni podatak)
+- ime i prezime igrača
+- tim
+
+Ako bi se dalje sve zasnivalo na pretpostavci da igrači mogu da menjaju klubove po sezonama, potrebno bi bilo restruktuirati bazu i refaktorisati deo koda, što iziskuje dodatno vreme.
+
+Ako dalje nastavimo sa trenutnim pristupom, dakle da ne uvodimo identifikatore igrača i da ne menjamo bazu i kod, ondosno da igrači ne menjaju klubove kroz sezone, to bi značilo da će pri situaciji da igrač promeni tim, on biti
+zaveden kao novi igrač u bazi, bez ikakve veze sa svojom instancom koja je vezana za dotadašnji klub. Iz ovoga sledi da će njihove statistike biti razdvojene i nezavisno će se voditi za oba kluba. U prikazu bi moglo da se označi,
+za koji klub za tog igrača važi ta statistika.
+
+Kasnije bi dodavanjem identifikatora, moglo da se identifikuje koji su to igrači koji su menjali klubove, pa da se sredi to.
+
+U suštini, sada bi trebalo odrediti da li je bitno da se prepravi baza i kod tako da se prilagode realnom stanju (u tom slučaju bi trebalo dostaviti i gorespomenuti šifarnik) ili da sistem profunkcioniše, ali sa navedenim manjkavostima.
+
+Ukoliko se odlučimo za opciju da sistem što pre profunkcioniše, ispravke ovih manjkavosti je moguće odraditi kasnije u drugoj fazi, i to bi išlo rasterećenije, s obzirom da znamo postoji nek funkcionalna verzija.
+

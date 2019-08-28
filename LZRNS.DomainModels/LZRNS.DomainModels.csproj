@@ -107,6 +107,10 @@
     <Compile Include="Migrations\201908270815117_update-team-name.Designer.cs">
       <DependentUpon>201908270815117_update-team-name.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908280854480_add-player-team.cs" />
+    <Compile Include="Migrations\201908280854480_add-player-team.Designer.cs">
+      <DependentUpon>201908280854480_add-player-team.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
@@ -176,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908270815117_update-team-name.resx">
       <DependentUpon>201908270815117_update-team-name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908280854480_add-player-team.resx">
+      <DependentUpon>201908280854480_add-player-team.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

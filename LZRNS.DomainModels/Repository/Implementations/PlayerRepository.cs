@@ -3,6 +3,7 @@ using LZRNS.DomainModels.Repository.Interfaces;
 using System.Linq;
 using LZRNS.DomainModel.Context;
 using System.Collections.Generic;
+using System;
 
 namespace LZRNS.DomainModels.Repository.Implementations
 {
@@ -45,5 +46,12 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
             return all;
         }
+        /*
+        public Player GetlayerByTeamIdAndName(Guid teamId, string firstName, string lastName, string middleName = "")
+        {
+            Player player  = GetAll().Where(pl => pl.)
+            
+        }
+        */
     }
 }

@@ -153,7 +153,9 @@ namespace LZRNS.Web.Controllers.Management
             var numberOfGamesPerRound = teams.Count / 2;
 
             var rotatedTeams = new List<Team>();
+            //takes the second half of teams
             rotatedTeams.AddRange(teams.Skip(numberOfGamesPerRound).Take(numberOfGamesPerRound));
+
             rotatedTeams.AddRange(teams.Skip(1).Take(numberOfGamesPerRound - 1).ToArray().Reverse());
 
             var numberOfTeams = rotatedTeams.Count;
@@ -178,6 +180,7 @@ namespace LZRNS.Web.Controllers.Management
                     RoundId = round.Id,
                     SeasonId = leagueSeason.Season.Id,
                     TeamAId = teams[0].Id,
+                    //TeamA = teams[0].TeamName,
                     TeamBId = rotatedTeams[teamIndex].Id,
                     DateTime = DateTime.Now // TODO: DateTime is required at the moment, either remove it or set default time here
                 });

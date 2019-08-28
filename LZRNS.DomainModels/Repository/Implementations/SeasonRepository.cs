@@ -52,10 +52,21 @@ namespace LZRNS.DomainModels.Repository.Implementations
 			return _context.Set<LeagueSeason>().Find(id);
 		}
 
-		public void DeleteLeagueSeason(LeagueSeason leagueSeason)
+         
+        public Season GetSeasonByName(string seasonName)
+        {
+            return _context.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
+        }
+
+        public void DeleteLeagueSeason(LeagueSeason leagueSeason)
 		{
 				_context.Set<LeagueSeason>().Remove(leagueSeason);
 				_context.SaveChanges();
 		}
-	}
+
+        public LeagueSeason GetLeagueSeasonsBySeasonAndLeague(Guid seasonId , ICollection<Guid> leaguesIds)
+        {
+            return _context.LeagueSeasons.Where(ls => ls.SeasonId == seasonId && leaguesIds.Contains(ls.LeagueId)).FirstOrDefault();
+        }
+    }
 }

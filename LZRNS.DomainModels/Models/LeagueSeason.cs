@@ -25,6 +25,8 @@ namespace LZRNS.DomainModels.Models
 
 		public virtual ICollection<Round> Rounds { get; set; }
 
+        //public string leagueName
+
 		public string FullName => Season.Name + " - " + League.Name;
 	}
 }

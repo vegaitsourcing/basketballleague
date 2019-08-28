@@ -26,11 +26,11 @@ namespace LZRNS.ExcelLoader
         //key represent team name (unique), the value dictionary should have the following form - season:value, league:value
         //private Dictionary<string, Dictionary<string, string>> teamsSeasonAndLeague;
 
-        private string _seasonName; 
+        private string _seasonName;
         private string _leagueName;
 
 
-        
+
         private MapperModel mapper;
         private int maxPlayerPerMatch = 12;
 
@@ -59,13 +59,14 @@ namespace LZRNS.ExcelLoader
 
 
         #region Constructors
-        public ExcelLoader(string configPath) {
+        public ExcelLoader(string configPath)
+        {
             Loger.log.Debug("Start main proces");
             this.teams = new Dictionary<string, TeamStatistic>();
             this.playerStores = new Dictionary<string, List<PlayerScore>>();
             this.teamAndPlayers = new Dictionary<string, HashSet<string>>();
 
-            
+
             this.mapper = new MapperModel(configPath);
 
         }
@@ -92,7 +93,7 @@ namespace LZRNS.ExcelLoader
             }
         }
 
-        public void ProcessFile (MemoryStream memoryStream, string fileName)
+        public void ProcessFile(MemoryStream memoryStream, string fileName)
         {
             try
             {
@@ -177,7 +178,7 @@ namespace LZRNS.ExcelLoader
             teams[teamStatistic.TeamName] = teamStatistic;
         }
         //tested
-        private void CheckMappingValidation (MapperModel mapper, IXLWorksheet sheet)
+        private void CheckMappingValidation(MapperModel mapper, IXLWorksheet sheet)
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -190,15 +191,15 @@ namespace LZRNS.ExcelLoader
             {
                 if (item.CellName.Equals("")) continue;
 
-                if (currentRowIndex != item.RowIndex )
+                if (currentRowIndex != item.RowIndex)
                 {
                     row = rows.ElementAt(item.RowIndex);
                     currentRowIndex = item.RowIndex;
                 }
-               
+
                 object value = row.Cell(item.ColumnIndex).Value;
-                
-                if (value == null || !value.Equals(item.CellName))  
+
+                if (value == null || !value.Equals(item.CellName))
                 {
 
                     Loger.log.Error("Mapping is invalid for sheet: " + sheet.Name);
@@ -223,7 +224,7 @@ namespace LZRNS.ExcelLoader
             TeamScore teamScore = new TeamScore();
             teamScore.RoundName = sheet.Name;
             int currentRowNo;
-            
+
             IEnumerable<FieldItem> globalFields = mapper.Fields.FindAll(i => i.GlobalField == true);
             currentRowNo = mapper.Fields.First().RowIndex;
 
@@ -267,7 +268,7 @@ namespace LZRNS.ExcelLoader
 
         private void PopulateModelField(Object modelObj, IXLRows exlRange, IEnumerable<FieldItem> fields, int rowIndex = -1)
         {
-            foreach(FieldItem fieldItem in fields)
+            foreach (FieldItem fieldItem in fields)
             {
                 PopulateModelValue(modelObj, exlRange, fieldItem, rowIndex);
             }
@@ -283,15 +284,16 @@ namespace LZRNS.ExcelLoader
                 // We should log error (currently I will just throw exception to be aware that model and mapping are not matched)
                 throw new Exception();
             }
-            
+
             // If we do not explcitly send row index or data should be directly read from cell, then it should be used directly from configuration
             // Examlple: matchDate doesn not contain header
-            if (fieldItem.DirectCellData == true || rowIndex == -1) {
+            if (fieldItem.DirectCellData == true || rowIndex == -1)
+            {
                 rowIndex = fieldItem.RowIndex;
             }
 
             Object value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
-            if(value == null)
+            if (value == null)
             {
                 Loger.log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
                 return;
@@ -329,10 +331,10 @@ namespace LZRNS.ExcelLoader
             }
 
             return playersCount;
-            
+
         }
 
-        private bool CheckIfPageIsEmty (IXLRows rows, int rowIndex, int colunmIndex)
+        private bool CheckIfPageIsEmty(IXLRows rows, int rowIndex, int colunmIndex)
         {
             bool isEmpty = false;
 
@@ -344,16 +346,19 @@ namespace LZRNS.ExcelLoader
             return isEmpty;
         }
 
-        private void AddPlayerScore ( PlayerScore ps)
+        private void AddPlayerScore(PlayerScore ps)
         {
             List<PlayerScore> list;
-
-            if (playerStores.TryGetValue(ps.NameAndLastName, out list)) {
-                list.Add(ps);
-            } else
+            if (!ps.NameAndLastName.Equals(String.Empty))
             {
-                //what if two players have the same name
-                playerStores[ps.NameAndLastName] = new List<PlayerScore>() { ps };
+                if (playerStores.TryGetValue(ps.NameAndLastName, out list))
+                {
+                    list.Add(ps);
+                }
+                else
+                {
+                    playerStores[ps.NameAndLastName] = new List<PlayerScore>() { ps };
+                }
             }
         }
 

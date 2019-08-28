@@ -1,4 +1,5 @@
 ﻿using LZRNS.DomainModels.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -37,7 +38,7 @@ namespace LZRNS.DomainModel.Models
 
 
 		[Required(ErrorMessage = "Godište je obavezno polje.")]
-		[Range(1900, 2100, ErrorMessage = "Vrednost mora biti između 1900 i 2100")]
+		//[Range(1900, 2100, ErrorMessage = "Vrednost mora biti između 1900 i 2100")]
 		[DisplayName("Godište")]
 		public int YearOfBirth { get; set; }
 
@@ -45,7 +46,11 @@ namespace LZRNS.DomainModel.Models
 		[DisplayName("Slika")]
 		public HttpPostedFileBase ImageFile { get; set; }
 
-		public virtual ICollection<Stats> Stats { get; set; }
+        [ForeignKey("Team_Id")]
+        public virtual Team Team { get; set; }
+        public Guid? Team_Id { get; set; }
+
+        public virtual ICollection<Stats> Stats { get; set; }
 
 		public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 
