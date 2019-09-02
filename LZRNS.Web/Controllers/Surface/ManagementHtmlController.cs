@@ -28,7 +28,6 @@ namespace LZRNS.Web.Controllers.Surface
 				!gamesDate.HasValue) return new EmptyResult();
 
             //debug
-           
             var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 					.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))?
 					.Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)

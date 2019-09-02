@@ -111,6 +111,14 @@
     <Compile Include="Migrations\201908280854480_add-player-team.Designer.cs">
       <DependentUpon>201908280854480_add-player-team.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201908290728178_add-player-uid.cs" />
+    <Compile Include="Migrations\201908290728178_add-player-uid.Designer.cs">
+      <DependentUpon>201908290728178_add-player-uid.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201908291130408_update-playerperteam-stats.cs" />
+    <Compile Include="Migrations\201908291130408_update-playerperteam-stats.Designer.cs">
+      <DependentUpon>201908291130408_update-playerperteam-stats.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
@@ -183,6 +191,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201908280854480_add-player-team.resx">
       <DependentUpon>201908280854480_add-player-team.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908290728178_add-player-uid.resx">
+      <DependentUpon>201908290728178_add-player-uid.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201908291130408_update-playerperteam-stats.resx">
+      <DependentUpon>201908291130408_update-playerperteam-stats.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,7 +2,7 @@
 
 namespace LZRNS.ExcelLoader
 {
-    class FieldItem
+    public class FieldItem
     {
         private String cellName;
         private Type propertyType;

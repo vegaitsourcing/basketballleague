@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
-using ExL = LZRNS.ExcelLoader;
+using ExL = LZRNS.ExcelLoader.ExcelReader;
 
 using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
@@ -13,6 +13,8 @@ using LZRNS.DomainModel.Context;
 using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.AdditionalModels.Forms;
 using System;
+using LZRNS.ExcelLoader;
+//using LZRNS.ExcelLoader.ExcelReader;
 
 namespace LZRNS.Web.Controllers.Management
 {
@@ -64,6 +66,12 @@ namespace LZRNS.Web.Controllers.Management
         }
 
 
+        //helper
+        public bool IsFilePlayersCodeList(string fileName)
+        {
+            return fileName.Split('-').Last().Contains("codelist");
+        }
+
         [HttpPost]
         public ActionResult Index([Bind(Prefix = nameof(ImportModel.FormModel))]ImportFormModel model)
         {
@@ -72,11 +80,31 @@ namespace LZRNS.Web.Controllers.Management
                 ModelState.AddModelError("", "Niste odabrali dokument za import.");
                 return View(new ImportModel(CurrentPage));
             }
+            //ExL.AbstractExcelLoader = null;
+            ExL.AbstractExcelLoader loader = null;
 
-            ExL.ExcelLoader loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
+            //loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
             TimeTableLoader.Converter.Converter converter = new TimeTableLoader.Converter.Converter();
+
+
+            //here, there is two paths to execute 
+            //1) if player code list is in files - importing
+            //2) if there is not - analyzing
+            bool doImport = false;
+            if (model.Files.Select(file => IsFilePlayersCodeList(file.FileName)).Contains(true))
+            {
+                //importer
+                loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
+                doImport = true;
+            }
+            else
+            {
+                //analyzer
+                loader = new ExL.ExcelAnalyzer(Server.MapPath("~/App_Data/TableMapper_analyzer.config"));
+            }
             foreach (var file in model.Files)
             {
+                //break;
                 if (file != null)
                 {
                     var memStr = GetFileAsMemoryStream(file);
@@ -87,15 +115,33 @@ namespace LZRNS.Web.Controllers.Management
                         converter.SaveToDb();
                     }
                     else
-                    {
-                        //file.FileName
+                    {   //NOTE: removed for debug only
                         loader.ProcessFile(memStr, file.FileName);
+                        
+
                     }
                 }
             }
 
-            PopulateEntityModel(loader, loader.SeasonName, loader.LeagueName);
-
+            if (doImport)
+            {
+                PopulateEntityModel((ExL.ExcelLoader)loader, loader.SeasonName, loader.LeagueName);
+            }
+            else
+            {
+                ExL.DataParser writer = new ExL.DataParser(_db, loader);
+                var playerInfoList = writer.GetPlayersInfoList();
+                ExcelLoader.ExcelWriter excelWriter = new ExcelLoader.ExcelWriter();
+                excelWriter.CreateHeader();
+                
+                excelWriter.WritePlayerInfoList(playerInfoList);
+                string codingListsDirectory = Server.MapPath("~/coding-lists/");
+                if (!Directory.Exists(codingListsDirectory))
+                {
+                    Directory.CreateDirectory(codingListsDirectory);
+                }
+                excelWriter.SaveAndRelease(codingListsDirectory + loader.SeasonName + "-" + loader.LeagueName + ".xlsx");
+            }
             return View(new ImportModel(CurrentPage));
         }
 
@@ -103,7 +149,7 @@ namespace LZRNS.Web.Controllers.Management
         private void PopulateEntityModel(ExL.ExcelLoader loadedData, string seasonName, string leagueName)
         {
             //BasketballDbContext db = new BasketballDbContext();
-            /*use season repoinstead of context*/
+            /*use season repo instead of context*/
 
             bool ToUpdate = true;
 
@@ -178,7 +224,7 @@ namespace LZRNS.Web.Controllers.Management
                 leagueSeason.Rounds = new List<Round>();
             }
 
-            List<Team> teams = PopulateTeamEntityModel(loadedData);
+            List<Team> teams = PopulateTeamEntityModel(loadedData, leagueSeason);
 
             if (leagueSeason.Teams != null)
             {
@@ -195,7 +241,7 @@ namespace LZRNS.Web.Controllers.Management
                         roundCounter++;
                         round.LeagueSeason = leagueSeason;
                         _db.Rounds.Add(round);
-                      
+
                     }
                 }
             }
@@ -203,7 +249,7 @@ namespace LZRNS.Web.Controllers.Management
             {
                 leagueSeason.Teams = teams;
             }
-          
+
 
             //DAL
             //_seasonRepo.AddLeagueToSeason(leagueSeason);
@@ -222,14 +268,15 @@ namespace LZRNS.Web.Controllers.Management
 
         }
 
-        private List<Team> PopulateTeamEntityModel(ExL.ExcelLoader loadedData)
+        private List<Team> PopulateTeamEntityModel(ExL.ExcelLoader loadedData, LeagueSeason leagueSeason)
         {
             List<Team> teamsList = new List<Team>();
             bool isAdded = false;
             foreach (KeyValuePair<string, HashSet<string>> keyValuePair in loadedData.TeamAndPlayers)
             {
                 isAdded = false;
-                Team team = _db.Teams.Where(t => t.TeamName.Equals(keyValuePair.Key) && t.LeagueSeason.Season.Name.Equals(loadedData.SeasonName)).FirstOrDefault();
+                Team team = _db.Teams.Where(t => t.TeamName.Equals(keyValuePair.Key) && t.LeagueSeason == leagueSeason).FirstOrDefault();
+                //t.LeagueSeason.Season.Name.Equals(loadedData.SeasonName)).FirstOrDefault();
                 //DAL
                 //_teamRepo.FindTeam(keyValuePair.Key, loadedData.SeasonName);
                 if (team == null)
@@ -238,11 +285,12 @@ namespace LZRNS.Web.Controllers.Management
                     //NOTE:remove guid
                     team.Id = Guid.NewGuid(); ;
                     team.TeamName = keyValuePair.Key;
+                    team.LeagueSeason = leagueSeason;
                     isAdded = true;
                 }
 
 
-                team.Players = GeneratePlayers(loadedData, keyValuePair.Value);
+                team.Players = GeneratePlayers(loadedData, keyValuePair.Value, team.Id);
 
                 if (isAdded)
                 {
@@ -263,16 +311,16 @@ namespace LZRNS.Web.Controllers.Management
 
         }
 
-        private List<Player> GeneratePlayers(ExL.ExcelLoader loadedData, HashSet<string> playersIds)
+        private List<Player> GeneratePlayers(ExL.ExcelLoader loadedData, HashSet<string> playersIds, Guid teamId)
         {
             List<Player> playerList = new List<Player>(playersIds.Count);
 
             foreach (string playerId in playersIds)
             {
-                List<ExL.PlayerScore> scores = loadedData.GetPlayerScoreList(playerId);
+                List<PlayerScore> scores = loadedData.GetPlayerScoreList(playerId);
                 if (scores != null && scores.Count > 0)
                 {
-                    Player p = PopulatePlayerEntityModel(scores);
+                    Player p = PopulatePlayerEntityModel(scores, teamId);
                     playerList.Add(p);
                 }
             }
@@ -280,15 +328,17 @@ namespace LZRNS.Web.Controllers.Management
         }
 
 
-        private Player PopulatePlayerEntityModel(List<ExL.PlayerScore> playerScores)
+        private Player PopulatePlayerEntityModel(List<PlayerScore> playerScores, Guid teamId)
         {
             Player player = null;
             //BasketballDbContext db = new BasketballDbContext();
             //_playerRepo.GetPlayerByName()
             ///_teamRepo.
-            ExL.PlayerScore pScore = playerScores.First();
+            ///
 
-            //player = _db.Players.Where(p => p.Name == pScore.FirstName && p.LastName == pScore.LastName && p.MiddleName == pScore.MiddleName).FirstOrDefault();
+            PlayerScore pScore = playerScores.First();
+
+            player = _db.Players.Where(p => p.Name == pScore.FirstName && p.LastName == pScore.LastName && p.MiddleName == pScore.MiddleName && p.Team_Id == teamId).FirstOrDefault();
             //_playerRepo.GetPlayerByName(pScore.FirstName, pScore.LastName, pScore.MiddleName);
             if (player == null)
             {
@@ -326,7 +376,7 @@ namespace LZRNS.Web.Controllers.Management
 
         //}
 
-        private Stats PopulateStats(ExL.PlayerScore ps)
+        private Stats PopulateStats(PlayerScore ps)
         {
             //BasketballDbContext db = new BasketballDbContext();
             Stats stats = new Stats()

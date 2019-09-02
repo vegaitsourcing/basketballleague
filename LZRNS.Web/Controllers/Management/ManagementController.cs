@@ -27,8 +27,9 @@ namespace LZRNS.Web.Controllers.Management
 			{
 				return View(LoginViewPath, model);
 			}
-			
-			model.ResultsRoundGames = _seasonRepo.GetSeasonByYear(model.StatisticsSettings.SeasonYearStart)
+
+
+            model.ResultsRoundGames = _seasonRepo.GetSeasonByYear(model.StatisticsSettings.SeasonYearStart)
 				.LeagueSeasons.First( /*TODO: INSERT LEAGUE ID PLS*/)
 				.Rounds.Where(x => x.RoundName.Equals(model.StatisticsSettings.ResultsRound))
 				.SelectMany(y => y.Games)

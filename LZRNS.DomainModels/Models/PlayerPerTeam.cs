@@ -1,5 +1,6 @@
 ﻿using LZRNS.DomainModel.Models;
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LZRNS.DomainModels.Models
 {
@@ -12,5 +13,9 @@ namespace LZRNS.DomainModels.Models
         public virtual Team Team { get; set; }
 
         public Guid TeamId { get; set; }
+
+        [ForeignKey("LeagueSeason_Id")]
+        public virtual LeagueSeason  LeagueSeason { get; set; }
+        public Guid? LeagueSeason_Id { get; set; }
     }
 }

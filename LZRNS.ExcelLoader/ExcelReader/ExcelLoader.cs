@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using LZRNS.ExcelLoader.ExcelReader;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,19 +7,19 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace LZRNS.ExcelLoader
+namespace LZRNS.ExcelLoader.ExcelReader
 {
-    public class ExcelLoader
+    public class ExcelLoader:AbstractExcelLoader
     {
         #region Private Fields
-        private XLWorkbook exApp;
-        private IXLWorksheets sheets;
+     //   private XLWorkbook exApp;
+      //  private IXLWorksheets sheets;
 
         // key represent team name (I will change that later)
         private Dictionary<string, TeamStatistic> teams;
 
         // key represent team name, list of player names
-        private Dictionary<string, HashSet<string>> teamAndPlayers;
+        //private Dictionary<string, HashSet<string>> teamAndPlayers;
 
         // key represent player full name
         private Dictionary<string, List<PlayerScore>> playerStores;
@@ -26,13 +27,13 @@ namespace LZRNS.ExcelLoader
         //key represent team name (unique), the value dictionary should have the following form - season:value, league:value
         //private Dictionary<string, Dictionary<string, string>> teamsSeasonAndLeague;
 
-        private string _seasonName;
-        private string _leagueName;
+     //   private string _seasonName;
+     //   private string _leagueName;
 
 
 
-        private MapperModel mapper;
-        private int maxPlayerPerMatch = 12;
+       // private MapperModel mapper;
+        //private int maxPlayerPerMatch = 12;
 
         #endregion Private Fields
 
@@ -47,27 +48,26 @@ namespace LZRNS.ExcelLoader
         {
             get { return playerStores; }
         }
+        /*
         public Dictionary<string, HashSet<string>> TeamAndPlayers
         {
             get { return teamAndPlayers; }
-        }
+        }*/
 
-        public string SeasonName { get => _seasonName; set => _seasonName = value; }
-        public string LeagueName { get => _leagueName; set => _leagueName = value; }
+      //  public string SeasonName { get => _seasonName; set => _seasonName = value; }
+      //  public string LeagueName { get => _leagueName; set => _leagueName = value; }
 
         #endregion Properies
 
 
         #region Constructors
-        public ExcelLoader(string configPath)
+        public ExcelLoader(string configPath):base(configPath)
         {
             Loger.log.Debug("Start main proces");
-            this.teams = new Dictionary<string, TeamStatistic>();
-            this.playerStores = new Dictionary<string, List<PlayerScore>>();
-            this.teamAndPlayers = new Dictionary<string, HashSet<string>>();
-
-
-            this.mapper = new MapperModel(configPath);
+            teams = new Dictionary<string, TeamStatistic>();
+            playerStores = new Dictionary<string, List<PlayerScore>>();
+            //this.teamAndPlayers = new Dictionary<string, HashSet<string>>();
+            //mapper = new MapperModel(configPath);
 
         }
         #endregion Constructors
@@ -78,15 +78,15 @@ namespace LZRNS.ExcelLoader
             try
             {
 
-                using (exApp = new XLWorkbook(path))
+                using (ExApp = new XLWorkbook(path))
                 {
-                    Load(exApp, fileName);
+                    Load(ExApp, fileName);
                 }
             }
             finally
             {
-                sheets = null;
-                exApp = null;
+                Sheets = null;
+                ExApp = null;
 
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
@@ -97,15 +97,15 @@ namespace LZRNS.ExcelLoader
         {
             try
             {
-                using (exApp = new XLWorkbook(memoryStream))
+                using (ExApp = new XLWorkbook(memoryStream))
                 {
-                    Load(exApp, fileName);
+                    Load(ExApp, fileName);
                 }
             }
             finally
             {
-                sheets = null;
-                exApp = null;
+                Sheets = null;
+                ExApp = null;
 
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
@@ -119,65 +119,13 @@ namespace LZRNS.ExcelLoader
 
             return scores;
         }
+        
+
+        
+    
         #endregion Public Methods
-
-        #region Private Methods
-        private void Load(XLWorkbook exApp, string fileName)
-        {
-            //fileName should have the following format - teamName-seasonName-leagueName.xlsx (at least one file)
-            int currentSheetNo = 0;
-
-            //string nameWithExtension = fileName.Split(new string[] { "stats-teams-" }, StringSplitOptions.None).Last();
-
-            string[] nameParts = fileName.Split('-');
-
-            string teamName = nameParts[2];
-            if (teamName.Contains(".xlsx"))
-            {
-                teamName = teamName.Substring(0, teamName.Length - 5);
-            }
-            //only one file will determine SeasonName and LeagueName - first with appropriate filename structure
-            if (nameParts.Length == 5 && SeasonName == null && LeagueName == null)
-            {
-                SeasonName = nameParts[3];
-                LeagueName = nameParts[4].Substring(0, nameParts[4].Length - 5);
-            }
-
-            Loger.log.Debug("Loading data for team: " + teamName);
-
-            sheets = exApp.Worksheets;
-
-            //Only for first sheet we want to check validation for mapping fields configuration
-            foreach (IXLWorksheet sheet in sheets)
-            {
-                //check file format/mapping
-                CheckMappingValidation(mapper, sheet);
-                break;
-            }
-
-            TeamStatistic teamStatistic = new TeamStatistic(teamName);
-            bool isPageEmpty;
-
-            foreach (IXLWorksheet sheet in sheets)
-            {
-                // for odd sheet we want to skip loading
-                if (currentSheetNo % 2 == 0)
-                {
-                    ///process sheet by sheet
-                    ProcessSheet(sheet, ref teamStatistic, out isPageEmpty);
-                    //if (isPageEmpty)
-                    //{
-                    //    break;
-                    //}
-                    //NOTE:only for debug
-                    //break;
-                }
-                currentSheetNo++;
-            }
-
-            teams[teamStatistic.TeamName] = teamStatistic;
-        }
         //tested
+        /*
         private void CheckMappingValidation(MapperModel mapper, IXLWorksheet sheet)
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -210,7 +158,8 @@ namespace LZRNS.ExcelLoader
             //Loger.log.Debug("CheckMappingValidation Successfully completed for time: " + stopwatch.Elapsed);
 
         }
-
+        */
+        #region Private Methods
         private void ProcessSheet(IXLWorksheet sheet, ref TeamStatistic teamStatistic, out bool isEmptyPage)
         {
             //Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
@@ -225,11 +174,11 @@ namespace LZRNS.ExcelLoader
             teamScore.RoundName = sheet.Name;
             int currentRowNo;
 
-            IEnumerable<FieldItem> globalFields = mapper.Fields.FindAll(i => i.GlobalField == true);
-            currentRowNo = mapper.Fields.First().RowIndex;
+            IEnumerable<FieldItem> globalFields = Mapper.Fields.FindAll(i => i.GlobalField == true);
+            currentRowNo = Mapper.Fields.First().RowIndex;
 
             // we are incrasing rowNo because currentRow reprenset row where is header placed!
-            if (CheckIfPageIsEmty(rows, currentRowNo + 1, mapper.Fields.First().ColumnIndex))
+            if (CheckIfPageIsEmty(rows, currentRowNo + 1, Mapper.Fields.First().ColumnIndex))
             {
                 Loger.log.Debug("ProcessSheet: Sheet: " + sheet.Name + ", is empty for Team: " + teamStatistic.TeamName);
                 isEmptyPage = true;
@@ -240,9 +189,9 @@ namespace LZRNS.ExcelLoader
             PopulateModelField(teamScore, rows, globalFields, currentRowNo + 1);
 
             // When we start to load data for each player, we must take row number of headers and then increase it for 1
-            currentRowNo = mapper.Fields.First().RowIndex;
-            IEnumerable<FieldItem> otherFields = mapper.Fields.FindAll(i => i.GlobalField == false);
-            int playerCount = CalculatePlayerCount(rows, currentRowNo, otherFields.First().ColumnIndex, maxPlayerPerMatch);
+            currentRowNo = Mapper.Fields.First().RowIndex;
+            IEnumerable<FieldItem> otherFields = Mapper.Fields.FindAll(i => i.GlobalField == false);
+            int playerCount = CalculatePlayerCount(rows, currentRowNo, otherFields.First().ColumnIndex, MaxPlayerPerMatch);
 
             for (int i = 1; i < playerCount; i++)
             {
@@ -265,7 +214,7 @@ namespace LZRNS.ExcelLoader
             teamStatistic.AddTeamScore(teamScore);
 
         }
-
+        /*
         private void PopulateModelField(Object modelObj, IXLRows exlRange, IEnumerable<FieldItem> fields, int rowIndex = -1)
         {
             foreach (FieldItem fieldItem in fields)
@@ -316,6 +265,7 @@ namespace LZRNS.ExcelLoader
         }
 
         /* This method used to calculate number of rows that are populated for players statistic */
+        /*
         private int CalculatePlayerCount(IXLRows exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
         {
             int playersCount = 0;
@@ -345,7 +295,7 @@ namespace LZRNS.ExcelLoader
 
             return isEmpty;
         }
-
+        */
         private void AddPlayerScore(PlayerScore ps)
         {
             List<PlayerScore> list;
@@ -362,19 +312,60 @@ namespace LZRNS.ExcelLoader
             }
         }
 
-        private void AddPlayerInTeam(string team, string playerName)
+        public override void Load(XLWorkbook exApp, string fileName)
         {
-            HashSet<string> players;
+            /*
+          //fileName should have the following format - teamName-seasonName-leagueName.xlsx (at least one file)
+          int currentSheetNo = 0;
 
-            if (teamAndPlayers.TryGetValue(team, out players))
+          //string nameWithExtension = fileName.Split(new string[] { "stats-teams-" }, StringSplitOptions.None).Last();
+
+          string[] nameParts = fileName.Split('-');
+
+          string teamName = nameParts[2];
+          if (teamName.Contains(".xlsx"))
+          {
+              teamName = teamName.Substring(0, teamName.Length - 5);
+          }
+          //only one file will determine SeasonName and LeagueName - first with appropriate filename structure
+          if (nameParts.Length == 5 && SeasonName == null && LeagueName == null)
+          {
+              SeasonName = nameParts[3];
+              LeagueName = nameParts[4].Substring(0, nameParts[4].Length - 5);
+          }
+
+          Loger.log.Debug("Loading data for team: " + teamName);
+
+          sheets = exApp.Worksheets;
+
+          //Only for first sheet we want to check validation for mapping fields configuration
+          foreach (IXLWorksheet sheet in sheets)
+          {
+              //check file format/mapping
+              CheckMappingValidation(mapper, sheet);
+              break;
+          }
+          */
+
+            string teamName = CheckFileStructure(exApp, fileName);
+            int currentSheetNo = 0;
+
+            TeamStatistic teamStatistic = new TeamStatistic(teamName);
+            bool isPageEmpty;
+
+            foreach (IXLWorksheet sheet in Sheets)
             {
-                players.Add(playerName);
-            }
-            else
-            {
-                teamAndPlayers[team] = new HashSet<string>() { playerName };
+                // for odd sheet we want to skip loading
+                if (currentSheetNo % 2 == 0)
+                {
+                    ///process sheet by sheet
+                    ProcessSheet(sheet, ref teamStatistic, out isPageEmpty);
+
+                }
+                currentSheetNo++;
             }
 
+            teams[teamStatistic.TeamName] = teamStatistic;
         }
 
         #endregion Private Methods

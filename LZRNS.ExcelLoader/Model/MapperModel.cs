@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace LZRNS.ExcelLoader
 {
-    class MapperModel
+    public class MapperModel
     {
         #region Private fields
         // key represent PropertyName

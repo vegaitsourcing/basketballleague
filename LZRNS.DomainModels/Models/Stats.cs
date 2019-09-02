@@ -6,48 +6,50 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LZRNS.DomainModels.Models
 {
-	public class Stats : AbstractModel
-	{
-		[Required]
-		public Guid GameId { get; set; }
+    public class Stats : AbstractModel
+    {
+        [Required]
+        public Guid GameId { get; set; }
 
-		[ForeignKey("GameId")]
-		public virtual Game Game { get; set; }
+        [ForeignKey("GameId")]
+        public virtual Game Game { get; set; }
 
-		[Required]
-		public Guid PlayerId { get; set; }
+        [Required]
+        public Guid PlayerId { get; set; }
 
-		[ForeignKey("PlayerId")]
-		public virtual Player Player { get; set; }
+        [ForeignKey("PlayerId")]
+        public virtual Player Player { get; set; }
 
-		[Required(ErrorMessage = "Broj dresa je obavezno polje.")]
-		[StringLength(2, MinimumLength = 1)]
-		[DisplayName("Broj dresa")]
-		[RegularExpression("^[0-9]*$", ErrorMessage = "Broj dresa mora biti broj.")]
-		public string JerseyNumber { get; set; }
+        [Required(ErrorMessage = "Broj dresa je obavezno polje.")]
+        [StringLength(2, MinimumLength = 1)]
+        [DisplayName("Broj dresa")]
+        [RegularExpression("^[0-9]*$", ErrorMessage = "Broj dresa mora biti broj.")]
+        public string JerseyNumber { get; set; }
 
-		[Required]
-		public int MinutesPlayed { get; set; }
+        [Required]
+        public int MinutesPlayed { get; set; }
 
-		[Required]
-		public int TwoPtMissed { get; set; }
+        [Required]
+        public int TwoPtMissed { get; set; }
 
-		[Required]
-		public int TwoPtMade { get; set; }
+        [Required]
+        public int TwoPtMade { get; set; }
 
-		public int TwoPtA => TwoPtMade + TwoPtMissed;
+        public int TwoPtA => TwoPtMade + TwoPtMissed;
 
-		public double TwoPtPerc =>
-			TwoPtA is 0 ? 0 : Math.Round((double)TwoPtMade / TwoPtA * 100, 1);
+        public double TwoPtPerc =>
+            TwoPtA is 0 ? 0 : Math.Round((double)TwoPtMade / TwoPtA * 100, 1);
 
-		[Required]
-		public int ThreePtMissed { get; set; }
+        [Required]
+        public int ThreePtMissed { get; set; }
 
-		[Required]
-		public int ThreePtMade { get; set; }
+        [Required]
+        public int ThreePtMade { get; set; }
 
+        public Boolean OnLoan { get; set; }
+      
 
-		public int ThreePtA => ThreePtMade + ThreePtMissed;
+        public int ThreePtA => ThreePtMade + ThreePtMissed;
 
 		public double ThreePtPerc =>
 			ThreePtA is 0 ? 0 : Math.Round((double)ThreePtMade / ThreePtA * 100, 1);
