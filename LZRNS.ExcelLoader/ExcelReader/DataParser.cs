@@ -20,6 +20,9 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         private ExcelAnalyzer Analyzer { get => _analyzer; set => _analyzer = value; }
         private BasketballDbContext Db { get { return _db; } }
+
+        //helper property
+        private string LeagueSeasonName { get => Analyzer.SeasonName + "-" + Analyzer.LeagueName; }
         #endregion
 
         #region[constructors]
@@ -85,7 +88,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
         }
         #endregion
 
-        public PlayerInfo CreatePlayerInfo(Player p, bool onLoan)
+        public PlayerInfo CreatePlayerInfo(Player p, bool onLoan, string newTeamName)
         {
 
             PlayerInfo playerInfo = new PlayerInfo();
@@ -98,13 +101,15 @@ namespace LZRNS.ExcelLoader.ExcelReader
             playerInfo.OnLoan = onLoan;
             playerInfo.UId = (p.UId != null) ? p.UId.ToString() : Guid.NewGuid().ToString();
             //create Player Info constructor with parameters
+            playerInfo.NewTeamName = newTeamName;
+            playerInfo.NewLeagueSeasonName = LeagueSeasonName;
             return playerInfo;
 
 
 
         }
 
-        public PlayerInfo CreateNewPlayerInfo(string fullName)
+        public PlayerInfo CreateNewPlayerInfo(string fullName, string newTeamName)
         {
 
             PlayerInfo playerInfo = new PlayerInfo();
@@ -114,13 +119,15 @@ namespace LZRNS.ExcelLoader.ExcelReader
             playerInfo.OnLoan = false;
             playerInfo.UId = Guid.NewGuid().ToString();
             //create Player Info constructor with parameters
+            playerInfo.NewTeamName = newTeamName;
+            playerInfo.NewLeagueSeasonName = LeagueSeasonName;
             return playerInfo;
 
 
 
         }
         
-        public List<PlayerInfo> GetPlayerInfosForTeam(Dictionary<string, List<PlayerInfo>> playerInfoList)
+        public List<PlayerInfo> GetPlayerInfosForTeam(Dictionary<string, List<PlayerInfo>> playerInfoList, string teamName)
         {
             List<PlayerInfo> playersInfoList = new List<PlayerInfo>();
 
@@ -141,7 +148,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 {
                     //skip situation, we assume person who wrote down data to excel mada a mistake
                     //onLoan = (onLoan) ? !onLoan : onLoan;
-                   playersInfoList.Add(CreateNewPlayerInfo(playerName));
+                   playersInfoList.Add(CreateNewPlayerInfo(playerName, teamName));
 
                     
                 }
@@ -150,7 +157,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 {
                     foreach (Player player in players)
                     {
-                        playersInfoList.Add(CreatePlayerInfo(player, onLoan));
+                        playersInfoList.Add(CreatePlayerInfo(player, onLoan, teamName));
 
                     }
                 }
@@ -168,7 +175,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             foreach(KeyValuePair<string, Dictionary<string, List<PlayerInfo>>> kvp in Analyzer.TeamPlayerInfos)
             {
                 string teamName = kvp.Key;
-                playersInfoList.AddRange(GetPlayerInfosForTeam(kvp.Value));
+                playersInfoList.AddRange(GetPlayerInfosForTeam(kvp.Value, teamName));
 
             }
 

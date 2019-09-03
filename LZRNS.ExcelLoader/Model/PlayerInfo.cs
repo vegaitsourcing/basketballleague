@@ -65,11 +65,14 @@ namespace LZRNS.ExcelLoader.Model
                 return string.Empty;
             }
         }
-        public Boolean OnLoan { get; set; }
+        public bool OnLoan { get; set; }
         public string UId { get; set; }
 
         public string PreviousLeagueSeasonName { get; set; }
         public string PreviousTeamName { get; set; }
+
+        public string NewLeagueSeasonName { get; set; }
+        public string NewTeamName { get; set; }
 
 
     }

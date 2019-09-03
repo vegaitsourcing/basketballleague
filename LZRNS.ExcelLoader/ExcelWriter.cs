@@ -31,8 +31,10 @@ namespace LZRNS.ExcelLoader
         {
             _xlWorkSheet.Cells[1, 1] = "ID";
             _xlWorkSheet.Cells[1, 2] = "Ime i prezime";
-            _xlWorkSheet.Cells[1, 3] = "Tim";
-            _xlWorkSheet.Cells[1, 4] = "Sezona - liga";
+            _xlWorkSheet.Cells[1, 3] = "Stari tim";
+            _xlWorkSheet.Cells[1, 4] = "Stara sezona - liga";
+            _xlWorkSheet.Cells[1, 5] = "Novi tim";
+            _xlWorkSheet.Cells[1, 6] = "Nova sezona - liga";
             _lastPopulatedRow = 1;
 
         }
@@ -53,6 +55,8 @@ namespace LZRNS.ExcelLoader
             _xlWorkSheet.Cells[_lastPopulatedRow, 2] = playerInfo.NameAndLastName;
             _xlWorkSheet.Cells[_lastPopulatedRow, 3] = playerInfo.PreviousTeamName;
             _xlWorkSheet.Cells[_lastPopulatedRow, 4] = playerInfo.PreviousLeagueSeasonName;
+            _xlWorkSheet.Cells[_lastPopulatedRow, 5] = playerInfo.NewTeamName;
+            _xlWorkSheet.Cells[_lastPopulatedRow, 6] = playerInfo.NewLeagueSeasonName;
 
         }
 

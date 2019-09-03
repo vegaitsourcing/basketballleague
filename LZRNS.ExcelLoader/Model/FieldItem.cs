@@ -56,8 +56,24 @@ namespace LZRNS.ExcelLoader
                     Loger.log.Error("FieldItem - GetValueConverted: datetime in not formated rawValue:" + rawValue.ToString());
                    return DateTime.MinValue;
                 }
-                    return Convert.ChangeType(rawValue, propertyType);
+                else if (propertyType == typeof(Boolean))
+                {
+
+                    if (rawValue is Boolean)
+                    {
+                        return (Boolean)rawValue;
+                    }
+
+                    bool b = false;
+                    if(rawValue.ToString().Equals("1"))
+                    {
+                        b = true;
+                    }
+                    return b;                   
                 }
+                    return Convert.ChangeType(rawValue, propertyType);
+                
+            }
             catch (Exception ex)
             {
                 Loger.log.Error("FieldItem - GetValueConverted: Field: " + propertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);

@@ -33,7 +33,7 @@ namespace LZRNS.DomainModel.Models
 		public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 
 		public virtual ICollection<Game> Games =>
-			this.LeagueSeason?.Rounds
+			this.LeagueSeason?.Rounds?
 				.SelectMany(x => x.Games)
 				.Where(y => y.TeamAId.Equals(this.Id) || y.TeamBId.Equals((this.Id)))
 				.ToList() ?? Enumerable.Empty<Game>().ToList();

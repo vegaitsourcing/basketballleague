@@ -71,6 +71,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExcelReader\CodingListLoader.cs" />
     <Compile Include="ExcelReader\ExcelAnalyzer.cs" />
     <Compile Include="ExcelReader\ExcelLoader.cs" />
     <Compile Include="ExcelReader\AbstractExcelLoader.cs" />
