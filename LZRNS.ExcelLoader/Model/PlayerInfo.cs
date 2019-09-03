@@ -68,16 +68,9 @@ namespace LZRNS.ExcelLoader.Model
         public Boolean OnLoan { get; set; }
         public string UId { get; set; }
 
-        public string PreviousLeagueSeasonName {get; set;}
+        public string PreviousLeagueSeasonName { get; set; }
         public string PreviousTeamName { get; set; }
 
-        public PlayerInfo() { }
-        /*
-        public PlayerInfo(Player player)
-        {
-
-        }
-        */
 
     }
 

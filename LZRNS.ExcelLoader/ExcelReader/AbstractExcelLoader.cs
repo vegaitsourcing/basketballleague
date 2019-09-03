@@ -17,9 +17,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
         private XLWorkbook _exApp;
         private IXLWorksheets _sheets;
 
-        // key represent team name (I will change that later)
-        //private Dictionary<string, TeamStatistic> teams;
-
         // key represent team name, list of player names
         private Dictionary<string, HashSet<string>> _teamAndPlayers;
 
@@ -54,21 +51,91 @@ namespace LZRNS.ExcelLoader.ExcelReader
         public AbstractExcelLoader(string configPath)
         {
             Loger.log.Debug("Start main proces");
-            //_teams = new Dictionary<string, TeamStatistic>();
-            //this.playerStores = new Dictionary<string, List<PlayerScore>>();
             _teamAndPlayers = new Dictionary<string, HashSet<string>>();
             Mapper = new MapperModel(configPath);
 
         }
+        #region Public Methods
+        public void ProcessFile(String path, string fileName)
+        {
+            try
+            {
+
+                using (ExApp = new XLWorkbook(path))
+                {
+                    Load(ExApp, fileName);
+                }
+            }
+            finally
+            {
+                Sheets = null;
+                ExApp = null;
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        public void ProcessFile(MemoryStream memoryStream, string fileName)
+        {
+            try
+            {
+                using (ExApp = new XLWorkbook(memoryStream))
+                {
+                    Load(ExApp, fileName);
+                }
+            }
+            finally
+            {
+                Sheets = null;
+                ExApp = null;
+
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+            }
+        }
+
+        public abstract void Load(XLWorkbook exApp, string fileName);
+
         #endregion
+
+        #endregion
+        #region Private Methods
+        private void PopulateModelValue(Object obj, IXLRows exlRange, FieldItem fieldItem, int rowIndex = -1)
+        {
+            var objProperty = obj.GetType().GetProperty(fieldItem.PropertyName, BindingFlags.Public | BindingFlags.Instance);
+            //get the value of the property
+            if (objProperty == null)
+            {
+                Loger.log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
+                // We should log error (currently I will just throw exception to be aware that model and mapping are not matched)
+                //throw new Exception();
+                return;
+            }
+
+            // If we do not explcitly send row index or data should be directly read from cell, then it should be used directly from configuration
+            // Examlple: matchDate doesn not contain header
+            if (fieldItem.DirectCellData == true || rowIndex == -1)
+            {
+                rowIndex = fieldItem.RowIndex;
+            }
+
+            Object value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
+            if (value == null)
+            {
+                Loger.log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
+                return;
+            }
+
+            objProperty.SetValue(obj, fieldItem.GetValueConverted(value));
+
+        }
+        #endregion
+
         #region Protected methods
         protected string CheckFileStructure(XLWorkbook exApp, string fileName)
         {
             //fileName should have the following format - teamName-seasonName-leagueName.xlsx (at least one file)
-            int currentSheetNo = 0;
-
-            //string nameWithExtension = fileName.Split(new string[] { "stats-teams-" }, StringSplitOptions.None).Last();
-
             string[] nameParts = fileName.Split('-');
 
             string teamName = nameParts[2];
@@ -97,7 +164,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
             return teamName;
         }
 
-        //tested
         protected void CheckMappingValidation(MapperModel mapper, IXLWorksheet sheet)
         {
 
@@ -136,35 +202,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             }
         }
 
-        private void PopulateModelValue(Object obj, IXLRows exlRange, FieldItem fieldItem, int rowIndex = -1)
-        {
-            var objProperty = obj.GetType().GetProperty(fieldItem.PropertyName, BindingFlags.Public | BindingFlags.Instance);
-            //get the value of the property
-            if (objProperty == null)
-            {
-                Loger.log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
-                // We should log error (currently I will just throw exception to be aware that model and mapping are not matched)
-                //throw new Exception();
-                return;
-            }
 
-            // If we do not explcitly send row index or data should be directly read from cell, then it should be used directly from configuration
-            // Examlple: matchDate doesn not contain header
-            if (fieldItem.DirectCellData == true || rowIndex == -1)
-            {
-                rowIndex = fieldItem.RowIndex;
-            }
-
-            Object value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
-            if (value == null)
-            {
-                Loger.log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
-                return;
-            }
-
-            objProperty.SetValue(obj, fieldItem.GetValueConverted(value));
-
-        }
 
         protected Object GetCellValue(IXLRows rows, int rowIndex, int columnIndex)
         {
@@ -225,49 +263,9 @@ namespace LZRNS.ExcelLoader.ExcelReader
         }
 
         #endregion
-        #region Public Methods
-        public void ProcessFile(String path, string fileName)
-        {
-            try
-            {
 
-                using (ExApp = new XLWorkbook(path))
-                {
-                    Load(ExApp, fileName);
-                }
-            }
-            finally
-            {
-                Sheets = null;
-                ExApp = null;
 
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-        }
 
-        public void ProcessFile(MemoryStream memoryStream, string fileName)
-        {
-            try
-            {
-                using (ExApp = new XLWorkbook(memoryStream))
-                {
-                    Load(ExApp, fileName);
-                }
-            }
-            finally
-            {
-                Sheets = null;
-                ExApp = null;
-
-                GC.Collect();
-                GC.WaitForPendingFinalizers();
-            }
-        }
-
-        public abstract void Load(XLWorkbook exApp, string fileName);
-       
-        #endregion
 
     }
 }

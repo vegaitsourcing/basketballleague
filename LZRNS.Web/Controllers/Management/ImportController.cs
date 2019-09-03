@@ -21,44 +21,9 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class ImportController : RenderMvcController
     {
-        /*
-        private ITeamRepository _teamRepo;
-        private ISeasonRepository _seasonRepo;
-        private ILeagueRepository _leagueRepo;
-        private IPlayerRepository _playerRepo;
-        */
+
         //add dependency injection principle
         private BasketballDbContext _db = new BasketballDbContext();
-
-        /*
-        public ImportController(ITeamRepository teamRepo)
-        {
-            _teamRepo = teamRepo;
-
-        }
-
-        public ImportController(ITeamRepository teamRepo, ISeasonRepository seasonRepo)
-        {
-            _teamRepo = teamRepo;
-            _seasonRepo = seasonRepo;
-
-        }
-        */
-
-        /*
-    public ImportController(ITeamRepository teamRepo, ISeasonRepository seasonRepo, ILeagueRepository leagueRepo, IPlayerRepository playerRepo)
-    {
-        _teamRepo = teamRepo;
-        _seasonRepo = seasonRepo;
-        _leagueRepo = leagueRepo;
-        _playerRepo = playerRepo;
-
-    }*/
-
-        public ImportController()
-        {
-
-        }
 
         public ActionResult Index(ImportModel model)
         {
@@ -83,9 +48,8 @@ namespace LZRNS.Web.Controllers.Management
             //ExL.AbstractExcelLoader = null;
             ExL.AbstractExcelLoader loader = null;
 
-            //loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
             TimeTableLoader.Converter.Converter converter = new TimeTableLoader.Converter.Converter();
-
+            ActionResult response = null;
 
             //here, there is two paths to execute 
             //1) if player code list is in files - importing
@@ -104,7 +68,6 @@ namespace LZRNS.Web.Controllers.Management
             }
             foreach (var file in model.Files)
             {
-                //break;
                 if (file != null)
                 {
                     var memStr = GetFileAsMemoryStream(file);
@@ -115,10 +78,8 @@ namespace LZRNS.Web.Controllers.Management
                         converter.SaveToDb();
                     }
                     else
-                    {   //NOTE: removed for debug only
+                    {                          
                         loader.ProcessFile(memStr, file.FileName);
-                        
-
                     }
                 }
             }
@@ -126,6 +87,7 @@ namespace LZRNS.Web.Controllers.Management
             if (doImport)
             {
                 PopulateEntityModel((ExL.ExcelLoader)loader, loader.SeasonName, loader.LeagueName);
+                response = View(new ImportModel(CurrentPage));
             }
             else
             {
@@ -133,22 +95,28 @@ namespace LZRNS.Web.Controllers.Management
                 var playerInfoList = writer.GetPlayersInfoList();
                 ExcelLoader.ExcelWriter excelWriter = new ExcelLoader.ExcelWriter();
                 excelWriter.CreateHeader();
-                
+
                 excelWriter.WritePlayerInfoList(playerInfoList);
                 string codingListsDirectory = Server.MapPath("~/coding-lists/");
                 if (!Directory.Exists(codingListsDirectory))
                 {
                     Directory.CreateDirectory(codingListsDirectory);
                 }
-                excelWriter.SaveAndRelease(codingListsDirectory + loader.SeasonName + "-" + loader.LeagueName + ".xlsx");
+                string fileName = loader.SeasonName + "-" + loader.LeagueName + "-" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "-" + "codelist.xlsx";
+                string filePath = codingListsDirectory + fileName;
+
+                excelWriter.SaveAndRelease(filePath);
+                response = File(filePath,
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
+                fileName);
+
             }
-            return View(new ImportModel(CurrentPage));
+            return response;
         }
 
         //private 
         private void PopulateEntityModel(ExL.ExcelLoader loadedData, string seasonName, string leagueName)
         {
-            //BasketballDbContext db = new BasketballDbContext();
             /*use season repo instead of context*/
 
             bool ToUpdate = true;
@@ -249,12 +217,8 @@ namespace LZRNS.Web.Controllers.Management
             {
                 leagueSeason.Teams = teams;
             }
-
-
             //DAL
             //_seasonRepo.AddLeagueToSeason(leagueSeason);
-
-
 
             try
             {
@@ -378,7 +342,6 @@ namespace LZRNS.Web.Controllers.Management
 
         private Stats PopulateStats(PlayerScore ps)
         {
-            //BasketballDbContext db = new BasketballDbContext();
             Stats stats = new Stats()
             {
                 Ast = ps.Assistance,
@@ -398,7 +361,6 @@ namespace LZRNS.Web.Controllers.Management
 
 
             };
-            ///stats.
             //db.Stats.Add(stats);
             return stats;
         }
