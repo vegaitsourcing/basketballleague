@@ -18,8 +18,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
 		public ActionResult Index(ResultsLandingModel model, string ln, string r)
 		{
 			model.CurrentShownLeague = !string.IsNullOrWhiteSpace(ln) ? ln : model.Leagues.FirstOrDefault();
-
-			model.AllRounds =_seasonRepo.GetSeasonByYear(model.SeasonYearStart).LeagueSeasons
+            model.AllRounds =_seasonRepo.GetSeasonByYear(model.SeasonYearStart).LeagueSeasons
 				.First(x => x.League.Name.Equals(model.CurrentShownLeague)).Rounds
 				.Where(y => y.RoundName.CompareTo(model.RoundName) <= 0)
 				.Select(z => z.RoundName)

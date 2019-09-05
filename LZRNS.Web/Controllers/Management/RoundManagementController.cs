@@ -145,8 +145,8 @@ namespace LZRNS.Web.Controllers.Management
                     TeamName = "BYE team"
                 };
 
-                //teams.Add(byeTeam);
-                yield break; // TODO: Remove when proper odd team number support is defined
+                teams.Add(byeTeam);
+                //yield break; // TODO: Remove when proper odd team number support is defined
             }
 
             var numberOfRounds = teams.Count - 1;

@@ -153,6 +153,7 @@ namespace LZRNS.Web.Controllers.Management
             leagueSeason.Rounds = leagueSeason.Rounds ?? new List<Round>();
             CreateTeamsRoundsAndGames(loadedData, leagueSeason);
             PopulateTeamEntityModel(loadedData, playerListData, leagueSeason);
+            //transactional
             try
             {
                 _db.SaveChanges();
@@ -366,6 +367,8 @@ namespace LZRNS.Web.Controllers.Management
         private Round CreateOrGetRound(Guid leagueSeasonId, string roundName)
         {
             Round round = null;
+            //roundname is determined by sheet name - usually GAMEx where x is round number, so use only number part
+            roundName = (roundName.Contains("GAME") && roundName.Length >= 5) ? roundName.Substring(4) : roundName;
             NewRounds.TryGetValue(roundName, out round);
 
             if (round == null)

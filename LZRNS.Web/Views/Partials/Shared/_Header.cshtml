@@ -15,8 +15,10 @@
 					<nav class="main-nav">
 						<ul>
 							@foreach (var navItem in Model.NavigationItems)
-							{
-								<li><a href="@navItem.Url" @(navItem.IsActivePage ? "class=active" : string.Empty)>@navItem.Title</a></li>
+                            {
+                                var title = @navItem.Title.Equals("Igraci") ? "Igrači" : @navItem.Title;
+                               
+								<li><a href="@navItem.Url" @(navItem.IsActivePage ? "class=active" : string.Empty)>@title</a></li>
 							}
 						</ul>
 					</nav>
