@@ -6,16 +6,13 @@ using System.Web;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
 using ExL = LZRNS.ExcelLoader.ExcelReader;
-
 using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModel.Context;
-using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.AdditionalModels.Forms;
 using System;
 using LZRNS.ExcelLoader;
 using LZRNS.ExcelLoader.Model;
-//using LZRNS.ExcelLoader.ExcelReader;
 
 namespace LZRNS.Web.Controllers.Management
 {
@@ -23,8 +20,19 @@ namespace LZRNS.Web.Controllers.Management
     public class ImportController : RenderMvcController
     {
 
-        //add dependency injection principle
+        //TODO: refactor - use repositories instead of context
         private BasketballDbContext _db = new BasketballDbContext();
+
+        private Dictionary<string, Team> _createdTeams = new Dictionary<string, Team>();
+
+        private Dictionary<string, Team> NewTeams { get { return _createdTeams; } set { _createdTeams = value; } }
+        private HashSet<Game> NewGames { get; set; } = new HashSet<Game>();
+        private Dictionary<string, Round> NewRounds { get; set; } = new Dictionary<string, Round>();
+        private Dictionary<string, Player> NewPlayers { get; set; } = new Dictionary<string, Player>();
+        private HashSet<PlayerPerTeam> NewPlayerPerTeamSet { get; set; } = new HashSet<PlayerPerTeam>();
+        private HashSet<Stats> NewPlayersStats { get; set; } = new HashSet<Stats>();
+
+
 
         public ActionResult Index(ImportModel model)
         {
@@ -59,7 +67,6 @@ namespace LZRNS.Web.Controllers.Management
             {
                 //importer
                 loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
-                //ExL.AbstractExcelLoader codingListLoader
                 doImport = true;
                 codingListLoader = new ExL.CodingListLoader(Server.MapPath("~/App_Data/TableMapper_coding_list.config"));
 
@@ -126,23 +133,11 @@ namespace LZRNS.Web.Controllers.Management
         {
             //use season repo instead of context; DAL layer should be used
 
-            Season season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
-
-
+            Season season = CreateOrGetSeason(seasonName);
             LeagueSeason leagueSeason = null;
             League league = null;
-            if (season == null)
-            {
-                season = new Season();
-                season.Name = seasonName;
-                season.SeasonStartYear = Int32.Parse(seasonName);
-                //NOTE: remove guid when repo is activated
-                season.Id = Guid.NewGuid();
-                _db.Seasons.Add(season);
-            }
 
-            //List<League> leagues = _db.Leagues.Where(l => l.Name == leagueName).ToList();
-            leagueSeason = _db.LeagueSeasons.Where(ls => ls.SeasonId == season.Id && ls.League.Name == leagueName).FirstOrDefault();
+            leagueSeason = _db.LeagueSeasons.Where(ls => ls.Season.Id == season.Id && ls.League.Name.Equals(leagueName)).FirstOrDefault();
 
             if (leagueSeason != null)
             {
@@ -151,16 +146,13 @@ namespace LZRNS.Web.Controllers.Management
             else
             {
                 league = CreateLeague(leagueName);
-
                 leagueSeason = CreateLeagueSeason(season.Id, league.Id);
                 _db.LeagueSeasons.Add(leagueSeason);
 
-
             }
             leagueSeason.Rounds = leagueSeason.Rounds ?? new List<Round>();
-
-            List<Team> teams = PopulateTeamEntityModel(loadedData, playerListData, leagueSeason);
-            PopulateRoundsAndGames(loadedData, leagueSeason);
+            CreateTeamsRoundsAndGames(loadedData, leagueSeason);
+            PopulateTeamEntityModel(loadedData, playerListData, leagueSeason);
             try
             {
                 _db.SaveChanges();
@@ -177,18 +169,10 @@ namespace LZRNS.Web.Controllers.Management
             List<Team> teamsList = new List<Team>();
             foreach (KeyValuePair<string, HashSet<string>> keyValuePair in loadedData.TeamAndPlayers)
             {
-                Team team = _db.Teams.Where(t => t.TeamName.Equals(keyValuePair.Key) && t.LeagueSeasonId == leagueSeason.Id).FirstOrDefault();
-                //t.LeagueSeason.Season.Name.Equals(loadedData.SeasonName)).FirstOrDefault();
-                //DAL
-                //_teamRepo.FindTeam(keyValuePair.Key, loadedData.SeasonName);
-                List<PlayerInfo> infoList = codingListData.PlayerInfoList.Where(pi => pi.NewTeamName == team.TeamName).ToList();
-                if (team == null)
-                {
-                    team = CreateTeam(keyValuePair.Key, leagueSeason);
-                }
-
-
-                //team.Players = GeneratePlayers(loadedData, codingListData, keyValuePair.Value, team, leagueSeason);
+                Team team = null;
+                NewTeams.TryGetValue(keyValuePair.Key, out team);
+                List<PlayerInfo> infoList = codingListData.PlayerInfoList.Where(pi => pi.NewTeamName.Equals(team.TeamName)).ToList();
+                team.Players = GeneratePlayersData(loadedData, infoList, keyValuePair.Value, team, leagueSeason);
                 teamsList.Add(team);
             }
 
@@ -196,9 +180,55 @@ namespace LZRNS.Web.Controllers.Management
 
         }
 
-        #region Helper methods
-        //finish this
+        private List<Player> GeneratePlayersData(ExL.ExcelLoader loadedData, List<PlayerInfo> playerInfoList, HashSet<string> playersIds, Team team, LeagueSeason leagueSeason)
+        {
+            List<Player> playerList = new List<Player>(playersIds.Count);
+            Player player;
+            List<Game> games = NewGames.Where(g => g.TeamA.Id == team.Id || g.TeamB.Id == team.Id).ToList();
+            Game game = null;
+            foreach (PlayerInfo info in playerInfoList)
+            {
+                player = CreateOrGetPlayer(info);
+                //player.Team = team;
 
+                
+                List<PlayerScore> scores = loadedData.GetPlayerScoreList(team.TeamName, info.NameAndLastName);
+                foreach (PlayerScore playerScore in scores)
+                {
+                    game = games.FirstOrDefault(g => g.TeamA.TeamName.Equals(playerScore.AgainstTeam) || g.TeamB.TeamName.Equals(playerScore.AgainstTeam));
+                    if (game != null)
+                    {
+                        Stats stats = CreateOrGetStatsForPlayer(playerScore, player, game, info.OnLoan);
+                        player.Stats.Add(stats);
+                    }
+
+                }
+                playerList.Add(player);
+                PlayerPerTeam playerPerTeam = CreateOrGetPlayerPerTeam(player, team, leagueSeason);
+            }
+            return playerList;
+        }
+
+
+        #region Entity creation helper methods
+        private Season CreateOrGetSeason(string seasonName)
+        {
+            Season season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
+            if (season == null)
+            {
+                season = new Season()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = seasonName,
+                    SeasonStartYear = Int32.Parse(seasonName)
+
+                };
+                _db.Seasons.Add(season);
+
+            }
+
+            return season;
+        }
         private League CreateLeague(string leagueName)
         {
             League league = new League()
@@ -231,72 +261,164 @@ namespace LZRNS.Web.Controllers.Management
             {
                 Id = Guid.NewGuid(),
                 TeamName = teamName,
-                LeagueSeason = leagueSeason,
-
+                LeagueSeason = leagueSeason
             };
 
             _db.Teams.Add(team);
+
             return team;
         }
 
-        private void FindTeamsByNames(string teamNameA, string teamNameB, LeagueSeason leagueSeason, out Team teamA, out Team teamB)
+        private void CreateOrGetTeamsByNames(string teamNameA, string teamNameB, LeagueSeason leagueSeason, out Team teamA, out Team teamB)
         {
-            teamA = _db.Teams.FirstOrDefault(t => t.TeamName == teamNameA && t.LeagueSeasonId == leagueSeason.Id);
-            teamB = _db.Teams.FirstOrDefault(t => t.TeamName == teamNameB && t.LeagueSeason.Id == leagueSeason.Id);
-
-            //maybe this can be removed when complete file is uploaded
+            //check in cache first
+            NewTeams.TryGetValue(teamNameA, out teamA);
+            NewTeams.TryGetValue(teamNameB, out teamB);
+            //then in database
             if (teamA == null)
             {
-                teamA = CreateTeam(teamNameA, leagueSeason);
+                teamA = _db.Teams.FirstOrDefault(t => t.TeamName.Equals(teamNameA));
+                if (teamA == null)
+                {
+                    teamA = CreateTeam(teamNameA, leagueSeason);// && t.LeagueSeason.Id == leagueSeason.Id);
+                    //_db.Teams.Add(teamA);
+                }
+                else
+                {
+                    teamA.LeagueSeason = leagueSeason;
+                }
+                NewTeams.Add(teamNameA, teamA);
             }
 
-            if(teamB == null)
+            if (teamB == null)
             {
-                teamB = CreateTeam(teamNameB, leagueSeason);
+                teamB = _db.Teams.FirstOrDefault(t => t.TeamName.Equals(teamNameB));
+                if (teamB == null)
+                {
+                    teamB = CreateTeam(teamNameB, leagueSeason);
+                   // _db.Teams.Add(teamA);
+                }
+                else
+                {
+                    teamB.LeagueSeason = leagueSeason;
+                }
+
+                NewTeams.Add(teamNameB, teamB);
             }
 
         }
-        private Player CreatePlayer()
+        private Player CreateOrGetPlayer(PlayerInfo info)
         {
+            //check in cache
             Player player = null;
+            NewPlayers.TryGetValue(info.UId, out player);
+            if (player == null)
+            {
+                //check in database - previous season import or double import
+                player = _db.Players.FirstOrDefault(pl => pl.UId == info.UId);
+                if (player == null)
+                {
+                    player = new Player()
+                    {
+                        Id = Guid.NewGuid(),
+                        Name = info.FirstName,
+                        LastName = (String.IsNullOrEmpty(info.LastName) || String.IsNullOrWhiteSpace(info.LastName)) ? info.MiddleName : info.LastName,
+                        //in some examples, middlename has value of lastname, check it later, temporary hack
+                        MiddleName = (String.IsNullOrEmpty(info.LastName) || String.IsNullOrWhiteSpace(info.LastName)) ? info.LastName : info.MiddleName,
+                        UId = info.UId,
+                        Stats = new List<Stats>(),
+                    }
+                    ;
+                    _db.Players.Add(player);
+
+                }
+                //put object in cache
+                NewPlayers.Add(player.UId, player);
+            }
             return player;
+        }
+
+        private PlayerPerTeam CreateOrGetPlayerPerTeam(Player player, Team team, LeagueSeason leagueSeason)
+        {
+            PlayerPerTeam playerPerTeam = NewPlayerPerTeamSet.FirstOrDefault(ppt => ppt.Player.Id == player.Id && ppt.Team.Id == team.Id && ppt.LeagueSeason_Id == leagueSeason.Id);
+
+            if (playerPerTeam == null)
+            {
+                playerPerTeam = _db.PlayersPerTeam.FirstOrDefault(ppt => ppt.Player.Id == player.Id && ppt.Team.Id == team.Id && ppt.LeagueSeason_Id == leagueSeason.Id);
+                if (playerPerTeam == null)
+                {
+                    playerPerTeam = new PlayerPerTeam()
+                    {
+                        Id = Guid.NewGuid(),
+                        Player = player,
+                        Team = team,
+                        LeagueSeason = leagueSeason
+                    };
+                    _db.PlayersPerTeam.Add(playerPerTeam);
+
+                }
+                NewPlayerPerTeamSet.Add(playerPerTeam);
+
+            }
+            return playerPerTeam;
         }
 
         private Round CreateOrGetRound(Guid leagueSeasonId, string roundName)
         {
-            Round round = _db.Rounds.FirstOrDefault(r => r.LeagueSeasonId == leagueSeasonId && r.RoundName == roundName);
+            Round round = null;
+            NewRounds.TryGetValue(roundName, out round);
+
             if (round == null)
             {
-                round = new Round()
+                round = _db.Rounds.FirstOrDefault(r => r.LeagueSeason.Id == leagueSeasonId && r.RoundName.Equals(roundName));
+                if (round == null)
                 {
-                    Id = Guid.NewGuid(),
-                    RoundName = roundName,
-                    LeagueSeasonId = leagueSeasonId,
-                    Games = new List<Game>()
-                };
-                _db.Rounds.Add(round);
+                    round = new Round()
+                    {
+                        Id = Guid.NewGuid(),
+                        RoundName = roundName,
+                        LeagueSeasonId = leagueSeasonId,
+                        Games = new List<Game>()
+                    };
+                    _db.Rounds.Add(round);
+                }
+                NewRounds.Add(roundName, round);
 
             }
-
             return round;
         }
 
 
-        private Game CreateOrGetGame(Guid seasonId, Guid roundId, Guid teamAId, Guid teamBId, DateTime dt)
+        private Game CreateOrGetGame(Season season, Round round, Team teamA, Team teamB, DateTime gameDateTime)
         {
-            Game game = _db.Games.FirstOrDefault(g => g.SeasonId == seasonId && g.RoundId == roundId && g.TeamAId == teamAId && g.TeamBId == teamBId && g.DateTime == dt);
+            //if date time format is bad and initial datetime value is set, it will produce SQL exception, so change it
+            DateTime defaultDate = new DateTime(1, 1, 1, 0, 0, 0);
+            if (DateTime.Compare(gameDateTime, defaultDate) == 0)
+            {
+                gameDateTime = new DateTime(1970, 1, 1, 0, 0, 0);
+            }
+
+            Game game = null;
+            game = NewGames.FirstOrDefault(g => g.Season.Id == season.Id && g.Round.Id == round.Id && (g.TeamA.Id == teamA.Id && g.TeamB.Id == teamB.Id) ||
+                    (g.TeamA.Id == teamB.Id && g.TeamB.Id == teamA.Id) && DateTime.Compare(g.DateTime, gameDateTime) == 0);
             if (game == null)
             {
-                game = new Game()
+                game = _db.Games.FirstOrDefault(g => g.Season.Id == season.Id && g.Round.Id == round.Id && (g.TeamA.Id == teamA.Id && g.TeamB.Id == teamB.Id) ||
+                        (g.TeamA.Id == teamB.Id && g.TeamB.Id == teamA.Id) && DateTime.Compare(g.DateTime, gameDateTime) == 0);
+                if (game == null)
                 {
-                    Id = Guid.NewGuid(),
-                    SeasonId = seasonId,
-                    RoundId = roundId,
-                    TeamAId = teamAId,
-                    TeamBId = teamBId,
-                    DateTime = dt
-                };
-                _db.Games.Add(game);
+                    game = new Game()
+                    {
+                        Id = Guid.NewGuid(),
+                        Season = season,
+                        Round = round,
+                        TeamA = teamA,
+                        TeamB = teamB,
+                        DateTime = gameDateTime
+                    };
+                    _db.Games.Add(game);
+                }
+                NewGames.Add(game);
 
             }
 
@@ -304,14 +426,12 @@ namespace LZRNS.Web.Controllers.Management
         }
         #endregion
 
-        private void PopulateRoundsAndGames(ExL.ExcelLoader loader, LeagueSeason leagueSeason)
+        private void CreateTeamsRoundsAndGames(ExL.ExcelLoader loader, LeagueSeason leagueSeason)
         {
             Round round = null;
-            Game game = null;
             string teamName = null;
             string opponentTeamName = null;
             DateTime matchDate;
-            List<TeamStatistic> statistic = null;
             string roundName = null;
             Team teamA = null, teamB = null;
             foreach (KeyValuePair<string, TeamStatistic> teamScore in loader.Teams)
@@ -322,150 +442,59 @@ namespace LZRNS.Web.Controllers.Management
                     opponentTeamName = score.AgainstTeam;
                     matchDate = score.MatchDate;
                     roundName = score.RoundName;
-                    //statistic = score.
                     //create round
                     round = CreateOrGetRound(leagueSeason.Id, roundName);
-                    FindTeamsByNames(teamName, opponentTeamName, leagueSeason, out teamA, out teamB);
+                    CreateOrGetTeamsByNames(teamName, opponentTeamName, leagueSeason, out teamA, out teamB);
 
                     //create game
-                    game = CreateOrGetGame(leagueSeason.SeasonId, round.Id, teamA.Id, teamB.Id, matchDate);
-
+                    CreateOrGetGame(leagueSeason.Season, round, teamA, teamB, matchDate);
+                    //NewGames.Add(game);
 
                 }
             }
         }
 
-        private List<Player> GeneratePlayers(ExL.ExcelLoader loadedData, ExL.CodingListLoader codingListData, HashSet<string> playersIds, Team team, LeagueSeason leagueSeason)
+
+
+
+        private Stats CreateOrGetStatsForPlayer(PlayerScore playScore, Player player, Game game, bool onLoan)
         {
-            List<Player> playerList = new List<Player>(playersIds.Count);
-            Player player;
-            foreach (PlayerInfo info in codingListData.PlayerInfoList)
+
+            Stats stats = null;
+            stats = NewPlayersStats.FirstOrDefault(st => st.Player.Id == player.Id && st.Game.Id == game.Id);
+
+            if (stats == null)
             {
-                player = _db.Players.FirstOrDefault(pl => pl.UId == info.UId);
-                //playersIds.FirstOrDefault(p => p.Equals(info.NameAndLastName));
-                if (player == null)
+                stats = _db.Stats.FirstOrDefault(st => st.Player.Id == player.Id && st.Game.Id == game.Id);
+                if (stats == null)
                 {
-                    player = new Player();
-                    player.Name = info.FirstName;
-                    player.LastName = info.LastName;
-                    player.MiddleName = info.MiddleName;
-                    player.UId = info.UId;
-                    player.Stats = player.Stats ?? new List<Stats>();
-                    //player.Team = team;
-                    Stats stats = null;
-                    List<PlayerScore> scores = loadedData.GetPlayerScoreList(info.NameAndLastName);
-                    foreach (PlayerScore playerScore in scores)
+                    stats = new Stats()
                     {
-                        //TO DO (set Stats)
-                        stats = PopulateStats(playerScore, info.OnLoan);
-                        player.Stats.Add(stats);
-                    }
-
-                    _db.Players.Add(player);
+                        Id = Guid.NewGuid(),
+                        Player = player,
+                        Game = game,
+                        Ast = playScore.Assistance,
+                        Blk = playScore.Block,
+                        DReb = playScore.DefensiveReb,
+                        FtMade = playScore.FreeThrowsMade,
+                        FtMissed = playScore.FreeThrowsAttempt,
+                        MinutesPlayed = playScore.Minutes,
+                        JerseyNumber = playScore.Number.ToString(),
+                        OReb = playScore.OffensiveReb,
+                        TwoPtMissed = playScore.PointAttempt2,
+                        TwoPtMade = playScore.PointMade2,
+                        ThreePtMissed = playScore.PointAttempt3,
+                        ThreePtMade = playScore.PointMade3,
+                        Stl = playScore.Steal,
+                        To = playScore.TurnOver,
+                        OnLoan = onLoan,
+                    };
+                    _db.Stats.Add(stats);
 
                 }
-
-                PlayerPerTeam playerPerTeam = PopulatePlayerPerTeam(player, team, leagueSeason);
-
+                NewPlayersStats.Add(stats);
 
             }
-            /*
-            foreach (string playerId in playersIds)
-            {
-                List<PlayerScore> scores = loadedData.GetPlayerScoreList(playerId);
-                if (scores != null && scores.Count > 0)
-                {
-                    Player p = PopulatePlayerEntityModel(scores, teamId);
-                    playerList.Add(p);
-                }
-            }*/
-            return playerList;
-        }
-
-        private PlayerPerTeam PopulatePlayerPerTeam(Player player, Team team, LeagueSeason leagueSeason)
-        {
-
-            PlayerPerTeam playerPerTeam = _db.PlayersPerTeam.FirstOrDefault(ppt => ppt.PlayerId == player.Id && ppt.TeamId == team.Id && ppt.LeagueSeason_Id == leagueSeason.Id);
-            if (playerPerTeam == null)
-            {
-                playerPerTeam = new PlayerPerTeam();
-                playerPerTeam.Player = player;
-                playerPerTeam.Team = team;
-                playerPerTeam.LeagueSeason = leagueSeason;
-                playerPerTeam.Id = Guid.NewGuid();
-                _db.PlayersPerTeam.Add(playerPerTeam);
-
-            }
-            return playerPerTeam;
-        }
-        /*
-        private Player PopulatePlayerEntityModel(List<PlayerScore> playerScores, Guid teamId)
-        {
-            Player player = null;
-            //BasketballDbContext db = new BasketballDbContext();
-            //_playerRepo.GetPlayerByName()
-            ///_teamRepo.
-            ///
-
-            PlayerScore pScore = playerScores.First();
-
-            player = _db.Players.Where(p => p.Name == pScore.FirstName && p.LastName == pScore.LastName && p.MiddleName == pScore.MiddleName && p.Team_Id == teamId).FirstOrDefault();
-            //_playerRepo.GetPlayerByName(pScore.FirstName, pScore.LastName, pScore.MiddleName);
-            if (player == null)
-            {
-                player = new Player();
-                //NOTE:remove guid
-                player.Id = Guid.NewGuid(); ;
-                player.Name = pScore.FirstName;
-                player.LastName = pScore.LastName;
-                player.MiddleName = pScore.MiddleName;
-                //player.Team_Id = pScore.
-                //_playerRepo.Add(player);
-                _db.Players.Add(player);
-
-            }
-            //player.PlayersPerSeason.
-            /*
-            Stats stats;
-            foreach (ExL.PlayerScore playerScore in playerScores)
-            {
-                //TO DO (set Stats)
-                stats = PopulateStats(playerScore);
-                //stats.
-                if (player.Stats == null) player.Stats = new List<Stats>();
-                player.Stats.Add(stats);
-            }*/
-
-        //return player;
-        //}
-
-       
-
-        private Stats PopulateStats(PlayerScore ps, bool onLoan)
-        {
-            Stats stats = new Stats()
-            {
-                Id = Guid.NewGuid(),
-                Ast = ps.Assistance,
-                Blk = ps.Block,
-                DReb = ps.DefensiveReb,
-                FtMade = ps.FreeThrowsMade,
-                FtMissed = ps.FreeThrowsAttempt,
-                MinutesPlayed = ps.Minutes,
-                JerseyNumber = ps.Number.ToString(),
-                OReb = ps.OffensiveReb,
-                TwoPtMissed = ps.PointAttempt2,
-                TwoPtMade = ps.PointMade2,
-                ThreePtMissed = ps.PointAttempt3,
-                ThreePtMade = ps.PointMade3,
-                Stl = ps.Steal,
-                To = ps.TurnOver,
-                OnLoan = onLoan,
-
-
-
-            };
-            _db.Stats.Add(stats);
             return stats;
         }
 

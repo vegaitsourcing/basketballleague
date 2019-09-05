@@ -13,4 +13,7 @@
  /*unique constraint - team(name)*/
  ALTER TABLE Team ALTER COLUMN TeamName nvarchar(100) NOT NULL;
  ALTER TABLE Team ADD CONSTRAINT UC_TeamName UNIQUE(TeamName);
+ 
+ /*alter database collation*/
+ ALTER DATABASE [VegaIT.BasketballLeague.Stats.Development] COLLATE SQL_Latin1_General_CP1_CS_AS;
 

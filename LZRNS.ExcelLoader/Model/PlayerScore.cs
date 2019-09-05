@@ -10,6 +10,8 @@ namespace LZRNS.ExcelLoader
         #endregion Private Fields
 
         public int Number { get; set; }
+        public string AgainstTeam { get; set; }
+
         public String NameAndLastName
         {
             get

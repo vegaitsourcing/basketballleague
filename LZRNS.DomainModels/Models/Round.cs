@@ -12,7 +12,8 @@ namespace LZRNS.DomainModels.Models
 	{
 		public string RoundName { get; set; }
 
-		public virtual ICollection<Game> Games { get; set; }
+        //fix this in other way
+        public virtual ICollection<Game> Games { get; set; } = new List<Game>();
 
 		public virtual LeagueSeason LeagueSeason { get; set; }
 

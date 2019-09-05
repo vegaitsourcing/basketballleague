@@ -12,8 +12,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
         // key represent team name
         private Dictionary<string, TeamStatistic> teams;
 
-        // key represent player full name
-        private Dictionary<string, List<PlayerScore>> playerScores;
+        private Dictionary<string, Dictionary<string, List<PlayerScore>>> playerScores;
         #endregion Private Fields
 
         #region Properies 
@@ -23,11 +22,10 @@ namespace LZRNS.ExcelLoader.ExcelReader
             get { return teams; }
         }
 
-        public Dictionary<string, List<PlayerScore>> PlayerScores
+        public Dictionary<string, Dictionary<string, List<PlayerScore>>> PlayerScores
         {
             get { return playerScores; }
         }
-
         #endregion Properies
 
 
@@ -36,16 +34,29 @@ namespace LZRNS.ExcelLoader.ExcelReader
         {
             Loger.log.Debug("Start main proces");
             teams = new Dictionary<string, TeamStatistic>();
-            playerScores = new Dictionary<string, List<PlayerScore>>();
+            playerScores = new Dictionary<string, Dictionary<string, List<PlayerScore>>>();
 
         }
         #endregion Constructors
 
         #region Public Methods
-        public List<PlayerScore> GetPlayerScoreList(string playerFullName)
+        public Dictionary<string, List<PlayerScore>> GetTeamScores(string teamName)
         {
-            List<PlayerScore> scores;
-            PlayerScores.TryGetValue(playerFullName, out scores);
+            Dictionary<string, List<PlayerScore>> teamScores;
+            PlayerScores.TryGetValue(teamName, out teamScores);
+            return teamScores;
+
+        }
+        public List<PlayerScore> GetPlayerScoreList(string teamName, string playerFullName)
+        {
+
+            Dictionary<string, List<PlayerScore>> teamScores = GetTeamScores(teamName);
+
+            List<PlayerScore> scores = null;
+            if (teamScores != null)
+            {
+                teamScores.TryGetValue(playerFullName, out scores);
+            }
 
             return scores;
         }
@@ -91,9 +102,10 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 PlayerScore pl = new PlayerScore();
                 PopulateModelField(pl, rows, otherFields, currentRowNo);
                 /*contains list of all players score*/
+                pl.AgainstTeam = teamScore.AgainstTeam;
                 teamScore.AddPlayerScore(pl);
 
-                AddPlayerScore(pl);
+                AddPlayerScore(teamStatistic.TeamName, pl);
                 AddPlayerInTeam(teamStatistic.TeamName, pl.NameAndLastName);
             }
 
@@ -104,19 +116,47 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         }
 
-        private void AddPlayerScore(PlayerScore ps)
+        //not good solution, hack
+        private void SetPlayerScoreTeam(TeamScore teamScore)
+        {
+            foreach (PlayerScore playerScore in teamScore.PlayerScores)
+            {
+                playerScore.AgainstTeam = teamScore.AgainstTeam;
+            }
+        }
+        private void AddPlayerScore(string teamName, PlayerScore ps)
         {
             List<PlayerScore> list;
-            if (!ps.NameAndLastName.Equals(String.Empty))
+            Dictionary<string, List<PlayerScore>> teamScore;
+            if (!teamName.Equals(String.Empty))
             {
-                if (playerScores.TryGetValue(ps.NameAndLastName, out list))
+                if (playerScores.TryGetValue(teamName, out teamScore))
                 {
-                    list.Add(ps);
+                    if (!ps.NameAndLastName.Equals(String.Empty))
+                    {
+                        if (teamScore.TryGetValue(ps.NameAndLastName, out list))
+                        {
+                            list.Add(ps);
+                        }
+
+                        else
+                        {
+                            playerScores[teamName].Add(ps.NameAndLastName, new List<PlayerScore>() { ps });
+                        }
+
+                    }
+
+
                 }
                 else
                 {
-                    playerScores[ps.NameAndLastName] = new List<PlayerScore>() { ps };
+                    var playerScoreList = new List<PlayerScore>() { ps };
+                    var scoresDictionary = new Dictionary<string, List<PlayerScore>>() { { ps.NameAndLastName, playerScoreList } };
+                    PlayerScores.Add(teamName, scoresDictionary);
                 }
+
+
+
             }
         }
 

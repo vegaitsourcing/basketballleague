@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using LZRNS.Common;
+using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Extensions;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
@@ -28,6 +29,8 @@ namespace LZRNS.Web.Controllers.Surface
 				!gamesDate.HasValue) return new EmptyResult();
 
             //debug
+            //var model = new List<Game>();
+            
             var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 					.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))?
 					.Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
@@ -42,11 +45,15 @@ namespace LZRNS.Web.Controllers.Surface
 			if (seasonStartYear.Equals(default(int)) ||
 				string.IsNullOrWhiteSpace(roundName)) return new EmptyResult();
 
+            //var model = new List<Game>();
+            //debug
+            
 			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
 				.Rounds.Where(x => x.RoundName.Equals(roundName))
 				.SelectMany(y => y.Games);
-
+            
+            
 			return PartialView(model);
 		}
 

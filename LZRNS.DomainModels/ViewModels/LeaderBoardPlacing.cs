@@ -16,7 +16,7 @@ namespace LZRNS.DomainModels.ViewModels
 			this.RoundName = roundName;
 			this.Team = team;
 		}
-
+        
 		public string TeamName => this.Team.TeamName;
 		public int Pts => 2 * Wins;
 		public int Wins => this.GamesWinners.Count(x => x == this.Team.Id);
@@ -38,7 +38,7 @@ namespace LZRNS.DomainModels.ViewModels
 			this.GamesTillRound
 				.Select(x => x.TeamAId == this.Team.Id ? 
 					x.StatsPerGameA : x.StatsPerGameB);
-
+        
 		private IEnumerable<Game> GamesTillRound => 
 			this.Team.Games
 				.Where(x => x.Round.RoundName.CompareTo(this.RoundName) <= 0);
@@ -47,6 +47,6 @@ namespace LZRNS.DomainModels.ViewModels
 			this.GamesTillRound
 				.Select(x => x.StatsPerGameA.Pts > x.StatsPerGameB.Pts?
 				x.TeamAId : x.TeamBId);
-
-	}
+                
+    }
 }

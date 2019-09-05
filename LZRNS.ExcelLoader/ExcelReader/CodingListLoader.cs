@@ -28,22 +28,36 @@ namespace LZRNS.ExcelLoader.ExcelReader
         public override void Load(XLWorkbook exApp, string fileName)
         {
             string teamName = CheckFileStructure(exApp, fileName);
-            //int currentSheetNo = 0;
-
             bool isPageEmpty;
             foreach (IXLWorksheet sheet in Sheets)
             {
-                
+
                 ProcessSheet(sheet, out isPageEmpty);
                 break;
-                
+
             }
 
         }
 
+        protected int CalculatePlayerCount(IXLRows exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
+        {
+            int playersCount = 0;
+            int i = 0;
+            while (true)
+            {
+                if (GetCellValue(exlRange, currentRowNo + i, columnIndex) == null)
+                {
+                    break;
+                }
+                i++;
+                playersCount++;
+            }
 
-        
-        private void ProcessSheet(IXLWorksheet sheet,  out bool isEmptyPage)
+            return playersCount;
+
+        }
+
+        private void ProcessSheet(IXLWorksheet sheet, out bool isEmptyPage)
         {
             Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
             Stopwatch stopwatch = new Stopwatch();
@@ -60,7 +74,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
             if (CheckIfPageIsEmty(rows, currentRowNo + 1, Mapper.Fields.First().ColumnIndex))
             {
                 //check this
-                //Loger.log.Debug("ProcessSheet: Sheet: " + sheet.Name + ", is empty for Team: " + teamStatistic.TeamName);
                 isEmptyPage = true;
                 return;
             }
@@ -76,16 +89,15 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 currentRowNo++;
                 PlayerInfo pi = new PlayerInfo();
                 PopulateModelField(pi, rows, otherFields, currentRowNo);
-
-                //AddPlayerScore(pl);
                 PlayerInfoList.Add(pi);
-                //AddPlayerInTeam(teamStatistic.TeamName, pl.NameAndLastName);
             }
 
             Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
 
             stopwatch.Stop();
         }
+
+
 
     }
 }
