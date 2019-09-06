@@ -27,9 +27,6 @@ namespace LZRNS.Web.Controllers.Surface
 			if (seasonStartYear.Equals(default(int)) ||
 				string.IsNullOrWhiteSpace(roundName) ||
 				!gamesDate.HasValue) return new EmptyResult();
-
-            //debug
-            //var model = new List<Game>();
             
             var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 					.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))?
@@ -44,9 +41,6 @@ namespace LZRNS.Web.Controllers.Surface
 		{
 			if (seasonStartYear.Equals(default(int)) ||
 				string.IsNullOrWhiteSpace(roundName)) return new EmptyResult();
-
-            //var model = new List<Game>();
-            //debug
             
 			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
@@ -112,7 +106,7 @@ namespace LZRNS.Web.Controllers.Surface
 			if (seasonStartYear.Equals(default(int)) ||
 			    string.IsNullOrWhiteSpace(roundName)) return new EmptyResult();
 
-			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
+            var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))
 				.Teams.Select(x => x.GetLeaderBoardPlacing(roundName))
 				.OrderByDescending(x => x.Pts)

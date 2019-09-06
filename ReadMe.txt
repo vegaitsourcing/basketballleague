@@ -1,1 +1,0 @@
-Umbraco credentials: example@example.com / pQkX4DmzHU
