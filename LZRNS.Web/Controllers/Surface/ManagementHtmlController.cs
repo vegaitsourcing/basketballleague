@@ -41,6 +41,7 @@ namespace LZRNS.Web.Controllers.Surface
 		{
 			if (seasonStartYear.Equals(default(int)) ||
 				string.IsNullOrWhiteSpace(roundName)) return new EmptyResult();
+
             
 			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)
 				.LeagueSeasons.First(k => k.League.Name.Equals(leagueName))

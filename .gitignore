@@ -81,3 +81,6 @@ html/*.html
 /LZRNS.Web/uploads/
 #coding lists for players
 /LZRNS.Web/coding-lists/
+
+
+credentials.txt
