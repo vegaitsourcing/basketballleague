@@ -36,6 +36,7 @@ namespace LZRNS.DomainModels.Migrations
         {
             return new Player
             {
+                Id = Guid.NewGuid(),
                 Name = RandomString(7),
                 LastName = RandomString(7),
                 Height = random.Next(180, 220),
