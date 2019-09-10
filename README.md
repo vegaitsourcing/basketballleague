@@ -36,9 +36,10 @@ Follow these steps to get your development environment set up:
   1. Clone the repository
   1. Go to `LZRNS.Web` directory and run: `npm install` followed by `gulp build`
   1. Build solution in Visual Studio (2017 or higher)
+  1. (Optional) Configure database `connectionString` found in `LZRNS.Web/Web.config`
   1. Start Application with `LZRNS.Web` set as your StartUp Project
 
-> Note: Visual Studio will by default try to do these steps when restoring package upon which you might get error related to Node version. Solution to this can be found [here](https://stackoverflow.com/questions/43849585/update-node-version-in-visual-studio-2017) (*you can always install it locally though the command line as mentioned above*)
+> Note: Visual Studio will by default try to do some of these steps when restoring package upon which you might get error related to Node version. Solution to this can be found [here](https://stackoverflow.com/questions/43849585/update-node-version-in-visual-studio-2017) (*you can always install it locally though the command line as mentioned above*)
 
 ## Technologies
 
