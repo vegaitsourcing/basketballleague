@@ -16,7 +16,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-dust-html": "0.0.6",
     "gulp-html-beautify": "^1.0.1",
-    "gulp-iconfont": "^10.0.1",
+    "gulp-iconfont": "^10.0.3",
     "gulp-iconfont-css": "^2.1.0",
     "gulp-notify": "^3.2.0",
     "gulp-plumber": "^1.2.0",

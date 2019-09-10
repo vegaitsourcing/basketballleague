@@ -391,6 +391,7 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="gulpfile.js" />
     <Content Include="images\content\baner1366.jpg" />
     <Content Include="images\content\baner1920.jpg" />
     <Content Include="images\content\baner320.jpg" />
@@ -471,6 +472,8 @@
     <Content Include="fonts\dist\svgicons.ttf" />
     <Content Include="fonts\dist\svgicons.woff" />
     <Content Include="fonts\dist\svgicons.woff2" />
+    <Content Include="package-lock.json" />
+    <Content Include="package.json" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\contactForm.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
