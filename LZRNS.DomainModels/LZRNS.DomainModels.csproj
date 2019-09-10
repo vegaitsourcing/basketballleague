@@ -79,45 +79,9 @@
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Migrations\201809261425121_modelchange.cs" />
-    <Compile Include="Migrations\201809261425121_modelchange.Designer.cs">
-      <DependentUpon>201809261425121_modelchange.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810180841381_update-player.cs" />
-    <Compile Include="Migrations\201810180841381_update-player.Designer.cs">
-      <DependentUpon>201810180841381_update-player.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201810181028544_update-team.cs" />
-    <Compile Include="Migrations\201810181028544_update-team.Designer.cs">
-      <DependentUpon>201810181028544_update-team.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811151452091_Round.cs" />
-    <Compile Include="Migrations\201811151452091_Round.Designer.cs">
-      <DependentUpon>201811151452091_Round.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908221257143__update-league-season.cs" />
-    <Compile Include="Migrations\201908221257143__update-league-season.Designer.cs">
-      <DependentUpon>201908221257143__update-league-season.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908230959030__update.cs" />
-    <Compile Include="Migrations\201908230959030__update.Designer.cs">
-      <DependentUpon>201908230959030__update.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908270815117_update-team-name.cs" />
-    <Compile Include="Migrations\201908270815117_update-team-name.Designer.cs">
-      <DependentUpon>201908270815117_update-team-name.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908280854480_add-player-team.cs" />
-    <Compile Include="Migrations\201908280854480_add-player-team.Designer.cs">
-      <DependentUpon>201908280854480_add-player-team.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908290728178_add-player-uid.cs" />
-    <Compile Include="Migrations\201908290728178_add-player-uid.Designer.cs">
-      <DependentUpon>201908290728178_add-player-uid.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201908291130408_update-playerperteam-stats.cs" />
-    <Compile Include="Migrations\201908291130408_update-playerperteam-stats.Designer.cs">
-      <DependentUpon>201908291130408_update-playerperteam-stats.cs</DependentUpon>
+    <Compile Include="Migrations\201909101148166_InitialModel.cs" />
+    <Compile Include="Migrations\201909101148166_InitialModel.Designer.cs">
+      <DependentUpon>201909101148166_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Migrations\DbInitializer.cs" />
@@ -166,37 +130,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201809261425121_modelchange.resx">
-      <DependentUpon>201809261425121_modelchange.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810180841381_update-player.resx">
-      <DependentUpon>201810180841381_update-player.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201810181028544_update-team.resx">
-      <DependentUpon>201810181028544_update-team.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811151452091_Round.resx">
-      <DependentUpon>201811151452091_Round.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908221257143__update-league-season.resx">
-      <DependentUpon>201908221257143__update-league-season.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908230959030__update.resx">
-      <DependentUpon>201908230959030__update.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908270815117_update-team-name.resx">
-      <DependentUpon>201908270815117_update-team-name.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908280854480_add-player-team.resx">
-      <DependentUpon>201908280854480_add-player-team.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908290728178_add-player-uid.resx">
-      <DependentUpon>201908290728178_add-player-uid.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201908291130408_update-playerperteam-stats.resx">
-      <DependentUpon>201908291130408_update-playerperteam-stats.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201909101148166_InitialModel.resx">
+      <DependentUpon>201909101148166_InitialModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

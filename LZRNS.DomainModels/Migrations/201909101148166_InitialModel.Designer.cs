@@ -7,13 +7,13 @@ namespace LZRNS.DomainModels.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class updateplayer : IMigrationMetadata
+    public sealed partial class InitialModel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(updateplayer));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialModel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201810180841381_update-player"; }
+            get { return "201909101148166_InitialModel"; }
         }
         
         string IMigrationMetadata.Source
