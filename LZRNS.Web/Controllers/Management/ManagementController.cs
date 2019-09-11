@@ -1,4 +1,5 @@
 ﻿using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.DocumentTypes.Pages;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace LZRNS.Web.Controllers.Management
         public const string IndexViewPath = "Management/Index";
         public const string LoginViewPath = "Management/Login";
 
-        private ISeasonRepository _seasonRepo;
+        private readonly ISeasonRepository _seasonRepo;
 
         public ManagementController(ISeasonRepository seasonRepo)
         {
@@ -23,34 +24,31 @@ namespace LZRNS.Web.Controllers.Management
 
         public ActionResult Index(RenderModel renderModel)
         {
-            ManagementModel model = new ManagementModel(renderModel.Content);
+            var model = new ManagementModel(renderModel.Content);
 
             if (!Members.IsLoggedIn() || !Members.MemberHasAccess(model.Content.Path))
             {
                 return View(LoginViewPath, model);
             }
 
+            var firstLeagueSeason = GetFirstLeagueSeasonByYear(model.StatisticsSettings.SeasonYearStart);
 
+            model.ResultsRoundGames = GetGamesByRoundName(firstLeagueSeason, model.StatisticsSettings.ResultsRound).ToList();
+            model.ScheduleRoundGames = GetGamesByRoundName(firstLeagueSeason, model.StatisticsSettings.ScheduleRound).ToList();
 
-
-            //debug
-            _seasonRepo.GetSeasonByYear(model.StatisticsSettings.SeasonYearStart)
-            .LeagueSeasons.First( /*TODO: INSERT LEAGUE ID PLS*/)
-            .Rounds.Where(x => x.RoundName.Equals(model.StatisticsSettings.ResultsRound))
-            .SelectMany(y => y.Games)
-            .ToList();
-        
-            //model.ResultsRoundGames = new List<Game>();
-            //model.ScheduleRoundGames = new List<Game>();
-            //debug
-            
-            model.ScheduleRoundGames = _seasonRepo.GetSeasonByYear(model.StatisticsSettings.SeasonYearStart)
-				.LeagueSeasons.First( /*TODO: INSERT LEAGUE ID PLS*/)
-				.Rounds.Where(x => x.RoundName.Equals(model.StatisticsSettings.ScheduleRound))
-				.SelectMany(y => y.Games)
-				.ToList();
-                
             return View(IndexViewPath, model);
+        }
+
+        private static IEnumerable<Game> GetGamesByRoundName(LeagueSeason season, string roundName)
+        {
+            return season?.Rounds?.Where(x => x.RoundName.Equals(roundName)).SelectMany(y => y.Games) ?? new List<Game>();
+        }
+
+        private LeagueSeason GetFirstLeagueSeasonByYear(int year)
+        {
+            var startYearSeason = _seasonRepo.GetSeasonByYear(year);
+            var leagueSeasons = startYearSeason?.LeagueSeasons ?? new List<LeagueSeason>();
+            return leagueSeasons.FirstOrDefault();
         }
 
         [ChildActionOnly]
