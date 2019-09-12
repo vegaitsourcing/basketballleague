@@ -27,6 +27,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainContextTest", "Domain
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTableLoader", "TimeTableLoader\TimeTableLoader.csproj", "{391252F3-25D2-407E-86E7-AF6476E04966}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{BA5818FA-B2C7-4BB7-84C3-8EED3C23293B}"
+	ProjectSection(SolutionItems) = preProject
+		constraints.sql = constraints.sql
+		create.ps1 = create.ps1
+		delete_db_data.sql = delete_db_data.sql
+		klrns_id_generate.js = klrns_id_generate.js
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{AC474DCF-286F-455E-A1C8-74254896AC8C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8D1B363B-B51B-4C8A-8CB4-4631AC4876BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +80,17 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DC8482B6-CAE1-4CDE-9E59-965A4ABC7F54} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
+		{44EA5768-A92D-4380-848E-A4B2C07158D6} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
+		{E8C6667B-38C8-4258-9313-F8B83D79E43A} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
+		{3BE753D9-F1A1-427F-BA6E-84C9C55A18D5} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
+		{938E612A-D564-4251-B456-AD5CCBF63420} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
+		{584350E5-F1DB-4334-B57A-7E1FA59A6A25} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
+		{59B0F766-C6BE-4AEF-9817-295222C4D871} = {8D1B363B-B51B-4C8A-8CB4-4631AC4876BE}
+		{391252F3-25D2-407E-86E7-AF6476E04966} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
+		{BA5818FA-B2C7-4BB7-84C3-8EED3C23293B} = {97E86AD5-1422-498C-BE27-5A861018DD6A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4AC09401-D54A-40B1-A167-478577CFC69A}

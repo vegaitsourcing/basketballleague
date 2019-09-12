@@ -11,6 +11,7 @@ Basketball recreationists league is aimed at everyone interested in playing bask
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Setup](#setup)
+- [Conventions](#conventions)
 - [Technologies](#technologies)
 - [License](#license)
 
@@ -40,6 +41,19 @@ Follow these steps to get your development environment set up:
   1. Start Application with `LZRNS.Web` set as your StartUp Project
 
 > Note: Visual Studio will by default try to do some of these steps when restoring package upon which you might get error related to Node version. Solution to this can be found [here](https://stackoverflow.com/questions/43849585/update-node-version-in-visual-studio-2017) (*you can always install it locally though the command line as mentioned above*)
+
+## Conventions
+
+### Trello 
+
+This project uses [trello](#https://trello.com) for organization (it is currently private so only authorized members can join).
+Format that is used for accepted trello logs is `KLRNS-<number>: <description>` (ex. `KLRNS-0019: Documentation - Getting Started`)
+
+Since the `<number>` in `KLRNS-<number>` is custom generated an utility script `klrns_id_generate` has been written to save time for developers when deciding on the name. You can use it by copy pasting source code from the mentioned file into the browser `Console`.
+
+### Commits
+
+For clarity it is advised for commits to be in format `KLRNS-<number> | <commit-author> | <commit-description>` where (`KLRNS-<number>` should be equivalent to the adequate log item from [trello](#trello))
 
 ## Technologies
 
