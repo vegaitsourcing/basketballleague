@@ -47,10 +47,13 @@
 					}
 					@if (Members.IsLoggedIn())
 					{
-						<li class="nav-item" data-toggle="tooltip" data-placement="right">
+						<li class="nav-item" data-toggle="tooltip" title="Odjavi se" data-placement="right">
 							@using (Html.BeginUmbracoForm<ManagementController>(nameof(ManagementController.Logout)))
 							{
-								<button>Odjavi se</button>
+								<button class="btn btn-link nav-link">
+								    <i class="fa fa-fw fa-sign-out"></i>
+									<span class="nav-link-text">Odjavi se</span>
+							    </button>
 							}
 						</li>
 					}

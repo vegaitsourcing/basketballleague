@@ -474,6 +474,8 @@
     <Content Include="fonts\dist\svgicons.woff2" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Content Include="App_Data\TableMapper_analyzer.config" />
+    <Content Include="App_Data\TableMapper_coding_list.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\contactForm.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
