@@ -1,4 +1,5 @@
-﻿using LZRNS.DomainModels.Models;
+﻿using LZRNS.Common.Extensions;
+using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.DocumentTypes.Pages;
 using System.Collections.Generic;
@@ -38,8 +39,8 @@ namespace LZRNS.Web.Controllers.RenderMvc
 
         private static List<string> SortRoundNames(IEnumerable<string> roundNames)
         {
-            var roundsList = roundNames.ToList().ConvertAll(int.Parse);
-            return roundsList.OrderBy(k => k).ToList().ConvertAll(x => x.ToString()).ToList();
+            var roundsList = roundNames.ToList().ConvertAll(name => new { number = name.ExtractNumber(), name });
+            return roundsList.OrderBy(item => item.number).ToList().ConvertAll(item => item.name);
         }
 
         private List<string> GetAllRounds(string leagueName, int year)
