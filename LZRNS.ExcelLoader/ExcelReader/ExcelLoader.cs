@@ -12,7 +12,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         public ExcelLoader(string configPath) : base(configPath)
         {
-            Loger.log.Debug("Start main process");
+            Log4NetLogger.Log.Debug("Start main process");
             Teams = new Dictionary<string, TeamStatistic>();
             PlayerScores = new Dictionary<string, Dictionary<string, List<PlayerScore>>>();
         }
@@ -32,7 +32,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         private void ProcessSheet(IXLWorksheet sheet, ref TeamStatistic teamStatistic)
         {
-            Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
+            Log4NetLogger.Log.Debug("ProcessSheet started for table: " + sheet.Name);
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
@@ -48,7 +48,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             int headerRowNo = currentRowNo + 1;
             if (CheckIfPageIsEmpty(rows, headerRowNo, Mapper.Fields[0].ColumnIndex))
             {
-                Loger.log.Debug("ProcessSheet: Sheet: " + sheet.Name + ", is empty for Team: " + teamStatistic.TeamName);
+                Log4NetLogger.Log.Debug("ProcessSheet: Sheet: " + sheet.Name + ", is empty for Team: " + teamStatistic.TeamName);
                 return;
             }
 
@@ -72,7 +72,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             teamStatistic.AddTeamScore(teamScore);
 
             stopwatch.Stop();
-            Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
+            Log4NetLogger.Log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
         }
 
         private void AddPlayerScore(string teamName, PlayerScore ps)

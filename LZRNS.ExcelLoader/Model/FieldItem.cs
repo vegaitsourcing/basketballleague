@@ -38,11 +38,11 @@ namespace LZRNS.ExcelLoader
 
                     if (long.TryParse(rawValue.ToString(), out long lv))
                     {
-                        Loger.log.Warn("FieldItem - GetValueConverted: datetime rawValue:" + rawValue);
+                        Log4NetLogger.Log.Warn("FieldItem - GetValueConverted: datetime rawValue:" + rawValue);
                         return new DateTime(lv);
                     }
 
-                    Loger.log.Error("FieldItem - GetValueConverted: datetime in not formatted rawValue:" + rawValue);
+                    Log4NetLogger.Log.Error("FieldItem - GetValueConverted: datetime in not formatted rawValue:" + rawValue);
                     return DateTime.MinValue;
                 }
 
@@ -58,7 +58,7 @@ namespace LZRNS.ExcelLoader
             }
             catch (Exception ex)
             {
-                Loger.log.Error("FieldItem - GetValueConverted: Field: " + PropertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);
+                Log4NetLogger.Log.Error("FieldItem - GetValueConverted: Field: " + PropertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);
             }
 
             return null;

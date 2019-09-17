@@ -78,7 +78,7 @@
     <Compile Include="ExcelReader\DataParser.cs" />
     <Compile Include="ExcelWriter.cs" />
     <Compile Include="Model\FieldItem.cs" />
-    <Compile Include="Loger.cs" />
+    <Compile Include="Log4NetLogger.cs" />
     <Compile Include="Model\MapperModel.cs" />
     <Compile Include="Model\PlayerInfo.cs" />
     <Compile Include="Model\PlayerScore.cs" />

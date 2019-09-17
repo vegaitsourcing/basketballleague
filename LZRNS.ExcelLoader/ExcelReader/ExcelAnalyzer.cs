@@ -12,7 +12,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         public ExcelAnalyzer(string configPath) : base(configPath)
         {
-            Loger.log.Debug("Start main process");
+            Log4NetLogger.Log.Debug("Start main process");
             TeamPlayerInfos = new Dictionary<string, Dictionary<string, List<PlayerInfo>>>();
         }
 
@@ -33,7 +33,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         private void ProcessSheet(IXLWorksheet sheet, string teamName)
         {
-            Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
+            Log4NetLogger.Log.Debug("ProcessSheet started for table: " + sheet.Name);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -62,7 +62,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
             stopwatch.Stop();
 
-            Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
+            Log4NetLogger.Log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
         }
 
         private void AddPlayerInfo(string teamName, PlayerInfo pi)

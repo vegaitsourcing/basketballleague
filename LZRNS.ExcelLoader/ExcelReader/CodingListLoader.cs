@@ -41,7 +41,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
         /// </summary>
         private void ProcessSheet(IXLWorksheet sheet)
         {
-            Loger.log.Debug("ProcessSheet started for table: " + sheet.Name);
+            Log4NetLogger.Log.Debug("ProcessSheet started for table: " + sheet.Name);
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -70,7 +70,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
             stopwatch.Stop();
 
-            Loger.log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
+            Log4NetLogger.Log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
         }
     }
 }

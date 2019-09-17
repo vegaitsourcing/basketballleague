@@ -11,7 +11,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
     {
         protected AbstractExcelLoader(string configPath)
         {
-            Loger.log.Debug("Start main process");
+            Log4NetLogger.Log.Debug("Start main process");
             TeamAndPlayers = new Dictionary<string, HashSet<string>>();
             Mapper = new MapperModel(configPath);
         }
@@ -117,7 +117,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 LeagueName = nameParts[4].Substring(0, nameParts[4].Length - 5);
             }
 
-            Loger.log.Debug("Loading data for team: " + teamName);
+            Log4NetLogger.Log.Debug("Loading data for team: " + teamName);
 
             Sheets = exApp.Worksheets;
 
@@ -154,7 +154,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 if (value?.Equals(item.CellName) != true)
                 {
                     string errorMessage = "Mapping is invalid for sheet: " + sheet.Name;
-                    Loger.log.Error(errorMessage);
+                    Log4NetLogger.Log.Error(errorMessage);
                     throw new Exception(errorMessage);
                 }
             }
@@ -184,7 +184,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
             if (objProperty == null)
             {
-                Loger.log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
+                Log4NetLogger.Log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
                 return;
             }
 
@@ -196,7 +196,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             var value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
             if (value == null)
             {
-                Loger.log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
+                Log4NetLogger.Log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
                 return;
             }
 
