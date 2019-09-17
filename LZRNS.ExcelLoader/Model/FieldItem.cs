@@ -4,81 +4,63 @@ namespace LZRNS.ExcelLoader
 {
     public class FieldItem
     {
-        private String cellName;
-        private Type propertyType;
-        private String propertyName;
-        private int columnIndex;
-        private int rowIndex;
-        private String format;
-        private bool globalField;
-        private bool directCellData;
-
-        public FieldItem(String cellName, Type propType, String propName, int colIndex, int rowIndex, String format = "", bool globalField = false, bool directCellData = false)
+        public FieldItem(string cellName, Type propType, string propName, int colIndex, int rowIndex, string format = "", bool globalField = false, bool directCellData = false)
         {
-            this.cellName = cellName;
-            this.propertyType = propType;
-            this.propertyName = propName;
-            this.columnIndex = colIndex;
-            this.rowIndex = rowIndex;
-            this.format = format;
-            this.globalField = globalField;
-            this.directCellData = directCellData;
-    }
+            CellName = cellName;
+            PropertyType = propType;
+            PropertyName = propName;
+            ColumnIndex = colIndex;
+            RowIndex = rowIndex;
+            Format = format;
+            GlobalField = globalField;
+            DirectCellData = directCellData;
+        }
 
+        public string CellName { get; }
+        public Type PropertyType { get; }
+        public string PropertyName { get; }
+        public int ColumnIndex { get; }
+        public int RowIndex { get; }
+        public string Format { get; }
+        public bool GlobalField { get; }
+        public bool DirectCellData { get; }
 
-        public String CellName { get { return this.cellName; } }
-        public Type PropertyType { get { return this.propertyType; } }
-        public String PropertyName { get { return this.propertyName; } }
-        public int ColumnIndex { get { return this.columnIndex; } }
-        public int RowIndex { get { return this.rowIndex; } }
-        public String Format { get { return this.format; } }
-        public bool GlobalField { get { return this.globalField; } }
-        public bool DirectCellData { get { return this.directCellData; } }
-
-        public dynamic GetValueConverted(Object rawValue)
+        public dynamic GetValueConverted(object rawValue)
         {
             try
             {
-                //I am realy sorry for this hack.
-                if (propertyType == typeof(DateTime))
+                if (PropertyType == typeof(DateTime))
                 {
-                    if (rawValue is DateTime)
+                    if (rawValue is DateTime time)
                     {
-                        return (DateTime)rawValue;
+                        return time;
                     }
 
-                    long lv;
-                    if (long.TryParse(rawValue.ToString(), out lv)) {
-                        Loger.log.Warn("FieldItem - GetValueConverted: datetime rawValue:" + rawValue.ToString());
+                    if (long.TryParse(rawValue.ToString(), out long lv))
+                    {
+                        Loger.log.Warn("FieldItem - GetValueConverted: datetime rawValue:" + rawValue);
                         return new DateTime(lv);
                     }
 
-                    Loger.log.Error("FieldItem - GetValueConverted: datetime in not formated rawValue:" + rawValue.ToString());
-                   return DateTime.MinValue;
+                    Loger.log.Error("FieldItem - GetValueConverted: datetime in not formatted rawValue:" + rawValue);
+                    return DateTime.MinValue;
                 }
-                else if (propertyType == typeof(Boolean))
+
+                if (PropertyType != typeof(bool))
+                    return Convert.ChangeType(rawValue, PropertyType);
+
+                if (rawValue is bool boolean)
                 {
-
-                    if (rawValue is Boolean)
-                    {
-                        return (Boolean)rawValue;
-                    }
-
-                    bool b = false;
-                    if(rawValue.ToString().Equals("1"))
-                    {
-                        b = true;
-                    }
-                    return b;                   
+                    return boolean;
                 }
-                    return Convert.ChangeType(rawValue, propertyType);
-                
+
+                return rawValue.ToString().Equals("1");
             }
             catch (Exception ex)
             {
-                Loger.log.Error("FieldItem - GetValueConverted: Field: " + propertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);
-                
+                Loger.log.Error("FieldItem - GetValueConverted: Field: " + PropertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);
             }
+
             return null;
         }
     }

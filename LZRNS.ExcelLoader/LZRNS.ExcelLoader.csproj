@@ -80,7 +80,6 @@
     <Compile Include="Model\FieldItem.cs" />
     <Compile Include="Loger.cs" />
     <Compile Include="Model\MapperModel.cs" />
-    <Compile Include="Model\MatchScore.cs" />
     <Compile Include="Model\PlayerInfo.cs" />
     <Compile Include="Model\PlayerScore.cs" />
     <Compile Include="Program.cs" />
