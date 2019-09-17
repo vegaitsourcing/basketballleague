@@ -8,12 +8,12 @@ namespace LZRNS.ExcelLoader.ExcelReader
 {
     public class CodingListLoader : AbstractExcelLoader
     {
-        public List<PlayerInfo> PlayerInfoList { get; set; }
-
         public CodingListLoader(string configPath) : base(configPath)
         {
             PlayerInfoList = new List<PlayerInfo>();
         }
+
+        public List<PlayerInfo> PlayerInfoList { get; set; }
 
         public override void Load(XLWorkbook exApp, string fileName)
         {
