@@ -1,66 +1,40 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using ClosedXML.Excel;
-
-
 
 namespace LZRNS.ExcelLoader.ExcelReader
 {
     public abstract class AbstractExcelLoader
     {
-        #region Private Fields
-        private XLWorkbook _exApp;
-        private IXLWorksheets _sheets;
-
-        // key represent team name, list of player names
-        private Dictionary<string, HashSet<string>> _teamAndPlayers;
-
-        private string _seasonName;
-        private string _leagueName;
-
-        private MapperModel _mapper;
-
-        private int _maxPlayerPerMatch = 12;
-
-        #endregion Private Fields
-
-        #region Properies 
-        public Dictionary<string, HashSet<string>> TeamAndPlayers
+        protected AbstractExcelLoader(string configPath)
         {
-            get { return _teamAndPlayers; }
-        }
-
-        protected int MaxPlayerPerMatch
-        { get => _maxPlayerPerMatch; }
-
-        public string SeasonName { get => _seasonName; set => _seasonName = value; }
-        public string LeagueName { get => _leagueName; set => _leagueName = value; }
-
-
-        protected MapperModel Mapper { get => _mapper; set => _mapper = value; }
-        protected XLWorkbook ExApp { get => _exApp; set => _exApp = value; }
-        protected IXLWorksheets Sheets { get => _sheets; set => _sheets = value; }
-        #endregion Properies
-
-        #region Constructors
-        public AbstractExcelLoader(string configPath)
-        {
-            Loger.log.Debug("Start main proces");
-            _teamAndPlayers = new Dictionary<string, HashSet<string>>();
+            Loger.log.Debug("Start main process");
+            TeamAndPlayers = new Dictionary<string, HashSet<string>>();
             Mapper = new MapperModel(configPath);
-
         }
-        #region Public Methods
-        public void ProcessFile(String path, string fileName)
+
+        public string LeagueName { get; set; }
+
+        public string SeasonName { get; set; }
+
+        public Dictionary<string, HashSet<string>> TeamAndPlayers { get; } // key represents team name, list of player names
+
+        protected XLWorkbook ExApp { get; set; }
+
+        protected MapperModel Mapper { get; set; }
+
+        protected int MaxPlayerPerMatch { get; } = 12;
+        protected IXLWorksheets Sheets { get; set; }
+
+        public abstract void Load(XLWorkbook exApp, string fileName);
+
+        public void ProcessFile(string path, string fileName)
         {
             try
             {
-
                 using (ExApp = new XLWorkbook(path))
                 {
                     Load(ExApp, fileName);
@@ -95,55 +69,48 @@ namespace LZRNS.ExcelLoader.ExcelReader
             }
         }
 
-        public abstract void Load(XLWorkbook exApp, string fileName);
-
-        #endregion
-
-        #endregion
-        #region Private Methods
-        private void PopulateModelValue(Object obj, IXLRows exlRange, FieldItem fieldItem, int rowIndex = -1)
+        protected void AddPlayerInTeam(string team, string playerName)
         {
-            var objProperty = obj.GetType().GetProperty(fieldItem.PropertyName, BindingFlags.Public | BindingFlags.Instance);
-            //get the value of the property
-            if (objProperty == null)
+            if (TeamAndPlayers.TryGetValue(team, out var players))
             {
-                Loger.log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
-                // We should log error (currently I will just throw exception to be aware that model and mapping are not matched)
-                //throw new Exception();
-                return;
+                players.Add(playerName);
             }
-
-            // If we do not explcitly send row index or data should be directly read from cell, then it should be used directly from configuration
-            // Examlple: matchDate doesn not contain header
-            if (fieldItem.DirectCellData == true || rowIndex == -1)
+            else
             {
-                rowIndex = fieldItem.RowIndex;
+                TeamAndPlayers[team] = new HashSet<string>() { playerName };
             }
-
-            Object value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
-            if (value == null)
-            {
-                Loger.log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
-                return;
-            }
-
-            objProperty.SetValue(obj, fieldItem.GetValueConverted(value));
-
         }
-        #endregion
 
-        #region Protected methods
-        protected string CheckFileStructure(XLWorkbook exApp, string fileName)
+        protected virtual int CalculatePlayerCount(IXLRows exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
         {
-            //fileName should have the following format - teamName-seasonName-leagueName.xlsx (at least one file)
-            string[] nameParts = fileName.Split('-');
+            int playersCount = 0;
+            for (int i = 0; i < maxPlayerCount; i++)
+            {
+                if (GetCellValue(exlRange, currentRowNo + i, columnIndex) == null)
+                {
+                    break;
+                }
 
+                playersCount++;
+            }
+
+            return playersCount;
+        }
+
+        /// <summary>
+        /// Throws exception if file is in invalid format. If valid will extract and return teamName.
+        /// In case @fileName contains Season and League name information, properties `SeasonName` and `LeagueName` will be set.
+        /// </summary>
+        protected string CheckFileStructureAndExtractTeamName(XLWorkbook exApp, string fileName)
+        {
+            var nameParts = fileName.Split('-');
             string teamName = nameParts[2];
+
             if (teamName.Contains(".xlsx"))
             {
                 teamName = teamName.Substring(0, teamName.Length - 5);
             }
-            //only one file will determine SeasonName and LeagueName - first with appropriate filename structure
+
             if (nameParts.Length == 5 && SeasonName == null && LeagueName == null)
             {
                 SeasonName = nameParts[3];
@@ -154,118 +121,86 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
             Sheets = exApp.Worksheets;
 
-            //Only for first sheet we want to check validation for mapping fields configuration
-            foreach (IXLWorksheet sheet in Sheets)
+            var sheet = Sheets.FirstOrDefault();
+            if (sheet != null)
             {
-                //check file format/mapping
                 CheckMappingValidation(Mapper, sheet);
-                break;
             }
+
             return teamName;
+        }
+
+        protected bool CheckIfPageIsEmpty(IXLRows rows, int rowIndex, int columnIndex)
+        {
+            return GetCellValue(rows, rowIndex, columnIndex) == null;
         }
 
         protected void CheckMappingValidation(MapperModel mapper, IXLWorksheet sheet)
         {
-
-
-            IXLRows rows = sheet.RowsUsed();
+            var rows = sheet.RowsUsed();
             int currentRowIndex = -1;
             IXLRow row = null;
 
-            foreach (FieldItem item in mapper.Fields)
+            foreach (var item in mapper.Fields.Where(item => !item.CellName.Equals("")))
             {
-                if (item.CellName.Equals("")) continue;
-
                 if (currentRowIndex != item.RowIndex)
                 {
                     row = rows.ElementAt(item.RowIndex);
                     currentRowIndex = item.RowIndex;
                 }
 
-                object value = row.Cell(item.ColumnIndex).Value;
+                var value = row?.Cell(item.ColumnIndex).Value;
 
-                if (value == null || !value.Equals(item.CellName))
+                if (value?.Equals(item.CellName) != true)
                 {
-
-                    Loger.log.Error("Mapping is invalid for sheet: " + sheet.Name);
-                    throw new Exception();
+                    string errorMessage = "Mapping is invalid for sheet: " + sheet.Name;
+                    Loger.log.Error(errorMessage);
+                    throw new Exception(errorMessage);
                 }
             }
-
         }
 
-        protected void PopulateModelField(Object modelObj, IXLRows exlRange, IEnumerable<FieldItem> fields, int rowIndex = -1)
-        {
-            foreach (FieldItem fieldItem in fields)
-            {
-                PopulateModelValue(modelObj, exlRange, fieldItem, rowIndex);
-            }
-        }
-
-
-
-        protected Object GetCellValue(IXLRows rows, int rowIndex, int columnIndex)
+        protected object GetCellValue(IXLRows rows, int rowIndex, int columnIndex)
         {
             if (rows.Count() <= rowIndex)
             {
                 return null;
             }
-            IXLRow row = rows.ElementAt(rowIndex);
-            Object obj = row.Cell(columnIndex).Value;
-
-            return obj;
+            var row = rows.ElementAt(rowIndex);
+            return row.Cell(columnIndex)?.Value;
         }
 
-        /* This method used to calculate number of rows that are populated for players statistic */
-        protected int CalculatePlayerCount(IXLRows exlRange, int currentRowNo, int columnIndex, int maxPlayerCount)
+        protected void PopulateModelField(object modelObj, IXLRows exlRange, IEnumerable<FieldItem> fields, int rowIndex = -1)
         {
-            int playersCount = 0;
-            for (int i = 0; i < maxPlayerCount; i++)
+            foreach (var fieldItem in fields)
             {
-
-                if (GetCellValue(exlRange, currentRowNo + i, columnIndex) == null)
-                {
-                    break;
-                }
-
-                playersCount++;
+                PopulateModelValue(modelObj, exlRange, fieldItem, rowIndex);
             }
-
-            return playersCount;
-
         }
 
-        protected bool CheckIfPageIsEmty(IXLRows rows, int rowIndex, int colunmIndex)
+        private void PopulateModelValue(object obj, IXLRows exlRange, FieldItem fieldItem, int rowIndex = -1)
         {
-            bool isEmpty = false;
+            var objProperty = obj.GetType().GetProperty(fieldItem.PropertyName, BindingFlags.Public | BindingFlags.Instance);
 
-            if (GetCellValue(rows, rowIndex, colunmIndex) == null)
+            if (objProperty == null)
             {
-                isEmpty = true;
+                Loger.log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
+                return;
             }
 
-            return isEmpty;
+            if (fieldItem.DirectCellData || rowIndex == -1)
+            {
+                rowIndex = fieldItem.RowIndex;
+            }
+
+            var value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
+            if (value == null)
+            {
+                Loger.log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
+                return;
+            }
+
+            objProperty.SetValue(obj, fieldItem.GetValueConverted(value));
         }
-
-        protected void AddPlayerInTeam(string team, string playerName)
-        {
-            HashSet<string> players;
-
-            if (_teamAndPlayers.TryGetValue(team, out players))
-            {
-                players.Add(playerName);
-            }
-            else
-            {
-                _teamAndPlayers[team] = new HashSet<string>() { playerName };
-            }
-
-        }
-
-        #endregion
-
-
-
-
     }
 }

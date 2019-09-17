@@ -99,9 +99,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EntiryModel\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\LZRNS.DomainModels\LZRNS.DomainModels.csproj">
       <Project>{584350E5-F1DB-4334-B57A-7E1FA59A6A25}</Project>

@@ -45,7 +45,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
         public override void Load(XLWorkbook exApp, string fileName)
         {
             //fileName should have the following format - teamName-seasonName-leagueName.xlsx (at least one file)
-            string teamName = CheckFileStructure(exApp, fileName);
+            string teamName = CheckFileStructureAndExtractTeamName(exApp, fileName);
             int currentSheetNo = 0;
             bool isPageEmpty;
 
@@ -80,7 +80,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             currentRowNo = Mapper.Fields.First().RowIndex;
 
             // we are incrasing rowNo because currentRow reprenset row where is header placed!
-            if (CheckIfPageIsEmty(rows, currentRowNo + 1, Mapper.Fields.First().ColumnIndex))
+            if (CheckIfPageIsEmpty(rows, currentRowNo + 1, Mapper.Fields.First().ColumnIndex))
             {
                 isEmptyPage = true;
                 return;

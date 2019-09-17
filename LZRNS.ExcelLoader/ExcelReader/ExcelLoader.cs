@@ -81,7 +81,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             currentRowNo = Mapper.Fields.First().RowIndex;
 
             // we are incrasing rowNo because currentRow reprenset row where is header placed!
-            if (CheckIfPageIsEmty(rows, currentRowNo + 1, Mapper.Fields.First().ColumnIndex))
+            if (CheckIfPageIsEmpty(rows, currentRowNo + 1, Mapper.Fields.First().ColumnIndex))
             {
                 Loger.log.Debug("ProcessSheet: Sheet: " + sheet.Name + ", is empty for Team: " + teamStatistic.TeamName);
                 isEmptyPage = true;
@@ -162,7 +162,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         public override void Load(XLWorkbook exApp, string fileName)
         {
-            string teamName = CheckFileStructure(exApp, fileName);
+            string teamName = CheckFileStructureAndExtractTeamName(exApp, fileName);
             int currentSheetNo = 0;
 
             TeamStatistic teamStatistic = new TeamStatistic(teamName);
