@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29306.81
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.779
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZRNS.Web", "LZRNS.Web\LZRNS.Web.csproj", "{DC8482B6-CAE1-4CDE-9E59-965A4ABC7F54}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{97E86AD5-1422-498C-BE27-5A861018DD6A}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
+		CONTRIBUTING.md = CONTRIBUTING.md
 		README.md = README.md
 		ReadMe.txt = ReadMe.txt
 		Versions.txt = Versions.txt

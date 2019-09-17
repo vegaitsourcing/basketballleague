@@ -6,15 +6,6 @@ Website development for a Recreational Basketball League Liga za rekreativce (ht
 
 Basketball recreationists league is aimed at everyone interested in playing basketball within one organized competition, except for those who play basketball professionally and who are actively involved in playing basketball in one of the clubs. As the league is getting bigger, it would be great to have a website that would include both the information about the current basketball season and the information about the matches played so far. Also, it should include the data about all the players who have been playing in the League so far, as well as the statistics, that is, the players’ performance.
 
-## Table of Contents
-
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Setup](#setup)
-- [Conventions](#conventions)
-- [Technologies](#technologies)
-- [License](#license)
-
 ## Getting Started
 
 Use these instructions to get the project up and running.
@@ -42,24 +33,14 @@ Follow these steps to get your development environment set up:
 
 > Note: Visual Studio will by default try to do some of these steps when restoring package upon which you might get error related to Node version. Solution to this can be found [here](https://stackoverflow.com/questions/43849585/update-node-version-in-visual-studio-2017) (*you can always install it locally though the command line as mentioned above*)
 
-## Conventions
+## Wiki
 
-### Trello 
+For additional resources such as FAQ, User Manual, and Developer Documentation you can check out our [Wiki pages](https://github.com/vegaitsourcing/basketballleague/wiki).
 
-This project uses [trello](#https://trello.com) for organization (it is currently private so only authorized members can join).
-Format that is used for accepted trello logs is `KLRNS-<number>: <description>` (ex. `KLRNS-0019: Documentation - Getting Started`)
+## Contribute
 
-Since the `<number>` in `KLRNS-<number>` is custom generated an utility script `klrns_id_generate` has been written to save time for developers when deciding on the name. You can use it by copy pasting source code from the mentioned file into the browser `Console`.
-
-### Commits
-
-For clarity it is advised for commits to be in format `KLRNS-<number> | <commit-author> | <commit-description>` where (`KLRNS-<number>` should be equivalent to the adequate log item from [trello](#trello))
-
-## Technologies
-
-* .NET Framework 4.5.2
-* UmbracoCMS 7.12.2
-* Entity Framework 6.2.0
+Contributions are always welcome!
+Please read the [contribution guidelines](./CONTRIBUTING.md) first.
 
 ## License
 
