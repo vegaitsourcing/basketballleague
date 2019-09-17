@@ -1,9 +1,8 @@
-﻿using LZRNS.DomainModel.Models;
+﻿using LZRNS.DomainModel.Context;
+using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using System;
-using LZRNS.DomainModels.Models;
-using LZRNS.DomainModel.Context;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace LZRNS.DomainModels.Repository.Implementations
@@ -16,8 +15,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
         public League CreateLeague(string leagueName)
         {
-            League league = new League();
-            league.Name = leagueName;
+            var league = new League { Name = leagueName };
             Add(league);
             return league;
         }
@@ -29,7 +27,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
         public IQueryable<League> GetLeaguesByName(string leagueName)
         {
-           return _context.Leagues.Where(l => l.Name == leagueName);
+            return Context.Leagues.Where(l => l.Name == leagueName);
         }
     }
 }

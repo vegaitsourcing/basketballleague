@@ -46,69 +46,65 @@ namespace LZRNS.DomainModels.Models
         [Required]
         public int ThreePtMade { get; set; }
 
-        public Boolean OnLoan { get; set; }
-      
+        public bool OnLoan { get; set; }
 
         public int ThreePtA => ThreePtMade + ThreePtMissed;
 
-		public double ThreePtPerc =>
-			ThreePtA is 0 ? 0 : Math.Round((double)ThreePtMade / ThreePtA * 100, 1);
+        public double ThreePtPerc =>
+            ThreePtA is 0 ? 0 : Math.Round((double)ThreePtMade / ThreePtA * 100, 1);
 
-		public int FgA => TwoPtA + ThreePtA;
+        public int FgA => TwoPtA + ThreePtA;
 
-		public int FgM => TwoPtMade + ThreePtMade;
+        public int FgM => TwoPtMade + ThreePtMade;
 
-		public double FgPerc =>
-			FgA is 0 ? 0 : Math.Round((double)FgM / FgA * 100, 1);
+        [Required]
+        public int FtMissed { get; set; }
 
-		[Required]
-		public int FtMissed { get; set; }
+        [Required]
+        public int FtMade { get; set; }
 
-		[Required]
-		public int FtMade { get; set; }
+        public int FtA => FtMade + FtMissed;
 
-		public int FtA => FtMade + FtMissed;
+        public double FtPerc =>
+            FtA is 0 ? 0 : Math.Round((double)FtMade / FtA * 100, 1);
 
-		public double FtPerc => 
-			FtA is 0 ? 0 : Math.Round((double)FtMade / FtA * 100, 1);
+        [Required]
+        public int OReb { get; set; }
 
-		[Required]
-		public int OReb { get; set; }
+        [Required]
+        public int DReb { get; set; }
 
-		[Required]
-		public int DReb { get; set; }
+        public int Reb => OReb + DReb;
 
-		public int Reb => OReb + DReb;
+        [Required]
+        public int Ast { get; set; }
 
-		[Required]
-		public int Ast { get; set; }
+        [Required]
+        public int To { get; set; }
 
-		[Required]
-		public int To { get; set; }
+        [Required]
+        public int Stl { get; set; }
 
-		[Required]
-		public int Stl { get; set; }
+        [Required]
+        public int Blk { get; set; }
 
-		[Required]
-		public int Blk { get; set; }
+        public int Pts => 2 * TwoPtMade + 3 * ThreePtMade + FtMade;
 
-		public int Pts => 2 * TwoPtMade + 3 * ThreePtMade + FtMade;
+        public int Eff =>
+            (Pts + Reb + Ast + Stl + Blk) - (FgA + FtA + To);
 
-		public int Eff => 
-			(Pts + Reb + Ast + Stl + Blk) - (FgA + FtA + To);
+        [Required]
+        public int Fd { get; set; }
 
-		[Required]
-		public int Fd { get; set; }
+        [Required]
+        public int Fc { get; set; }
 
-		[Required]
-		public int Fc { get; set; }
+        public int Pir =>
+            (Pts + Reb + Ast + Stl + Blk + Fd)
+            - ((FgA - FgM) + (FtA - FtMade) + To + Fc);
 
-		public int Pir => 
-			(Pts + Reb + Ast + Stl + Blk + Fd)
-			- ((FgA - FgM) + (FtA - FtMade) + To + Fc);
+        public Td Td { get; set; }
+    }
 
-		public Td Td { get; set; }
-	}
-
-	public enum Td { T, TT, TD1, TD2, D1, D2 };
+    public enum Td { T, TT, TD1, TD2, D1, D2 };
 }

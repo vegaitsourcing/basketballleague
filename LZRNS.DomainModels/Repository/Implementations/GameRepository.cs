@@ -8,36 +8,35 @@ using System.Data.Entity;
 namespace LZRNS.DomainModels.Repository.Implementations
 {
     public class GameRepository : RepositoryBase<Game>, IGameRepository
-	{
-		public GameRepository(BasketballDbContext context) : base(context)
-		{
-		}
+    {
+        public GameRepository(BasketballDbContext context) : base(context)
+        {
+        }
 
-		public Stats AddStatsForPlayerInGame(Stats stats)
-		{
-			stats.Id = Guid.NewGuid();
+        public Stats AddStatsForPlayerInGame(Stats stats)
+        {
+            stats.Id = Guid.NewGuid();
 
-			var entity = _context.Stats.Add(stats);
+            var entity = Context.Stats.Add(stats);
 
-			_context.SaveChanges();
+            Context.SaveChanges();
 
-			return entity;
-		}
+            return entity;
+        }
 
-		public void UpdateStatsForPlayerInGame(Stats stats)
-		{
-			_context.Entry(stats).State = EntityState.Modified;
-			_context.SaveChanges();
-		}
+        public void UpdateStatsForPlayerInGame(Stats stats)
+        {
+            Context.Entry(stats).State = EntityState.Modified;
+            Context.SaveChanges();
+        }
 
-		public void DeleteStatsForPlayerInGame(Guid gamePlayerId)
-		{
-			var entity = _context.Stats.Find(gamePlayerId);
+        public void DeleteStatsForPlayerInGame(Guid gamePlayerId)
+        {
+            var entity = Context.Stats.Find(gamePlayerId);
 
-			_context.Stats.Remove(entity);
+            Context.Stats.Remove(entity);
 
-			_context.SaveChanges();
-
-		}
-	}
+            Context.SaveChanges();
+        }
+    }
 }

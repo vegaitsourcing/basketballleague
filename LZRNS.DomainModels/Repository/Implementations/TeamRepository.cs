@@ -20,19 +20,19 @@ namespace LZRNS.DomainModels.Repository.Implementations
             var playerInTeam = new PlayerPerTeam
             {
                 Id = Guid.NewGuid(),
-                Player = _context.Players.Find(playerId),
-                Team = _context.Teams.Find(teamId)
+                Player = Context.Players.Find(playerId),
+                Team = Context.Teams.Find(teamId)
             };
 
-            var entity = _context.PlayersPerTeam.Add(playerInTeam);
-            _context.SaveChanges();
+            var entity = Context.PlayersPerTeam.Add(playerInTeam);
+            Context.SaveChanges();
 
             return entity;
         }
 
         public void DeletePlayerFromTeam(Guid teamMemberId)
         {
-            var playerInTeam = _context.PlayersPerTeam.Find(teamMemberId);
+            var playerInTeam = Context.PlayersPerTeam.Find(teamMemberId);
 
             if (playerInTeam == null)
             {
@@ -40,8 +40,8 @@ namespace LZRNS.DomainModels.Repository.Implementations
                 return;
             }
 
-            _context.PlayersPerTeam.Remove(playerInTeam);
-            _context.SaveChanges();
+            Context.PlayersPerTeam.Remove(playerInTeam);
+            Context.SaveChanges();
         }
 
         public Team FindTeam(string teamName, string seasonName)

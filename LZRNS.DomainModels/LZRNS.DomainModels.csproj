@@ -84,7 +84,6 @@
       <DependentUpon>201909101148166_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
     <Compile Include="Models\PlayerAverageStats.cs" />
     <Compile Include="Models\Game.cs" />
