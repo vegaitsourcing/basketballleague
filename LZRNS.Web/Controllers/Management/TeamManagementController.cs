@@ -1,11 +1,9 @@
-﻿using LZRNS.Common;
-using LZRNS.DomainModel.Models;
+﻿using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.DocumentTypes.Pages;
 using LZRNS.Web.Helpers;
 using System;
 using System.Data.Entity.Core;
-using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
@@ -15,12 +13,12 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class TeamManagementController : RenderMvcController
     {
-        private ITeamRepository _teamRepo;
+        private readonly ITeamRepository _teamRepo;
+
         public TeamManagementController(ITeamRepository teamRepo)
         {
             _teamRepo = teamRepo;
         }
-
 
         public ActionResult Index(TeamManagementModel model)
         {
@@ -33,9 +31,9 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class TeamManagementSurfaceController : SurfaceController
     {
-        private ITeamRepository _teamRepo;
-        private ISeasonRepository _seasonRepo;
-        private IPlayerRepository _playerRepo;
+        private readonly ITeamRepository _teamRepo;
+        private readonly ISeasonRepository _seasonRepo;
+        private readonly IPlayerRepository _playerRepo;
 
         public TeamManagementSurfaceController(ITeamRepository teamRepo, ISeasonRepository seasonRepo, IPlayerRepository playerRepo)
         {
@@ -45,27 +43,28 @@ namespace LZRNS.Web.Controllers.Management
         }
 
         #region [Render Views Actions]
+
         [HttpGet]
         public ActionResult Add()
         {
-            var model = new Team();
-
-            model.Teams = _teamRepo.GetAll()
+            var model = new Team
+            {
+                Teams = _teamRepo.GetAll()
                 .ToList()
                 .Select(x => new SelectListItem()
                 {
                     Text = $"{x.TeamName} - {x.LeagueSeason.FullName}",
                     Value = x.Id.ToString()
-                });
-
-            model.LeagueSeasons = _seasonRepo.GetAllLeagueSeasons()
+                }),
+                LeagueSeasons = _seasonRepo.GetAllLeagueSeasons()
                 .ToList()
                 .Select(x => new SelectListItem()
                 {
                     Text = x.FullName,
                     Value = x.Id.ToString()
                 })
-                .OrderBy(x => x.Text);
+                .OrderBy(x => x.Text)
+            };
 
             return PartialView(model);
         }
@@ -94,9 +93,9 @@ namespace LZRNS.Web.Controllers.Management
 
             model.AvailablePlayers = _playerRepo.GetAll()
                 .ToList()
-                .Where(x => !(x.PlayersPerSeason.Any()) || x.PlayersPerSeason.Where(y => y.TeamId == model.PreviousTeamGuid).Any())
-                .Where(s => !(model.PlayersPerSeason.Where(d => d.PlayerId == s.Id).Any()))
-                .Select(z => new SelectListItem() { Text = z.GetFullName, Value = z.Id.ToString() })
+                .Where(x => !(x.PlayersPerSeason.Count > 0) || x.PlayersPerSeason.Any(y => y.TeamId == model.PreviousTeamGuid))
+                .Where(s => model.PlayersPerSeason.All(d => d.PlayerId != s.Id))
+                .Select(z => new SelectListItem { Text = z.GetFullName, Value = z.Id.ToString() })
                 .OrderBy(o => o.Text);
 
             return PartialView(model);
@@ -109,7 +108,8 @@ namespace LZRNS.Web.Controllers.Management
 
             return null;
         }
-        #endregion
+
+        #endregion [Render Views Actions]
 
         #region [Data Change Actions]
 
@@ -121,7 +121,6 @@ namespace LZRNS.Web.Controllers.Management
                 model.Id = _teamRepo.Add(model).Id;
                 model.Image = ImageHandler.SaveImage(model, ObjectType.TEAM);
                 _teamRepo.Update(model);
-
             }
 
             return null;
@@ -135,21 +134,20 @@ namespace LZRNS.Web.Controllers.Management
             return null;
         }
 
-
         [HttpPost]
         public ActionResult Edit(Team model)
         {
-            if (ModelState.IsValid)
-            {
-                ImageHandler.RemoveImage(model.Image);
-                string newImage = ImageHandler.SaveImage(model, ObjectType.TEAM);
-                if (newImage != null)
-                {
-                    model.Image = newImage;
-                }
+            if (!ModelState.IsValid)
+                return null;
 
-                _teamRepo.Update(model);
+            ImageHandler.RemoveImage(model.Image);
+            string newImage = ImageHandler.SaveImage(model, ObjectType.TEAM);
+            if (newImage != null)
+            {
+                model.Image = newImage;
             }
+
+            _teamRepo.Update(model);
 
             return null;
         }
@@ -157,8 +155,8 @@ namespace LZRNS.Web.Controllers.Management
         [HttpGet]
         public JsonResult Delete(Guid teamId)
         {
-            var status = "success";
-            var message = "";
+            string status = "success";
+            string message = "";
             var model = _teamRepo.GetById(teamId);
 
             try
@@ -169,24 +167,16 @@ namespace LZRNS.Web.Controllers.Management
             {
                 Logger.Error(typeof(LeagueManagementController), "Unsuccessfull delete action", ex);
                 status = "failed";
-                if (ex.GetType() == typeof(UpdateException))
-                {
-                    message = ex.Message;
-                }
-                else
-                {
-                    message = "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
-                }
+                message = ex.GetType() == typeof(UpdateException) ? ex.Message : "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
             }
-
 
             if (status == "success")
             {
                 ImageHandler.RemoveImage(model.Image);
             }
-            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion
+        #endregion [Data Change Actions]
     }
 }

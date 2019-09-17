@@ -7,48 +7,44 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
 
 namespace LZRNS.DomainModels.Repository.Implementations
 {
     public class RepositoryBase<T> : IRepositoryBase<T> where T : AbstractModel
     {
-        public BasketballDbContext _context;
+        public BasketballDbContext Context;
+
         public RepositoryBase(BasketballDbContext context)
         {
-            _context = context;
+            Context = context;
         }
 
         public T Add(T item)
         {
             item.Id = Guid.NewGuid();
-            var entity = _context.Set<T>().Add(item);
+            var entity = Context.Set<T>().Add(item);
             try
             {
-                _context.SaveChanges();
+                Context.SaveChanges();
             }
             catch (DbUpdateException ex)
             {
+                string exceptionMessage = ex.InnerException?.InnerException?.Message;
 
-                string exceptionMessage = ex.InnerException.InnerException.Message;
-                if (exceptionMessage.Contains("UNIQUE KEY"))
+                if (exceptionMessage?.Contains("UNIQUE KEY") != true)
+                    return entity;
+
+                if (exceptionMessage.Contains("League"))
                 {
-
-                    if (exceptionMessage.Contains("League"))
-                    {
-                        throw new DalException("Ime lige mora biti jedinstveno.", DalExceptionCode.UNIQUE_LEAGUE_NAME);
-                    }
-                    else if (exceptionMessage.Contains("Season"))
-                    {
-                        throw new DalException("Naziv sezone i godina zajedno moraju biti jedinstveni.", DalExceptionCode.UNIQUE_SEASON_DATA);
-
-                    }
-
+                    throw new DalException("Ime lige mora biti jedinstveno.", DalExceptionCode.UNIQUE_LEAGUE_NAME);
                 }
 
-
+                if (exceptionMessage.Contains("Season"))
+                {
+                    throw new DalException("Naziv sezone i godina zajedno moraju biti jedinstveni.", DalExceptionCode.UNIQUE_SEASON_DATA);
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 System.Diagnostics.Debug.WriteLine("debug");
             }
@@ -57,8 +53,8 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
         public IEnumerable<T> AddRange(IEnumerable<T> items)
         {
-            var entities = _context.Set<T>().AddRange(items);
-            _context.SaveChanges();
+            var entities = Context.Set<T>().AddRange(items);
+            Context.SaveChanges();
 
             return entities;
         }
@@ -67,8 +63,8 @@ namespace LZRNS.DomainModels.Repository.Implementations
         {
             try
             {
-                _context.Set<T>().Remove(item);
-                _context.SaveChanges();
+                Context.Set<T>().Remove(item);
+                Context.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -78,20 +74,20 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
         public IEnumerable<T> GetAll()
         {
-            return _context.Set<T>();
+            return Context.Set<T>();
         }
 
         public T GetById(Guid id)
         {
-            return _context.Set<T>().Find(id);
+            return Context.Set<T>().Find(id);
         }
 
         public bool Update(T item)
         {
             try
             {
-                _context.Entry(item).State = EntityState.Modified;
-                _context.SaveChanges();
+                Context.Entry(item).State = EntityState.Modified;
+                Context.SaveChanges();
                 return true;
             }
             catch
@@ -100,18 +96,15 @@ namespace LZRNS.DomainModels.Repository.Implementations
             }
         }
 
-        private bool disposed = false;
+        private bool _disposed;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!_disposed && disposing)
             {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
+                Context.Dispose();
             }
-            this.disposed = true;
+            _disposed = true;
         }
 
         public void Dispose()
@@ -119,6 +112,5 @@ namespace LZRNS.DomainModels.Repository.Implementations
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

@@ -7,12 +7,10 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace LZRNS.ExcelLoader
 {
-    class Program
+    internal class Program
     {
-            
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             //string basePath = @"F:\2.Documents\LZRNS\PrevoiusSesions\2017\";
             //string basePath = @"F:\ForLoad\forUse\";
 
@@ -23,7 +21,7 @@ namespace LZRNS.ExcelLoader
             //string newDestination = @"F:\ForLoad\converted\";
             string newDestination = @"F:\ForLoad\2016\converted\";
 
-            foreach(String season in seasons)
+            foreach (string season in seasons)
             {
                 Console.WriteLine("Season: " + season);
                 basePath = @"F:\ForLoad\" + season + @"\orginal\";
@@ -32,23 +30,20 @@ namespace LZRNS.ExcelLoader
             }
 
             LoadDocuments(newDestination);
-
-
         }
 
         public static void ConvertExtensions(string basePath, string newDestination)
         {
             IEnumerable<string> filesPaths = PathList(basePath, ".xls");
-            
+
             Console.WriteLine("Starting process for loading data for: " + filesPaths.Count() + " teams");
-            foreach (String s in filesPaths)
+            foreach (string s in filesPaths)
             {
                 Excel.Application exApp = new Excel.Application();
                 Excel.Workbook xlWorkbook = exApp.Workbooks.Open(basePath + s);
 
                 string fileName = s.Substring(0, s.Length - 4);
 
-                
                 Console.WriteLine("Convert file: " + fileName);
                 xlWorkbook.SaveAs(newDestination + fileName, Excel.XlFileFormat.xlOpenXMLWorkbook,
                         System.Reflection.Missing.Value, System.Reflection.Missing.Value, false, false,
@@ -59,45 +54,38 @@ namespace LZRNS.ExcelLoader
                 Marshal.ReleaseComObject(xlWorkbook);
                 exApp = null;
                 GC.Collect();
-
             }
         }
-        
 
         public static void LoadDocuments(string basePath)
         {
             ExcelReader.ExcelLoader loader = new ExcelReader.ExcelLoader("./TableMapper.config");
 
             IEnumerable<string> filesPaths = PathList(basePath, ".xlsx");
-           
-            Loger.log.Debug("Starting process for loading data for: " + filesPaths.Count() + " teams");
+
+            Log4NetLogger.Log.Debug("Starting process for loading data for: " + filesPaths.Count() + " teams");
 
             Console.WriteLine("Starting process for loading data for: " + filesPaths.Count() + " teams");
             foreach (string s in filesPaths)
             {
-                Loger.log.Debug("#################################################################################################");
+                Log4NetLogger.Log.Debug("#################################################################################################");
                 Console.WriteLine("Process team: " + s);
                 loader.ProcessFile(basePath + s, s);
             }
         }
 
-
-        static IEnumerable<string> PathList (string basePath, string extensionType)
+        private static IEnumerable<string> PathList(string basePath, string extensionType)
         {
-           IEnumerable<string> search = Directory.EnumerateFiles(basePath, "stats-teams-*" + extensionType)
-                         .Where(file => Path.GetFileName(file).StartsWith("stats-teams-"))
-                         .Select(path => Path.GetFileName(path))
-                         .ToArray();
-
-            
-           
+            IEnumerable<string> search = Directory.EnumerateFiles(basePath, "stats-teams-*" + extensionType)
+                          .Where(file => Path.GetFileName(file).StartsWith("stats-teams-"))
+                          .Select(path => Path.GetFileName(path))
+                          .ToArray();
 
             if (search.Count() > 0)
             {
                 return search.Where(x => !x.Contains("-playoff."));
             }
             return search;
-            
         }
     }
 }
