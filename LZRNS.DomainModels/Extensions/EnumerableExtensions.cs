@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace LZRNS.DomainModels.Extensions
 {
-    public static class IEnumerableExtensions
+    public static class EnumerableExtensions
     {
         public static List<T> GetTopStats<T>(this IEnumerable<IGrouping<Guid, Stats>> source, Func<IGrouping<Guid, Stats>, double> orderCriteria) where T : PlayerStats
         {

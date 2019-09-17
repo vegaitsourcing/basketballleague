@@ -78,7 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.Designer.cs">
       <DependentUpon>201909101148166_InitialModel.cs</DependentUpon>
