@@ -12,12 +12,12 @@ namespace LZRNS.Web.Controllers.Management
 {
     public class LeagueManagementController : RenderMvcController
     {
-        private ILeagueRepository _leagueRepo;
+        private readonly ILeagueRepository _leagueRepo;
+
         public LeagueManagementController(ILeagueRepository leagueRepo)
         {
             _leagueRepo = leagueRepo;
         }
-
 
         public ActionResult Index(LeagueManagementModel model)
         {
@@ -31,7 +31,7 @@ namespace LZRNS.Web.Controllers.Management
     public class LeagueManagementSurfaceController : SurfaceController
     {
         private ILeagueRepository _leagueRepo;
-        private ISeasonRepository _seasonRepo;
+        private readonly ISeasonRepository _seasonRepo;
 
         public LeagueManagementSurfaceController(ILeagueRepository leagueRepo, ISeasonRepository seasonRepo)
         {
@@ -40,42 +40,40 @@ namespace LZRNS.Web.Controllers.Management
         }
 
         #region [Render Views Actions]
+
         [HttpGet]
         public ActionResult Add()
         {
             return PartialView(new League());
         }
+
         [HttpGet]
         public ActionResult Edit(Guid leagueId)
         {
             return PartialView(_leagueRepo.GetById(leagueId));
         }
-        #endregion
+
+        #endregion [Render Views Actions]
 
         #region [Data Change Actions]
 
         [HttpPost]
         public ActionResult Add(League model)
         {
-            string message = "";
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return PartialView(model);
+
+            try
             {
-                try
-                {
-                    _leagueRepo.Add(model);
-                }
-                catch (DalException ex)
-                {
-                    message = ex.Message;
-                    Logger.Error(typeof(LeagueManagementController), "Neuspesno dodavanje lige.", ex);
-                    ViewBag.Hello = "Hello";
-                    TempData["League_Name_Error"] = message;
-                    ModelState.AddModelError("error_msg", message);
-
-                    //return PartialView($"/Views/Partials/LeagueManagementSurface/_ErrorForm.cshtml", model);
-
-                }
-
+                _leagueRepo.Add(model);
+            }
+            catch (DalException ex)
+            {
+                string message = ex.Message;
+                Logger.Error(typeof(LeagueManagementController), "Neuspesno dodavanje lige.", ex);
+                ViewBag.Hello = "Hello";
+                TempData["League_Name_Error"] = message;
+                ModelState.AddModelError("error_msg", message);
             }
 
             return PartialView(model);
@@ -95,8 +93,8 @@ namespace LZRNS.Web.Controllers.Management
         [HttpGet]
         public JsonResult Delete(Guid leagueId)
         {
-            var status = "success";
-            var message = "";
+            string status = "success";
+            string message = "";
             try
             {
                 _leagueRepo.Delete(_leagueRepo.GetById(leagueId));
@@ -105,19 +103,12 @@ namespace LZRNS.Web.Controllers.Management
             {
                 Logger.Error(typeof(LeagueManagementController), "Unsuccessfull delete action", ex);
                 status = "failed";
-                if (ex.GetType() == typeof(UpdateException))
-                {
-                    message = ex.Message;
-                }
-                else
-                {
-                    message = "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
-                }
+                message = ex.GetType() == typeof(UpdateException) ? ex.Message : "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
             }
 
-            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion
+        #endregion [Data Change Actions]
     }
 }

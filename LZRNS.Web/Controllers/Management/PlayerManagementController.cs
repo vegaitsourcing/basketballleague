@@ -14,12 +14,12 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class PlayerManagementController : RenderMvcController
     {
-        private IPlayerRepository _playerRepo;
+        private readonly IPlayerRepository _playerRepo;
+
         public PlayerManagementController(IPlayerRepository playerRepo)
         {
             _playerRepo = playerRepo;
         }
-
 
         public ActionResult Index(PlayerManagementModel model)
         {
@@ -32,7 +32,7 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class PlayerManagementSurfaceController : SurfaceController
     {
-        private IPlayerRepository _playerRepo;
+        private readonly IPlayerRepository _playerRepo;
 
         public PlayerManagementSurfaceController(IPlayerRepository playerRepo)
         {
@@ -40,17 +40,20 @@ namespace LZRNS.Web.Controllers.Management
         }
 
         #region [Render Views Actions]
+
         [HttpGet]
         public ActionResult Add()
         {
             return PartialView(new Player());
         }
+
         [HttpGet]
         public ActionResult Edit(Guid playerId)
         {
             return PartialView(_playerRepo.GetById(playerId));
         }
-        #endregion
+
+        #endregion [Render Views Actions]
 
         #region [Data Change Actions]
 
@@ -73,7 +76,6 @@ namespace LZRNS.Web.Controllers.Management
         {
             if (ModelState.IsValid)
             {
-
                 ImageHandler.RemoveImage(model.Image);
                 string newImage = ImageHandler.SaveImage(model, ObjectType.PLAYER);
                 if (newImage != null)
@@ -90,9 +92,9 @@ namespace LZRNS.Web.Controllers.Management
         [HttpGet]
         public JsonResult Delete(Guid playerId)
         {
-            var status = "success";
-            var message = "";
-            var model = _playerRepo.GetById(playerId);
+            string status = "success";
+            string message = "";
+            Player model = _playerRepo.GetById(playerId);
 
             try
             {
@@ -102,14 +104,7 @@ namespace LZRNS.Web.Controllers.Management
             {
                 Logger.Error(typeof(LeagueManagementController), "Unsuccessfull delete action", ex);
                 status = "failed";
-                if (ex.GetType() == typeof(UpdateException))
-                {
-                    message = ex.Message;
-                }
-                else
-                {
-                    message = "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
-                }
+                message = ex.GetType() == typeof(UpdateException) ? ex.Message : "Nešto je pošlo naopako, molim vas kontaktirajte administratora ili pokušajte ponovo.";
             }
 
             if (status == "success")
@@ -117,11 +112,9 @@ namespace LZRNS.Web.Controllers.Management
                 ImageHandler.RemoveImage(model.Image);
             }
 
-            return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
+            return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }
-        #endregion
 
-
-
+        #endregion [Data Change Actions]
     }
 }
