@@ -1,32 +1,27 @@
-﻿using LZRNS.DomainModels.Repository.Interfaces;
+﻿using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Models;
+using LZRNS.DomainModels.Repository.Interfaces;
+using LZRNS.DomainModels.Repository.Interfaces.Exceptions;
 using LZRNS.Models.DocumentTypes.Pages;
-using System.Web.Mvc;
-using Umbraco.Web.Mvc;
-using LZRNS.DomainModel.Models;
 using LZRNS.Web.Controllers.Surface;
 using System;
-using System.Linq;
-using LZRNS.DomainModels.Models;
 using System.Collections.Generic;
 using System.Data.Entity.Core;
-using LZRNS.DomainModels.Repository.Interfaces.Exceptions;
-using LZRNS.DomainModels.Repository.Implementations;
+using System.Linq;
+using System.Web.Mvc;
+using Umbraco.Web.Mvc;
 
 namespace LZRNS.Web.Controllers.Management
 {
     [MemberAuthorize]
     public class SeasonManagementController : RenderMvcController
     {
-        private ISeasonRepository _seasonRepo;
-
+        private readonly ISeasonRepository _seasonRepo;
 
         public SeasonManagementController(ISeasonRepository seasonRepo)
         {
             _seasonRepo = seasonRepo;
         }
-
-
-
 
         public ActionResult Index(SeasonManagementModel model)
         {
@@ -39,15 +34,14 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class SeasonManagementSurfaceController : BaseSurfaceController
     {
-        private ISeasonRepository _seasonRepo;
-        private ILeagueRepository _leagueRepo;
+        private readonly ISeasonRepository _seasonRepo;
+        private readonly ILeagueRepository _leagueRepo;
 
         public SeasonManagementSurfaceController(ISeasonRepository seasonRepo, ILeagueRepository leagueRepo)
         {
             _seasonRepo = seasonRepo;
             _leagueRepo = leagueRepo;
         }
-
 
         #region [Season Actions]
 
@@ -56,7 +50,6 @@ namespace LZRNS.Web.Controllers.Management
         [HttpGet]
         public ActionResult Add()
         {
-
             return PartialView(new Season());
         }
 
@@ -69,9 +62,7 @@ namespace LZRNS.Web.Controllers.Management
 
             foreach (var league in allLeagues)
             {
-                var existingLeagueSeason = model.LeagueSeasons
-                        .Where(y => y.LeagueId == league.Id)
-                        .FirstOrDefault();
+                var existingLeagueSeason = model.LeagueSeasons.FirstOrDefault(y => y.LeagueId == league.Id);
 
                 model.LeagueList.Add(new SelectListItem
                 {
@@ -113,30 +104,26 @@ namespace LZRNS.Web.Controllers.Management
             return Json(new { status = status, message = message }, JsonRequestBehavior.AllowGet);
         }
 
-        #endregion
+        #endregion [Get Actions]
 
         #region [Post Actions]
 
         [HttpPost]
         public ActionResult Add(Season model)
         {
+            if (!ModelState.IsValid)
+                return PartialView(model);
 
-            string message = "";
-            if (ModelState.IsValid)
+            try
             {
-                try
-                {
-                    _seasonRepo.Add(model);
-                }
-                catch (DalException ex)
-                {
-                    message = ex.Message;
-                    Logger.Error(typeof(SeasonManagementController), "Neuspesno dodavanje sezone.", ex);
-                    TempData["Season_Data_Error"] = message;
-                }
-
+                _seasonRepo.Add(model);
             }
-
+            catch (DalException ex)
+            {
+                string message = ex.Message;
+                Logger.Error(typeof(SeasonManagementController), "Neuspesno dodavanje sezone.", ex);
+                TempData["Season_Data_Error"] = message;
+            }
 
             return PartialView(model);
         }
@@ -153,10 +140,9 @@ namespace LZRNS.Web.Controllers.Management
             return PartialView("Index", model);
         }
 
-        #endregion
+        #endregion [Post Actions]
 
-        #endregion
-
+        #endregion [Season Actions]
 
         [HttpGet]
         public ActionResult EditLeagueSeason(Guid id)
@@ -179,10 +165,11 @@ namespace LZRNS.Web.Controllers.Management
         [HttpGet]
         public ActionResult AddLeagueSeason(Guid seasonId, Guid leagueId)
         {
-            var model = new LeagueSeason();
-
-            model.SeasonId = seasonId;
-            model.LeagueId = leagueId;
+            var model = new LeagueSeason
+            {
+                SeasonId = seasonId,
+                LeagueId = leagueId
+            };
 
             return PartialView(model);
         }

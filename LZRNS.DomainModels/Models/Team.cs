@@ -1,4 +1,5 @@
 ﻿using LZRNS.DomainModels.Models;
+using LZRNS.DomainModels.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -7,7 +8,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using LZRNS.DomainModels.ViewModels;
 
 namespace LZRNS.DomainModel.Models
 {
@@ -33,9 +33,9 @@ namespace LZRNS.DomainModel.Models
         public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
 
         public virtual ICollection<Game> Games =>
-            this.LeagueSeason?.Rounds?
+            LeagueSeason?.Rounds?
                 .SelectMany(x => x.Games)
-                .Where(y => y.TeamAId.Equals(this.Id) || y.TeamBId.Equals((this.Id)))
+                .Where(y => y.TeamAId.Equals(Id) || y.TeamBId.Equals((Id)))
                 .ToList() ?? Enumerable.Empty<Game>().ToList();
 
         public virtual LeagueSeason LeagueSeason { get; set; }
@@ -51,13 +51,17 @@ namespace LZRNS.DomainModel.Models
         [NotMapped]
         [DisplayName("Slika")]
         public HttpPostedFileBase ImageFile { get; set; }
+
         [NotMapped]
         public IEnumerable<SelectListItem> Teams { get; set; }
+
         [NotMapped]
         public IEnumerable<SelectListItem> LeagueSeasons { get; set; }
+
         [NotMapped]
         public IEnumerable<SelectListItem> AvailablePlayers { get; set; }
-        #endregion
+
+        #endregion [ViewModel Properties]
 
         public LeaderboardPlacing GetLeaderBoardPlacing(string roundName)
         {

@@ -78,13 +78,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Context\BasketballDbContext.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.Designer.cs">
       <DependentUpon>201909101148166_InitialModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Migrations\DbInitializer.cs" />
     <Compile Include="Models\AbstractModel.cs" />
     <Compile Include="Models\PlayerAverageStats.cs" />
     <Compile Include="Models\Game.cs" />

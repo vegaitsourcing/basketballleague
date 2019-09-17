@@ -18,48 +18,48 @@ namespace LZRNS.DomainModels.Repository.Implementations
         public LeagueSeason AddLeagueToSeason(LeagueSeason leagueSeason)
         {
             leagueSeason.Id = Guid.NewGuid();
-            var entity = _context.LeagueSeasons.Add(leagueSeason);
-            _context.SaveChanges();
+            var entity = Context.LeagueSeasons.Add(leagueSeason);
+            Context.SaveChanges();
             return entity;
         }
 
         public void DeleteLeagueSeason(LeagueSeason leagueSeason)
         {
-            _context.Set<LeagueSeason>().Remove(leagueSeason);
-            _context.SaveChanges();
+            Context.Set<LeagueSeason>().Remove(leagueSeason);
+            Context.SaveChanges();
         }
 
         public IEnumerable<LeagueSeason> GetAllLeagueSeasons()
         {
-            return _context.Set<LeagueSeason>();
+            return Context.Set<LeagueSeason>();
         }
 
         public LeagueSeason GetLeagueSeasonById(Guid id)
         {
-            return _context.Set<LeagueSeason>().Find(id);
+            return Context.Set<LeagueSeason>().Find(id);
         }
 
         public LeagueSeason GetLeagueSeasonsBySeasonAndLeague(Guid seasonId, ICollection<Guid> leaguesIds)
         {
-            return _context.LeagueSeasons.FirstOrDefault(ls => ls.SeasonId == seasonId && leaguesIds.Contains(ls.LeagueId));
+            return Context.LeagueSeasons.FirstOrDefault(ls => ls.SeasonId == seasonId && leaguesIds.Contains(ls.LeagueId));
         }
 
         public Season GetSeasonByName(string seasonName)
         {
-            return _context.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
+            return Context.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
         }
 
         public Season GetSeasonByYear(int seasonStartYear)
         {
-            return _context.Seasons.FirstOrDefault(x => x.SeasonStartYear.Equals(seasonStartYear));
+            return Context.Seasons.FirstOrDefault(x => x.SeasonStartYear.Equals(seasonStartYear));
         }
 
         public bool UpdateLeagueSeason(LeagueSeason leagueSeason)
         {
             try
             {
-                _context.Entry(leagueSeason).State = EntityState.Modified;
-                _context.SaveChanges();
+                Context.Entry(leagueSeason).State = EntityState.Modified;
+                Context.SaveChanges();
                 return true;
             }
             catch

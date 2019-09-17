@@ -10,16 +10,7 @@ namespace LZRNS.DomainModel.Context
     {
         public BasketballDbContext() : base("domainDb")
         {
-            //Database.SetInitializer<BasketballDbContext>(new DbInitializer());
-            //Database.Initialize(true);
         }
-
-
-        //public BasketballDbContext()
-        //{
-        //    Database.SetInitializer<BasketballDbContext>(new DbInitializer());
-        //    Database.Initialize(true);
-        //}
 
         public DbSet<Game> Games { get; set; }
         public DbSet<League> Leagues { get; set; }
@@ -39,16 +30,6 @@ namespace LZRNS.DomainModel.Context
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
-
-            //modelBuilder.Entity<Game>().HasRequired(x => x.TeamA).WithMany()
-            //     .HasForeignKey(c => c.TeamAId).WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<Game>().HasRequired(x => x.TeamB).WithMany()
-            //    .HasForeignKey(c => c.TeamBId).WillCascadeOnDelete(false);
-
-            //modelBuilder.Entity<LeagueSeason>().HasRequired(x => x.Season).WithMany()
-            //    .HasForeignKey(c => c.).WillCascadeOnDelete(false);
-            //base.OnModelCreating(modelBuilder);
         }
     }
 }

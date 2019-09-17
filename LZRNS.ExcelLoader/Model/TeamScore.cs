@@ -5,28 +5,19 @@ namespace LZRNS.ExcelLoader
 {
     public class TeamScore
     {
-        private List<PlayerScore> playerScores;
-        private string againstTeam = "-";
-
         public TeamScore()
         {
-            this.playerScores = new List<PlayerScore>();
+            PlayerScores = new List<PlayerScore>();
         }
-        
 
-        #region Properties
-        public string AgainstTeam { get { return againstTeam; } set { againstTeam = value; } }
+        public string AgainstTeam { get; set; } = "-";
         public DateTime MatchDate { get; set; }
+        public List<PlayerScore> PlayerScores { get; }
         public string RoundName { get; set; }
-        public List<PlayerScore> PlayerScores { get { return playerScores; } }
-        #endregion Properties
 
-        #region Public Methods
-        public void AddPlayerScore (PlayerScore pl)
+        public void AddPlayerScore(PlayerScore pl)
         {
-            playerScores.Add(pl);
+            PlayerScores.Add(pl);
         }
-        #endregion Public Methods
-        
     }
 }

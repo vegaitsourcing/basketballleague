@@ -11,17 +11,18 @@ namespace TimeTableLoader.Converter
 {
     public class Converter
     {
-        private string seasonRegex = @"(\d{4})\/(\d{2})";
-        private string dateRegex = @"(\d{2}).(\d{2}).(\d{4})";
-        string season = String.Empty;
-        string date = String.Empty;
-        string liga = String.Empty;
-        List<SingleGameModel> games = new List<SingleGameModel>();
-        private bool nextGame;
+        private const string DateRegex = @"(\d{2}).(\d{2}).(\d{4})";
+        private const string SeasonRegex = @"(\d{4})\/(\d{2})";
+        private string _date = string.Empty;
+        private string _liga = string.Empty;
+        private bool _nextGame;
+
+        public List<SingleGameModel> AllGamesList { get; } = new List<SingleGameModel>();
+
+        public string Season { get; private set; } = string.Empty;
 
         public void Convert(MemoryStream memoryStream)
         {
-
             if (memoryStream == null)
             {
                 throw new Exception("input stream is null");
@@ -29,120 +30,116 @@ namespace TimeTableLoader.Converter
 
             var lines = ConvertToLines(memoryStream);
 
-            SingleGameModel model = new SingleGameModel();
-            foreach (var line in lines)
-            {   
-                ProcesLine(line,ref model);
-                if(nextGame == true)
+            var model = new SingleGameModel();
+            foreach (string line in lines)
+            {
+                ProcessLine(line, ref model);
+                if (_nextGame)
                 {
-                    games.Add(model);
+                    AllGamesList.Add(model);
                     model = new SingleGameModel();
-                    nextGame = false;
+                    _nextGame = false;
                 }
             }
-        }
-
-        private bool ProcesLine(string line,ref SingleGameModel model)
-        {
-            if(line == string.Empty || line.Trim() == string.Empty)
-            {
-                return true;
-            }
-
-            //ignore lines
-            if(line.Contains("#") || line.Contains("(") || line.Contains(")"))
-            {
-                return true;
-            }
-
-            //get league
-            if (line.Contains("LIGA"))
-            {
-                this.liga = line.Trim().Split(' ')[0];
-                return true;
-            }
-
-            //check if its season line!
-            Regex pattern = new Regex(seasonRegex);
-            Match match = pattern.Match(line);
-            if(match.Success)
-            {
-                this.season = match.Value;
-                return true;
-            }
-
-            //check date of next few matches
-            Regex datePattern = new Regex(dateRegex);
-            Match dateMatch = datePattern.Match(line);
-            if (dateMatch.Success)
-            {
-                this.nextGame = !this.date.Equals(dateMatch.Value);
-                this.date = dateMatch.Value;
-                return true;
-            }
-
-            var trimmedLine = line.Trim();
-
-            var firstSpaceInd = trimmedLine.IndexOf(" ");
-
-            var time = trimmedLine.Substring(0, firstSpaceInd);
-            var games = trimmedLine.Substring(firstSpaceInd);
-            var teams = games.Split(new string[] { " vs " }, StringSplitOptions.None);
-
-            var t1 = teams[0].Trim();
-            var t2 = teams[1].Trim();
-
-            model.Date = date;
-            model.Season = season;
-            model.TeamA = t1;
-            model.TeamB = t2;
-            model.Time = time;
-            model.Liga = liga;
-
-            return true;
-
-
         }
 
         public void SaveToDb()
         {
-            if(this.games.Count == 0 || this.liga == String.Empty)
+            if (AllGamesList.Count == 0 || _liga == string.Empty)
             {
                 throw new Exception("empty games collection");
             }
 
-            using(var dbContext = new BasketballDbContext())
+            using (var dbContext = new BasketballDbContext())
             {
                 //first remove all games for given league
-                dbContext.Schedules.RemoveRange(dbContext.Schedules.Where(x => x.Liga.Equals(this.liga)));
+                dbContext.Schedules.RemoveRange(dbContext.Schedules.Where(x => x.Liga.Equals(_liga)));
                 dbContext.SaveChanges();
-                dbContext.Schedules.AddRange(this.games);
+                dbContext.Schedules.AddRange(AllGamesList);
                 dbContext.SaveChanges();
             }
         }
 
-        private List<string> ConvertToLines(MemoryStream memoryStream)
+        private static IEnumerable<string> ConvertToLines(Stream memoryStream)
         {
-
-            List<string> rows = new List<string>();
+            var rows = new List<string>();
 
             using (var reader = new StreamReader(memoryStream, Encoding.ASCII))
             {
-                string line= null;
-                while ((line = reader.ReadLine()) != null){
+                string line;
+                while ((line = reader.ReadLine()) != null)
+                {
                     rows.Add(line);
                 }
             }
 
-            if(rows.Count == 0)
+            if (rows.Count == 0)
             {
                 throw new Exception("parsing failed, result is empty");
             }
 
             return rows;
         }
-        
-        public List<SingleGameModel> AllGamesList { get { return games; } }
-        public string Season { get { return season; } }
+
+        private void ProcessLine(string line, ref SingleGameModel model)
+        {
+            if (line is null)
+                return;
+
+            if (line.Length == 0 || line.Trim().Length == 0)
+            {
+                return;
+            }
+
+            //ignore lines
+            if (line.Contains("#") || line.Contains("(") || line.Contains(")"))
+            {
+                return;
+            }
+
+            //get league
+            if (line.Contains("LIGA"))
+            {
+                _liga = line.Trim().Split(' ')[0];
+                return;
+            }
+
+            //check if its season line!
+            var pattern = new Regex(SeasonRegex);
+            var match = pattern.Match(line);
+            if (match.Success)
+            {
+                Season = match.Value;
+                return;
+            }
+
+            //check date of next few matches
+            var datePattern = new Regex(DateRegex);
+            var dateMatch = datePattern.Match(line);
+            if (dateMatch.Success)
+            {
+                _nextGame = !_date.Equals(dateMatch.Value);
+                _date = dateMatch.Value;
+                return;
+            }
+
+            string trimmedLine = line.Trim();
+
+            int firstSpaceInd = trimmedLine.IndexOf(" ", StringComparison.Ordinal);
+
+            string time = trimmedLine.Substring(0, firstSpaceInd);
+            string games = trimmedLine.Substring(firstSpaceInd);
+            var teams = games.Split(new[] { " vs " }, StringSplitOptions.None);
+
+            string t1 = teams[0].Trim();
+            string t2 = teams[1].Trim();
+
+            model.Date = _date;
+            model.Season = Season;
+            model.TeamA = t1;
+            model.TeamB = t2;
+            model.Time = time;
+            model.Liga = _liga;
+        }
     }
 }

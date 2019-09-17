@@ -1,31 +1,25 @@
-﻿using System;
+﻿using LZRNS.ExcelLoader.Model;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Excel = Microsoft.Office.Interop.Excel;
 using System.Runtime.InteropServices;
-using LZRNS.ExcelLoader.Model;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace LZRNS.ExcelLoader
 {
     public class ExcelWriter
     {
-        private Excel.Application _xlApp;
-        private Excel.Workbook _xlWorkBook;
-        private Excel.Worksheet _xlWorkSheet;
+        private readonly Excel.Application _xlApp;
+        private readonly Excel.Workbook _xlWorkBook;
+        private readonly Excel.Worksheet _xlWorkSheet;
         private int _lastPopulatedRow = 0;
 
         public ExcelWriter()
         {
-            _xlApp = new Microsoft.Office.Interop.Excel.Application();
+            _xlApp = new Excel.Application();
             object misValue = System.Reflection.Missing.Value;
 
             _xlWorkBook = _xlApp.Workbooks.Add(misValue);
-            _xlWorkSheet = (Excel.Worksheet)_xlWorkBook.Worksheets.get_Item(1);
-
+            _xlWorkSheet = (Excel.Worksheet)_xlWorkBook.Worksheets.Item[1];
         }
-
 
         public void CreateHeader()
         {
@@ -36,19 +30,18 @@ namespace LZRNS.ExcelLoader
             _xlWorkSheet.Cells[1, 5] = "Novi tim";
             _xlWorkSheet.Cells[1, 6] = "Nova sezona - liga";
             _lastPopulatedRow = 1;
-
         }
 
         public void WritePlayerInfoList(List<PlayerInfo> playersData)
         {
-            foreach (PlayerInfo pi in playersData)
+            foreach (var pi in playersData)
             {
                 AppendPlayerInfo(pi);
             }
         }
+
         public void AppendPlayerInfo(PlayerInfo playerInfo)
         {
-
             _lastPopulatedRow++;
 
             _xlWorkSheet.Cells[_lastPopulatedRow, 1] = playerInfo.UId;
@@ -57,7 +50,6 @@ namespace LZRNS.ExcelLoader
             _xlWorkSheet.Cells[_lastPopulatedRow, 4] = playerInfo.PreviousLeagueSeasonName;
             _xlWorkSheet.Cells[_lastPopulatedRow, 5] = playerInfo.NewTeamName;
             _xlWorkSheet.Cells[_lastPopulatedRow, 6] = playerInfo.NewLeagueSeasonName;
-
         }
 
         public void SaveAndRelease(string leagueSeason)
