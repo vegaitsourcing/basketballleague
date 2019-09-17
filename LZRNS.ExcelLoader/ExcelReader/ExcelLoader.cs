@@ -1,7 +1,6 @@
 ﻿using ClosedXML.Excel;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 
 namespace LZRNS.ExcelLoader.ExcelReader
 {
@@ -21,18 +20,14 @@ namespace LZRNS.ExcelLoader.ExcelReader
         public Dictionary<string, List<PlayerScore>> GetTeamScores(string teamName)
         {
             PlayerScores.TryGetValue(teamName, out var teamScores);
-            return teamScores;
+            return teamScores ?? new Dictionary<string, List<PlayerScore>>();
         }
 
         public List<PlayerScore> GetPlayerScoreList(string teamName, string playerFullName)
         {
             var teamScores = GetTeamScores(teamName);
-
-            List<PlayerScore> playerScores = null;
-
-            teamScores?.TryGetValue(playerFullName, out playerScores);
-
-            return playerScores;
+            teamScores.TryGetValue(playerFullName, out var playerScores);
+            return playerScores ?? new List<PlayerScore>();
         }
 
         private void ProcessSheet(IXLWorksheet sheet, ref TeamStatistic teamStatistic)
