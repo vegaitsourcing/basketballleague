@@ -6,6 +6,6 @@ namespace LZRNS.Core
 {
     public interface IRoundGenerator
     {
-        IEnumerable<Round> GenerateRoundsWithGames(List<Team> teams, LeagueSeason leagueSeason);
+        IEnumerable<Round> GenerateRoundsWithGames(IReadOnlyList<Team> teams, LeagueSeason leagueSeason);
     }
 }

@@ -8,7 +8,7 @@ namespace LZRNS.Core
 {
     public class RoundGenerator : IRoundGenerator
     {
-        public IEnumerable<Round> GenerateRoundsWithGames(List<Team> teams, LeagueSeason leagueSeason)
+        public IEnumerable<Round> GenerateRoundsWithGames(IReadOnlyList<Team> teams, LeagueSeason leagueSeason)
         {
             // TODO: Optimize algorithm in order to support double Round Robin brackets
             if (teams.Count % 2 != 0)
