@@ -1,6 +1,7 @@
 ﻿using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
 
@@ -63,7 +64,7 @@ namespace LZRNS.Core.Tests
         }
 
         [Fact]
-        public void GenerateRoundsWithGames_FourTeams_TeamIsContainedInRoundOnce()
+        public void GenerateRoundsWithGames_FourTeams_TeamIsContainedInEachRoundOnce()
         {
             var teams = new[]
             {
@@ -75,8 +76,12 @@ namespace LZRNS.Core.Tests
 
             var roundsWithGames = _sut.GenerateRoundsWithGames(teams, _leagueSeason).ToList();
 
-            var round = roundsWithGames[0];
-            var gameTeamIds = round.Games.SelectMany(g => new[] { g.TeamAId, g.TeamBId }).ToList();
+            Assert.All(roundsWithGames, round => AssertEachTeamIsContainedInRoundOnce(teams, round));
+        }
+
+        private static void AssertEachTeamIsContainedInRoundOnce(IEnumerable<Team> teams, Round round)
+        {
+            var gameTeamIds = round.Games.SelectMany(game => new[] { game.TeamAId, game.TeamBId }).ToList();
 
             Assert.All(teams, team =>
             {
