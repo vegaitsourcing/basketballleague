@@ -49,12 +49,12 @@ namespace LZRNS.DomainModel.Models
         //this field should represent unique id of every player, possibly JMBG or some identifaction number; better to be string, not guid for possible later changes (provision of jmbg e.g.)
         public string UId { get; set; }
 
-        public virtual ICollection<Stats> Stats { get; set; }
+        public virtual ICollection<Stats> Stats { get; set; } = new List<Stats>();
 
-        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
+        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; } = new List<PlayerPerTeam>();
 
-        public string GetFullName => Name + " " + LastName;
+        public string GetFullName => $"{Name} {LastName}";
 
-        public string GetFullNameWithMiddleName => Name + " " + MiddleName + " " + LastName;
+        public string GetFullNameWithMiddleName => $"{Name} {MiddleName} {LastName}";
     }
 }

@@ -25,12 +25,12 @@ namespace LZRNS.DomainModel.Models
         [DisplayName("Tim iz prošle sezone")]
         public Guid? PreviousTeamGuid { get; set; }
 
-        public virtual ICollection<Player> Players { get; set; }
+        public virtual ICollection<Player> Players { get; set; } = new List<Player>();
 
         [DisplayName("Trener")]
         public string Coach { get; set; }
 
-        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; }
+        public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; } = new List<PlayerPerTeam>();
 
         public virtual ICollection<Game> Games =>
             LeagueSeason?.Rounds?
@@ -52,14 +52,12 @@ namespace LZRNS.DomainModel.Models
         [DisplayName("Slika")]
         public HttpPostedFileBase ImageFile { get; set; }
 
-        [NotMapped]
-        public IEnumerable<SelectListItem> Teams { get; set; }
+        [NotMapped] public IEnumerable<SelectListItem> Teams { get; set; } = Enumerable.Empty<SelectListItem>();
+
+        [NotMapped] public IEnumerable<SelectListItem> LeagueSeasons { get; set; } = Enumerable.Empty<SelectListItem>();
 
         [NotMapped]
-        public IEnumerable<SelectListItem> LeagueSeasons { get; set; }
-
-        [NotMapped]
-        public IEnumerable<SelectListItem> AvailablePlayers { get; set; }
+        public IEnumerable<SelectListItem> AvailablePlayers { get; set; } = Enumerable.Empty<SelectListItem>();
 
         #endregion [ViewModel Properties]
 
