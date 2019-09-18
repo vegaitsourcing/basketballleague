@@ -31,9 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeTableLoader", "TimeTabl
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{BA5818FA-B2C7-4BB7-84C3-8EED3C23293B}"
 	ProjectSection(SolutionItems) = preProject
-		constraints.sql = constraints.sql
 		create.ps1 = create.ps1
-		delete_db_data.sql = delete_db_data.sql
 		klrns_id_generate.js = klrns_id_generate.js
 	EndProjectSection
 EndProject
@@ -42,6 +40,13 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{8D1B363B-B51B-4C8A-8CB4-4631AC4876BE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZRNS.Common.Tests", "LZRNS.Common.Tests\LZRNS.Common.Tests.csproj", "{28638638-A8A6-48AB-8A86-B89F97CAE5F4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{84561496-2522-417A-A5F7-9B6DBA2126B1}"
+	ProjectSection(SolutionItems) = preProject
+		constraints.sql = constraints.sql
+		delete_db_data.sql = delete_db_data.sql
+		getall_db_data.sql = getall_db_data.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -100,6 +105,7 @@ Global
 		{391252F3-25D2-407E-86E7-AF6476E04966} = {AC474DCF-286F-455E-A1C8-74254896AC8C}
 		{BA5818FA-B2C7-4BB7-84C3-8EED3C23293B} = {97E86AD5-1422-498C-BE27-5A861018DD6A}
 		{28638638-A8A6-48AB-8A86-B89F97CAE5F4} = {8D1B363B-B51B-4C8A-8CB4-4631AC4876BE}
+		{84561496-2522-417A-A5F7-9B6DBA2126B1} = {BA5818FA-B2C7-4BB7-84C3-8EED3C23293B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4AC09401-D54A-40B1-A167-478577CFC69A}
