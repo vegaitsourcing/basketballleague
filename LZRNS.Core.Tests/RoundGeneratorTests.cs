@@ -17,8 +17,9 @@ namespace LZRNS.Core.Tests
         public RoundGeneratorTests()
         {
             _schedulerMock = new Mock<IRoundScheduler>();
-            _schedulerMock.Setup(m => m.ScheduleRounds(It.IsAny<IEnumerable<Round>>()))
-                .Returns<IEnumerable<Round>>(rounds => rounds);
+            _schedulerMock
+                .Setup(m => m.ScheduleRounds(It.IsAny<IEnumerable<Round>>(), It.IsAny<RoundScheduleOptions>()))
+                .Returns<IEnumerable<Round>, RoundScheduleOptions>((rounds, _) => rounds);
 
             _sut = new RoundGenerator(_schedulerMock.Object);
 
@@ -43,7 +44,7 @@ namespace LZRNS.Core.Tests
 
             _sut.GenerateRoundsWithGames(teams, _leagueSeason);
 
-            _schedulerMock.Verify(s => s.ScheduleRounds(It.IsAny<IEnumerable<Round>>()), Times.Once);
+            _schedulerMock.Verify(s => s.ScheduleRounds(It.IsAny<IEnumerable<Round>>(), It.IsAny<RoundScheduleOptions>()), Times.Once);
         }
 
         [Fact]

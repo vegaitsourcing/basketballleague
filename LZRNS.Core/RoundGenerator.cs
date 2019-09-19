@@ -22,7 +22,7 @@ namespace LZRNS.Core
                 ? GenerateRoundsForEvenNumberOfTeams(teams, leagueSeason)
                 : GenerateRoundsForOddNumberOfTeams(teams, leagueSeason);
 
-            return _scheduler.ScheduleRounds(rounds);
+            return _scheduler.ScheduleRounds(rounds, new RoundScheduleOptions());
         }
 
         private static IEnumerable<Round> GenerateRoundsForOddNumberOfTeams(IEnumerable<Team> teams, LeagueSeason leagueSeason)

@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace LZRNS.DomainModel.Models
 {
-    public class Game : AbstractModel
+    public class Game : AbstractModel, ICloneable
     {
         public virtual Season Season { get; set; }
 
@@ -78,19 +78,9 @@ namespace LZRNS.DomainModel.Models
         public StatsPerGame StatsPerGameB =>
                 new StatsPerGame(Id, TeamB);
 
-        public Team ReturnTeam(Guid id)
+        public object Clone()
         {
-            if (TeamAId == id)
-            {
-                return TeamA;
-            }
-
-            if (TeamBId == id)
-            {
-                return TeamB;
-            }
-
-            return null;
+            return MemberwiseClone();
         }
     }
 }

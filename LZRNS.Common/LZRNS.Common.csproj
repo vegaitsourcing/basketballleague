@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

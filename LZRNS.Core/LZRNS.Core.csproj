@@ -98,6 +98,7 @@
     <Compile Include="IRoundScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoundGenerator.cs" />
+    <Compile Include="RoundScheduleOptions.cs" />
     <Compile Include="RoundScheduler.cs" />
   </ItemGroup>
   <ItemGroup>
