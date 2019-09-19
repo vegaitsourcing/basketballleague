@@ -5,6 +5,6 @@ namespace LZRNS.Core
 {
     public interface IRoundScheduler
     {
-        IEnumerable<Round> ScheduleRounds(IEnumerable<Round> rounds, RoundScheduleOptions options);
+        IEnumerable<Round> ScheduleRounds(IEnumerable<Round> rounds, RoundScheduleOptions options = null);
     }
 }

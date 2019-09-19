@@ -9,8 +9,13 @@ namespace LZRNS.Core
 {
     public class RoundScheduler : IRoundScheduler
     {
-        public IEnumerable<Round> ScheduleRounds(IEnumerable<Round> rounds, RoundScheduleOptions options)
+        public IEnumerable<Round> ScheduleRounds(IEnumerable<Round> rounds, RoundScheduleOptions options = null)
         {
+            if (options is null)
+            {
+                options = new RoundScheduleOptions();
+            }
+
             return rounds.Select((round, index) => ScheduleRound(round, index, options)).ToList();
         }
 

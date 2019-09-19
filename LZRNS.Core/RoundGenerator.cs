@@ -16,13 +16,13 @@ namespace LZRNS.Core
             _scheduler = scheduler;
         }
 
-        public IEnumerable<Round> GenerateRoundsWithGames(IReadOnlyList<Team> teams, LeagueSeason leagueSeason)
+        public IEnumerable<Round> GenerateRoundsWithGames(IReadOnlyList<Team> teams, LeagueSeason leagueSeason, RoundScheduleOptions options = null)
         {
             var rounds = teams.Count.IsEven()
                 ? GenerateRoundsForEvenNumberOfTeams(teams, leagueSeason)
                 : GenerateRoundsForOddNumberOfTeams(teams, leagueSeason);
 
-            return _scheduler.ScheduleRounds(rounds, new RoundScheduleOptions());
+            return _scheduler.ScheduleRounds(rounds, options);
         }
 
         private static IEnumerable<Round> GenerateRoundsForOddNumberOfTeams(IEnumerable<Team> teams, LeagueSeason leagueSeason)
