@@ -37,6 +37,7 @@ namespace LZRNS.Web
             builder.RegisterType<RefereeRepository>().As<IRefereeRepository>();
             builder.RegisterType<RoundRepository>().As<IRoundRepository>();
             builder.RegisterType<GameRepository>().As<IGameRepository>();
+            builder.RegisterType<RoundScheduler>().As<IRoundScheduler>();
             builder.RegisterType<RoundGenerator>().As<IRoundGenerator>();
 
             var container = builder.Build();

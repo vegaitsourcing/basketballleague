@@ -95,8 +95,11 @@
   <ItemGroup>
     <Compile Include="Handlers\SearchHandler.cs" />
     <Compile Include="IRoundGenerator.cs" />
+    <Compile Include="IRoundScheduler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoundGenerator.cs" />
+    <Compile Include="RoundScheduleOptions.cs" />
+    <Compile Include="RoundScheduler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

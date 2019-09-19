@@ -1,5 +1,6 @@
 ﻿using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
+using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,10 +12,16 @@ namespace LZRNS.Core.Tests
     {
         private readonly LeagueSeason _leagueSeason;
         private readonly RoundGenerator _sut;
+        private readonly Mock<IRoundScheduler> _schedulerMock;
 
         public RoundGeneratorTests()
         {
-            _sut = new RoundGenerator();
+            _schedulerMock = new Mock<IRoundScheduler>();
+            _schedulerMock
+                .Setup(m => m.ScheduleRounds(It.IsAny<IEnumerable<Round>>(), It.IsAny<RoundScheduleOptions>()))
+                .Returns<IEnumerable<Round>, RoundScheduleOptions>((rounds, _) => rounds);
+
+            _sut = new RoundGenerator(_schedulerMock.Object);
 
             var season = new Season();
             var league = new League();
@@ -26,6 +33,18 @@ namespace LZRNS.Core.Tests
                 Season = season,
                 SeasonId = season.Id
             };
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(3)]
+        public void GenerateRoundsWithGames_CallsScheduler(int numberOfTeams)
+        {
+            var teams = GenerateTeams(numberOfTeams);
+
+            _sut.GenerateRoundsWithGames(teams, _leagueSeason);
+
+            _schedulerMock.Verify(s => s.ScheduleRounds(It.IsAny<IEnumerable<Round>>(), It.IsAny<RoundScheduleOptions>()), Times.Once);
         }
 
         [Fact]
@@ -60,6 +79,7 @@ namespace LZRNS.Core.Tests
 
             var roundsWithGames = _sut.GenerateRoundsWithGames(teams, _leagueSeason).ToList();
 
+            Assert.NotEmpty(roundsWithGames);
             Assert.All(roundsWithGames, round => AssertEachTeamIsContainedInRoundOnce(teams, round));
         }
 
@@ -70,6 +90,7 @@ namespace LZRNS.Core.Tests
 
             var roundsWithGames = _sut.GenerateRoundsWithGames(teams, _leagueSeason).ToList();
 
+            Assert.NotEmpty(roundsWithGames);
             Assert.All(teams, team => AssertTeamIsMissingInOnlyOneRound(team, roundsWithGames));
         }
 
