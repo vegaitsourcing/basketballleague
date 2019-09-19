@@ -1,4 +1,5 @@
-﻿using LZRNS.DomainModel.Models;
+﻿using LZRNS.Common.Extensions;
+using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using System;
 using System.Collections.Generic;
@@ -10,33 +11,29 @@ namespace LZRNS.Core
     {
         public IEnumerable<Round> GenerateRoundsWithGames(IReadOnlyList<Team> teams, LeagueSeason leagueSeason)
         {
-            // TODO: Optimize algorithm in order to support double Round Robin brackets
-            if (teams.Count % 2 != 0)
-            {
-                // TODO: Add support for odd number of teams if required. (Add empty bye team or use default empty team from the DB because of FK constraints)
-                var byeTeam = new Team
-                {
-                    Id = Guid.NewGuid(),
-                    LeagueSeasonId = leagueSeason.Id,
-                    TeamName = "BYE team"
-                };
+            return teams.Count.IsEven()
+                ? GenerateRoundsForEvenNumberOfTeams(teams, leagueSeason)
+                : GenerateRoundsForOddNumberOfTeams(teams, leagueSeason);
+        }
 
-                //teams.Add(byeTeam);
-                //yield break; // TODO: Remove when proper odd team number support is defined
-            }
+        private static IEnumerable<Round> GenerateRoundsForOddNumberOfTeams(IEnumerable<Team> teams, LeagueSeason leagueSeason)
+        {
+            var evenTeams = AddInvalidTeam(teams);
+            var rounds = GenerateRoundsForEvenNumberOfTeams(evenTeams, leagueSeason);
+            return RemovePairsWithInvalidTeam(rounds);
+        }
 
-            var numberOfRounds = teams.Count - 1;
-            var numberOfGamesPerRound = teams.Count / 2;
+        private static IEnumerable<Round> GenerateRoundsForEvenNumberOfTeams(IReadOnlyList<Team> teams, LeagueSeason leagueSeason)
+        {
+            int numberOfRounds = teams.Count - 1;
+            int numberOfGamesPerRound = teams.Count / 2;
 
-            var rotatedTeams = new List<Team>();
-            //takes the second half of teams
-            rotatedTeams.AddRange(teams.Skip(numberOfGamesPerRound).Take(numberOfGamesPerRound));
+            var rotatedTeams = TakeSecondHalfOfTeams(teams, numberOfGamesPerRound);
+            int numberOfTeams = rotatedTeams.Count;
 
-            rotatedTeams.AddRange(teams.Skip(1).Take(numberOfGamesPerRound - 1).ToArray().Reverse());
+            var generatedRounds = new List<Round>();
 
-            var numberOfTeams = rotatedTeams.Count;
-
-            for (var roundNumber = 0; roundNumber < numberOfRounds; roundNumber++)
+            for (int roundNumber = 0; roundNumber < numberOfRounds; roundNumber++)
             {
                 var games = new List<Game>();
 
@@ -45,10 +42,10 @@ namespace LZRNS.Core
                     Id = Guid.NewGuid(),
                     Games = new List<Game>(),
                     LeagueSeasonId = leagueSeason.Id,
-                    RoundName = string.Format("{0}", roundNumber + 1)
+                    RoundName = $"{roundNumber + 1}"
                 };
 
-                var teamIndex = roundNumber % numberOfTeams;
+                int teamIndex = roundNumber % numberOfTeams;
 
                 games.Add(new Game
                 {
@@ -56,15 +53,14 @@ namespace LZRNS.Core
                     RoundId = round.Id,
                     SeasonId = leagueSeason.Season.Id,
                     TeamAId = teams[0].Id,
-                    //TeamA = teams[0].TeamName,
                     TeamBId = rotatedTeams[teamIndex].Id,
                     DateTime = DateTime.Now // TODO: DateTime is required at the moment, either remove it or set default time here
                 });
 
-                for (var index = 1; index < numberOfGamesPerRound; index++)
+                for (int index = 1; index < numberOfGamesPerRound; index++)
                 {
-                    var teamAIndex = (roundNumber + index) % numberOfTeams;
-                    var teamBIndex = (roundNumber + numberOfTeams - index) % numberOfTeams;
+                    int teamAIndex = (roundNumber + index) % numberOfTeams;
+                    int teamBIndex = (roundNumber + numberOfTeams - index) % numberOfTeams;
 
                     games.Add(new Game
                     {
@@ -77,8 +73,48 @@ namespace LZRNS.Core
                     });
                 }
                 round.Games = games;
-                yield return round;
+                generatedRounds.Add(round);
             }
+
+            return generatedRounds;
+        }
+
+        private static List<Team> TakeSecondHalfOfTeams(IReadOnlyList<Team> teams, int numberOfGamesPerRound)
+        {
+            var rotatedTeams = new List<Team>();
+            rotatedTeams.AddRange(teams.Skip(numberOfGamesPerRound).Take(numberOfGamesPerRound));
+            rotatedTeams.AddRange(teams.Skip(1).Take(numberOfGamesPerRound - 1).ToArray().Reverse());
+            return rotatedTeams;
+        }
+
+        private static List<Team> AddInvalidTeam(IEnumerable<Team> teams)
+        {
+            var evenTeams = new List<Team>(teams);
+            var invalidTeam = CreateInvalidTeam();
+            evenTeams.Add(invalidTeam);
+            return evenTeams;
+        }
+
+        private static Team CreateInvalidTeam()
+        {
+            return new Team { Id = Guid.Empty, TeamName = "INVALID_TEAM" };
+        }
+
+        private static IEnumerable<Round> RemovePairsWithInvalidTeam(IEnumerable<Round> rounds)
+        {
+            return rounds.Select(RemovePairsWithInvalidTeamFromRound).ToList();
+        }
+
+        private static Round RemovePairsWithInvalidTeamFromRound(Round round)
+        {
+            var validRound = (Round)round.Clone();
+            validRound.Games = round.Games.Where(game => !DoesContainInvalidTeam(game)).ToList();
+            return validRound;
+        }
+
+        private static bool DoesContainInvalidTeam(Game game)
+        {
+            return game.TeamAId.Equals(Guid.Empty) || game.TeamBId.Equals(Guid.Empty);
         }
     }
 }

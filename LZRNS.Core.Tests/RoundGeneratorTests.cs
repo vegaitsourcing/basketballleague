@@ -9,8 +9,8 @@ namespace LZRNS.Core.Tests
 {
     public class RoundGeneratorTests
     {
-        private readonly RoundGenerator _sut;
         private readonly LeagueSeason _leagueSeason;
+        private readonly RoundGenerator _sut;
 
         public RoundGeneratorTests()
         {
@@ -31,11 +31,7 @@ namespace LZRNS.Core.Tests
         [Fact]
         public void GenerateRoundsWithGames_TwoTeams_GeneratesOneRoundWithOneGame()
         {
-            var teams = new[]
-            {
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), TeamName = "T1"},
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), TeamName = "T2"},
-            };
+            var teams = GenerateTeams(numberOfTeams: 2);
 
             var roundsWithGames = _sut.GenerateRoundsWithGames(teams, _leagueSeason).ToList();
 
@@ -49,13 +45,7 @@ namespace LZRNS.Core.Tests
         [Fact]
         public void GenerateRoundsWithGames_FourTeams_GenerateThreeRoundsWithTwoGamesEach()
         {
-            var teams = new[]
-            {
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), TeamName = "T1"},
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), TeamName = "T2"},
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), TeamName = "T3"},
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), TeamName = "T4"},
-            };
+            var teams = GenerateTeams(numberOfTeams: 4);
 
             var roundsWithGames = _sut.GenerateRoundsWithGames(teams, _leagueSeason).ToList();
 
@@ -66,17 +56,37 @@ namespace LZRNS.Core.Tests
         [Fact]
         public void GenerateRoundsWithGames_FourTeams_TeamIsContainedInEachRoundOnce()
         {
-            var teams = new[]
-            {
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000001"), TeamName = "T1"},
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000002"), TeamName = "T2"},
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000003"), TeamName = "T3"},
-                new Team {Id = Guid.Parse("00000000-0000-0000-0000-000000000004"), TeamName = "T4"},
-            };
+            var teams = GenerateTeams(numberOfTeams: 4);
 
             var roundsWithGames = _sut.GenerateRoundsWithGames(teams, _leagueSeason).ToList();
 
             Assert.All(roundsWithGames, round => AssertEachTeamIsContainedInRoundOnce(teams, round));
+        }
+
+        [Fact]
+        public void GenerateRoundsWithGames_ThreeTeams_EachTeamIsNotPlayingInOnlyOneRound()
+        {
+            var teams = GenerateTeams(numberOfTeams: 3);
+
+            var roundsWithGames = _sut.GenerateRoundsWithGames(teams, _leagueSeason).ToList();
+
+            Assert.All(teams, team => AssertTeamIsMissingInOnlyOneRound(team, roundsWithGames));
+        }
+
+        private static void AssertTeamIsMissingInOnlyOneRound(Team team, IEnumerable<Round> roundsWithGames)
+        {
+            var roundsWithoutTeam = roundsWithGames.Where(round => !DoesRoundContainTeam(round, team)).ToList();
+            Assert.Single(roundsWithoutTeam);
+        }
+
+        private static bool DoesRoundContainTeam(Round round, Team team)
+        {
+            return round.Games.Any(game => DoesGameContainTeam(game, team));
+        }
+
+        private static bool DoesGameContainTeam(Game game, Team team)
+        {
+            return game.TeamAId.Equals(team.Id) || game.TeamBId.Equals(team.Id);
         }
 
         private static void AssertEachTeamIsContainedInRoundOnce(IEnumerable<Team> teams, Round round)
@@ -87,6 +97,16 @@ namespace LZRNS.Core.Tests
             {
                 Assert.Single(gameTeamIds, id => id.Equals(team.Id));
             });
+        }
+
+        private static Team GenerateTeam(int index)
+        {
+            return new Team { Id = Guid.NewGuid(), TeamName = $"T{index}" };
+        }
+
+        private static List<Team> GenerateTeams(int numberOfTeams)
+        {
+            return Enumerable.Range(1, numberOfTeams).Select(GenerateTeam).ToList();
         }
     }
 }

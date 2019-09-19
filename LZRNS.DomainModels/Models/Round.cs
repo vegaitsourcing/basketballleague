@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace LZRNS.DomainModels.Models
 {
-    public class Round : AbstractModel
+    public class Round : AbstractModel, ICloneable
     {
         public string RoundName { get; set; }
 
@@ -24,5 +24,18 @@ namespace LZRNS.DomainModels.Models
 
         [NotMapped]
         public IEnumerable<SelectListItem> LeagueSeasons { get; set; } = Enumerable.Empty<SelectListItem>();
+
+        public object Clone()
+        {
+            return new Round
+            {
+                Id = Id,
+                Games = Games,
+                LeagueSeason = LeagueSeason,
+                LeagueSeasonId = LeagueSeasonId,
+                LeagueSeasons = LeagueSeasons,
+                RoundName = RoundName
+            };
+        }
     }
 }
