@@ -9,11 +9,20 @@ namespace LZRNS.Core
 {
     public class RoundGenerator : IRoundGenerator
     {
+        private readonly IRoundScheduler _scheduler;
+
+        public RoundGenerator(IRoundScheduler scheduler)
+        {
+            _scheduler = scheduler;
+        }
+
         public IEnumerable<Round> GenerateRoundsWithGames(IReadOnlyList<Team> teams, LeagueSeason leagueSeason)
         {
-            return teams.Count.IsEven()
+            var rounds = teams.Count.IsEven()
                 ? GenerateRoundsForEvenNumberOfTeams(teams, leagueSeason)
                 : GenerateRoundsForOddNumberOfTeams(teams, leagueSeason);
+
+            return _scheduler.ScheduleRounds(rounds);
         }
 
         private static IEnumerable<Round> GenerateRoundsForOddNumberOfTeams(IEnumerable<Team> teams, LeagueSeason leagueSeason)
@@ -54,7 +63,7 @@ namespace LZRNS.Core
                     SeasonId = leagueSeason.Season.Id,
                     TeamAId = teams[0].Id,
                     TeamBId = rotatedTeams[teamIndex].Id,
-                    DateTime = DateTime.Now // TODO: DateTime is required at the moment, either remove it or set default time here
+                    DateTime = DateTime.Now
                 });
 
                 for (int index = 1; index < numberOfGamesPerRound; index++)
@@ -69,7 +78,7 @@ namespace LZRNS.Core
                         SeasonId = leagueSeason.Season.Id,
                         TeamAId = rotatedTeams[teamBIndex].Id,
                         TeamBId = rotatedTeams[teamAIndex].Id,
-                        DateTime = DateTime.UtcNow // TODO: DateTime is required at the moment, either remove it or set default time here
+                        DateTime = DateTime.UtcNow
                     });
                 }
                 round.Games = games;
