@@ -41,7 +41,7 @@ namespace LZRNS.Core
 
         private static DateTime GetStartDateForGame(int gameIndex, DateTime startDate, RoundScheduleOptions options)
         {
-            return startDate.ChangeTime(hours: 0).AddMinutes(gameIndex * options.IntervalBetweenGamesInMinutes);
+            return startDate.AddMinutes(gameIndex * options.IntervalBetweenGamesInMinutes);
         }
     }
 }
