@@ -62,7 +62,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
         {
             var startYearSeason = _seasonRepo.GetSeasonByYear(year);
             var leagueSeasons = startYearSeason?.LeagueSeasons ?? new List<LeagueSeason>();
-            return leagueSeasons.FirstOrDefault(x => x.League.Name.Equals(leagueName));
+            return leagueSeasons.FirstOrDefault(x => x.League?.Name.Equals(leagueName) == true);
         }
     }
 }

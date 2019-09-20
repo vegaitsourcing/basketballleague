@@ -39,8 +39,8 @@ namespace LZRNS.Web.Controllers.RenderMvc
 
         private static List<string> SortRoundNames(IEnumerable<string> roundNames)
         {
-            var roundsList = roundNames.ToList().ConvertAll(name => new { number = name.ExtractNumber(), name });
-            return roundsList.OrderBy(item => item.number).ToList().ConvertAll(item => item.name);
+            var roundsList = roundNames.Select(name => new { number = name.ExtractNumber(), name });
+            return roundsList.OrderBy(item => item.number).Select(item => item.name).ToList();
         }
 
         private List<string> GetAllRounds(string leagueName, int year)
@@ -59,7 +59,7 @@ namespace LZRNS.Web.Controllers.RenderMvc
         {
             var startYearSeason = _seasonRepo.GetSeasonByYear(year);
             var leagueSeasons = startYearSeason?.LeagueSeasons ?? new List<LeagueSeason>();
-            return leagueSeasons.FirstOrDefault(x => x.League.Name.Equals(leagueName));
+            return leagueSeasons.FirstOrDefault(x => x.League?.Name.Equals(leagueName) == true);
         }
     }
 }
