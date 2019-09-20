@@ -1,10 +1,11 @@
 use [VegaIT.BasketballLeague.Umbraco.Development];
-DELETE LeagueSeason;
-DELETE League;
-DELETE Season;
 DELETE Stats;
+DELETE Referee;
 DELETE Game;
 DELETE Round;
 DELETE PlayerPerTeam;
 DELETE Player;
 DELETE Team;
+DELETE Season;
+DELETE League;
+DELETE LeagueSeason;

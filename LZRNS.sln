@@ -50,6 +50,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{84
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LZRNS.Core.Tests", "LZRNS.Core.Tests\LZRNS.Core.Tests.csproj", "{C85AF0D4-7AAF-4ABE-B4AC-BCDAD53BBE86}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Excel", "Excel", "{E5A47223-985D-4FC8-BB99-2AC6824B6381}"
+	ProjectSection(SolutionItems) = preProject
+		convert_xls_to_xlsx.ps1 = convert_xls_to_xlsx.ps1
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -113,6 +118,7 @@ Global
 		{28638638-A8A6-48AB-8A86-B89F97CAE5F4} = {8D1B363B-B51B-4C8A-8CB4-4631AC4876BE}
 		{84561496-2522-417A-A5F7-9B6DBA2126B1} = {BA5818FA-B2C7-4BB7-84C3-8EED3C23293B}
 		{C85AF0D4-7AAF-4ABE-B4AC-BCDAD53BBE86} = {8D1B363B-B51B-4C8A-8CB4-4631AC4876BE}
+		{E5A47223-985D-4FC8-BB99-2AC6824B6381} = {BA5818FA-B2C7-4BB7-84C3-8EED3C23293B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4AC09401-D54A-40B1-A167-478577CFC69A}
