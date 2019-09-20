@@ -153,7 +153,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
                 if (value?.Equals(item.CellName) != true)
                 {
-                    string errorMessage = "Mapping is invalid for sheet: " + sheet.Name;
+                    string errorMessage = $"{row}:Expected: {item.CellName} but got {value}";
                     Log4NetLogger.Log.Error(errorMessage);
                     throw new Exception(errorMessage);
                 }
