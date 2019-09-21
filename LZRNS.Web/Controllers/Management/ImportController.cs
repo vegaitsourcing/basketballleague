@@ -10,6 +10,7 @@ using LZRNS.Models.DocumentTypes.Pages;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -23,7 +24,6 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class ImportController : RenderMvcController
     {
-        //TODO: refactor - use repositories instead of context
         private readonly BasketballDbContext _db = new BasketballDbContext();
 
         private HashSet<Game> GamesCache { get; set; } = new HashSet<Game>();
@@ -220,16 +220,19 @@ namespace LZRNS.Web.Controllers.Management
                 leagueSeason = CreateLeagueSeason(season.Id, league.Id);
             }
 
-            leagueSeason.Rounds = leagueSeason.Rounds ?? new List<Round>();
+            _db.SaveChanges();
+
             CreateTeamsRoundsAndGames(loadedData, leagueSeason);
+
+            _db.SaveChanges();
+
             PopulateTeamEntityModel(loadedData, playerListData, leagueSeason);
 
             _db.SaveChanges();
         }
 
-        private List<Team> PopulateTeamEntityModel(ExL.ExcelLoader loadedData, CodingListLoader codingListData, LeagueSeason leagueSeason)
+        private void PopulateTeamEntityModel(ExL.ExcelLoader loadedData, CodingListLoader codingListData, LeagueSeason leagueSeason)
         {
-            var teamsList = new List<Team>();
             foreach (var keyValuePair in loadedData.PlayerNamesByTeamName)
             {
                 string teamName = keyValuePair.Key;
@@ -237,10 +240,7 @@ namespace LZRNS.Web.Controllers.Management
                 var playerInfoList = codingListData.PlayerInfoList.Where(pi => pi.NewTeamName.Equals(teamName)).ToList();
                 var team = CreateOrGetTeamByName(teamName, leagueSeason);
                 team.Players = GeneratePlayersData(loadedData, playerInfoList, playerNames, team, leagueSeason);
-                teamsList.Add(team);
             }
-
-            return teamsList;
         }
 
         #region Entity creation helper methods
@@ -315,7 +315,6 @@ namespace LZRNS.Web.Controllers.Management
             };
 
             _db.Leagues.Add(league);
-            // _db.SaveChanges();
 
             return league;
         }
@@ -331,7 +330,6 @@ namespace LZRNS.Web.Controllers.Management
             };
 
             _db.LeagueSeasons.Add(leagueSeason);
-            // _db.SaveChanges();
 
             return leagueSeason;
         }
@@ -360,7 +358,6 @@ namespace LZRNS.Web.Controllers.Management
             GamesCache.Add(game);
 
             _db.Games.Add(game);
-            // _db.SaveChanges();
 
             return game;
         }
@@ -385,7 +382,6 @@ namespace LZRNS.Web.Controllers.Management
             PlayerByUIdCache.Add(player.UId, player);
 
             _db.Players.Add(player);
-            // _db.SaveChanges();
 
             return player;
         }
@@ -410,7 +406,6 @@ namespace LZRNS.Web.Controllers.Management
             PlayersPerTeamCache.Add(playerPerTeam);
 
             _db.PlayersPerTeam.Add(playerPerTeam);
-            // _db.SaveChanges();
 
             return playerPerTeam;
         }
@@ -436,7 +431,6 @@ namespace LZRNS.Web.Controllers.Management
             RoundByRoundNameCache.Add(formattedRoundName, round);
 
             _db.Rounds.Add(round);
-            // _db.SaveChanges();
 
             return round;
         }
@@ -458,7 +452,7 @@ namespace LZRNS.Web.Controllers.Management
             };
 
             _db.Seasons.Add(season);
-            // _db.SaveChanges();
+            _db.SaveChanges();
 
             return season;
         }
@@ -497,7 +491,6 @@ namespace LZRNS.Web.Controllers.Management
             PlayerStatsCache.Add(stats);
 
             _db.Stats.Add(stats);
-            // _db.SaveChanges();
 
             return stats;
         }
@@ -524,7 +517,6 @@ namespace LZRNS.Web.Controllers.Management
             };
 
             _db.Teams.Add(team);
-            // _db.SaveChanges();
 
             return team;
         }
