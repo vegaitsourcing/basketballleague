@@ -1,7 +1,6 @@
 ﻿using ClosedXML.Excel;
 using LZRNS.ExcelLoader.Model;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace LZRNS.ExcelLoader.ExcelReader
@@ -41,11 +40,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
         /// </summary>
         private void ProcessSheet(IXLWorksheet sheet)
         {
-            Log4NetLogger.Log.Debug("ProcessSheet started for table: " + sheet.Name);
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             var rows = sheet.RowsUsed();
 
             int currentRowNo = Mapper.Fields[0].RowIndex;
@@ -67,10 +61,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 PopulateModelField(pi, rows, otherFields, currentRowNo);
                 PlayerInfoList.Add(pi);
             }
-
-            stopwatch.Stop();
-
-            Log4NetLogger.Log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
         }
     }
 }

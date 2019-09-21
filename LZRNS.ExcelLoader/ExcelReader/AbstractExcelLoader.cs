@@ -11,7 +11,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
     {
         protected AbstractExcelLoader(string configPath)
         {
-            Log4NetLogger.Log.Debug("Start main process");
             TeamAndPlayers = new Dictionary<string, HashSet<string>>();
             Mapper = new MapperModel(configPath);
         }
@@ -99,7 +98,8 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         /// <summary>
         /// Throws exception if file is in invalid format. If valid will extract and return teamName.
-        /// In case @fileName contains Season and League name information, properties `SeasonName` and `LeagueName` will be set.
+        /// In case @fileName contains Season and League name information, properties `SeasonName`
+        /// and `LeagueName` will be set.
         /// </summary>
         protected string CheckFileStructureAndExtractTeamName(XLWorkbook exApp, string fileName)
         {
@@ -116,8 +116,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 SeasonName = nameParts[3];
                 LeagueName = nameParts[4].Substring(0, nameParts[4].Length - 5);
             }
-
-            Log4NetLogger.Log.Debug("Loading data for team: " + teamName);
 
             Sheets = exApp.Worksheets;
 
@@ -154,7 +152,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 if (value?.Equals(item.CellName) != true)
                 {
                     string errorMessage = $"{row}:Expected: {item.CellName} but got {value}";
-                    Log4NetLogger.Log.Error(errorMessage);
                     throw new Exception(errorMessage);
                 }
             }
@@ -184,7 +181,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
             if (objProperty == null)
             {
-                Log4NetLogger.Log.Error("PopulateModelValue: PropertyName: " + fieldItem.PropertyName + " not exist in model: " + obj);
                 return;
             }
 
@@ -196,7 +192,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
             var value = GetCellValue(exlRange, rowIndex, fieldItem.ColumnIndex);
             if (value == null)
             {
-                Log4NetLogger.Log.Error("PopulateModelValue - PropertyName: " + fieldItem.PropertyName + " in NULL");
                 return;
             }
 

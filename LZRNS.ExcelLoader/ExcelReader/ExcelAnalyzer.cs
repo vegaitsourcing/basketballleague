@@ -12,7 +12,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         public ExcelAnalyzer(string configPath) : base(configPath)
         {
-            Log4NetLogger.Log.Debug("Start main process");
             TeamPlayerInfos = new Dictionary<string, Dictionary<string, List<PlayerInfo>>>();
         }
 
@@ -33,11 +32,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
 
         private void ProcessSheet(IXLWorksheet sheet, string teamName)
         {
-            Log4NetLogger.Log.Debug("ProcessSheet started for table: " + sheet.Name);
-
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-
             var rows = sheet.RowsUsed();
 
             int currentRowNo = Mapper.Fields[0].RowIndex;
@@ -59,10 +53,6 @@ namespace LZRNS.ExcelLoader.ExcelReader
                 PopulateModelField(pi, rows, otherFields, currentRowNo);
                 AddPlayerInfo(teamName, pi);
             }
-
-            stopwatch.Stop();
-
-            Log4NetLogger.Log.Debug("ProcessSheet: ENDED for sheet: " + sheet.Name + ", timeElapsed: " + stopwatch.Elapsed);
         }
 
         private void AddPlayerInfo(string teamName, PlayerInfo pi)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace LZRNS.ExcelLoader
 {
@@ -38,11 +39,9 @@ namespace LZRNS.ExcelLoader
 
                     if (long.TryParse(rawValue.ToString(), out long lv))
                     {
-                        Log4NetLogger.Log.Warn("FieldItem - GetValueConverted: datetime rawValue:" + rawValue);
                         return new DateTime(lv);
                     }
 
-                    Log4NetLogger.Log.Error("FieldItem - GetValueConverted: datetime in not formatted rawValue:" + rawValue);
                     return DateTime.MinValue;
                 }
 
@@ -58,7 +57,7 @@ namespace LZRNS.ExcelLoader
             }
             catch (Exception ex)
             {
-                Log4NetLogger.Log.Error("FieldItem - GetValueConverted: Field: " + PropertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);
+                Debug.WriteLine("FieldItem - GetValueConverted: Field: " + PropertyName + ", RawValue: " + rawValue + " exceptionMessage: " + ex.Message);
             }
 
             return null;
