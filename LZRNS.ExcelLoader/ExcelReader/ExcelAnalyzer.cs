@@ -1,18 +1,17 @@
 ﻿using ClosedXML.Excel;
 using LZRNS.ExcelLoader.Model;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace LZRNS.ExcelLoader.ExcelReader
 {
     public class ExcelAnalyzer : AbstractExcelLoader
     {
-        public Dictionary<string, Dictionary<string, List<PlayerInfo>>> TeamPlayerInfos { get; set; }
+        public Dictionary<string, Dictionary<string, List<PlayerInfo>>> PlayerInfoListByPlayerNameAndLastNameByTeamName { get; set; }
 
         public ExcelAnalyzer(string configPath) : base(configPath)
         {
-            TeamPlayerInfos = new Dictionary<string, Dictionary<string, List<PlayerInfo>>>();
+            PlayerInfoListByPlayerNameAndLastNameByTeamName = new Dictionary<string, Dictionary<string, List<PlayerInfo>>>();
         }
 
         public override void Load(XLWorkbook exApp, string fileName)
@@ -60,9 +59,9 @@ namespace LZRNS.ExcelLoader.ExcelReader
             if (pi.NameAndLastName.Equals(string.Empty))
                 return;
 
-            if (!TeamPlayerInfos.TryGetValue(teamName, out var infoDict))
+            if (!PlayerInfoListByPlayerNameAndLastNameByTeamName.TryGetValue(teamName, out var infoDict))
             {
-                TeamPlayerInfos.Add(teamName, new Dictionary<string, List<PlayerInfo>> { { pi.NameAndLastName, new List<PlayerInfo>() } });
+                PlayerInfoListByPlayerNameAndLastNameByTeamName.Add(teamName, new Dictionary<string, List<PlayerInfo>> { { pi.NameAndLastName, new List<PlayerInfo>() } });
                 return;
             }
 
@@ -72,7 +71,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             }
             else
             {
-                TeamPlayerInfos[teamName].Add(pi.NameAndLastName, new List<PlayerInfo> { pi });
+                PlayerInfoListByPlayerNameAndLastNameByTeamName[teamName].Add(pi.NameAndLastName, new List<PlayerInfo> { pi });
             }
         }
     }

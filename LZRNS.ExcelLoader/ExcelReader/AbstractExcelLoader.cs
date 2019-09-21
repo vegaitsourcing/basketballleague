@@ -11,16 +11,14 @@ namespace LZRNS.ExcelLoader.ExcelReader
     {
         protected AbstractExcelLoader(string configPath)
         {
-            TeamAndPlayers = new Dictionary<string, HashSet<string>>();
+            PlayerNamesByTeamName = new Dictionary<string, HashSet<string>>();
             Mapper = new MapperModel(configPath);
         }
 
         public string LeagueName { get; set; }
 
+        public Dictionary<string, HashSet<string>> PlayerNamesByTeamName { get; }
         public string SeasonName { get; set; }
-
-        public Dictionary<string, HashSet<string>> TeamAndPlayers { get; } // key represents team name, list of player names
-
         protected XLWorkbook ExApp { get; set; }
 
         protected MapperModel Mapper { get; set; }
@@ -68,15 +66,15 @@ namespace LZRNS.ExcelLoader.ExcelReader
             }
         }
 
-        protected void AddPlayerInTeam(string team, string playerName)
+        protected void AddPlayerInTeam(string teamName, string playerName)
         {
-            if (TeamAndPlayers.TryGetValue(team, out var players))
+            if (PlayerNamesByTeamName.TryGetValue(teamName, out var players))
             {
                 players.Add(playerName);
             }
             else
             {
-                TeamAndPlayers[team] = new HashSet<string>() { playerName };
+                PlayerNamesByTeamName[teamName] = new HashSet<string>() { playerName };
             }
         }
 

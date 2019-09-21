@@ -82,11 +82,11 @@ namespace LZRNS.ExcelLoader.ExcelReader
             }
         }
 
-        public List<PlayerInfo> GetPlayerInfosForTeam(Dictionary<string, List<PlayerInfo>> playerInfoList, string teamName)
+        public List<PlayerInfo> GetPlayerInfosForTeam(Dictionary<string, List<PlayerInfo>> PlayerInfoListByPlayerName, string teamName)
         {
             var playersInfoList = new List<PlayerInfo>();
 
-            foreach (var keyValuePair in playerInfoList)
+            foreach (var keyValuePair in PlayerInfoListByPlayerName)
             {
                 string playerName = keyValuePair.Key;
                 var playerInfo = keyValuePair.Value?.FirstOrDefault(val => val.OnLoan);
@@ -115,7 +115,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
         {
             var playersInfoList = new List<PlayerInfo>();
 
-            foreach (var keyValuePair in Analyzer.TeamPlayerInfos)
+            foreach (var keyValuePair in Analyzer.PlayerInfoListByPlayerNameAndLastNameByTeamName)
             {
                 string teamName = keyValuePair.Key;
                 playersInfoList.AddRange(GetPlayerInfosForTeam(keyValuePair.Value, teamName));
