@@ -1,44 +1,42 @@
-﻿using LZRNS.Models.DocumentTypes.Pages;
+﻿using LZRNS.Common.Extensions;
+using LZRNS.DomainModel.Context;
+using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Models;
+using LZRNS.ExcelLoader;
+using LZRNS.ExcelLoader.ExcelReader;
+using LZRNS.ExcelLoader.Model;
+using LZRNS.Models.AdditionalModels.Forms;
+using LZRNS.Models.DocumentTypes.Pages;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
+using System.Data.Entity;
+
 using ExL = LZRNS.ExcelLoader.ExcelReader;
-using LZRNS.DomainModel.Models;
-using LZRNS.DomainModels.Models;
-using LZRNS.DomainModel.Context;
-using LZRNS.Models.AdditionalModels.Forms;
-using System;
-using LZRNS.ExcelLoader;
-using LZRNS.ExcelLoader.Model;
 
 namespace LZRNS.Web.Controllers.Management
 {
     [MemberAuthorize]
     public class ImportController : RenderMvcController
     {
-
         //TODO: refactor - use repositories instead of context
-        private BasketballDbContext _db = new BasketballDbContext();
+        private readonly BasketballDbContext _db = new BasketballDbContext();
 
-        private Dictionary<string, Team> _createdTeams = new Dictionary<string, Team>();
-
-        private Dictionary<string, Team> NewTeams { get { return _createdTeams; } set { _createdTeams = value; } }
-        private HashSet<Game> NewGames { get; set; } = new HashSet<Game>();
-        private Dictionary<string, Round> NewRounds { get; set; } = new Dictionary<string, Round>();
-        private Dictionary<string, Player> NewPlayers { get; set; } = new Dictionary<string, Player>();
-        private HashSet<PlayerPerTeam> NewPlayerPerTeamSet { get; set; } = new HashSet<PlayerPerTeam>();
-        private HashSet<Stats> NewPlayersStats { get; set; } = new HashSet<Stats>();
-
-
+        private Dictionary<string, Team> TeamByTeamNameCache { get; set; } = new Dictionary<string, Team>();
+        private HashSet<Game> GamesCache { get; set; } = new HashSet<Game>();
+        private Dictionary<string, Round> RoundByRoundNameCache { get; set; } = new Dictionary<string, Round>();
+        private Dictionary<string, Player> PlayerByUIdCache { get; set; } = new Dictionary<string, Player>();
+        private HashSet<PlayerPerTeam> PlayersPerTeamCache { get; set; } = new HashSet<PlayerPerTeam>();
+        private HashSet<Stats> PlayerStatsCache { get; set; } = new HashSet<Stats>();
 
         public ActionResult Index(ImportModel model)
         {
             return View(model);
         }
-
 
         //helper
         public bool IsFilePlayersCodeList(string fileName)
@@ -54,211 +52,243 @@ namespace LZRNS.Web.Controllers.Management
                 ModelState.AddModelError("", "Niste odabrali dokument za import.");
                 return View(new ImportModel(CurrentPage));
             }
-            ExL.AbstractExcelLoader loader = null;
-            ExL.CodingListLoader codingListLoader = null;
-            TimeTableLoader.Converter.Converter converter = new TimeTableLoader.Converter.Converter();
-            ActionResult response = null;
+            AbstractExcelLoader loader = null;
+            CodingListLoader codingListLoader = null;
+            var converter = new TimeTableLoader.Converter.Converter();
 
-            //here, there are two paths to execute 
+            //here, there are two paths to execute
             //1) if player code list is in files - importing
             //2) if there is not - analyzing
             bool doImport = false;
-            if (model.Files.Select(file => IsFilePlayersCodeList(file.FileName)).Contains(true))
+            if (model.Files.Any(file => IsFilePlayersCodeList(file.FileName)))
             {
                 //importer
                 loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
                 doImport = true;
-                codingListLoader = new ExL.CodingListLoader(Server.MapPath("~/App_Data/TableMapper_coding_list.config"));
-
+                codingListLoader = new CodingListLoader(Server.MapPath("~/App_Data/TableMapper_coding_list.config"));
             }
             else
             {
                 //analyzer
-                loader = new ExL.ExcelAnalyzer(Server.MapPath("~/App_Data/TableMapper_analyzer.config"));
+                loader = new ExcelAnalyzer(Server.MapPath("~/App_Data/TableMapper_analyzer.config"));
             }
+
             foreach (var file in model.Files)
             {
-                if (file != null)
+                if (file == null) continue;
+
+                var memStr = GetFileAsMemoryStream(file);
+
+                if (file.FileName.Contains("txt"))
                 {
-                    var memStr = GetFileAsMemoryStream(file);
-
-                    if (file.FileName.Contains("txt"))
-                    {
-                        converter.Convert(memStr);
-                        converter.SaveToDb();
-                    }
-                    else if (file.FileName.Contains("codelist"))
-                    {
-                        codingListLoader.ProcessFile(memStr, file.FileName);
-
-                    }
-                    else
-                    {
-                        loader.ProcessFile(memStr, file.FileName);
-                    }
+                    converter.Convert(memStr);
+                    converter.SaveToDb();
+                }
+                else if (file.FileName.Contains("codelist"))
+                {
+                    codingListLoader.ProcessFile(memStr, file.FileName);
+                }
+                else
+                {
+                    loader.ProcessFile(memStr, file.FileName);
                 }
             }
 
             if (doImport)
             {
+                LoadDataToCache(loader.SeasonName, loader.LeagueName);
                 PopulateEntityModel((ExL.ExcelLoader)loader, codingListLoader, loader.SeasonName, loader.LeagueName);
-                response = View(new ImportModel(CurrentPage));
+                return View(new ImportModel(CurrentPage));
             }
-            else
-            {
-                ExL.DataParser writer = new ExL.DataParser(_db, loader);
-                var playerInfoList = writer.GetPlayersInfoList();
-                ExcelLoader.ExcelWriter excelWriter = new ExcelLoader.ExcelWriter();
-                excelWriter.CreateHeader();
 
-                excelWriter.WritePlayerInfoList(playerInfoList);
-                string codingListsDirectory = Server.MapPath("~/coding-lists/");
-                if (!Directory.Exists(codingListsDirectory))
-                {
-                    Directory.CreateDirectory(codingListsDirectory);
-                }
-                string fileName = loader.SeasonName + "-" + loader.LeagueName + "-" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "-" + "codelist.xlsx";
-                string filePath = codingListsDirectory + fileName;
-
-                excelWriter.SaveAndRelease(filePath);
-                response = File(filePath,
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
-                fileName);
-
-            }
-            return response;
+            return CreateCodeListFile(loader);
         }
 
-        private void PopulateEntityModel(ExL.ExcelLoader loadedData, ExL.CodingListLoader playerListData, string seasonName, string leagueName)
+        private void LoadDataToCache(string seasonName, string leagueName)
         {
-            //use season repo instead of context; DAL layer should be used
+            var season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
+            var league = _db.Leagues.FirstOrDefault(l => l.Name.Equals(leagueName));
 
-            Season season = CreateOrGetSeason(seasonName);
-            LeagueSeason leagueSeason = null;
-            League league = null;
-
-            leagueSeason = _db.LeagueSeasons.Where(ls => ls.Season.Id == season.Id && ls.League.Name.Equals(leagueName)).FirstOrDefault();
-
-            if (leagueSeason != null)
+            if (season == null || league == null)
             {
-                league = _db.Leagues.Where(l => l.Id == leagueSeason.LeagueId).FirstOrDefault();
+                return;
             }
-            else
+
+            var leagueSeason = _db.LeagueSeasons.FirstOrDefault(ls => season.Id.Equals(ls.SeasonId) && league.Id.Equals(ls.LeagueId));
+
+            if (leagueSeason == null)
             {
-                league = CreateLeague(leagueName);
+                return;
+            }
+            var currLeagueSeasonGames = _db.Games.Include(g => g.Round).Where(g => g.Round.LeagueSeasonId != leagueSeason.Id).ToList();
+            GamesCache = new HashSet<Game>(currLeagueSeasonGames);
+
+            var playerPerTeams = _db.PlayersPerTeam.Where(ppt => ppt.LeagueSeason_Id == leagueSeason.Id).ToList();
+            PlayersPerTeamCache = new HashSet<PlayerPerTeam>(playerPerTeams);
+
+            PlayerByUIdCache = _db.Players.ToDictionary(keySelector: player => player.UId);
+
+            var playerIds = PlayerByUIdCache.Values.Select(player => player.Id).Distinct().ToArray();
+            var playerStats = _db.Stats.Where(stat => playerIds.Contains(stat.PlayerId)).ToList();
+            PlayerStatsCache = new HashSet<Stats>(playerStats);
+
+            var rounds = _db.Rounds.Where(r => r.LeagueSeasonId.Equals(leagueSeason.Id));
+            RoundByRoundNameCache = rounds.ToDictionary(keySelector: round => round.RoundName);
+
+            var teams = _db.Teams.Where(t => t.LeagueSeasonId.Equals(leagueSeason.Id));
+            TeamByTeamNameCache = teams.ToDictionary(keySelector: team => team.TeamName);
+        }
+
+        private ActionResult CreateCodeListFile(AbstractExcelLoader loader)
+        {
+            var writer = new DataParser(_db, loader);
+            var playerInfoList = writer.GetPlayersInfoList();
+            var excelWriter = new ExcelWriter();
+            excelWriter.CreateHeader();
+
+            excelWriter.WritePlayerInfoList(playerInfoList);
+            string codingListsDirectory = Server.MapPath("~/coding-lists/");
+            if (!Directory.Exists(codingListsDirectory))
+            {
+                Directory.CreateDirectory(codingListsDirectory);
+            }
+            string fileName = loader.SeasonName + "-" + loader.LeagueName + "-" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "-codelist.xlsx";
+            string filePath = codingListsDirectory + fileName;
+
+            excelWriter.SaveAndRelease(filePath);
+
+            return File(filePath,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
+                        fileName);
+        }
+
+        private void PopulateEntityModel(ExL.ExcelLoader loadedData, CodingListLoader playerListData, string seasonName, string leagueName)
+        {
+            var season = CreateOrGetSeason(seasonName);
+
+            var leagueSeason = _db.LeagueSeasons.Include(ls => ls.Season).Include(ls => ls.League)
+                .FirstOrDefault(ls => ls.Season.Name == seasonName && ls.League.Name == leagueName);
+
+            if (leagueSeason == null)
+            {
+                var league = CreateLeague(leagueName);
                 leagueSeason = CreateLeagueSeason(season.Id, league.Id);
-                _db.LeagueSeasons.Add(leagueSeason);
-
             }
+
             leagueSeason.Rounds = leagueSeason.Rounds ?? new List<Round>();
             CreateTeamsRoundsAndGames(loadedData, leagueSeason);
             PopulateTeamEntityModel(loadedData, playerListData, leagueSeason);
-            //transactional
-            try
-            {
-                _db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
 
-
+            _db.SaveChanges();
         }
-        private List<Team> PopulateTeamEntityModel(ExL.ExcelLoader loadedData, ExL.CodingListLoader codingListData, LeagueSeason leagueSeason)
+
+        private static bool AreEqualByLeagueName(League league, string leagueName)
         {
-            List<Team> teamsList = new List<Team>();
-            foreach (KeyValuePair<string, HashSet<string>> keyValuePair in loadedData.TeamAndPlayers)
+            return league?.Name.Equals(leagueName) == true;
+        }
+
+        private List<Team> PopulateTeamEntityModel(ExL.ExcelLoader loadedData, CodingListLoader codingListData, LeagueSeason leagueSeason)
+        {
+            var teamsList = new List<Team>();
+            foreach (var keyValuePair in loadedData.PlayerNamesByTeamName)
             {
-                Team team = null;
-                NewTeams.TryGetValue(keyValuePair.Key, out team);
-                List<PlayerInfo> infoList = codingListData.PlayerInfoList.Where(pi => pi.NewTeamName.Equals(team.TeamName)).ToList();
-                team.Players = GeneratePlayersData(loadedData, infoList, keyValuePair.Value, team, leagueSeason);
+                string teamName = keyValuePair.Key;
+                var playerNames = keyValuePair.Value;
+                var playerInfoList = codingListData.PlayerInfoList.Where(pi => pi.NewTeamName.Equals(teamName)).ToList();
+                var team = CreateOrGetTeamByName(teamName, leagueSeason);
+                team.Players = GeneratePlayersData(loadedData, playerInfoList, playerNames, team, leagueSeason);
                 teamsList.Add(team);
             }
 
             return teamsList;
-
         }
 
         private List<Player> GeneratePlayersData(ExL.ExcelLoader loadedData, List<PlayerInfo> playerInfoList, HashSet<string> playersIds, Team team, LeagueSeason leagueSeason)
         {
-            List<Player> playerList = new List<Player>(playersIds.Count);
-            Player player;
-            List<Game> games = NewGames.Where(g => g.TeamA.Id == team.Id || g.TeamB.Id == team.Id).ToList();
-            Game game = null;
-            foreach (PlayerInfo info in playerInfoList)
+            var playerList = new List<Player>(playersIds.Count);
+            var games = GamesCache.Where(g => AreEqualById(g.TeamA, team) || AreEqualById(g.TeamB, team)).ToList();
+            foreach (var playerInfo in playerInfoList)
             {
-                player = CreateOrGetPlayer(info);
-                //player.Team = team;
+                var player = CreateOrGetPlayer(playerInfo);
 
-                
-                List<PlayerScore> scores = loadedData.GetPlayerScoreList(team.TeamName, info.NameAndLastName);
-                foreach (PlayerScore playerScore in scores)
+                foreach (var playerScore in loadedData.GetPlayerScoreList(team.TeamName, playerInfo.NameAndLastName))
                 {
-                    game = games.FirstOrDefault(g => g.TeamA.TeamName.Equals(playerScore.AgainstTeam) || g.TeamB.TeamName.Equals(playerScore.AgainstTeam));
+                    string againstTeam = playerScore.AgainstTeam;
+                    var game = games.Find(g => IsTeamInGame(g, againstTeam));
                     if (game != null)
                     {
-                        Stats stats = CreateOrGetStatsForPlayer(playerScore, player, game, info.OnLoan);
+                        var stats = CreateOrGetStatsForPlayer(playerScore, player, game, playerInfo.OnLoan);
                         player.Stats.Add(stats);
                     }
-
                 }
                 playerList.Add(player);
-                PlayerPerTeam playerPerTeam = CreateOrGetPlayerPerTeam(player, team, leagueSeason);
+                var playerPerTeam = CreateOrGetPlayerPerTeam(player, team, leagueSeason);
             }
             return playerList;
         }
 
+        private static bool IsTeamInGame(Game game, string team)
+        {
+            return game?.TeamA?.TeamName.Equals(team) == true || game?.TeamB?.TeamName.Equals(team) == true;
+        }
 
         #region Entity creation helper methods
+
         private Season CreateOrGetSeason(string seasonName)
         {
-            Season season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
-            if (season == null)
+            var season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
+
+            if (season != null)
             {
-                season = new Season()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = seasonName,
-                    SeasonStartYear = Int32.Parse(seasonName)
-
-                };
-                _db.Seasons.Add(season);
-
+                return season;
             }
+
+            season = new Season()
+            {
+                Id = Guid.NewGuid(),
+                Name = seasonName,
+                SeasonStartYear = seasonName.ExtractNumber()
+            };
+
+            _db.Seasons.Add(season);
+            // _db.SaveChanges();
 
             return season;
         }
+
         private League CreateLeague(string leagueName)
         {
-            League league = new League()
+            var league = new League()
             {
                 Id = Guid.NewGuid(),
                 Name = leagueName
-
             };
-            _db.Leagues.Add(league);
-            return league;
 
+            _db.Leagues.Add(league);
+            // _db.SaveChanges();
+
+            return league;
         }
+
         private LeagueSeason CreateLeagueSeason(Guid seasonId, Guid leagueId)
         {
-            LeagueSeason leagueSeason = new LeagueSeason()
+            var leagueSeason = new LeagueSeason()
             {
                 Id = Guid.NewGuid(),
                 SeasonId = seasonId,
                 LeagueId = leagueId,
                 Rounds = new List<Round>()
             };
+
             _db.LeagueSeasons.Add(leagueSeason);
+            // _db.SaveChanges();
+
             return leagueSeason;
         }
 
-
         private Team CreateTeam(string teamName, LeagueSeason leagueSeason)
         {
-            Team team = new Team()
+            var team = new Team()
             {
                 Id = Guid.NewGuid(),
                 TeamName = teamName,
@@ -266,248 +296,236 @@ namespace LZRNS.Web.Controllers.Management
             };
 
             _db.Teams.Add(team);
+            // _db.SaveChanges();
 
             return team;
         }
 
-        private void CreateOrGetTeamsByNames(string teamNameA, string teamNameB, LeagueSeason leagueSeason, out Team teamA, out Team teamB)
+        private Team CreateOrGetTeamByName(string teamName, LeagueSeason leagueSeason)
         {
-            //check in cache first
-            NewTeams.TryGetValue(teamNameA, out teamA);
-            NewTeams.TryGetValue(teamNameB, out teamB);
-            //then in database
-            if (teamA == null)
+            if (TeamByTeamNameCache.TryGetValue(teamName, out var team))
             {
-                teamA = _db.Teams.FirstOrDefault(t => t.TeamName.Equals(teamNameA));
-                if (teamA == null)
-                {
-                    teamA = CreateTeam(teamNameA, leagueSeason);// && t.LeagueSeason.Id == leagueSeason.Id);
-                    //_db.Teams.Add(teamA);
-                }
-                else
-                {
-                    teamA.LeagueSeason = leagueSeason;
-                }
-                NewTeams.Add(teamNameA, teamA);
+                return team;
             }
-
-            if (teamB == null)
-            {
-                teamB = _db.Teams.FirstOrDefault(t => t.TeamName.Equals(teamNameB));
-                if (teamB == null)
-                {
-                    teamB = CreateTeam(teamNameB, leagueSeason);
-                   // _db.Teams.Add(teamA);
-                }
-                else
-                {
-                    teamB.LeagueSeason = leagueSeason;
-                }
-
-                NewTeams.Add(teamNameB, teamB);
-            }
-
+            team = CreateTeam(teamName, leagueSeason);
+            TeamByTeamNameCache.Add(teamName, team);
+            return team;
         }
+
         private Player CreateOrGetPlayer(PlayerInfo info)
         {
-            //check in cache
-            Player player = null;
-            NewPlayers.TryGetValue(info.UId, out player);
-            if (player == null)
+            if (PlayerByUIdCache.TryGetValue(info.UId, out var player))
             {
-                //check in database - previous season import or double import
-                player = _db.Players.FirstOrDefault(pl => pl.UId == info.UId);
-                if (player == null)
-                {
-                    player = new Player()
-                    {
-                        Id = Guid.NewGuid(),
-                        Name = info.FirstName,
-                        LastName = (String.IsNullOrEmpty(info.LastName) || String.IsNullOrWhiteSpace(info.LastName)) ? info.MiddleName : info.LastName,
-                        //in some examples, middlename has value of lastname, check it later, temporary hack
-                        MiddleName = (String.IsNullOrEmpty(info.LastName) || String.IsNullOrWhiteSpace(info.LastName)) ? info.LastName : info.MiddleName,
-                        UId = info.UId,
-                        Stats = new List<Stats>(),
-                    }
-                    ;
-                    _db.Players.Add(player);
-
-                }
-                //put object in cache
-                NewPlayers.Add(player.UId, player);
+                return player;
             }
+
+            player = new Player()
+            {
+                Id = Guid.NewGuid(),
+                Name = info.FirstName,
+                LastName = (string.IsNullOrEmpty(info.LastName) || string.IsNullOrWhiteSpace(info.LastName)) ? info.MiddleName : info.LastName,
+                MiddleName = (string.IsNullOrEmpty(info.LastName) || string.IsNullOrWhiteSpace(info.LastName)) ? info.LastName : info.MiddleName,
+                UId = info.UId,
+                Stats = new List<Stats>(),
+            };
+
+            PlayerByUIdCache.Add(player.UId, player);
+
+            _db.Players.Add(player);
+            // _db.SaveChanges();
+
             return player;
         }
 
         private PlayerPerTeam CreateOrGetPlayerPerTeam(Player player, Team team, LeagueSeason leagueSeason)
         {
-            PlayerPerTeam playerPerTeam = NewPlayerPerTeamSet.FirstOrDefault(ppt => ppt.Player.Id == player.Id && ppt.Team.Id == team.Id && ppt.LeagueSeason_Id == leagueSeason.Id);
+            var playerPerTeam = PlayersPerTeamCache.FirstOrDefault(ppt => ppt.Player.Id == player.Id && ppt.Team.Id == team.Id && ppt.LeagueSeason_Id == leagueSeason.Id);
 
-            if (playerPerTeam == null)
+            if (playerPerTeam != null)
             {
-                playerPerTeam = _db.PlayersPerTeam.FirstOrDefault(ppt => ppt.Player.Id == player.Id && ppt.Team.Id == team.Id && ppt.LeagueSeason_Id == leagueSeason.Id);
-                if (playerPerTeam == null)
-                {
-                    playerPerTeam = new PlayerPerTeam()
-                    {
-                        Id = Guid.NewGuid(),
-                        Player = player,
-                        Team = team,
-                        LeagueSeason = leagueSeason
-                    };
-                    _db.PlayersPerTeam.Add(playerPerTeam);
-
-                }
-                NewPlayerPerTeamSet.Add(playerPerTeam);
-
+                return playerPerTeam;
             }
+
+            playerPerTeam = new PlayerPerTeam()
+            {
+                Id = Guid.NewGuid(),
+                Player = player,
+                Team = team,
+                LeagueSeason = leagueSeason
+            };
+
+            PlayersPerTeamCache.Add(playerPerTeam);
+
+            _db.PlayersPerTeam.Add(playerPerTeam);
+            // _db.SaveChanges();
+
             return playerPerTeam;
         }
 
         private Round CreateOrGetRound(Guid leagueSeasonId, string roundName)
         {
-            Round round = null;
-            //roundname is determined by sheet name - usually GAMEx where x is round number, so use only number part
-            roundName = (roundName.Contains("GAME") && roundName.Length >= 5) ? roundName.Substring(4) : roundName;
-            NewRounds.TryGetValue(roundName, out round);
+            string formattedRoundName = FormatRoundName(roundName);
+            RoundByRoundNameCache.TryGetValue(formattedRoundName, out var round);
 
-            if (round == null)
+            if (round != null)
             {
-                round = _db.Rounds.FirstOrDefault(r => r.LeagueSeason.Id == leagueSeasonId && r.RoundName.Equals(roundName));
-                if (round == null)
-                {
-                    round = new Round()
-                    {
-                        Id = Guid.NewGuid(),
-                        RoundName = roundName,
-                        LeagueSeasonId = leagueSeasonId,
-                        Games = new List<Game>()
-                    };
-                    _db.Rounds.Add(round);
-                }
-                NewRounds.Add(roundName, round);
-
+                return round;
             }
+
+            round = new Round()
+            {
+                Id = Guid.NewGuid(),
+                RoundName = formattedRoundName,
+                LeagueSeasonId = leagueSeasonId,
+                Games = new List<Game>()
+            };
+
+            RoundByRoundNameCache.Add(formattedRoundName, round);
+
+            _db.Rounds.Add(round);
+            // _db.SaveChanges();
+
             return round;
         }
 
+        private static string FormatRoundName(string roundName)
+        {
+            //roundname is determined by sheet name - usually GAMEx where x is round number, so use only number part
+            roundName = (roundName.Contains("GAME") && roundName.Length >= 5) ? roundName.Substring(4) : roundName;
+            return roundName;
+        }
 
-        private Game CreateOrGetGame(Season season, Round round, Team teamA, Team teamB, DateTime gameDateTime)
+        private Game CreateOrGetGame(Season season, Round round, Team teamA, Team teamB, DateTime gameDate)
+        {
+            var formattedGameDate = FormatGameDate(gameDate);
+
+            var game = GamesCache.FirstOrDefault(g => GetGameComparison(g, season, round, teamA, teamB, formattedGameDate));
+
+            if (game != null)
+            {
+                return game;
+            }
+
+            game = new Game()
+            {
+                Id = Guid.NewGuid(),
+                Season = season,
+                Round = round,
+                TeamA = teamA,
+                TeamB = teamB,
+                DateTime = formattedGameDate
+            };
+
+            GamesCache.Add(game);
+
+            _db.Games.Add(game);
+            // _db.SaveChanges();
+
+            return game;
+        }
+
+        private static DateTime FormatGameDate(DateTime gameDateTime)
         {
             //if date time format is bad and initial datetime value is set, it will produce SQL exception, so change it
-            DateTime defaultDate = new DateTime(1, 1, 1, 0, 0, 0);
+            var defaultDate = new DateTime(1, 1, 1, 0, 0, 0);
             if (DateTime.Compare(gameDateTime, defaultDate) == 0)
             {
                 gameDateTime = new DateTime(1970, 1, 1, 0, 0, 0);
             }
 
-            Game game = null;
-            game = NewGames.FirstOrDefault(g => g.Season.Id == season.Id && g.Round.Id == round.Id && (g.TeamA.Id == teamA.Id && g.TeamB.Id == teamB.Id) ||
-                    (g.TeamA.Id == teamB.Id && g.TeamB.Id == teamA.Id) && DateTime.Compare(g.DateTime, gameDateTime) == 0);
-            if (game == null)
-            {
-                game = _db.Games.FirstOrDefault(g => g.Season.Id == season.Id && g.Round.Id == round.Id && (g.TeamA.Id == teamA.Id && g.TeamB.Id == teamB.Id) ||
-                        (g.TeamA.Id == teamB.Id && g.TeamB.Id == teamA.Id) && DateTime.Compare(g.DateTime, gameDateTime) == 0);
-                if (game == null)
-                {
-                    game = new Game()
-                    {
-                        Id = Guid.NewGuid(),
-                        Season = season,
-                        Round = round,
-                        TeamA = teamA,
-                        TeamB = teamB,
-                        DateTime = gameDateTime
-                    };
-                    _db.Games.Add(game);
-                }
-                NewGames.Add(game);
-
-            }
-
-            return game;
+            return gameDateTime;
         }
-        #endregion
+
+        private static bool GetGameComparison(Game game, Season season, Round round, Team teamA, Team teamB, DateTime gameDateTime)
+        {
+            return AreEqualById(game.Season, season)
+                && AreEqualById(game.Round, round)
+                && AreInSameGame(teamA, teamB, game)
+                && DateTime.Compare(game.DateTime, gameDateTime) == 0;
+        }
+
+        private static bool AreInSameGame(Team teamA, Team teamB, Game g)
+        {
+            return (AreEqualById(g.TeamA, teamA) && AreEqualById(g.TeamB, teamB))
+                                            || (AreEqualById(g.TeamA, teamB) && AreEqualById(g.TeamB, teamA));
+        }
+
+        private static bool AreEqualById(Round lhs, Round rhs)
+        {
+            return lhs?.Id.Equals(rhs?.Id) == true;
+        }
+
+        private static bool AreEqualById(Season lhs, Season rhs)
+        {
+            return lhs?.Id.Equals(rhs?.Id) == true;
+        }
+
+        private static bool AreEqualById(Team lhs, Team rhs)
+        {
+            return lhs?.Id.Equals(rhs?.Id) == true;
+        }
+
+        #endregion Entity creation helper methods
 
         private void CreateTeamsRoundsAndGames(ExL.ExcelLoader loader, LeagueSeason leagueSeason)
         {
-            Round round = null;
-            string teamName = null;
-            string opponentTeamName = null;
-            DateTime matchDate;
-            string roundName = null;
-            Team teamA = null, teamB = null;
-            foreach (KeyValuePair<string, TeamStatistic> teamScore in loader.Teams)
+            foreach (var teamScore in loader.TeamStatisticByTeamName)
             {
-                teamName = teamScore.Key;
-                foreach (TeamScore score in teamScore.Value.TeamScores)
+                string teamName = teamScore.Key;
+                foreach (var score in teamScore.Value.TeamScores)
                 {
-                    opponentTeamName = score.AgainstTeam;
-                    matchDate = score.MatchDate;
-                    roundName = score.RoundName;
-                    //create round
-                    round = CreateOrGetRound(leagueSeason.Id, roundName);
-                    CreateOrGetTeamsByNames(teamName, opponentTeamName, leagueSeason, out teamA, out teamB);
-
-                    //create game
-                    CreateOrGetGame(leagueSeason.Season, round, teamA, teamB, matchDate);
-                    //NewGames.Add(game);
-
+                    var round = CreateOrGetRound(leagueSeason.Id, score.RoundName);
+                    var teamA = CreateOrGetTeamByName(teamName, leagueSeason);
+                    var teamB = CreateOrGetTeamByName(score.AgainstTeam, leagueSeason);
+                    CreateOrGetGame(leagueSeason.Season, round, teamA, teamB, score.MatchDate);
                 }
             }
         }
-
-
-
 
         private Stats CreateOrGetStatsForPlayer(PlayerScore playScore, Player player, Game game, bool onLoan)
         {
+            var stats = PlayerStatsCache.FirstOrDefault(st => st.Player.Id == player.Id && st.Game.Id == game.Id);
 
-            Stats stats = null;
-            stats = NewPlayersStats.FirstOrDefault(st => st.Player.Id == player.Id && st.Game.Id == game.Id);
-
-            if (stats == null)
+            if (stats != null)
             {
-                stats = _db.Stats.FirstOrDefault(st => st.Player.Id == player.Id && st.Game.Id == game.Id);
-                if (stats == null)
-                {
-                    stats = new Stats()
-                    {
-                        Id = Guid.NewGuid(),
-                        Player = player,
-                        Game = game,
-                        Ast = playScore.Assistance,
-                        Blk = playScore.Block,
-                        DReb = playScore.DefensiveReb,
-                        FtMade = playScore.FreeThrowsMade,
-                        FtMissed = playScore.FreeThrowsAttempt,
-                        MinutesPlayed = playScore.Minutes,
-                        JerseyNumber = playScore.Number.ToString(),
-                        OReb = playScore.OffensiveReb,
-                        TwoPtMissed = playScore.PointAttempt2,
-                        TwoPtMade = playScore.PointMade2,
-                        ThreePtMissed = playScore.PointAttempt3,
-                        ThreePtMade = playScore.PointMade3,
-                        Stl = playScore.Steal,
-                        To = playScore.TurnOver,
-                        OnLoan = onLoan,
-                    };
-                    _db.Stats.Add(stats);
-
-                }
-                NewPlayersStats.Add(stats);
-
+                return stats;
             }
+
+            stats = new Stats()
+            {
+                Id = Guid.NewGuid(),
+                Player = player,
+                Game = game,
+                Ast = playScore.Assistance,
+                Blk = playScore.Block,
+                DReb = playScore.DefensiveReb,
+                FtMade = playScore.FreeThrowsMade,
+                FtMissed = playScore.FreeThrowsAttempt,
+                MinutesPlayed = playScore.Minutes,
+                JerseyNumber = playScore.Number.ToString(),
+                OReb = playScore.OffensiveReb,
+                TwoPtMissed = playScore.PointAttempt2,
+                TwoPtMade = playScore.PointMade2,
+                ThreePtMissed = playScore.PointAttempt3,
+                ThreePtMade = playScore.PointMade3,
+                Stl = playScore.Steal,
+                To = playScore.TurnOver,
+                OnLoan = onLoan,
+            };
+
+            PlayerStatsCache.Add(stats);
+
+            _db.Stats.Add(stats);
+            // _db.SaveChanges();
+
             return stats;
         }
 
-
         private MemoryStream GetFileAsMemoryStream(HttpPostedFileBase uploadedFile)
         {
-            var buf = new byte[uploadedFile.InputStream.Length];
+            byte[] buf = new byte[uploadedFile.InputStream.Length];
             uploadedFile.InputStream.Read(buf, 0, (int)uploadedFile.InputStream.Length);
-            MemoryStream memStr = new MemoryStream(buf);
-            return memStr;
+            return new MemoryStream(buf);
         }
     }
 }

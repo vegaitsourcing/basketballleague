@@ -10,48 +10,51 @@ using Umbraco.Core.Models;
 
 namespace LZRNS.Models.DocumentTypes.Pages
 {
-	public class ResultsLandingModel : PageModel
-	{
-		public ResultsLandingModel()
-		{
-		}
+    public class ResultsLandingModel : PageModel
+    {
+        public ResultsLandingModel()
+        {
+        }
 
-		public ResultsLandingModel(IPublishedContent content) : base(content)
-		{
-		}
+        public ResultsLandingModel(IPublishedContent content) : base(content)
+        {
+        }
 
-		public ResultsLandingModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
-		{
-		}
+        public ResultsLandingModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
+        {
+        }
 
-		public BannerModel Banner => this.GetCachedValue(() =>
-			Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
-				.EmptyIfNull()
-				.FirstOrDefault()
-				.AsType<BannerModel>());
+        new public BannerModel Banner => this.GetCachedValue(() =>
+            Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
+                .EmptyIfNull()
+                .FirstOrDefault()?
+                .AsType<BannerModel>());
 
-		public string RoundName => this.GetCachedValue(() =>
-			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.ResultsRound) ?? "1";
+        public string RoundName => this.GetCachedValue(() =>
+            UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.ResultsRound) ?? "1";
 
-		public int SeasonYearStart => this.GetCachedValue(() =>
-			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.SeasonYearStart) ?? DateTime.Now.Year;
+        public int SeasonYearStart => this.GetCachedValue(() =>
+            UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.SeasonYearStart) ?? DateTime.Now.Year;
 
-		public IEnumerable<string> Leagues => this.GetPropertyValue<IEnumerable<string>>();
+        public IEnumerable<string> Leagues => this.GetPropertyValue<IEnumerable<string>>();
 
-		public IList<string> AllRounds { get; set; }
-		public string CurrentShownLeague { get; set; }
-		public string CurrentShownRound { get; set; }
-		public int CurrentShownRoundIndex => 
-			this.AllRounds?.IndexOf(this.CurrentShownRound) ?? 0;
+        public IList<string> AllRounds { get; set; }
+        public string CurrentShownLeague { get; set; }
+        public string CurrentShownRound { get; set; }
 
-		public string NextRound =>
-			HasNextRound ? this.AllRounds[CurrentShownRoundIndex + 1] : string.Empty;
-		public string PreviousRound => 
-			HasPreviousRound ? this.AllRounds[CurrentShownRoundIndex - 1] : string.Empty;
+        public int CurrentShownRoundIndex =>
+            this.AllRounds?.IndexOf(this.CurrentShownRound) ?? 0;
 
-		public bool HasNextRound => 
-			CurrentShownRoundIndex + 1 < (this.AllRounds?.Count ?? 0);
-		public bool HasPreviousRound => 
-			CurrentShownRoundIndex > 0;
-	}
+        public string NextRound =>
+            HasNextRound ? this.AllRounds[CurrentShownRoundIndex + 1] : string.Empty;
+
+        public string PreviousRound =>
+            HasPreviousRound ? this.AllRounds[CurrentShownRoundIndex - 1] : string.Empty;
+
+        public bool HasNextRound =>
+            CurrentShownRoundIndex + 1 < (this.AllRounds?.Count ?? 0);
+
+        public bool HasPreviousRound =>
+            CurrentShownRoundIndex > 0;
+    }
 }

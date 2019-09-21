@@ -11,25 +11,18 @@ namespace LZRNS.ExcelLoader
     {
         private static void Main(string[] args)
         {
-            //string basePath = @"F:\2.Documents\LZRNS\PrevoiusSesions\2017\";
-            //string basePath = @"F:\ForLoad\forUse\";
+            //var seasons = new List<string> { "2016", "2017", "2018" };
+            //string newDestination = @"F:\ForLoad\2016\converted\";
 
-            List<string> seasons = new List<string> { "2016", "2017", "2018" };
+            //foreach (string season in seasons)
+            //{
+            //    Console.WriteLine("Season: " + season);
+            //    string basePath = @"F:\ForLoad\" + season + @"\orginal\";
+            //    newDestination = @"F:\ForLoad\" + season + @"\converted\";
+            //    ConvertExtensions(basePath, newDestination);
+            //}
 
-            string basePath = @"F:\ForLoad\2016\orginal\";
-
-            //string newDestination = @"F:\ForLoad\converted\";
-            string newDestination = @"F:\ForLoad\2016\converted\";
-
-            foreach (string season in seasons)
-            {
-                Console.WriteLine("Season: " + season);
-                basePath = @"F:\ForLoad\" + season + @"\orginal\";
-                newDestination = @"F:\ForLoad\" + season + @"\converted\";
-                ConvertExtensions(basePath, newDestination);
-            }
-
-            LoadDocuments(newDestination);
+            //LoadDocuments(newDestination);
         }
 
         public static void ConvertExtensions(string basePath, string newDestination)

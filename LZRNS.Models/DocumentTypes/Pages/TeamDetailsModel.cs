@@ -12,33 +12,32 @@ using Umbraco.Core.Models;
 
 namespace LZRNS.Models.DocumentTypes.Pages
 {
-	public class TeamDetailsModel : PageModel
-	{
-		public TeamDetailsModel()
-		{
-		}
+    public class TeamDetailsModel : PageModel
+    {
+        public TeamDetailsModel()
+        {
+        }
 
-		public TeamDetailsModel(IPublishedContent content) : base(content)
-		{
-		}
+        public TeamDetailsModel(IPublishedContent content) : base(content)
+        {
+        }
 
-		public TeamDetailsModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
-		{
-		}
+        public TeamDetailsModel(IPublishedContent content, CultureInfo culture) : base(content, culture)
+        {
+        }
 
-		public BannerModel Banner => this.GetCachedValue(() =>
-			Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
-				.EmptyIfNull()
-				.FirstOrDefault()
-				.AsType<BannerModel>());
+        new public BannerModel Banner => this.GetCachedValue(() =>
+            Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
+                .EmptyIfNull()
+                .FirstOrDefault()?
+                .AsType<BannerModel>());
 
+        public string RoundName => this.GetCachedValue(() =>
+            UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.ResultsRound) ?? "1";
 
-		public string RoundName => this.GetCachedValue(() =>
-			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.ResultsRound) ?? "1";
+        public int SeasonYearStart => this.GetCachedValue(() =>
+            UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.SeasonYearStart) ?? DateTime.Now.Year;
 
-		public int SeasonYearStart => this.GetCachedValue(() =>
-			UmbracoHelper.GetSingleContentOfType<StatisticsSettingsModel>()?.SeasonYearStart) ?? DateTime.Now.Year;
-
-		public TeamDetails Team { get; set; }
-	}
+        public TeamDetails Team { get; set; }
+    }
 }

@@ -25,14 +25,13 @@ namespace LZRNS.Models.DocumentTypes.Pages
         {
         }
 
-        public BannerModel Banner => this.GetCachedValue(() =>
+        new public BannerModel Banner => this.GetCachedValue(() =>
             Content.GetPropertyValue<IEnumerable<IPublishedContent>>()
                 .EmptyIfNull()
-                .FirstOrDefault()
+                .FirstOrDefault()?
                 .AsType<BannerModel>());
 
         public IEnumerable<string> Leagues => this.GetPropertyValue<IEnumerable<string>>();
         public string CurrentShownLeague { get; set; }
-
     }
 }
