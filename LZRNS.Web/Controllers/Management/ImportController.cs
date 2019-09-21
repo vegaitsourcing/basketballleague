@@ -133,10 +133,10 @@ namespace LZRNS.Web.Controllers.Management
             PlayerStatsCache = new HashSet<Stats>(playerStats);
 
             var rounds = _db.Rounds.Where(r => r.LeagueSeasonId.Equals(leagueSeason.Id));
-            RoundByRoundNameCache = rounds.ToDictionary(keySelector: round => round.RoundName);
+            RoundByRoundNameCache = rounds.ToDictionary(keySelector: round => FormatRoundName(round.RoundName));
 
             var teams = _db.Teams.Where(t => t.LeagueSeasonId.Equals(leagueSeason.Id));
-            TeamByTeamNameCache = teams.ToDictionary(keySelector: team => team.TeamName);
+            TeamByTeamNameCache = teams.ToDictionary(keySelector: team => FormatTeamName(team.TeamName));
         }
 
         private ActionResult CreateCodeListFile(AbstractExcelLoader loader)
@@ -180,11 +180,6 @@ namespace LZRNS.Web.Controllers.Management
             PopulateTeamEntityModel(loadedData, playerListData, leagueSeason);
 
             _db.SaveChanges();
-        }
-
-        private static bool AreEqualByLeagueName(League league, string leagueName)
-        {
-            return league?.Name.Equals(leagueName) == true;
         }
 
         private List<Team> PopulateTeamEntityModel(ExL.ExcelLoader loadedData, CodingListLoader codingListData, LeagueSeason leagueSeason)
@@ -303,13 +298,19 @@ namespace LZRNS.Web.Controllers.Management
 
         private Team CreateOrGetTeamByName(string teamName, LeagueSeason leagueSeason)
         {
-            if (TeamByTeamNameCache.TryGetValue(teamName, out var team))
+            string formattedTeamName = FormatTeamName(teamName);
+            if (TeamByTeamNameCache.TryGetValue(formattedTeamName, out var team))
             {
                 return team;
             }
-            team = CreateTeam(teamName, leagueSeason);
-            TeamByTeamNameCache.Add(teamName, team);
+            team = CreateTeam(formattedTeamName, leagueSeason);
+            TeamByTeamNameCache.Add(formattedTeamName, team);
             return team;
+        }
+
+        private static string FormatTeamName(string teamName)
+        {
+            return teamName.ToLower().Trim();
         }
 
         private Player CreateOrGetPlayer(PlayerInfo info)
@@ -322,9 +323,9 @@ namespace LZRNS.Web.Controllers.Management
             player = new Player()
             {
                 Id = Guid.NewGuid(),
-                Name = info.FirstName,
-                LastName = (string.IsNullOrEmpty(info.LastName) || string.IsNullOrWhiteSpace(info.LastName)) ? info.MiddleName : info.LastName,
-                MiddleName = (string.IsNullOrEmpty(info.LastName) || string.IsNullOrWhiteSpace(info.LastName)) ? info.LastName : info.MiddleName,
+                Name = DefaultIfNullOrWhiteSpace(info.FirstName),
+                MiddleName = DefaultIfNullOrWhiteSpace(info.MiddleName),
+                LastName = DefaultIfNullOrWhiteSpace(info.LastName),
                 UId = info.UId,
                 Stats = new List<Stats>(),
             };
@@ -335,6 +336,11 @@ namespace LZRNS.Web.Controllers.Management
             // _db.SaveChanges();
 
             return player;
+        }
+
+        private static string DefaultIfNullOrWhiteSpace(string str, string @default = "?")
+        {
+            return string.IsNullOrWhiteSpace(str) ? @default : str;
         }
 
         private PlayerPerTeam CreateOrGetPlayerPerTeam(Player player, Team team, LeagueSeason leagueSeason)
@@ -390,9 +396,7 @@ namespace LZRNS.Web.Controllers.Management
 
         private static string FormatRoundName(string roundName)
         {
-            //roundname is determined by sheet name - usually GAMEx where x is round number, so use only number part
-            roundName = (roundName.Contains("GAME") && roundName.Length >= 5) ? roundName.Substring(4) : roundName;
-            return roundName;
+            return (roundName.Contains("GAME") && roundName.Length >= 5) ? roundName.Substring(4) : roundName;
         }
 
         private Game CreateOrGetGame(Season season, Round round, Team teamA, Team teamB, DateTime gameDate)

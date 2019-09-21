@@ -6,6 +6,6 @@ DELETE Round;
 DELETE PlayerPerTeam;
 DELETE Player;
 DELETE Team;
+DELETE LeagueSeason;
 DELETE Season;
 DELETE League;
-DELETE LeagueSeason;

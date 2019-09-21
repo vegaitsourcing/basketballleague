@@ -43,7 +43,8 @@ namespace LZRNS.DomainModel.Models
 
         public virtual ICollection<Referee> Referees { get; set; } = new List<Referee>();
 
-        [NotMapped] public IEnumerable<SelectListItem> Teams { get; set; } = Enumerable.Empty<SelectListItem>();
+        [NotMapped]
+        public IEnumerable<SelectListItem> Teams { get; set; } = Enumerable.Empty<SelectListItem>();
 
         [NotMapped]
         public virtual ICollection<StatsPerGame> StatsPerGame { get; } = new List<StatsPerGame>();

@@ -4,8 +4,9 @@ namespace LZRNS.ExcelLoader.Model
 {
     public class PlayerInfo
     {
-        public string FirstName => string.IsNullOrEmpty(NameAndLastName) ? string.Empty : NameAndLastName.Split(' ').First();
-        public string LastName => string.IsNullOrEmpty(NameAndLastName) ? string.Empty : NameAndLastName.Split(' ').Last();
+        private const string defaultName = "-";
+        public string FirstName => string.IsNullOrEmpty(NameAndLastName) ? defaultName : NameAndLastName.Split(' ').First();
+        public string LastName => string.IsNullOrEmpty(NameAndLastName) ? defaultName : NameAndLastName.Split(' ').Last();
 
         public string MiddleName
         {
@@ -13,15 +14,15 @@ namespace LZRNS.ExcelLoader.Model
             {
                 if (string.IsNullOrEmpty(NameAndLastName))
                 {
-                    return string.Empty;
+                    return defaultName;
                 }
 
                 var names = NameAndLastName.Split(' ');
-                return names.Length == 3 ? names[1] : string.Empty;
+                return names.Length == 3 ? names[1] : defaultName;
             }
         }
 
-        public string NameAndLastName { get; set; } = "-";
+        public string NameAndLastName { get; set; } = defaultName;
         public string NewLeagueSeasonName { get; set; }
         public string NewTeamName { get; set; }
         public int Number { get; set; }
