@@ -9,12 +9,12 @@ using LZRNS.Models.AdditionalModels.Forms;
 using LZRNS.Models.DocumentTypes.Pages;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Umbraco.Web.Mvc;
-using System.Data.Entity;
 
 using ExL = LZRNS.ExcelLoader.ExcelReader;
 
@@ -26,22 +26,16 @@ namespace LZRNS.Web.Controllers.Management
         //TODO: refactor - use repositories instead of context
         private readonly BasketballDbContext _db = new BasketballDbContext();
 
-        private Dictionary<string, Team> TeamByTeamNameCache { get; set; } = new Dictionary<string, Team>();
         private HashSet<Game> GamesCache { get; set; } = new HashSet<Game>();
-        private Dictionary<string, Round> RoundByRoundNameCache { get; set; } = new Dictionary<string, Round>();
         private Dictionary<string, Player> PlayerByUIdCache { get; set; } = new Dictionary<string, Player>();
         private HashSet<PlayerPerTeam> PlayersPerTeamCache { get; set; } = new HashSet<PlayerPerTeam>();
         private HashSet<Stats> PlayerStatsCache { get; set; } = new HashSet<Stats>();
+        private Dictionary<string, Round> RoundByRoundNameCache { get; set; } = new Dictionary<string, Round>();
+        private Dictionary<string, Team> TeamByTeamNameCache { get; set; } = new Dictionary<string, Team>();
 
         public ActionResult Index(ImportModel model)
         {
             return View(model);
-        }
-
-        //helper
-        public bool IsFilePlayersCodeList(string fileName)
-        {
-            return fileName.Split('-').Last().Contains("codelist");
         }
 
         [HttpPost]
@@ -104,6 +98,80 @@ namespace LZRNS.Web.Controllers.Management
             return CreateCodeListFile(loader);
         }
 
+        private static bool IsFilePlayersCodeList(string fileName)
+        {
+            return fileName.Split('-').Last().Contains("codelist");
+        }
+
+        private ActionResult CreateCodeListFile(AbstractExcelLoader loader)
+        {
+            var writer = new DataParser(_db, loader);
+            var playerInfoList = writer.GetPlayersInfoList();
+            var excelWriter = new ExcelWriter();
+            excelWriter.CreateHeader();
+
+            excelWriter.WritePlayerInfoList(playerInfoList);
+            string codingListsDirectory = Server.MapPath("~/coding-lists/");
+            if (!Directory.Exists(codingListsDirectory))
+            {
+                Directory.CreateDirectory(codingListsDirectory);
+            }
+            string fileName = loader.SeasonName + "-" + loader.LeagueName + "-" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "-codelist.xlsx";
+            string filePath = codingListsDirectory + fileName;
+
+            excelWriter.SaveAndRelease(filePath);
+
+            return File(filePath,
+                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
+                        fileName);
+        }
+
+        private void CreateTeamsRoundsAndGames(ExL.ExcelLoader loader, LeagueSeason leagueSeason)
+        {
+            foreach (var teamScore in loader.TeamStatisticByTeamName)
+            {
+                string teamName = teamScore.Key;
+                foreach (var score in teamScore.Value.TeamScores)
+                {
+                    var round = CreateOrGetRound(leagueSeason.Id, score.RoundName);
+                    var teamA = CreateOrGetTeamByName(teamName, leagueSeason);
+                    var teamB = CreateOrGetTeamByName(score.AgainstTeam, leagueSeason);
+                    CreateOrGetGame(leagueSeason.Season, round, teamA, teamB, score.MatchDate);
+                }
+            }
+        }
+
+        private List<Player> GeneratePlayersData(ExL.ExcelLoader loadedData, List<PlayerInfo> playerInfoList, HashSet<string> playersIds, Team team, LeagueSeason leagueSeason)
+        {
+            var playerList = new List<Player>(playersIds.Count);
+            var games = GamesCache.Where(g => AreEqualById(g.TeamA, team) || AreEqualById(g.TeamB, team)).ToList();
+            foreach (var playerInfo in playerInfoList)
+            {
+                var player = CreateOrGetPlayer(playerInfo);
+
+                foreach (var playerScore in loadedData.GetPlayerScoreList(team.TeamName, playerInfo.NameAndLastName))
+                {
+                    string againstTeam = playerScore.AgainstTeam;
+                    var game = games.Find(g => IsTeamInGame(g, againstTeam));
+                    if (game != null)
+                    {
+                        var stats = CreateOrGetStatsForPlayer(playerScore, player, game, playerInfo.OnLoan);
+                        player.Stats.Add(stats);
+                    }
+                }
+                playerList.Add(player);
+                var playerPerTeam = CreateOrGetPlayerPerTeam(player, team, leagueSeason);
+            }
+            return playerList;
+        }
+
+        private MemoryStream GetFileAsMemoryStream(HttpPostedFileBase uploadedFile)
+        {
+            byte[] buf = new byte[uploadedFile.InputStream.Length];
+            uploadedFile.InputStream.Read(buf, 0, (int)uploadedFile.InputStream.Length);
+            return new MemoryStream(buf);
+        }
+
         private void LoadDataToCache(string seasonName, string leagueName)
         {
             var season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
@@ -137,29 +205,6 @@ namespace LZRNS.Web.Controllers.Management
 
             var teams = _db.Teams.Where(t => t.LeagueSeasonId.Equals(leagueSeason.Id));
             TeamByTeamNameCache = teams.ToDictionary(keySelector: team => FormatTeamName(team.TeamName));
-        }
-
-        private ActionResult CreateCodeListFile(AbstractExcelLoader loader)
-        {
-            var writer = new DataParser(_db, loader);
-            var playerInfoList = writer.GetPlayersInfoList();
-            var excelWriter = new ExcelWriter();
-            excelWriter.CreateHeader();
-
-            excelWriter.WritePlayerInfoList(playerInfoList);
-            string codingListsDirectory = Server.MapPath("~/coding-lists/");
-            if (!Directory.Exists(codingListsDirectory))
-            {
-                Directory.CreateDirectory(codingListsDirectory);
-            }
-            string fileName = loader.SeasonName + "-" + loader.LeagueName + "-" + DateTime.Now.ToString("yyyyMMddHHmmssffff") + "-codelist.xlsx";
-            string filePath = codingListsDirectory + fileName;
-
-            excelWriter.SaveAndRelease(filePath);
-
-            return File(filePath,
-                        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml",
-                        fileName);
         }
 
         private void PopulateEntityModel(ExL.ExcelLoader loadedData, CodingListLoader playerListData, string seasonName, string leagueName)
@@ -198,57 +243,67 @@ namespace LZRNS.Web.Controllers.Management
             return teamsList;
         }
 
-        private List<Player> GeneratePlayersData(ExL.ExcelLoader loadedData, List<PlayerInfo> playerInfoList, HashSet<string> playersIds, Team team, LeagueSeason leagueSeason)
-        {
-            var playerList = new List<Player>(playersIds.Count);
-            var games = GamesCache.Where(g => AreEqualById(g.TeamA, team) || AreEqualById(g.TeamB, team)).ToList();
-            foreach (var playerInfo in playerInfoList)
-            {
-                var player = CreateOrGetPlayer(playerInfo);
+        #region Entity creation helper methods
 
-                foreach (var playerScore in loadedData.GetPlayerScoreList(team.TeamName, playerInfo.NameAndLastName))
-                {
-                    string againstTeam = playerScore.AgainstTeam;
-                    var game = games.Find(g => IsTeamInGame(g, againstTeam));
-                    if (game != null)
-                    {
-                        var stats = CreateOrGetStatsForPlayer(playerScore, player, game, playerInfo.OnLoan);
-                        player.Stats.Add(stats);
-                    }
-                }
-                playerList.Add(player);
-                var playerPerTeam = CreateOrGetPlayerPerTeam(player, team, leagueSeason);
+        private static bool AreEqualById(Round lhs, Round rhs)
+        {
+            return lhs?.Id.Equals(rhs?.Id) == true;
+        }
+
+        private static bool AreEqualById(Season lhs, Season rhs)
+        {
+            return lhs?.Id.Equals(rhs?.Id) == true;
+        }
+
+        private static bool AreEqualById(Team lhs, Team rhs)
+        {
+            return lhs?.Id.Equals(rhs?.Id) == true;
+        }
+
+        private static bool AreInSameGame(Team teamA, Team teamB, Game g)
+        {
+            return (AreEqualById(g.TeamA, teamA) && AreEqualById(g.TeamB, teamB))
+                                            || (AreEqualById(g.TeamA, teamB) && AreEqualById(g.TeamB, teamA));
+        }
+
+        private static string DefaultIfNullOrWhiteSpace(string str, string @default = "?")
+        {
+            return string.IsNullOrWhiteSpace(str) ? @default : str;
+        }
+
+        private static DateTime FormatGameDate(DateTime gameDateTime)
+        {
+            //if date time format is bad and initial datetime value is set, it will produce SQL exception, so change it
+            var defaultDate = new DateTime(1, 1, 1, 0, 0, 0);
+            if (DateTime.Compare(gameDateTime, defaultDate) == 0)
+            {
+                gameDateTime = new DateTime(1970, 1, 1, 0, 0, 0);
             }
-            return playerList;
+
+            return gameDateTime;
+        }
+
+        private static string FormatRoundName(string roundName)
+        {
+            return (roundName.Contains("GAME") && roundName.Length >= 5) ? roundName.Substring(4) : roundName;
+        }
+
+        private static string FormatTeamName(string teamName)
+        {
+            return teamName.ToLower().Trim();
+        }
+
+        private static bool GetGameComparison(Game game, Season season, Round round, Team teamA, Team teamB, DateTime gameDateTime)
+        {
+            return AreEqualById(game.Season, season)
+                && AreEqualById(game.Round, round)
+                && AreInSameGame(teamA, teamB, game)
+                && DateTime.Compare(game.DateTime, gameDateTime) == 0;
         }
 
         private static bool IsTeamInGame(Game game, string team)
         {
             return game?.TeamA?.TeamName.Equals(team) == true || game?.TeamB?.TeamName.Equals(team) == true;
-        }
-
-        #region Entity creation helper methods
-
-        private Season CreateOrGetSeason(string seasonName)
-        {
-            var season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
-
-            if (season != null)
-            {
-                return season;
-            }
-
-            season = new Season()
-            {
-                Id = Guid.NewGuid(),
-                Name = seasonName,
-                SeasonStartYear = seasonName.ExtractNumber()
-            };
-
-            _db.Seasons.Add(season);
-            // _db.SaveChanges();
-
-            return season;
         }
 
         private League CreateLeague(string leagueName)
@@ -281,36 +336,33 @@ namespace LZRNS.Web.Controllers.Management
             return leagueSeason;
         }
 
-        private Team CreateTeam(string teamName, LeagueSeason leagueSeason)
+        private Game CreateOrGetGame(Season season, Round round, Team teamA, Team teamB, DateTime gameDate)
         {
-            var team = new Team()
+            var formattedGameDate = FormatGameDate(gameDate);
+
+            var game = GamesCache.FirstOrDefault(g => GetGameComparison(g, season, round, teamA, teamB, formattedGameDate));
+
+            if (game != null)
+            {
+                return game;
+            }
+
+            game = new Game()
             {
                 Id = Guid.NewGuid(),
-                TeamName = teamName,
-                LeagueSeason = leagueSeason
+                Season = season,
+                Round = round,
+                TeamA = teamA,
+                TeamB = teamB,
+                DateTime = formattedGameDate
             };
 
-            _db.Teams.Add(team);
+            GamesCache.Add(game);
+
+            _db.Games.Add(game);
             // _db.SaveChanges();
 
-            return team;
-        }
-
-        private Team CreateOrGetTeamByName(string teamName, LeagueSeason leagueSeason)
-        {
-            string formattedTeamName = FormatTeamName(teamName);
-            if (TeamByTeamNameCache.TryGetValue(formattedTeamName, out var team))
-            {
-                return team;
-            }
-            team = CreateTeam(formattedTeamName, leagueSeason);
-            TeamByTeamNameCache.Add(formattedTeamName, team);
-            return team;
-        }
-
-        private static string FormatTeamName(string teamName)
-        {
-            return teamName.ToLower().Trim();
+            return game;
         }
 
         private Player CreateOrGetPlayer(PlayerInfo info)
@@ -336,11 +388,6 @@ namespace LZRNS.Web.Controllers.Management
             // _db.SaveChanges();
 
             return player;
-        }
-
-        private static string DefaultIfNullOrWhiteSpace(string str, string @default = "?")
-        {
-            return string.IsNullOrWhiteSpace(str) ? @default : str;
         }
 
         private PlayerPerTeam CreateOrGetPlayerPerTeam(Player player, Team team, LeagueSeason leagueSeason)
@@ -394,96 +441,26 @@ namespace LZRNS.Web.Controllers.Management
             return round;
         }
 
-        private static string FormatRoundName(string roundName)
+        private Season CreateOrGetSeason(string seasonName)
         {
-            return (roundName.Contains("GAME") && roundName.Length >= 5) ? roundName.Substring(4) : roundName;
-        }
+            var season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
 
-        private Game CreateOrGetGame(Season season, Round round, Team teamA, Team teamB, DateTime gameDate)
-        {
-            var formattedGameDate = FormatGameDate(gameDate);
-
-            var game = GamesCache.FirstOrDefault(g => GetGameComparison(g, season, round, teamA, teamB, formattedGameDate));
-
-            if (game != null)
+            if (season != null)
             {
-                return game;
+                return season;
             }
 
-            game = new Game()
+            season = new Season()
             {
                 Id = Guid.NewGuid(),
-                Season = season,
-                Round = round,
-                TeamA = teamA,
-                TeamB = teamB,
-                DateTime = formattedGameDate
+                Name = seasonName,
+                SeasonStartYear = seasonName.ExtractNumber()
             };
 
-            GamesCache.Add(game);
-
-            _db.Games.Add(game);
+            _db.Seasons.Add(season);
             // _db.SaveChanges();
 
-            return game;
-        }
-
-        private static DateTime FormatGameDate(DateTime gameDateTime)
-        {
-            //if date time format is bad and initial datetime value is set, it will produce SQL exception, so change it
-            var defaultDate = new DateTime(1, 1, 1, 0, 0, 0);
-            if (DateTime.Compare(gameDateTime, defaultDate) == 0)
-            {
-                gameDateTime = new DateTime(1970, 1, 1, 0, 0, 0);
-            }
-
-            return gameDateTime;
-        }
-
-        private static bool GetGameComparison(Game game, Season season, Round round, Team teamA, Team teamB, DateTime gameDateTime)
-        {
-            return AreEqualById(game.Season, season)
-                && AreEqualById(game.Round, round)
-                && AreInSameGame(teamA, teamB, game)
-                && DateTime.Compare(game.DateTime, gameDateTime) == 0;
-        }
-
-        private static bool AreInSameGame(Team teamA, Team teamB, Game g)
-        {
-            return (AreEqualById(g.TeamA, teamA) && AreEqualById(g.TeamB, teamB))
-                                            || (AreEqualById(g.TeamA, teamB) && AreEqualById(g.TeamB, teamA));
-        }
-
-        private static bool AreEqualById(Round lhs, Round rhs)
-        {
-            return lhs?.Id.Equals(rhs?.Id) == true;
-        }
-
-        private static bool AreEqualById(Season lhs, Season rhs)
-        {
-            return lhs?.Id.Equals(rhs?.Id) == true;
-        }
-
-        private static bool AreEqualById(Team lhs, Team rhs)
-        {
-            return lhs?.Id.Equals(rhs?.Id) == true;
-        }
-
-        #endregion Entity creation helper methods
-
-        private void CreateTeamsRoundsAndGames(ExL.ExcelLoader loader, LeagueSeason leagueSeason)
-        {
-            foreach (var teamScore in loader.TeamStatisticByTeamName)
-            {
-                string teamName = teamScore.Key;
-                foreach (var score in teamScore.Value.TeamScores)
-                {
-                    var round = CreateOrGetRound(leagueSeason.Id, score.RoundName);
-                    var teamA = CreateOrGetTeamByName(teamName, leagueSeason);
-                    var teamB = CreateOrGetTeamByName(score.AgainstTeam, leagueSeason);
-                    CreateOrGetGame(leagueSeason.Season, round, teamA, teamB, score.MatchDate);
-                }
-            }
+            return season;
         }
 
         private Stats CreateOrGetStatsForPlayer(PlayerScore playScore, Player player, Game game, bool onLoan)
@@ -525,11 +502,33 @@ namespace LZRNS.Web.Controllers.Management
             return stats;
         }
 
-        private MemoryStream GetFileAsMemoryStream(HttpPostedFileBase uploadedFile)
+        private Team CreateOrGetTeamByName(string teamName, LeagueSeason leagueSeason)
         {
-            byte[] buf = new byte[uploadedFile.InputStream.Length];
-            uploadedFile.InputStream.Read(buf, 0, (int)uploadedFile.InputStream.Length);
-            return new MemoryStream(buf);
+            string formattedTeamName = FormatTeamName(teamName);
+            if (TeamByTeamNameCache.TryGetValue(formattedTeamName, out var team))
+            {
+                return team;
+            }
+            team = CreateTeam(formattedTeamName, leagueSeason);
+            TeamByTeamNameCache.Add(formattedTeamName, team);
+            return team;
         }
+
+        private Team CreateTeam(string teamName, LeagueSeason leagueSeason)
+        {
+            var team = new Team()
+            {
+                Id = Guid.NewGuid(),
+                TeamName = teamName,
+                LeagueSeason = leagueSeason
+            };
+
+            _db.Teams.Add(team);
+            // _db.SaveChanges();
+
+            return team;
+        }
+
+        #endregion Entity creation helper methods
     }
 }
