@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LZRNS.DomainModels.Repository.Interfaces.Exceptions
+namespace LZRNS.DomainModels.Exceptions
 {
     public enum DalExceptionCode { UNIQUE_LEAGUE_NAME, UNIQUE_SEASON_DATA, LENGTH_VIOLATION, DEFAULT };
 

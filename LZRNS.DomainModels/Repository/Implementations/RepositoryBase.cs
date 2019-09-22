@@ -1,7 +1,7 @@
 ﻿using LZRNS.DomainModel.Context;
 using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Exceptions;
 using LZRNS.DomainModels.Repository.Interfaces;
-using LZRNS.DomainModels.Repository.Interfaces.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

@@ -1,8 +1,10 @@
 ﻿using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Exceptions;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.TimetableModels;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using System.Data.Entity.Validation;
 
 namespace LZRNS.DomainModel.Context
 {
@@ -30,6 +32,19 @@ namespace LZRNS.DomainModel.Context
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             modelBuilder.Conventions.Remove<ManyToManyCascadeDeleteConvention>();
             modelBuilder.Conventions.Remove<OneToManyCascadeDeleteConvention>();
+        }
+
+        public override int SaveChanges()
+        {
+            try
+            {
+                return base.SaveChanges();
+            }
+            catch (DbEntityValidationException e)
+            {
+                var newException = new FormattedDbEntityValidationException(e);
+                throw newException;
+            }
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Exceptions;
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
-using LZRNS.DomainModels.Repository.Interfaces.Exceptions;
 using LZRNS.Models.DocumentTypes.Pages;
 using LZRNS.Web.Controllers.Surface;
 using System;
