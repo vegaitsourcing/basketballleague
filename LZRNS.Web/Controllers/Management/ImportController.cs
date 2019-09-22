@@ -46,26 +46,15 @@ namespace LZRNS.Web.Controllers.Management
                 ModelState.AddModelError("", "Niste odabrali dokument za import.");
                 return View(new ImportModel(CurrentPage));
             }
-            AbstractExcelLoader loader = null;
-            CodingListLoader codingListLoader = null;
-            var converter = new TimeTableLoader.Converter.Converter();
 
-            //here, there are two paths to execute
-            //1) if player code list is in files - importing
-            //2) if there is not - analyzing
-            bool doImport = false;
-            if (model.Files.Any(file => IsFilePlayersCodeList(file.FileName)))
-            {
-                //importer
-                loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
-                doImport = true;
-                codingListLoader = new CodingListLoader(Server.MapPath("~/App_Data/TableMapper_coding_list.config"));
-            }
-            else
-            {
-                //analyzer
-                loader = new ExcelAnalyzer(Server.MapPath("~/App_Data/TableMapper_analyzer.config"));
-            }
+            return !ShouldImport(model) ? Analyze(model) : Import(model);
+        }
+
+        private ActionResult Import(ImportFormModel model)
+        {
+            var converter = new TimeTableLoader.Converter.Converter();
+            var loader = new ExL.ExcelLoader(Server.MapPath("~/App_Data/TableMapper.config"));
+            var codingListLoader = new CodingListLoader(Server.MapPath("~/App_Data/TableMapper_coding_list.config"));
 
             foreach (var file in model.Files)
             {
@@ -88,14 +77,40 @@ namespace LZRNS.Web.Controllers.Management
                 }
             }
 
-            if (doImport)
+            Log4NetLogger.Log.Info($"Importing data for season {loader.SeasonName} and league {loader.LeagueName}");
+            LoadDataToCache(loader.SeasonName, loader.LeagueName);
+            PopulateEntityModel(loader, codingListLoader, loader.SeasonName, loader.LeagueName);
+            return View(new ImportModel(CurrentPage));
+        }
+
+        private ActionResult Analyze(ImportFormModel model)
+        {
+            var converter = new TimeTableLoader.Converter.Converter();
+            var analyzer = new ExcelAnalyzer(Server.MapPath("~/App_Data/TableMapper_analyzer.config"));
+
+            foreach (var file in model.Files)
             {
-                LoadDataToCache(loader.SeasonName, loader.LeagueName);
-                PopulateEntityModel((ExL.ExcelLoader)loader, codingListLoader, loader.SeasonName, loader.LeagueName);
-                return View(new ImportModel(CurrentPage));
+                if (file == null) continue;
+
+                var memStr = GetFileAsMemoryStream(file);
+
+                if (file.FileName.Contains("txt"))
+                {
+                    converter.Convert(memStr);
+                    converter.SaveToDb();
+                }
+                else
+                {
+                    analyzer.ProcessFile(memStr, file.FileName);
+                }
             }
 
-            return CreateCodeListFile(loader);
+            return CreateCodeListFile(analyzer);
+        }
+
+        private static bool ShouldImport(ImportFormModel model)
+        {
+            return model.Files.Any(file => IsFilePlayersCodeList(file.FileName));
         }
 
         private static bool IsFilePlayersCodeList(string fileName)
