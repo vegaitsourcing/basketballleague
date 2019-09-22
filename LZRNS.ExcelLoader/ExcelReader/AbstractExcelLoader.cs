@@ -99,8 +99,9 @@ namespace LZRNS.ExcelLoader.ExcelReader
         /// In case @fileName contains Season and League name information, properties `SeasonName`
         /// and `LeagueName` will be set.
         /// </summary>
-        protected string CheckFileStructureAndExtractTeamName(XLWorkbook exApp, string fileName)
+        protected string CheckFileStructureAndExtractTeamName(XLWorkbook exApp, string fileNameOrPath)
         {
+            string fileName = Path.GetFileName(fileNameOrPath);
             var nameParts = fileName.Split('-');
             string teamName = nameParts[2];
 
@@ -113,6 +114,7 @@ namespace LZRNS.ExcelLoader.ExcelReader
             {
                 SeasonName = nameParts[3];
                 LeagueName = nameParts[4].Substring(0, nameParts[4].Length - 5);
+                Log4NetLogger.Log.Debug($"Updating league and season name - {SeasonName} - {LeagueName} - fileNameOrPath: {fileNameOrPath}");
             }
 
             Sheets = exApp.Worksheets;

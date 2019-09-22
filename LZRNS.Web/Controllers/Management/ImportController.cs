@@ -118,7 +118,7 @@ namespace LZRNS.Web.Controllers.Management
             return fileName.Split('-').Last().Contains("codelist");
         }
 
-        private ActionResult CreateCodeListFile(AbstractExcelLoader loader)
+        private ActionResult CreateCodeListFile(ExcelAnalyzer loader)
         {
             var writer = new DataParser(_db, loader);
             var playerInfoList = writer.GetPlayersInfoList();

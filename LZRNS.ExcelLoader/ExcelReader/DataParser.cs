@@ -10,10 +10,10 @@ namespace LZRNS.ExcelLoader.ExcelReader
 {
     public class DataParser
     {
-        public DataParser(BasketballDbContext db, AbstractExcelLoader extractor)
+        public DataParser(BasketballDbContext db, ExcelAnalyzer extractor)
         {
             Db = db;
-            Analyzer = (ExcelAnalyzer)extractor;
+            Analyzer = extractor;
         }
 
         private ExcelAnalyzer Analyzer { get; }
