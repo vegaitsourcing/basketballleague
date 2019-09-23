@@ -10,7 +10,6 @@ using LZRNS.Models.DocumentTypes.Pages;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -327,7 +326,7 @@ namespace LZRNS.Web.Controllers.Management
         private static bool AreInSameGame(Team teamA, Team teamB, Game g)
         {
             return (AreEqualById(g.TeamA, teamA) && AreEqualById(g.TeamB, teamB))
-                                            || (AreEqualById(g.TeamA, teamB) && AreEqualById(g.TeamB, teamA));
+                || (AreEqualById(g.TeamA, teamB) && AreEqualById(g.TeamB, teamA));
         }
 
         private static string DefaultIfNullOrWhiteSpace(string str, string @default = "?")
@@ -354,7 +353,7 @@ namespace LZRNS.Web.Controllers.Management
 
         private static string FormatTeamName(string teamName)
         {
-            return teamName.ToLower().Trim();
+            return teamName?.ToLower().Trim() ?? "";
         }
 
         private static bool GetGameComparison(Game game, Season season, Round round, Team teamA, Team teamB, DateTime gameDateTime)
@@ -365,9 +364,12 @@ namespace LZRNS.Web.Controllers.Management
                 && DateTime.Compare(game.DateTime, gameDateTime) == 0;
         }
 
-        private static bool IsTeamInGame(Game game, string team)
+        private static bool IsTeamInGame(Game game, string teamName)
         {
-            return game?.TeamA?.TeamName.Equals(team) == true || game?.TeamB?.TeamName.Equals(team) == true;
+            string formattedTeamName = FormatTeamName(teamName);
+            string teamAName = FormatTeamName(game?.TeamA?.TeamName);
+            string teamBName = FormatTeamName(game?.TeamB?.TeamName);
+            return formattedTeamName.Equals(teamAName) || formattedTeamName.Equals(teamBName);
         }
 
         private League CreateLeague(string leagueName)
