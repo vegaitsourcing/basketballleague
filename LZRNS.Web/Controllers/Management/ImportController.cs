@@ -552,7 +552,7 @@ namespace LZRNS.Web.Controllers.Management
             {
                 return team;
             }
-            team = CreateTeam(formattedTeamName, leagueSeason);
+            team = CreateTeam(teamName, leagueSeason);
             TeamByTeamNameCache.Add(formattedTeamName, team);
             return team;
         }
