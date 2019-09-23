@@ -1,4 +1,5 @@
-﻿using LZRNS.DomainModel.Context;
+﻿using LZRNS.Common.Extensions;
+using LZRNS.DomainModel.Context;
 using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using LZRNS.ExcelLoader.Model;
@@ -51,6 +52,10 @@ namespace LZRNS.ExcelLoader.ExcelReader
             };
         }
 
+        /**
+         * Gets the latest league season by year. Assumes that league seasons are distinct by Id.
+         */
+
         public LeagueSeason GetLatestLeagueSeason(ICollection<LeagueSeason> lSeasons)
         {
             LeagueSeason leagueSeason = null;
@@ -67,7 +72,8 @@ namespace LZRNS.ExcelLoader.ExcelReader
         public void GetPlayerInfo(Player player, out string leagueSeasonName, out string teamName)
         {
             var playersPerTeam = GetPlayersPerTeamByPlayerId(player.Id);
-            var latestLeagueSeason = GetLatestLeagueSeason(playersPerTeam.Select(ppt => ppt.LeagueSeason).ToList());
+            var leagueSeasons = playersPerTeam.Select(ppt => ppt.LeagueSeason).DistinctBy(ls => ls.Id).ToList();
+            var latestLeagueSeason = GetLatestLeagueSeason(leagueSeasons);
             var playerPerTeam = GetPlayerPerTeamByLeagueSeason(playersPerTeam, latestLeagueSeason);
 
             if (playerPerTeam == null)
