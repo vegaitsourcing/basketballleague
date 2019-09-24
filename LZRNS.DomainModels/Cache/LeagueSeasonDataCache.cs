@@ -1,7 +1,9 @@
-﻿using LZRNS.DomainModel.Context;
+﻿using LZRNS.Common.Extensions;
+using LZRNS.DomainModel.Context;
 using LZRNS.DomainModel.Models;
 using LZRNS.DomainModels.Models;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -9,16 +11,6 @@ namespace LZRNS.DomainModels.Cache
 {
     public class LeagueSeasonDataCache
     {
-        public League CurrentLeagueCache { get; set; }
-        public LeagueSeason CurrentLeagueSeasonCache { get; set; }
-        public Season CurrentSeasonCache { get; set; }
-        public GameCache GameCache { get; set; }
-        public PlayerCache PlayerCache { get; set; }
-        public PlayerPerTeamCache PlayerPerTeamCache { get; set; }
-        public RoundCache RoundCache { get; set; }
-        public StatsCache StatsCache { get; set; }
-        public TeamCache TeamCache { get; set; }
-
         private readonly BasketballDbContext _db;
 
         public LeagueSeasonDataCache(BasketballDbContext context)
@@ -32,46 +24,38 @@ namespace LZRNS.DomainModels.Cache
             TeamCache = new TeamCache(_db);
         }
 
-        public int SaveChanges()
-        {
-            return _db.SaveChanges();
-        }
+        public GameCache GameCache { get; set; }
+        public LeagueSeasonCache LeagueSeasonCache { get; set; }
+        public PlayerCache PlayerCache { get; set; }
+        public PlayerPerTeamCache PlayerPerTeamCache { get; set; }
+        public RoundCache RoundCache { get; set; }
+        public StatsCache StatsCache { get; set; }
+        public TeamCache TeamCache { get; set; }
 
         public void LoadDataToCache(string seasonName, string leagueName)
         {
-            CurrentSeasonCache = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
-            CurrentLeagueCache = _db.Leagues.FirstOrDefault(l => l.Name.Equals(leagueName));
+            LeagueSeasonCache.LoadCurrentLeagueSeasonCache(seasonName, leagueName);
 
-            if (CurrentSeasonCache == null || CurrentLeagueCache == null)
+            if (LeagueSeasonCache.CurrentLeagueSeasonCache == null)
             {
                 return;
             }
 
-            LoadCurrentLeagueSeasonCache(CurrentSeasonCache.Id, CurrentLeagueCache.Id);
-
-            if (CurrentLeagueSeasonCache == null)
-            {
-                return;
-            }
-
-            var leagueSeasonId = CurrentLeagueSeasonCache.Id;
-
+            var leagueSeasonId = LeagueSeasonCache.CurrentLeagueSeasonCache.Id;
             GameCache.LoadGamesCache(leagueSeasonId);
             LoadPlayerRelatedCache(leagueSeasonId);
             RoundCache.LoadRoundByRoundNameCache(leagueSeasonId);
             TeamCache.LoadTeamByTeamNameCache(leagueSeasonId);
         }
 
-        private void LoadCurrentLeagueSeasonCache(Guid seasonId, Guid leagueId)
+        public int SaveChanges()
         {
-            CurrentLeagueSeasonCache = _db.LeagueSeasons.Include(ls => ls.Season).Include(ls => ls.League)
-                .FirstOrDefault(ls => seasonId.Equals(ls.SeasonId) && leagueId.Equals(ls.LeagueId));
+            return _db.SaveChanges();
         }
 
         private void LoadPlayerRelatedCache(Guid leagueSeasonId)
         {
             PlayerPerTeamCache.LoadPlayersPerTeamCache(leagueSeasonId);
-
             PlayerCache.LoadPlayerCache();
 
             var playerIds = PlayerCache.PlayerByUIdCache.Values.Select(player => player.Id).Distinct().ToArray();

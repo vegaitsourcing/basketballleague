@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cache\GameCache.cs" />
+    <Compile Include="Cache\LeagueSeasonCache.cs" />
     <Compile Include="Cache\LeagueSeasonDataCache.cs" />
     <Compile Include="Cache\PlayerCache.cs" />
     <Compile Include="Cache\PlayerPerTeamCache.cs" />
@@ -155,6 +156,11 @@
       <DependentUpon>201909211339399_RemoveTeamIdFromGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\LZRNS.Common\LZRNS.Common.csproj">
+      <Project>{44EA5768-A92D-4380-848E-A4B2C07158D6}</Project>
+      <Name>LZRNS.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

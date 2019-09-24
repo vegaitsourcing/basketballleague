@@ -108,24 +108,6 @@ namespace LZRNS.Web.Controllers.Management
                         fileName);
         }
 
-        private void CreateSeasonLeagueAndLeagueSeason(string seasonName, string leagueName)
-        {
-            if (_cache.CurrentSeasonCache is null)
-            {
-                _cache.CurrentSeasonCache = CreateOrGetSeason(seasonName);
-            }
-
-            if (_cache.CurrentLeagueCache == null)
-            {
-                _cache.CurrentLeagueCache = CreateLeague(leagueName);
-            }
-
-            if (_cache.CurrentLeagueSeasonCache == null)
-            {
-                _cache.CurrentLeagueSeasonCache = CreateLeagueSeason(_cache.CurrentSeasonCache.Id, _cache.CurrentLeagueCache.Id);
-            }
-        }
-
         private void CreateTeamsRoundsAndGames(ExL.ExcelLoader loader, LeagueSeason leagueSeason)
         {
             foreach (var teamScore in loader.TeamStatisticByTeamName)
@@ -207,13 +189,12 @@ namespace LZRNS.Web.Controllers.Management
 
         private void PopulateEntityModel(ExL.ExcelLoader loadedData, CodingListLoader playerListData, string seasonName, string leagueName)
         {
-            CreateSeasonLeagueAndLeagueSeason(seasonName, leagueName);
+            var leagueSeason = _cache.LeagueSeasonCache.CreateOrGetCurrentLeagueSeason(seasonName, leagueName);
+
+            CreateTeamsRoundsAndGames(loadedData, leagueSeason);
             _cache.SaveChanges();
 
-            CreateTeamsRoundsAndGames(loadedData, _cache.CurrentLeagueSeasonCache);
-            _cache.SaveChanges();
-
-            PopulateTeamEntityModel(loadedData, playerListData, _cache.CurrentLeagueSeasonCache);
+            PopulateTeamEntityModel(loadedData, playerListData, leagueSeason);
             _cache.SaveChanges();
         }
 
@@ -229,8 +210,6 @@ namespace LZRNS.Web.Controllers.Management
             }
         }
 
-        #region Entity creation helper methods
-
         private static string FormatTeamName(string teamName)
         {
             return teamName?.ToLower().Trim() ?? "";
@@ -243,56 +222,5 @@ namespace LZRNS.Web.Controllers.Management
             string teamBName = FormatTeamName(game?.TeamB?.TeamName);
             return formattedTeamName.Equals(teamAName) || formattedTeamName.Equals(teamBName);
         }
-
-        private League CreateLeague(string leagueName)
-        {
-            var league = new League()
-            {
-                Id = Guid.NewGuid(),
-                Name = leagueName
-            };
-
-            _db.Leagues.Add(league);
-
-            return league;
-        }
-
-        private LeagueSeason CreateLeagueSeason(Guid seasonId, Guid leagueId)
-        {
-            var leagueSeason = new LeagueSeason()
-            {
-                Id = Guid.NewGuid(),
-                SeasonId = seasonId,
-                LeagueId = leagueId,
-                Rounds = new List<Round>()
-            };
-
-            _db.LeagueSeasons.Add(leagueSeason);
-
-            return leagueSeason;
-        }
-
-        private Season CreateOrGetSeason(string seasonName)
-        {
-            var season = _db.Seasons.FirstOrDefault(s => s.Name.Equals(seasonName));
-            return season ?? CreateSeason(seasonName);
-        }
-
-        private Season CreateSeason(string seasonName)
-        {
-            var season = new Season()
-            {
-                Id = Guid.NewGuid(),
-                Name = seasonName,
-                SeasonStartYear = seasonName.ExtractNumber()
-            };
-
-            _db.Seasons.Add(season);
-            _db.SaveChanges();
-
-            return season;
-        }
-
-        #endregion Entity creation helper methods
     }
 }
