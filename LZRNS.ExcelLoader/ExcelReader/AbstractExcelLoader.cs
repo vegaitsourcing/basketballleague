@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using LZRNS.DomainModels.ExcelLoaderModels;
 using System;
 using System.Collections.Generic;
 using System.IO;

@@ -77,15 +77,9 @@
     <Compile Include="ExcelReader\AbstractExcelLoader.cs" />
     <Compile Include="ExcelReader\DataParser.cs" />
     <Compile Include="ExcelWriter.cs" />
-    <Compile Include="Model\FieldItem.cs" />
     <Compile Include="Log4NetLogger.cs" />
-    <Compile Include="Model\MapperModel.cs" />
-    <Compile Include="Model\PlayerInfo.cs" />
-    <Compile Include="Model\PlayerScore.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\TeamStatistic.cs" />
-    <Compile Include="Model\TeamScore.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

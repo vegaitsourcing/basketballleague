@@ -77,7 +77,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\GameCache.cs" />
+    <Compile Include="Cache\LeagueSeasonCache.cs" />
+    <Compile Include="Cache\LeagueSeasonDataCache.cs" />
+    <Compile Include="Cache\PlayerCache.cs" />
+    <Compile Include="Cache\PlayerPerTeamCache.cs" />
+    <Compile Include="Cache\RoundCache.cs" />
+    <Compile Include="Cache\StatsCache.cs" />
+    <Compile Include="Cache\TeamCache.cs" />
     <Compile Include="Context\BasketballDbContext.cs" />
+    <Compile Include="ExcelLoaderModels\FieldItem.cs" />
+    <Compile Include="ExcelLoaderModels\MapperModel.cs" />
+    <Compile Include="ExcelLoaderModels\PlayerInfo.cs" />
+    <Compile Include="ExcelLoaderModels\PlayerScore.cs" />
+    <Compile Include="ExcelLoaderModels\TeamScore.cs" />
+    <Compile Include="ExcelLoaderModels\TeamStatistic.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.Designer.cs">
@@ -141,6 +155,12 @@
     <EmbeddedResource Include="Migrations\201909211339399_RemoveTeamIdFromGame.resx">
       <DependentUpon>201909211339399_RemoveTeamIdFromGame.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LZRNS.Common\LZRNS.Common.csproj">
+      <Project>{44EA5768-A92D-4380-848E-A4B2C07158D6}</Project>
+      <Name>LZRNS.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
