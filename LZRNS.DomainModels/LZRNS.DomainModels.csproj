@@ -77,6 +77,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cache\GameCache.cs" />
+    <Compile Include="Cache\LeagueSeasonDataCache.cs" />
+    <Compile Include="Cache\PlayerCache.cs" />
+    <Compile Include="Cache\PlayerPerTeamCache.cs" />
+    <Compile Include="Cache\RoundCache.cs" />
+    <Compile Include="Cache\StatsCache.cs" />
+    <Compile Include="Cache\TeamCache.cs" />
     <Compile Include="Context\BasketballDbContext.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.cs" />
@@ -142,5 +149,6 @@
       <DependentUpon>201909211339399_RemoveTeamIdFromGame.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
