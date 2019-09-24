@@ -1,10 +1,5 @@
-﻿using LZRNS.Common.Extensions;
-using LZRNS.DomainModel.Context;
-using LZRNS.DomainModel.Models;
-using LZRNS.DomainModels.Models;
+﻿using LZRNS.DomainModel.Context;
 using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 
 namespace LZRNS.DomainModels.Cache
@@ -16,6 +11,7 @@ namespace LZRNS.DomainModels.Cache
         public LeagueSeasonDataCache(BasketballDbContext context)
         {
             _db = context;
+            LeagueSeasonCache = new LeagueSeasonCache(_db);
             GameCache = new GameCache(_db);
             PlayerCache = new PlayerCache(_db);
             PlayerPerTeamCache = new PlayerPerTeamCache(_db);
