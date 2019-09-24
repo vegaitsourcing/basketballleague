@@ -1,10 +1,12 @@
 ﻿using Autofac;
 using Autofac.Integration.Mvc;
 using Autofac.Integration.WebApi;
+using LZRNS.Common.Comparers;
 using LZRNS.Core;
 using LZRNS.DomainModel.Context;
 using LZRNS.DomainModels.Repository.Implementations;
 using LZRNS.DomainModels.Repository.Interfaces;
+using LZRNS.ExcelLoader;
 using System;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -39,6 +41,8 @@ namespace LZRNS.Web
             builder.RegisterType<GameRepository>().As<IGameRepository>();
             builder.RegisterType<RoundScheduler>().As<IRoundScheduler>();
             builder.RegisterType<RoundGenerator>().As<IRoundGenerator>();
+            builder.RegisterType<TextComparer>().As<ITextComparer>();
+            builder.RegisterType<ExcelLoaderCorrector>().As<IExcelLoaderCorrector>();
 
             var container = builder.Build();
 
