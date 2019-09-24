@@ -10,8 +10,10 @@ namespace LZRNS.ExcelLoader.ExcelReader
         {
             TeamStatisticByTeamName = new Dictionary<string, TeamStatistic>();
             PlayerScoresByPlayerNameByTeamName = new Dictionary<string, Dictionary<string, List<PlayerScore>>>();
+            PlayerScores = new List<PlayerScore>();
         }
 
+        public List<PlayerScore> PlayerScores { get; }
         public Dictionary<string, Dictionary<string, List<PlayerScore>>> PlayerScoresByPlayerNameByTeamName { get; }
         public Dictionary<string, TeamStatistic> TeamStatisticByTeamName { get; }
 
@@ -50,6 +52,8 @@ namespace LZRNS.ExcelLoader.ExcelReader
         private void AddPlayerScore(string teamName, PlayerScore ps)
         {
             if (teamName.Equals(string.Empty)) return;
+
+            PlayerScores.Add(ps);
 
             if (!PlayerScoresByPlayerNameByTeamName.TryGetValue(teamName, out var teamScore))
             {

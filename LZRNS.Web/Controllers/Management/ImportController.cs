@@ -23,14 +23,15 @@ namespace LZRNS.Web.Controllers.Management
     [MemberAuthorize]
     public class ImportController : RenderMvcController
     {
-        private readonly BasketballDbContext _db;
-
         private readonly LeagueSeasonDataCache _cache;
+        private readonly BasketballDbContext _db;
+        private readonly IExcelLoaderCorrector _excelLoaderCorrector;
 
-        public ImportController()
+        public ImportController(BasketballDbContext dbContext, IExcelLoaderCorrector corrector)
         {
-            _db = new BasketballDbContext();
+            _db = dbContext;
             _cache = new LeagueSeasonDataCache(_db);
+            _excelLoaderCorrector = corrector;
         }
 
         public ActionResult Index(ImportModel model)
@@ -50,9 +51,29 @@ namespace LZRNS.Web.Controllers.Management
             return !ShouldImport(model) ? Analyze(model) : Import(model);
         }
 
+        private static string FormatTeamName(string teamName)
+        {
+            return teamName?.ToLower().Trim() ?? "";
+        }
+
+        private static MemoryStream GetFileAsMemoryStream(HttpPostedFileBase uploadedFile)
+        {
+            var buf = new byte[uploadedFile.InputStream.Length];
+            uploadedFile.InputStream.Read(buf, 0, (int)uploadedFile.InputStream.Length);
+            return new MemoryStream(buf);
+        }
+
         private static bool IsFilePlayersCodeList(string fileName)
         {
             return fileName.Split('-').Last().Contains("codelist");
+        }
+
+        private static bool IsTeamInGame(Game game, string teamName)
+        {
+            string formattedTeamName = FormatTeamName(teamName);
+            string teamAName = FormatTeamName(game?.TeamA?.TeamName);
+            string teamBName = FormatTeamName(game?.TeamB?.TeamName);
+            return formattedTeamName.Equals(teamAName) || formattedTeamName.Equals(teamBName);
         }
 
         private static bool ShouldImport(ImportFormModel model)
@@ -147,13 +168,6 @@ namespace LZRNS.Web.Controllers.Management
             return playerList;
         }
 
-        private MemoryStream GetFileAsMemoryStream(HttpPostedFileBase uploadedFile)
-        {
-            byte[] buf = new byte[uploadedFile.InputStream.Length];
-            uploadedFile.InputStream.Read(buf, 0, (int)uploadedFile.InputStream.Length);
-            return new MemoryStream(buf);
-        }
-
         private ActionResult Import(ImportFormModel model)
         {
             var converter = new TimeTableLoader.Converter.Converter();
@@ -181,9 +195,13 @@ namespace LZRNS.Web.Controllers.Management
                 }
             }
 
+            _excelLoaderCorrector.CorrectInvalidTeamNames(loader);
+
             Log4NetLogger.Log.Info($"Importing data for season {loader.SeasonName} and league {loader.LeagueName}");
+
             _cache.LoadDataToCache(loader.SeasonName, loader.LeagueName);
             PopulateEntityModel(loader, codingListLoader, loader.SeasonName, loader.LeagueName);
+
             return View(new ImportModel(CurrentPage));
         }
 
@@ -208,19 +226,6 @@ namespace LZRNS.Web.Controllers.Management
                 var team = _cache.TeamCache.CreateOrGetTeamByName(teamName, leagueSeason);
                 team.Players = GeneratePlayersData(loadedData, playerInfoList, playerNames, team, leagueSeason);
             }
-        }
-
-        private static string FormatTeamName(string teamName)
-        {
-            return teamName?.ToLower().Trim() ?? "";
-        }
-
-        private static bool IsTeamInGame(Game game, string teamName)
-        {
-            string formattedTeamName = FormatTeamName(teamName);
-            string teamAName = FormatTeamName(game?.TeamA?.TeamName);
-            string teamBName = FormatTeamName(game?.TeamB?.TeamName);
-            return formattedTeamName.Equals(teamAName) || formattedTeamName.Equals(teamBName);
         }
     }
 }
