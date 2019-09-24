@@ -24,6 +24,17 @@ namespace LZRNS.DomainModels.Cache
         public LeagueSeasonDataCache(BasketballDbContext context)
         {
             _db = context;
+            GameCache = new GameCache(_db);
+            PlayerCache = new PlayerCache(_db);
+            PlayerPerTeamCache = new PlayerPerTeamCache(_db);
+            RoundCache = new RoundCache(_db);
+            StatsCache = new StatsCache(_db);
+            TeamCache = new TeamCache(_db);
+        }
+
+        public int SaveChanges()
+        {
+            return _db.SaveChanges();
         }
 
         public void LoadDataToCache(string seasonName, string leagueName)

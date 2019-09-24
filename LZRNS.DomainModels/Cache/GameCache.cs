@@ -52,6 +52,11 @@ namespace LZRNS.DomainModels.Cache
             return game;
         }
 
+        public IEnumerable<Game> GetGamesForTeam(Team team)
+        {
+            return GamesCache.Where(g => AreEqualById(g.TeamA, team) || AreEqualById(g.TeamB, team));
+        }
+
         private static DateTime FormatGameDate(DateTime gameDateTime)
         {
             //if date time format is bad and initial datetime value is set, it will produce SQL exception, so change it
