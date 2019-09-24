@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace LZRNS.ExcelLoader
+namespace LZRNS.DomainModels.ExcelLoaderModels
 {
     public class TeamStatistic
     {

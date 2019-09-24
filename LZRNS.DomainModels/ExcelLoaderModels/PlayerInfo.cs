@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace LZRNS.ExcelLoader.Model
+namespace LZRNS.DomainModels.ExcelLoaderModels
 {
     public class PlayerInfo
     {

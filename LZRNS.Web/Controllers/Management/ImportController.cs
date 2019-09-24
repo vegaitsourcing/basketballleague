@@ -1,10 +1,10 @@
 ﻿using LZRNS.Common.Extensions;
 using LZRNS.DomainModel.Context;
 using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.ExcelLoaderModels;
 using LZRNS.DomainModels.Models;
 using LZRNS.ExcelLoader;
 using LZRNS.ExcelLoader.ExcelReader;
-using LZRNS.ExcelLoader.Model;
 using LZRNS.Models.AdditionalModels.Forms;
 using LZRNS.Models.DocumentTypes.Pages;
 using System;

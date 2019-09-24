@@ -85,6 +85,12 @@
     <Compile Include="Cache\StatsCache.cs" />
     <Compile Include="Cache\TeamCache.cs" />
     <Compile Include="Context\BasketballDbContext.cs" />
+    <Compile Include="ExcelLoaderModels\FieldItem.cs" />
+    <Compile Include="ExcelLoaderModels\MapperModel.cs" />
+    <Compile Include="ExcelLoaderModels\PlayerInfo.cs" />
+    <Compile Include="ExcelLoaderModels\PlayerScore.cs" />
+    <Compile Include="ExcelLoaderModels\TeamScore.cs" />
+    <Compile Include="ExcelLoaderModels\TeamStatistic.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.cs" />
     <Compile Include="Migrations\201909101148166_InitialModel.Designer.cs">

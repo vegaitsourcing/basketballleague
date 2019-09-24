@@ -1,8 +1,8 @@
 ﻿using LZRNS.Common.Extensions;
 using LZRNS.DomainModel.Context;
 using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.ExcelLoaderModels;
 using LZRNS.DomainModels.Models;
-using LZRNS.ExcelLoader.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
