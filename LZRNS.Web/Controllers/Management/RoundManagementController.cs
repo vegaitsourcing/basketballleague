@@ -83,7 +83,13 @@ namespace LZRNS.Web.Controllers.Management
             var leagueSeason = _seasonRepo.GetLeagueSeasonById(model.LeagueSeasonId);
             var teamsForLeagueSeason = _teamRepo.GetTeamsByLeagueSeasonId(model.LeagueSeasonId).ToList();
 
-            var roundsWithGames = _roundGenerator.GenerateRoundsWithGames(teamsForLeagueSeason, leagueSeason, model.RoundScheduleOptions);
+            var roundsWithGames = _roundGenerator.GenerateRoundsWithGames(teamsForLeagueSeason, leagueSeason, new RoundScheduleOptions
+            {
+                FirstRoundStartDate = model.FirstRoundStartDate,
+                IntervalBetweenRoundsInDays = model.IntervalBetweenRoundsInDays,
+                IntervalBetweenGamesInMinutes = model.IntervalBetweenGamesInMinutes,
+                RoundStartTime = model.RoundStartTime
+            });
 
             _roundRepo.AddRange(roundsWithGames);
 

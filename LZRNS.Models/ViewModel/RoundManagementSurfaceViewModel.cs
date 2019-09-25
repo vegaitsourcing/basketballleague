@@ -13,7 +13,15 @@ namespace LZRNS.Models.ViewModel
     {
         public LeagueSeason LeagueSeason { get; set; }
 
-        public RoundScheduleOptions RoundScheduleOptions { get; set; } = new RoundScheduleOptions();
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:yyyy-MM-dd}")]
+        public DateTime FirstRoundStartDate { get; set; } = DateTime.Today;
+
+        public uint IntervalBetweenGamesInMinutes { get; set; } = 120;
+        public uint IntervalBetweenRoundsInDays { get; set; } = 7;
+
+        [DataType(DataType.Time)]
+        public TimeSpan RoundStartTime { get; set; } = TimeSpan.FromHours(13);
 
         [Required(ErrorMessage = "Liga u sezoni je obavezno polje.")]
         [DisplayName("Liga u sezoni")]

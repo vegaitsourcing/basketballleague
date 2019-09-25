@@ -22,31 +22,31 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(x => x.RoundScheduleOptions.FirstRoundStartDate, new { @class = "control-label col-md-8" })
+                        @Html.LabelFor(x => x.FirstRoundStartDate, "Datum početka prve runde", new { @class = "control-label col-md-8" })
                         <div class="col-md-12 mb-3">
-                            @Html.EditorFor(x => x.RoundScheduleOptions.FirstRoundStartDate, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.FirstRoundStartDate, null, new { @class = "text-danger" })
+                            @Html.TextBoxFor(m => m.FirstRoundStartDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(x => x.FirstRoundStartDate, null, new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(x => x.RoundScheduleOptions.RoundStartTime, new { @class = "control-label col-md-8" })
+                        @Html.LabelFor(x => x.RoundStartTime, "Satnica početka svake runde", new { @class = "control-label col-md-8" })
                         <div class="col-md-12 mb-3">
-                            @Html.EditorFor(x => x.RoundScheduleOptions.RoundStartTime, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.RoundStartTime, null, new { @class = "text-danger" })
+                            @Html.EditorFor(x => x.RoundStartTime, new { type = "time", htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.RoundStartTime, null, new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(x => x.RoundScheduleOptions.IntervalBetweenRoundsInDays, new { @class = "control-label col-md-8" })
+                        @Html.LabelFor(x => x.IntervalBetweenRoundsInDays, "Interval između rundi u danima", new { @class = "control-label col-md-8" })
                         <div class="col-md-12 mb-3">
-                            @Html.EditorFor(x => x.RoundScheduleOptions.IntervalBetweenRoundsInDays, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.IntervalBetweenRoundsInDays, null, new { @class = "text-danger" })
+                            @Html.EditorFor(x => x.IntervalBetweenRoundsInDays, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.IntervalBetweenRoundsInDays, null, new { @class = "text-danger" })
                         </div>
                     </div>
                     <div class="form-group">
-                        @Html.LabelFor(x => x.RoundScheduleOptions.IntervalBetweenGamesInMinutes, new { @class = "control-label col-md-8" })
+                        @Html.LabelFor(x => x.IntervalBetweenGamesInMinutes, "Interval između rundi u minutima", new { @class = "control-label col-md-8" })
                         <div class="col-md-12 mb-3">
-                            @Html.EditorFor(x => x.RoundScheduleOptions.IntervalBetweenGamesInMinutes, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.IntervalBetweenGamesInMinutes, null, new { @class = "text-danger" })
+                            @Html.EditorFor(x => x.IntervalBetweenGamesInMinutes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.IntervalBetweenGamesInMinutes, null, new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
