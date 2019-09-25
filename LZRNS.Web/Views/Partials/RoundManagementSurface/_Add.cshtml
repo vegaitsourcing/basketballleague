@@ -1,38 +1,59 @@
-﻿@model LZRNS.DomainModels.Models.Round
+﻿@model LZRNS.Models.ViewModel.RoundManagementSurfaceViewModel
 @using LZRNS.Web.Controllers.Management
 
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			@using (Ajax.BeginForm(nameof(RoundManagementSurfaceController.Add), nameof(RoundManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "location.reload()" }))
-			{ 
-				@Html.AntiForgeryToken()
-				<div class="modal-header">
-					<h5 class="modal-title">Generisanje rundi</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true">&times;</span>
-					</button>
-				</div>
-					<div class="modal-body">
-						<div class="form-horizontal">
-							<div class="form-group">
-								@*@Html.LabelFor(x => x.RoundName, new { @class = "control-label col-md-8" })
-								<div class="col-md-12 mb-3">
-									@Html.TextBoxFor(x => x.RoundName, new { @class = "form-control" })
-									@Html.ValidationMessageFor(x => x.RoundName, null, new { @class = "text-danger" })
-								</div>*@
-
-								@Html.LabelFor(x => x.LeagueSeasonId, new { @class = "control-label col-md-8" })
-								<div class="col-md-12 mb-3">
-									@Html.DropDownListFor(x => x.LeagueSeasonId, Model.LeagueSeasons, "Izaberite ligu u sezoni", new { @class = "form-control" })
-									@Html.ValidationMessageFor(x => x.RoundName, null, new { @class = "text-danger" })
-								</div>
-							</div>
-
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="submit" class="btn btn-primary green-save-button"><i class="fa fa-fw fa-save"></i>Dodaj</button>
-					</div>
-			}
-		</div>
-	</div>
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        @using (Ajax.BeginForm(nameof(RoundManagementSurfaceController.Add), nameof(RoundManagementSurfaceController).RemoveControllerSuffix(), null, new AjaxOptions { HttpMethod = "POST", OnSuccess = "location.reload()" }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-header">
+                <h5 class="modal-title">Generisanje rundi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.LeagueSeasonId, new { @class = "control-label col-md-8" })
+                        <div class="col-md-12 mb-3">
+                            @Html.DropDownListFor(x => x.LeagueSeasonId, Model.LeagueSeasons, "Izaberite ligu u sezoni", new { @class = "form-control" })
+                            @Html.ValidationMessageFor(x => x.LeagueSeasonId, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.RoundScheduleOptions.FirstRoundStartDate, new { @class = "control-label col-md-8" })
+                        <div class="col-md-12 mb-3">
+                            @Html.EditorFor(x => x.RoundScheduleOptions.FirstRoundStartDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.FirstRoundStartDate, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.RoundScheduleOptions.RoundStartTime, new { @class = "control-label col-md-8" })
+                        <div class="col-md-12 mb-3">
+                            @Html.EditorFor(x => x.RoundScheduleOptions.RoundStartTime, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.RoundStartTime, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.RoundScheduleOptions.IntervalBetweenRoundsInDays, new { @class = "control-label col-md-8" })
+                        <div class="col-md-12 mb-3">
+                            @Html.EditorFor(x => x.RoundScheduleOptions.IntervalBetweenRoundsInDays, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.IntervalBetweenRoundsInDays, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(x => x.RoundScheduleOptions.IntervalBetweenGamesInMinutes, new { @class = "control-label col-md-8" })
+                        <div class="col-md-12 mb-3">
+                            @Html.EditorFor(x => x.RoundScheduleOptions.IntervalBetweenGamesInMinutes, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(x => x.RoundScheduleOptions.IntervalBetweenGamesInMinutes, null, new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary green-save-button"><i class="fa fa-fw fa-save"></i>Dodaj</button>
+            </div>
+        }
+    </div>
+</div>

@@ -2,6 +2,7 @@
 using LZRNS.DomainModels.Models;
 using LZRNS.DomainModels.Repository.Interfaces;
 using LZRNS.Models.DocumentTypes.Pages;
+using LZRNS.Models.ViewModel;
 using System;
 using System.Data.Entity.Core;
 using System.Linq;
@@ -49,32 +50,24 @@ namespace LZRNS.Web.Controllers.Management
         [HttpGet]
         public ActionResult Add()
         {
-            var model = new Round
+            var model = new RoundManagementSurfaceViewModel
             {
-                LeagueSeasons = _seasonRepo.GetAllLeagueSeasons()
-                .ToList()
-                .Select(x => new SelectListItem()
-                {
-                    Text = x.FullName,
-                    Value = x.Id.ToString()
-                })
+                LeagueSeasons = GetLeagueSeasonsAsListItems()
             };
 
             return PartialView(model);
+        }
+
+        private System.Collections.Generic.IEnumerable<SelectListItem> GetLeagueSeasonsAsListItems()
+        {
+            return _seasonRepo.GetAllLeagueSeasons().ToList().Select(x => new SelectListItem() { Text = x.FullName, Value = x.Id.ToString() });
         }
 
         [HttpGet]
         public ActionResult Edit(Guid roundId)
         {
             var model = _roundRepo.GetById(roundId);
-            model.LeagueSeasons = _seasonRepo.GetAllLeagueSeasons()
-                .ToList()
-                .Select(x => new SelectListItem()
-                {
-                    Text = x.FullName,
-                    Value = x.Id.ToString()
-                });
-
+            model.LeagueSeasons = GetLeagueSeasonsAsListItems();
             return PartialView(model);
         }
 
@@ -83,14 +76,14 @@ namespace LZRNS.Web.Controllers.Management
         #region [Data Change Actions]
 
         [HttpPost]
-        public ActionResult Add(Round model)
+        public ActionResult Add(RoundManagementSurfaceViewModel model)
         {
             if (!ModelState.IsValid) return null;
 
             var leagueSeason = _seasonRepo.GetLeagueSeasonById(model.LeagueSeasonId);
             var teamsForLeagueSeason = _teamRepo.GetTeamsByLeagueSeasonId(model.LeagueSeasonId).ToList();
 
-            var roundsWithGames = _roundGenerator.GenerateRoundsWithGames(teamsForLeagueSeason, leagueSeason).ToList();
+            var roundsWithGames = _roundGenerator.GenerateRoundsWithGames(teamsForLeagueSeason, leagueSeason, model.RoundScheduleOptions);
 
             _roundRepo.AddRange(roundsWithGames);
 
