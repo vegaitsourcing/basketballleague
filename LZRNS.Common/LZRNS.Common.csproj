@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AppSettings.cs" />
     <Compile Include="Comparers\ITextComparer.cs" />
+    <Compile Include="Comparers\LevenshteinDistance.cs" />
     <Compile Include="Comparers\TextComparer.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />

@@ -63,6 +63,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Comparers\TextComparerTests.cs" />
     <Compile Include="Extensions\StringExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
