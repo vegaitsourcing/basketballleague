@@ -1,0 +1,2 @@
+To test this data first upload files from `prev_season`, then upload files in `new_season`.
+If stats are showing for all players in matches for prev season and new season then the tests are passing.
