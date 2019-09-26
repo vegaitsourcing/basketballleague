@@ -1,32 +1,35 @@
 ﻿using ClosedXML.Excel;
 using LZRNS.DomainModels.ExcelLoaderModels;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace LZRNS.ExcelLoader.ExcelReader
 {
     public class ExcelLoader : AbstractExcelLoader
     {
+        private readonly Dictionary<string, Dictionary<string, List<PlayerScore>>> _playerScoresByPlayerNameByTeamName;
+
         public ExcelLoader(string configPath) : base(configPath)
         {
             TeamStatisticByTeamName = new Dictionary<string, TeamStatistic>();
-            PlayerScoresByPlayerNameByTeamName = new Dictionary<string, Dictionary<string, List<PlayerScore>>>();
+            _playerScoresByPlayerNameByTeamName = new Dictionary<string, Dictionary<string, List<PlayerScore>>>();
             PlayerScores = new List<PlayerScore>();
         }
 
         public List<PlayerScore> PlayerScores { get; }
-        public Dictionary<string, Dictionary<string, List<PlayerScore>>> PlayerScoresByPlayerNameByTeamName { get; }
         public Dictionary<string, TeamStatistic> TeamStatisticByTeamName { get; }
 
         public List<PlayerScore> GetPlayerScoreList(string teamName, string playerFullName)
         {
             var teamScores = GetTeamScores(teamName);
-            teamScores.TryGetValue(playerFullName, out var playerScores);
+            string playerName = FormatPlayerName(playerFullName);
+            teamScores.TryGetValue(playerName, out var playerScores);
             return playerScores ?? new List<PlayerScore>();
         }
 
         public Dictionary<string, List<PlayerScore>> GetTeamScores(string teamName)
         {
-            PlayerScoresByPlayerNameByTeamName.TryGetValue(teamName, out var teamScores);
+            _playerScoresByPlayerNameByTeamName.TryGetValue(teamName, out var teamScores);
             return teamScores ?? new Dictionary<string, List<PlayerScore>>();
         }
 
@@ -49,29 +52,36 @@ namespace LZRNS.ExcelLoader.ExcelReader
             TeamStatisticByTeamName[teamStatistic.TeamName] = teamStatistic;
         }
 
+        private static string FormatPlayerName(string playerName)
+        {
+            string lower = playerName.Trim().ToLower();
+            return Regex.Replace(lower, @"\W+", "-");
+        }
+
         private void AddPlayerScore(string teamName, PlayerScore ps)
         {
             if (teamName.Equals(string.Empty)) return;
+            string playerName = FormatPlayerName(ps.NameAndLastName);
 
             PlayerScores.Add(ps);
 
-            if (!PlayerScoresByPlayerNameByTeamName.TryGetValue(teamName, out var teamScore))
+            if (!_playerScoresByPlayerNameByTeamName.TryGetValue(teamName, out var teamScore))
             {
                 var playerScoreList = new List<PlayerScore> { ps };
-                var scoresDictionary = new Dictionary<string, List<PlayerScore>> { { ps.NameAndLastName, playerScoreList } };
-                PlayerScoresByPlayerNameByTeamName.Add(teamName, scoresDictionary);
+                var scoresDictionary = new Dictionary<string, List<PlayerScore>> { { playerName, playerScoreList } };
+                _playerScoresByPlayerNameByTeamName.Add(teamName, scoresDictionary);
                 return;
             }
 
-            if (ps.NameAndLastName.Equals(string.Empty)) return;
+            if (playerName.Equals(string.Empty)) return;
 
-            if (teamScore.TryGetValue(ps.NameAndLastName, out var list))
+            if (teamScore.TryGetValue(playerName, out var list))
             {
                 list.Add(ps);
             }
             else
             {
-                PlayerScoresByPlayerNameByTeamName[teamName].Add(ps.NameAndLastName, new List<PlayerScore> { ps });
+                _playerScoresByPlayerNameByTeamName[teamName].Add(playerName, new List<PlayerScore> { ps });
             }
         }
 
