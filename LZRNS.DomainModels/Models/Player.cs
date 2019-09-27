@@ -41,11 +41,6 @@ namespace LZRNS.DomainModel.Models
         [DisplayName("Slika")]
         public HttpPostedFileBase ImageFile { get; set; }
 
-        [ForeignKey(nameof(Team_Id))]
-        public virtual Team Team { get; set; }
-
-        public Guid? Team_Id { get; set; }
-
         //this field should represent unique id of every player, possibly JMBG or some identifaction number; better to be string, not guid for possible later changes (provision of jmbg e.g.)
         public string UId { get; set; }
 

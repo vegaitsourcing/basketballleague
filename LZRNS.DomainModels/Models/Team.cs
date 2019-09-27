@@ -24,8 +24,6 @@ namespace LZRNS.DomainModel.Models
         [DisplayName("Liga u sezoni")]
         public Guid LeagueSeasonId { get; set; }
 
-        public virtual ICollection<Player> Players { get; set; } = new List<Player>();
-
         public virtual ICollection<PlayerPerTeam> PlayersPerSeason { get; set; } = new List<PlayerPerTeam>();
 
         [DisplayName("Tim iz prošle sezone")]

@@ -224,7 +224,7 @@ namespace LZRNS.Web.Controllers.Management
                 var playerNames = keyValuePair.Value;
                 var playerInfoList = codingListData.PlayerInfoList.Where(pi => pi.NewTeamName.Equals(teamName)).ToList();
                 var team = _cache.TeamCache.CreateOrGetTeamByName(teamName, leagueSeason);
-                team.Players = GeneratePlayersData(loadedData, playerInfoList, playerNames, team, leagueSeason);
+                GeneratePlayersData(loadedData, playerInfoList, playerNames, team, leagueSeason);
             }
         }
     }

@@ -101,6 +101,10 @@
     <Compile Include="Migrations\201909211339399_RemoveTeamIdFromGame.Designer.cs">
       <DependentUpon>201909211339399_RemoveTeamIdFromGame.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201909271357005_RemoveTeamIdFromPlayerTable.cs" />
+    <Compile Include="Migrations\201909271357005_RemoveTeamIdFromPlayerTable.Designer.cs">
+      <DependentUpon>201909271357005_RemoveTeamIdFromPlayerTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AbstractModel.cs" />
     <Compile Include="Models\PlayerAverageStats.cs" />
@@ -154,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201909211339399_RemoveTeamIdFromGame.resx">
       <DependentUpon>201909211339399_RemoveTeamIdFromGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201909271357005_RemoveTeamIdFromPlayerTable.resx">
+      <DependentUpon>201909271357005_RemoveTeamIdFromPlayerTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
