@@ -30,6 +30,8 @@ namespace LZRNS.DomainModels.Cache
 
         public void LoadDataToCache(string seasonName, string leagueName)
         {
+            LoadPlayerAndStatsCache();
+
             LeagueSeasonCache.LoadCurrentLeagueSeasonCache(seasonName, leagueName);
 
             if (LeagueSeasonCache.CurrentLeagueSeasonCache == null)
@@ -39,23 +41,21 @@ namespace LZRNS.DomainModels.Cache
 
             var leagueSeasonId = LeagueSeasonCache.CurrentLeagueSeasonCache.Id;
             GameCache.LoadGamesCache(leagueSeasonId);
-            LoadPlayerRelatedCache(leagueSeasonId);
             RoundCache.LoadRoundByRoundNameCache(leagueSeasonId);
             TeamCache.LoadTeamByTeamNameCache(leagueSeasonId);
+            PlayerPerTeamCache.LoadPlayersPerTeamCache(leagueSeasonId);
+        }
+
+        private void LoadPlayerAndStatsCache()
+        {
+            PlayerCache.LoadPlayerCache();
+            var playerIds = PlayerCache.PlayerByUIdCache.Values.Select(player => player.Id).Distinct().ToArray();
+            StatsCache.LoadPlayerStatsCache(playerIds);
         }
 
         public int SaveChanges()
         {
             return _db.SaveChanges();
-        }
-
-        private void LoadPlayerRelatedCache(Guid leagueSeasonId)
-        {
-            PlayerPerTeamCache.LoadPlayersPerTeamCache(leagueSeasonId);
-            PlayerCache.LoadPlayerCache();
-
-            var playerIds = PlayerCache.PlayerByUIdCache.Values.Select(player => player.Id).Distinct().ToArray();
-            StatsCache.LoadPlayerStatsCache(playerIds);
         }
     }
 }
