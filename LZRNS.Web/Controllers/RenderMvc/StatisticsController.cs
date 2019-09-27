@@ -16,28 +16,26 @@ namespace LZRNS.Web.Controllers.RenderMvc
 
         public StatisticsController(ISeasonRepository seasonRepository)
         {
-            if (seasonRepository == null) throw new ArgumentException(nameof(seasonRepository));
-
-            _seasonRepository = seasonRepository;
+            _seasonRepository = seasonRepository ?? throw new ArgumentException(nameof(seasonRepository));
         }
 
         public ActionResult Index(StatisticsModel model)
         {
             model.Seasons = _seasonRepository.GetAll().OrderByDescending(s => s.SeasonStartYear).ToList();
 
-            int seasonYear;
             if (!int.TryParse(Request[Constants.RequestParameters.StatisticsSeason], NumberStyles.Integer,
-                CultureInfo.CurrentCulture, out seasonYear))
+                CultureInfo.CurrentCulture, out int seasonYear))
             {
                 seasonYear = model.Seasons.FirstOrDefault()?.SeasonStartYear ?? 0;
             }
 
             model.SelectedSeasonYear = seasonYear;
 
-            TopStatisticCategories category;
-            Enum.TryParse(Request[Constants.RequestParameters.StatisticsCategory], true, out category);
-
-            model.Category = category;
+            if (Enum.TryParse(Request[Constants.RequestParameters.StatisticsCategory], true,
+                out TopStatisticCategories category))
+            {
+                model.Category = category;
+            }
 
             return CurrentTemplate(model);
         }
