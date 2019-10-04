@@ -77,7 +77,7 @@
 {
     public string CreateUrl(string queryName, string queryValue)
     {
-        var currentUrl = Request.Url;
+        var currentUrl = HttpUtility.UrlDecode(Request.Url.ToString(), System.Text.UnicodeEncoding.UTF8);
         var uriBuilder = new UriBuilder(currentUrl);
         var query = HttpUtility.ParseQueryString(uriBuilder.Query);
         query[queryName] = queryValue;
