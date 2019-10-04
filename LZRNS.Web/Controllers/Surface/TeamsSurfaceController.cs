@@ -10,12 +10,10 @@ using System.Collections.Generic;
 
 namespace LZRNS.Web.Controllers.Surface
 {
-	public class TeamsSurfaceController : BaseSurfaceController
-	{
+	public class TeamsSurfaceController : BaseSurfaceController {
 		private readonly ITeamRepository _teamRepo;
 
-		public TeamsSurfaceController(ITeamRepository teamRepo)
-		{
+		public TeamsSurfaceController(ITeamRepository teamRepo) {
 			_teamRepo = teamRepo;
 		}
 
@@ -27,13 +25,15 @@ namespace LZRNS.Web.Controllers.Surface
 		[HttpPost]
 		public ActionResult SearchResults(string searchString, int? seasonYearStart, string currentShownLeague) =>
 			string.IsNullOrWhiteSpace(searchString) ?
-				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)) : 
+				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)) :
 				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)
 					.Where(x => x.Item2.ToLower()
 						.Contains(searchString.ToLower())));
 
-		private IEnumerable<Tuple<string, string>> GetAllTeams(int? seasonYearStart, string currentShownLeague) =>
-			_teamRepo.GetAll()
+		private IEnumerable<Tuple<string, string>> GetAllTeams(int? seasonYearStart, string currentShownLeague) { 
+			//currentShownLeague = (Char.ToLowerInvariant(currentShownLeague[0]) + currentShownLeague.Substring(1)).Replace(" ", string.Empty);
+
+			return _teamRepo.GetAll()
 				.GroupBy(t => t.TeamName)
 				.Where(x => x.Any(t => seasonYearStart == null || t.LeagueSeason.Season.SeasonStartYear.Equals(seasonYearStart)))
 				.Select(g => g
@@ -46,5 +46,6 @@ namespace LZRNS.Web.Controllers.Surface
 					$"{Umbraco.GetSingleContentOfType<TeamDetailsModel>(CultureInfo.CurrentCulture).Url}?id={y.Id.ToString()}",
 					y.TeamName))
 				.ToList();
+		}
 	}
 }

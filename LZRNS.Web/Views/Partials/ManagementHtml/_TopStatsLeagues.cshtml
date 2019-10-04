@@ -3,11 +3,11 @@
 	
 @if (Model.Leagues != null && Model.Leagues.Any())
 {
-	foreach (var league in Model.Leagues)
+	for (var i = 0; i < Model.Leagues.Count(); i++)
 	{
-		<div class="row cards @(Model.Leagues.IndexOf(league) + 1 % 2 == 0 ? "bg-orange" : "bg-grey")" league>
+		<div class="row cards @(i % 2 == 0 ? "bg-orange" : "bg-grey")" league>
 			@{
-				Html.RenderAction<ManagementHtmlController>(c => c.TopStatsPerLeague(null), league);
+				Html.RenderAction<ManagementHtmlController>(c => c.TopStatsPerLeague(null), Model.Leagues.ElementAt(i));
 			}
 		</div>
 	}

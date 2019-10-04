@@ -27,7 +27,12 @@ namespace LZRNS.Web.Controllers.Surface
                 return new EmptyResult();
             }
 
-            var model = _seasonRepo
+			var leagueSeasons = _seasonRepo
+				.GetSeasonByYear(seasonStartYear);
+
+			leagueName = (Char.ToLowerInvariant(leagueName[0]) + leagueName.Substring(1)).Replace(" ", string.Empty);
+
+			var model = _seasonRepo
                 .GetSeasonByYear(seasonStartYear)?
                 .LeagueSeasons.First(k => k?.League?.Name.Equals(leagueName) == true)?
                 .Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
@@ -45,7 +50,9 @@ namespace LZRNS.Web.Controllers.Surface
                 return new EmptyResult();
             }
 
-            var model = _seasonRepo.GetSeasonByYear(seasonStartYear)?
+			leagueName = (Char.ToLowerInvariant(leagueName[0]) + leagueName.Substring(1)).Replace(" ", string.Empty);
+
+			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)?
                 .LeagueSeasons.First(k => k.League?.Name?.Equals(leagueName) == true)?
                 .Rounds.Where(x => x.RoundName.Equals(roundName))
                 .SelectMany(y => y.Games);
@@ -61,7 +68,9 @@ namespace LZRNS.Web.Controllers.Surface
                 return new EmptyResult();
             }
 
-            var model = _seasonRepo.GetSeasonByYear(seasonStartYear)?
+			leagueName = (Char.ToLowerInvariant(leagueName[0]) + leagueName.Substring(1)).Replace(" ", string.Empty);
+
+			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)?
                 .LeagueSeasons.First(k => k.League?.Name?.Equals(leagueName) == true)?
                 .Rounds.Where(x => x.RoundName.CompareTo(roundName) <= 0)
                 .SelectMany(y => y.Games)
@@ -108,7 +117,9 @@ namespace LZRNS.Web.Controllers.Surface
                 return new EmptyResult();
             }
 
-            var model = _seasonRepo.GetSeasonByYear(seasonStartYear)?
+			leagueName = (Char.ToLowerInvariant(leagueName[0]) + leagueName.Substring(1)).Replace(" ", string.Empty);
+
+			var model = _seasonRepo.GetSeasonByYear(seasonStartYear)?
                 .LeagueSeasons.FirstOrDefault(k => k?.League?.Name.Equals(leagueName) == true)?
                 .Teams?.Select(x => x.GetLeaderBoardPlacing(roundName))
                 .OrderByDescending(x => x.Pts)

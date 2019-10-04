@@ -13,9 +13,7 @@ namespace LZRNS.DomainModels.Extensions
 
             if (source == null) return new List<T>();
 
-            return source.OrderByDescending(orderCriteria)
-                .Select(g => (T)Activator.CreateInstance(typeof(T), g.First().Player.GetFullName, g.ToArray()))
-                .ToList();
+            return source.OrderByDescending(orderCriteria).Select(g => (T)Activator.CreateInstance(typeof(T), g.First().Player.GetFullName, g.ToArray())).GroupBy(s => s.PlayerName).Select(g => g.First()).ToList();
         }
 
         public static TopStatsModel[] GetTopStats<T>(this IEnumerable<IGrouping<Guid, Stats>> source,
