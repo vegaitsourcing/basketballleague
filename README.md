@@ -26,7 +26,8 @@ You will need the following tools:
 Follow these steps to get your development environment set up:
 
   1. Clone the repository
-  1. Go to `LZRNS.Web` directory and run: `npm install` followed by `gulp build`
+  1. Go to `LZRNS.Web` directory and run: `npm install`
+  1. Go to `LZRNS.Web/node_modules/.bin` directory and run: `gulp build`
   1. Build solution in Visual Studio (2017 or higher)
   1. (Optional) Configure database `connectionString` found in `LZRNS.Web/Web.config` (You can use `basketballLeague.bak` file to generate database - *guide on how to do this can be found [here](https://www.youtube.com/watch?v=mRI8vpn-tyk)*) 
   1. Start Application with `LZRNS.Web` set as your StartUp Project
