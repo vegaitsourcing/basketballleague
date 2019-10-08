@@ -4,13 +4,13 @@ let statistics = {
 	init: function () {
 		$('[all-seasons]').on('click', function () {
 			const $this = $(this);
-			const cssClass = "active";
+            const cssClass = "active";
 
-			$this.addClass(cssClass).siblings().removeClass(cssClass);
+            $this.addClass(cssClass).siblings().removeClass(cssClass);
 		});
 
 		$('[active-season]').on('click', function () {
-			const seasonParam = $('[seasons] option:first').data('query');
+            const seasonParam = $('[seasons] option:first').data('query');
 
 			window.location.search = seasonParam;
 		});

@@ -44,10 +44,9 @@
 					<span class="letters-button" data-placeholder="@currentPlaceholder"><span class="icon font-ico-arrow-down"></span></span>
 					<ul>
 
-						<li class="all @showAllClass"><a href=".">A - Ž</a></li>
+						<li class="all @showAllClass"><a href="/igrači">A - Ž</a></li>
 
-						@foreach (var letter in RenderHelper.GetAlphabet())
-						{
+						@foreach(var letter in RenderHelper.GetAlphabet()) {
 							var cssClass = letter.Equals(Model.CurrentFL, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
 							<li class="@cssClass"><a href="@CreateUrl("fl", letter)">@letter</a></li>
 						}
@@ -59,8 +58,7 @@
 						<div class="col-lg-12 col-md-6">
 							@*style="column-count: 4; column-gap: 11%; margin: 0 0 0 7%;"*@
 							<ul class="four-col">
-								@foreach (var player in Model.Players)
-								{
+								@foreach(var player in Model.Players) {
 									<li><a href="javasript:;">@player.GetFullName</a></li>
 								}
 
@@ -85,4 +83,3 @@
         return uriBuilder.ToString();
     }
 }
-

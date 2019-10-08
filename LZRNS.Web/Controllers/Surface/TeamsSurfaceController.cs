@@ -19,16 +19,22 @@ namespace LZRNS.Web.Controllers.Surface
 
 		[ChildActionOnly]
 		[HttpGet]
-		public ActionResult SearchResults(int? seasonYearStart, string currentShownLeague) =>
-			PartialView(GetAllTeams(seasonYearStart, currentShownLeague));
+		public ActionResult SearchResults(int? seasonYearStart, string currentShownLeague) {
+			currentShownLeague = (Char.ToLowerInvariant(currentShownLeague[0]) + currentShownLeague.Substring(1)).Replace(" ", string.Empty);
+
+			return PartialView(GetAllTeams(seasonYearStart, currentShownLeague));
+		}
 
 		[HttpPost]
-		public ActionResult SearchResults(string searchString, int? seasonYearStart, string currentShownLeague) =>
-			string.IsNullOrWhiteSpace(searchString) ?
+		public ActionResult SearchResults(string searchString, int? seasonYearStart, string currentShownLeague) {
+			currentShownLeague = (Char.ToLowerInvariant(currentShownLeague[0]) + currentShownLeague.Substring(1)).Replace(" ", string.Empty);
+
+			return string.IsNullOrWhiteSpace(searchString) ?
 				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)) :
 				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)
 					.Where(x => x.Item2.ToLower()
 						.Contains(searchString.ToLower())));
+		}
 
 		private IEnumerable<Tuple<string, string>> GetAllTeams(int? seasonYearStart, string currentShownLeague) { 
 			//currentShownLeague = (Char.ToLowerInvariant(currentShownLeague[0]) + currentShownLeague.Substring(1)).Replace(" ", string.Empty);

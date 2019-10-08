@@ -39,7 +39,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
             {
                 return all.Where(p => p.PlayersPerSeason
                     .Any(ps => Context.Seasons.OrderByDescending(s => s.SeasonStartYear).First()
-                        .LeagueSeasons.Any(ls => ls.Teams.Select(t => t.Id).Any(tid => tid.Equals(ps.Team.Id)))));
+                        .LeagueSeasons.Any(ls => ls.Teams.Select(t => t.Id).Any(tid => tid.Equals(ps.Team.Id))))).OrderBy(p => p.GetFullName);
             }
 
             return all;

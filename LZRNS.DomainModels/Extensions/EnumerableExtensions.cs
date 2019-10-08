@@ -67,7 +67,7 @@ namespace LZRNS.DomainModels.Extensions
 
             int totalMinutes = sourceArray.Sum(s => s.MinutesPlayed);
 
-            return Math.Round(sourceArray.Sum(criteria) / (sourceArray.Length * totalMinutes), 1);
+            return (totalMinutes <= 0 || sourceArray.Length == 0) ? 0 : Math.Round(sourceArray.Sum(criteria) / (sourceArray.Length * totalMinutes), 1);
         }
     }
 }

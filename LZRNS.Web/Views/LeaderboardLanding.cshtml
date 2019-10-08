@@ -46,7 +46,7 @@
 				</div>
 			</div>
             <!--change for staging site, use RoundName instead of CurrentShownRound, change when round change is fixed to use round id or round number, not round name-->
-			@{Html.RenderAction<ManagementHtmlController>(c => c.Leaderboard(0, null, null), Model.SeasonYearStart, Model.CurrentShownRound, Model.CurrentShownLeague);}
+			@{Html.RenderAction<ManagementHtmlController>(c => c.Leaderboard(0, null, null), Model.SeasonYearStart, Model.RoundName, Model.CurrentShownLeague);}
 		</div>
 	</div>
 </main>
