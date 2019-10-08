@@ -1,4 +1,5 @@
 ﻿using LZRNS.DomainModel.Models;
+using LZRNS.DomainModels.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -40,9 +41,7 @@ namespace LZRNS.Web.Helpers
             }
             if (targetModel.ImageFile != null)
             {
-
-
-                string image = Path.Combine("\\Uploads\\" + targetModel.Id.ToString() + targetModel.ImageFile.FileName);
+				string image = Path.Combine("\\Uploads\\" + targetModel.ImageFile.FileName);
                 targetModel.ImageFile.SaveAs(uploadDirectoryPath + image);
                 return image;
             }
@@ -50,12 +49,21 @@ namespace LZRNS.Web.Helpers
         }
 
 
-        public static void RemoveImage(string image)
+        public static void RemoveImage(object model, ObjectType objType)
         {
-            if (!string.IsNullOrWhiteSpace(image) && System.IO.File.Exists(HttpContext.Current.Server.MapPath("~") +  image))
+			dynamic targetModel;
+
+			if(objType.Equals(ObjectType.PLAYER))
+				targetModel = model as Player;
+			else
+				targetModel = model as Team;
+
+			if (!string.IsNullOrWhiteSpace(targetModel.Image) && System.IO.File.Exists(HttpContext.Current.Server.MapPath("~") + targetModel.Image))
             {
-                System.IO.File.Delete(HttpContext.Current.Server.MapPath("~") + image);
-            }
+				//System.IO.File.Delete(HttpContext.Current.Server.MapPath("~") + image);
+				targetModel.Image = null;
+				targetModel.ImageFile = null;
+			}
 
         }
     }

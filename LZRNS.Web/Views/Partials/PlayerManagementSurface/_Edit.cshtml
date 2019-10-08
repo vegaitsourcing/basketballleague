@@ -12,6 +12,9 @@
 			<div class="col-md-3">
 				<div class="text-center">
 					<img src="@Model.Image" class="img-responsive" id="imageFrame" height="150" width="150" style="border-radius:50%;background-color:#dee2e6;" />
+					<button type="button" class="close" aria-label="RemoveImage">
+						<span aria-hidden="true">&times;</span>
+					</button>
 				</div>
 				@Html.LabelFor(x => x.ImageFile, new { @class = "control-label col-md-8" })
 				@Html.EditorFor(x => x.ImageFile)

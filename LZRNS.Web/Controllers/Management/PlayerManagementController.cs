@@ -74,19 +74,20 @@ namespace LZRNS.Web.Controllers.Management
         [HttpPost]
         public ActionResult Edit(Player model)
         {
-            if (ModelState.IsValid)
+			Player player = _playerRepo.GetById(model.Id);
+			player.ImageFile = model.ImageFile;
+			if (ModelState.IsValid)
             {
-                ImageHandler.RemoveImage(model.Image);
-                string newImage = ImageHandler.SaveImage(model, ObjectType.PLAYER);
+                ImageHandler.RemoveImage(player, ObjectType.PLAYER);
+                string newImage = ImageHandler.SaveImage(player, ObjectType.PLAYER);
                 if (newImage != null)
                 {
-                    model.Image = newImage;
+					player.Image = newImage;
                 }
-
-                _playerRepo.Update(model);
+                _playerRepo.Update(player);
             }
 
-            return PartialView(model);
+            return PartialView(player);
         }
 
         [HttpGet]
@@ -109,7 +110,7 @@ namespace LZRNS.Web.Controllers.Management
 
             if (status == "success")
             {
-                ImageHandler.RemoveImage(model.Image);
+                ImageHandler.RemoveImage(model, ObjectType.PLAYER);
             }
 
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);

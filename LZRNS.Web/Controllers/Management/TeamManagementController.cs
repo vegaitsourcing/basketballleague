@@ -140,14 +140,17 @@ namespace LZRNS.Web.Controllers.Management
             if (!ModelState.IsValid)
                 return null;
 
-            ImageHandler.RemoveImage(model.Image);
-            string newImage = ImageHandler.SaveImage(model, ObjectType.TEAM);
+			Team team = _teamRepo.GetById(model.Id);
+			team.ImageFile = model.ImageFile;
+
+            ImageHandler.RemoveImage(team, ObjectType.TEAM);
+            string newImage = ImageHandler.SaveImage(team, ObjectType.TEAM);
             if (newImage != null)
             {
-                model.Image = newImage;
+				team.Image = newImage;
             }
 
-            _teamRepo.Update(model);
+            _teamRepo.Update(team);
 
             return null;
         }
@@ -172,7 +175,7 @@ namespace LZRNS.Web.Controllers.Management
 
             if (status == "success")
             {
-                ImageHandler.RemoveImage(model.Image);
+                ImageHandler.RemoveImage(model, ObjectType.TEAM);
             }
             return Json(new { status, message }, JsonRequestBehavior.AllowGet);
         }

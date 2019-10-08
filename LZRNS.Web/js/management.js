@@ -33,8 +33,15 @@ function setBase64ToImage(file, $imageEl) {
 	var result;
 
 	reader.readAsDataURL(file);
+
 	reader.onload = function () {
 		$imageEl.attr("src", reader.result);
+		$("label.custom-file-label").text(file.name);
+	};
+
+	reader.onabort = function () {
+		$imageEl.removeAttr("src");
+		$("label.custom-file-label").text("Nijedna slika nije izabrana");
 	};
 
 	return result;
@@ -277,6 +284,13 @@ $(document).ready(function () {
 		var files = this.files;
 		if (files.length > 0) {
 			setBase64ToImage(files[0], $("#imageFrame"));
+		} else {
+			//$("#imageFrame").removeAttr("src");
 		}
+	});
+
+	$(document).on("click", "button[aria-label=RemoveImage]", function () {
+		$("#imageFrame").removeAttr("src");
+		$("label.custom-file-label").text("Nijedna slika nije izabrana");
 	});
 });
