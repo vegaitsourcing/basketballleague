@@ -48,7 +48,7 @@
 
 						@foreach(var letter in RenderHelper.GetAlphabet()) {
 							var cssClass = letter.Equals(Model.CurrentFL, StringComparison.OrdinalIgnoreCase) ? "active" : string.Empty;
-							<li class="@cssClass"><a href="@CreateUrl("fl", letter)">@letter</a></li>
+							<a href="@CreateUrl("fl", letter)"><li class="@cssClass">@letter</li></a>
 						}
 
 					</ul>

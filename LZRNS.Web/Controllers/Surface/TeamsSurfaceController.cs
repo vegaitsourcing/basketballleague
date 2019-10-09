@@ -20,15 +20,11 @@ namespace LZRNS.Web.Controllers.Surface
 		[ChildActionOnly]
 		[HttpGet]
 		public ActionResult SearchResults(int? seasonYearStart, string currentShownLeague) {
-			currentShownLeague = (Char.ToLowerInvariant(currentShownLeague[0]) + currentShownLeague.Substring(1)).Replace(" ", string.Empty);
-
 			return PartialView(GetAllTeams(seasonYearStart, currentShownLeague));
 		}
 
 		[HttpPost]
 		public ActionResult SearchResults(string searchString, int? seasonYearStart, string currentShownLeague) {
-			currentShownLeague = (Char.ToLowerInvariant(currentShownLeague[0]) + currentShownLeague.Substring(1)).Replace(" ", string.Empty);
-
 			return string.IsNullOrWhiteSpace(searchString) ?
 				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)) :
 				PartialView(GetAllTeams(seasonYearStart, currentShownLeague)
@@ -37,8 +33,6 @@ namespace LZRNS.Web.Controllers.Surface
 		}
 
 		private IEnumerable<Tuple<string, string>> GetAllTeams(int? seasonYearStart, string currentShownLeague) { 
-			//currentShownLeague = (Char.ToLowerInvariant(currentShownLeague[0]) + currentShownLeague.Substring(1)).Replace(" ", string.Empty);
-
 			return _teamRepo.GetAll()
 				.GroupBy(t => t.TeamName)
 				.Where(x => x.Any(t => seasonYearStart == null || t.LeagueSeason.Season.SeasonStartYear.Equals(seasonYearStart)))

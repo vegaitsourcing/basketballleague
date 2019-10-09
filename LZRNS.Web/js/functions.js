@@ -192,7 +192,7 @@ module.exports = {
 				$this.removeClass("active");
 				$this.siblings(".all").addClass("active");
 
-				$this.children("a").attr("href", "/igrači");
+				$this.parent().attr("href", "/igrači");
 
 				return;
 			}

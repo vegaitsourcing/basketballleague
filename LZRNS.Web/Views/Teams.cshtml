@@ -1,23 +1,21 @@
-﻿@inherits UmbracoViewPage<TeamsModel>
+﻿@using System.Globalization
+@using System.Text.RegularExpressions;
+@inherits UmbracoViewPage<TeamsModel>
 
 <main class="main" data-template-name="@Model.Title">
 	<div class="banner">
 		<div class="wrap">
-			@if (Model.Banner.HasValue())
-			{
+			@if(Model.Banner.HasValue()) {
 				<div class="banner-title">
-					@if (Model.Banner.BannerTitleExists)
-					{
+					@if(Model.Banner.BannerTitleExists) {
 						<h2>@Model.Banner.PreBannerTitle <span>@Model.Banner.BannerTitle</span> @Model.Banner.PostBannerTitle</h2>
 					}
 				</div>
 			}
 			<div class="league-links">
-				@if (Model.Leagues.HasValue())
-				{
-					foreach (var league in Model.Leagues)
-					{
-						<a class="league-link" href="@(Model.Url + $"?ln={league}")">@league</a>
+				@if(Model.Leagues.HasValue()) {
+					foreach(var league in Model.Leagues) {
+						<a class="league-link" href="@(Model.Url + $"?ln={league}")">@CamelCaseToSentenceCase(league.ToString())</a>
 					}
 				}
 			</div>
@@ -25,33 +23,30 @@
 	</div>
 	<div class="teams-section">
 		<div class="wrap">
-		<!-- TODO: make title dynamical -->
+			<!-- TODO: make title dynamical -->
 			<div class="title">
 				<h2>Timovi</h2>
 			</div>
 			<div class="teams-wrap">
 				<div class="teams-top">
 					<div class="search">
-						@using (Ajax.BeginForm(
+						@using(Ajax.BeginForm(
 							nameof(TeamsSurfaceController.SearchResults),
 							nameof(TeamsSurfaceController).RemoveControllerSuffix(),
 							null,
-							new AjaxOptions
-							{
+							new AjaxOptions {
 								HttpMethod = "POST",
 								InsertionMode = InsertionMode.Replace,
 								UpdateTargetId = "names-list"
 							},
-							new
-							{
+							new {
 								@id = "teams-form"
-							}))
-						{
-							@Html.Hidden("seasonYearStart", Model.SeasonYearStart, new { @id = "seasonYearStart"})
+							})) {
+							@Html.Hidden("seasonYearStart", Model.SeasonYearStart, new { @id = "seasonYearStart" })
 							@Html.HiddenFor(m => m.CurrentShownLeague);
 							<label class="sr-only" for="search-input">Search</label>
-							@Html.TextBox("searchString", string.Empty, new { @id = "search-input", @placeholder="Pretraži"})
-							<button type="submit"><span class="icon font-ico-search"/></button>
+							@Html.TextBox("searchString", string.Empty, new { @id = "search-input", @placeholder = "Pretraži" })
+							<button type="submit"><span class="icon font-ico-search" /></button>
 						}
 					</div>
 					<div class="buttons">
@@ -74,4 +69,14 @@
 		}
 	</style> -->
 	@Scripts.Render("~/bundles/scripts/teams")
+}
+
+@functions
+{
+	public string CamelCaseToSentenceCase(string text) {
+		string output = Regex.Replace(text, @"\p{Lu}", m => " " + m.Value.ToLowerInvariant());
+		TextInfo myTI = new CultureInfo("en-US", false).TextInfo;
+
+		return myTI.ToTitleCase(output);
+	}
 }
