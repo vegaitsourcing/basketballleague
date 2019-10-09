@@ -33,7 +33,7 @@ namespace LZRNS.DomainModels.Repository.Implementations
 
         public IEnumerable<Player> GetAll(bool active)
         {
-            var all = GetAll().ToList();
+            var all = GetAll().ToList().OrderBy(p => p.GetFullName);
 
             if (active)
             {

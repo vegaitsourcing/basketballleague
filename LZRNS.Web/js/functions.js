@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 module.exports = {
 	initSlider: function() {
@@ -187,10 +187,21 @@ module.exports = {
 
 		$('.letters-nav li').on('click', function() {
 			var $this = $(this);
+
+			if ($this.hasClass("active")) {
+				$this.removeClass("active");
+				$this.siblings(".all").addClass("active");
+
+				$this.children("a").attr("href", "/igrači");
+
+				return;
+			}
+
 			var val = $this.text();
 			var button = $this.closest('ul').prev('.letters-button');
 			var wrap = $this.closest('.letters-nav');
 			var items = $this.siblings('li');
+
 			items.removeClass('active');
 			$this.addClass('active');
 			button.attr('data-placeholder', val);
