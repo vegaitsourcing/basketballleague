@@ -42,17 +42,21 @@ namespace LZRNS.Web.Controllers.Surface
 			try
 			{
 				var colonisContactUs = Umbraco.TypedContentAtXPath("//AboutUs");
-				var toAddress = colonisContactUs.First().GetPropertyValue("emailAddress");
-                /*smtp exception thrown*/
-				MailMessage message = new MailMessage();
+				
+				string from = model.Email;
+				string to = colonisContactUs.First().GetPropertyValue("emailAddress").ToString();
+				string subject = "Poruka od " + model.Name;
+				string body = "Posetilac " + model.Name + " (" + from + ") vam je poslao poruku:\n\n\"" + model.Message + "\"";
+
+				MailMessage mail = new MailMessage();
+				mail.To.Add(new MailAddress((string)to, from));
+				mail.From = new MailAddress((string)to, from);
+				mail.Body = body;
+				mail.Subject = subject;
+
 				SmtpClient client = new SmtpClient();
 
-				string fromAddress = model.Email;
-				message.Subject = $"Enquiry from {model.Name} - {model.Email}";
-				message.Body = "The Get In Touch form was submitted on the Contact Us page:" + "\n\n" + "Name: " + model.Name + "\n" + "Email: " + model.Email + "\n" + "Text: " + model.Message;
-				message.To.Add(new MailAddress((string)toAddress, fromAddress));
-				message.From = new MailAddress((string)toAddress, fromAddress);
-				client.Send(message);
+				client.Send(mail);
 
 				return true;
 			}
